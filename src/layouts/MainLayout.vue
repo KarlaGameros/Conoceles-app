@@ -23,7 +23,6 @@
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
       <!-- drawer content -->
     </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
