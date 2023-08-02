@@ -3,11 +3,16 @@
     <q-card
       v-for="item in cards"
       :key="item"
-      class="my-card col-2"
+      class="my-card col-lg-2 col-md-2 col-sm-3 col-xs-12"
       flat
       bordered
     >
-      <q-img src="https://cdn.quasar.dev/img/chicken-salad.jpg" />
+      <div class="q-pt-md" style="text-align: center">
+        <img
+          src="../../../assets/user.png"
+          style="width: 100px; display: block; margin: 0 auto"
+        />
+      </div>
 
       <q-card-section>
         <div class="row no-wrap items-center">
@@ -23,43 +28,16 @@
       <q-separator />
 
       <q-card-actions>
-        <q-btn flat color="primary"> VER MAS </q-btn>
+        <q-btn flat color="primary" to="/detalleCantidato"> VER MAS </q-btn>
       </q-card-actions>
     </q-card>
-
-    <!-- <q-card class="my-card col-3" flat bordered>
-      <q-item>
-        <q-item-section avatar>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-          </q-avatar>
-        </q-item-section>
-
-        <q-item-section class="col-3">
-          <q-item-label>DIPUTACIÓN</q-item-label>
-          <q-item-label caption> HECTOR ALBERTO DE LUNA SANCHEZ </q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-separator />
-
-      <q-card-section>
-        <q-card-section>
-          {{ lorem }}
-        </q-card-section>
-
-        <q-card-section class="col-3">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </q-card-section>
-      </q-card-section>
-    </q-card> -->
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
 
-const cards = ref(8);
+const cards = ref(10);
 </script>
 
 <style></style>

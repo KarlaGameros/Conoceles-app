@@ -10,19 +10,16 @@
         </div>
       </div>
     </div>
-    <DiputacionesComp v-if="filtro == false" />
-    <cardsDiputaciones v-if="filtro == true" />
+    <detalleCandidato />
   </q-page>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
-import DiputacionesComp from "../components/diputacionesComp.vue";
-import cardsDiputaciones from "../components/cardsDiputaciones.vue";
+import detalleCandidato from "../components/detalleCantidato.vue";
 //-----------------------------------------------------------
 
 const $q = useQuasar();
-const filtro = false;
 </script>
 
 <style></style>

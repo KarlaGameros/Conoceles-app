@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-const colors = ["#f3cfc6", "#77dd77", "#c89ed3", "#fdfd96"];
+//const colors = ["#f3cfc6", "#77dd77", "#c89ed3", "#fdfd96"];
 
 const series = [
   {
@@ -42,7 +42,6 @@ const chartOptions = {
     categories: [["21-29"], ["30-40"], ["41-50"], ["51-60"]],
     labels: {
       style: {
-        colors: colors,
         fontSize: "12px",
       },
     },
