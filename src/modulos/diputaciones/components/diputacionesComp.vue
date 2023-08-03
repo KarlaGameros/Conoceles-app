@@ -1,4 +1,15 @@
 <template>
+  <div style="border-radius: 20px">
+    <q-banner
+      :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+      style="border-radius: 20px"
+    >
+      Consulte la información proporcionada de manera obligatoria por las
+      candidaturas que participan en la contienda electoral local 2023. La
+      información es responsabilidad de los partidos políticos. El Instituto
+      únicamente apoya para su difusión.
+    </q-banner>
+  </div>
   <div class="q-pa-md example-row-equal-width">
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -10,61 +21,61 @@
         <chartGradoAcademico class="flex flex-center" />
       </div>
     </div>
-
-    <div class="row">
-      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <div class="text-h6 q-mb-md">Nivel de ingresos</div>
-        <chartSexo />
-      </div>
-      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <div class="text-h6 q-mb-md">Candidaturas indígenas</div>
-        <chartSexo />
-      </div>
-      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <div class="text-h6 q-mb-md">Candidaturas con discapacidad</div>
-        <chartSexo />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-        <div class="text-h6 q-mb-md">Candidaturas afromexicanas</div>
-        <chartGradoAcademico class="flex flex-center" />
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-        <div class="text-h6 q-mb-md">Candidaturas de la diversidad sexual</div>
-        <chartSexo />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <div class="text-h6 q-mb-md">Candidaturas migrantes</div>
-        <chartGradoAcademico class="flex flex-center" />
-      </div>
-      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <div class="text-h6 q-mb-md">Candidaturas de personas jovenes</div>
-        <chartGradoAcademico class="flex flex-center" />
-      </div>
-      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <div class="text-h6 q-mb-md">Candidaturas de personas mayores</div>
-        <chartGradoAcademico class="flex flex-center" />
-      </div>
+  </div>
+  <div class="row">
+    <div class="col-12 shadow-7" style="border-radius: 20px">
+      <q-banner
+        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+        style="border-radius: 20px"
+      >
+        <template v-slot:avatar>
+          <q-icon name="expand_more" color="purple-ieen" />
+        </template>
+        Seguir viendo estadísticas de las personas candidatas
+      </q-banner>
     </div>
   </div>
-  <!-- <div>
-    <q-splitter v-model="splitterModel" style="height: 500px">
+  <br />
+  <div>
+    <q-splitter style="height: 500px">
       <template v-slot:before>
         <q-tabs v-model="tab" vertical class="text-teal">
-          <q-tab name="mails" label="Edad" />
           <q-tab name="alarms" label="Grado academico" />
-          <q-tab name="movies" label="Sexo" />
+          <q-tab name="movies" label="Nivel de ingresos" />
+          <q-tab name="movies" label="Candidaturas indígenas" />
+          <q-tab name="movies" label="Candidaturas de discapacidad" />
+          <q-tab name="movies" label="Candidaturas afromexicanas" />
+          <q-tab name="movies" label="Candidaturas de la diversidad sexual" />
+          <q-tab name="movies" label="Candidaturas migrantes" />
+          <q-tab name="movies" label="Candidaturas de personas jovenes" />
+          <q-tab name="movies" label="Candidaturas de personas mayores" />
         </q-tabs>
       </template>
+      <!-- <template v-slot:before>
+        <div class="q-pa-md" style="max-width: 350px">
+          <q-list bordered separator>
+            <q-item clickable v-ripple>
+              <q-item-section>Single line item</q-item-section>
+            </q-item>
 
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label>Item with caption</q-item-label>
+                <q-item-label caption>Caption</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable v-ripple>
+              <q-item-section>
+                <q-item-label overline>OVERLINE</q-item-label>
+                <q-item-label>Item with caption</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+      </template> -->
       <template v-slot:after>
         <q-tab-panels
-          class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
           v-model="tab"
           animated
           swipeable
@@ -77,19 +88,22 @@
             <chartRangoEdad />
           </q-tab-panel>
 
-          <q-tab-panel name="alarms">
+          <q-tab-panel
+            name="alarms"
+            class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
+          >
             <div class="text-h4 q-mb-md">Grado academico</div>
             <chartGradoAcademico class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="movies">
-            <div class="text-h4 q-mb-md">Movies</div>
+            <div class="text-h4 q-mb-md"></div>
             <chartSexo />
           </q-tab-panel>
         </q-tab-panels>
       </template>
     </q-splitter>
-  </div> -->
+  </div>
 </template>
 
 <script setup>

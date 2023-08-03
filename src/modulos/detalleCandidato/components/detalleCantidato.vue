@@ -18,12 +18,30 @@
   <br />
   <div class="row">
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 q-pa-md">
-      <div class="q-pa-lg shadow-7" style="border-radius: 20px">
-        <div style="text-align: center">
-          <img
-            src="../../../assets/user.png"
-            style="width: 100px; display: block; margin: 0 auto"
-          />
+      <div class="shadow-7" style="border-radius: 20px">
+        <div class="row" style="text-align: start">
+          <div
+            class="col-lg-3 col-md-4 col-sm-12 col-xs-12 q-pa-md q-gutter-sm"
+          >
+            <q-avatar size="600%">
+              <q-img
+                src="http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg"
+              />
+            </q-avatar>
+          </div>
+          <div
+            class="col-lg-9 col-md-8 col-sm-12 col-xs-12 q-pt-md"
+            align="center"
+          >
+            <div class="text-h6">Karla Gameros</div>
+            <div class="text-subtitle1">Edad: 22 años</div>
+            <q-avatar square size="24px">
+              <img
+                src="https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png"
+                alt=""
+              />
+            </q-avatar>
+          </div>
         </div>
       </div>
     </div>
@@ -50,15 +68,54 @@
 
             <q-tab-panels v-model="tab" animated>
               <q-tab-panel name="mails">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Obcaecati optio sint porro. Saepe cumque perspiciatis amet,
-                rerum iste tempora distinctio natus magnam possimus cupiditate,
-                earum dolor animi nam corporis quasi!
-                <br /><br />
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Obcaecati optio sint porro. Saepe cumque perspiciatis amet,
-                rerum iste tempora distinctio natus magnam possimus cupiditate,
-                earum dolor animi nam corporis quasi!
+                <div class="row">
+                  <div class="col-3" align="center">
+                    <q-avatar size="200px">
+                      <q-img
+                        src="http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg"
+                      /> </q-avatar
+                    ><br /><br />
+                    <q-avatar square size="50px">
+                      <img
+                        src="https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png"
+                        alt=""
+                      />
+                    </q-avatar>
+                    <q-avatar square size="50px">
+                      <img
+                        src="https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png"
+                        alt=""
+                      />
+                    </q-avatar>
+                    <q-avatar square size="50px">
+                      <img
+                        src="https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png"
+                        alt=""
+                      />
+                    </q-avatar>
+                  </div>
+                  <br /><br />
+                  <div class="col">
+                    <div class="text-h6">Nombre (propietaria/o):</div>
+                    <div class="text-subtitle1">Karla Jazmin Gameros López</div>
+                    <br />
+                    <div class="text-h6">Edad:</div>
+                    <div class="text-subtitle1">22</div>
+                    <br />
+                    <div class="text-h6">Sexo:</div>
+                    <div class="text-subtitle1">Mujer</div>
+                  </div>
+                  <div class="col">
+                    <div class="text-h6">Cargo:</div>
+                    <div class="text-subtitle1">Diputada</div>
+                    <br />
+                    <div class="text-h6">Estado:</div>
+                    <div class="text-subtitle1">Nayarir</div>
+                    <br />
+                    <div class="text-h6">Número de fórmula:</div>
+                    <div class="text-subtitle1">12345</div>
+                  </div>
+                </div>
               </q-tab-panel>
 
               <q-tab-panel name="alarms">

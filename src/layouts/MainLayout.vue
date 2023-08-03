@@ -22,11 +22,8 @@
       </q-toolbar>
       <q-tabs>
         <q-route-tab icon="home" to="/inicio" />
-        <q-route-tab label="|" />
         <q-route-tab to="/diputaciones" label="Diputaciones" />
-        <q-route-tab label="|" />
         <q-route-tab to="/page2" label="Presidencia y Sindicatura" />
-        <q-route-tab label="|" />
         <q-route-tab to="/page3" label="Regidurias" />
       </q-tabs>
       <!-- <div class="absolute-right q-pa-xs">
@@ -51,19 +48,32 @@
         "
       >
         <q-list>
-          <q-item
-            :content-inset-level="2"
-            :header-inset-level="2"
-            :to="{ name: 'cardsDiputaciones' }"
-          >
+          <q-item :content-inset-level="2" :header-inset-level="2">
             <q-item-section>
-              <!-- <q-item-label class="text-h6 text-pink label-title text-bold"
-                >Distrito</q-item-label
-              > -->
-              <q-btn-dropdown
-                class="bg-gray-ieen-3 text-white"
-                label="Distrito"
+              <q-item-label class="text-h5 label-title text-bold"
+                >Consulta</q-item-label
               >
+              <div class="text-h6">
+                Selecciona el reporte que deseas consultar:
+              </div>
+              <q-btn
+                :to="{ name: 'diputaciones' }"
+                label="Numeralio"
+                glossy
+                color="purple"
+              />
+              <br />
+              <!-- <q-btn color="purple" label="Candidatos y candidatas" /> -->
+              <q-btn
+                :to="{ name: 'cardsDiputaciones' }"
+                label="Candidatos y candidatas"
+                outline
+                color="purple"
+              />
+              <br />
+
+              <div class="text-weight-bolder">Distrito</div>
+              <q-btn-dropdown class="bg-gray-ieen-3 text-white" label="Todos">
                 <q-list>
                   <q-item clickable v-close-popup @click="onItemClick">
                     <q-item-section>
@@ -84,8 +94,57 @@
                   </q-item>
                 </q-list>
               </q-btn-dropdown>
-              <br /><br />
-              <q-btn-dropdown class="bg-gray-ieen-3 text-white" label="Sección">
+              <br />
+              <div class="text-weight-bolder">Actor politico</div>
+              <q-btn-dropdown class="bg-gray-ieen-3 text-white" label="Todos">
+                <q-list>
+                  <q-item clickable v-close-popup @click="onItemClick">
+                    <q-item-section>
+                      <q-item-label>Todos</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item clickable v-close-popup @click="onItemClick">
+                    <q-item-section>
+                      <q-item-label>0257</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item clickable v-close-popup @click="onItemClick">
+                    <q-item-section>
+                      <q-item-label>0258</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
+
+              <br />
+              <div class="text-weight-bolder">Rango de edad</div>
+              <q-btn-dropdown class="bg-gray-ieen-3 text-white" label="Todos">
+                <q-list>
+                  <q-item clickable v-close-popup @click="onItemClick">
+                    <q-item-section>
+                      <q-item-label>Todos</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item clickable v-close-popup @click="onItemClick">
+                    <q-item-section>
+                      <q-item-label>0257</q-item-label>
+                    </q-item-section>
+                  </q-item>
+
+                  <q-item clickable v-close-popup @click="onItemClick">
+                    <q-item-section>
+                      <q-item-label>0258</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
+
+              <br />
+              <div class="text-weight-bolder">Sexo</div>
+              <q-btn-dropdown class="bg-gray-ieen-3 text-white" label="Todos">
                 <q-list>
                   <q-item clickable v-close-popup @click="onItemClick">
                     <q-item-section>
@@ -146,6 +205,9 @@ export default {
   color: #673e84 !important;
 }
 .bg-pink-ieen {
+  background: #d1308a !important;
+}
+.text-pink-ieen {
   background: #d1308a !important;
 }
 .text-purple-ieen-1 {
