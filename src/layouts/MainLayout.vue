@@ -24,17 +24,6 @@
         <q-route-tab to="/page2" label="Presidencia y Sindicatura" />
         <q-route-tab to="/page3" label="Regidurias" />
       </q-tabs>
-      <div class="absolute-right q-pa-xs">
-        <q-btn flat round dense>
-          <i
-            class="fa-brands fa-square-facebook fa-2xl"
-            style="color: #ffffff"
-          ></i>
-        </q-btn>
-        <q-btn flat round dense>
-          <i class="fa-brands fa-youtube fa-2xl" style="color: #ffffff"></i>
-        </q-btn>
-      </div>
     </q-header>
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
@@ -175,6 +164,17 @@
       <q-toolbar>
         <q-toolbar-title>
           <div>&#169; Unidad Técnica de Informática y Estadística</div>
+          <div class="absolute-right q-pa-xs">
+            <q-btn flat round dense>
+              <i
+                class="fa-brands fa-square-facebook fa-2xl"
+                style="color: #ffffff"
+              ></i>
+            </q-btn>
+            <q-btn flat round dense>
+              <i class="fa-brands fa-youtube fa-2xl" style="color: #ffffff"></i>
+            </q-btn>
+          </div>
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
