@@ -1,66 +1,54 @@
 <template>
   <apexchart
-    type="bar"
-    height="350"
+    type="pie"
+    width="380"
     :options="chartOptions"
     :series="series"
   ></apexchart>
 </template>
 
 <script setup>
-const colors = ["#f3cfc6", "#77dd77"];
-const series = [
-  {
-    name: "Hombres",
-    data: [44, 55, 57],
-  },
-  {
-    name: "Mujeres",
-    data: [76, 85, 101],
-  },
-  {
-    name: "No binario",
-    data: [35, 41, 36],
-  },
+const colors = [
+  "#f3cfc6",
+  "#77dd77",
+  "#c89ed3",
+  "#fdfd96",
+  "#f4c2c2",
+  "#74bbfb",
+  "#fbb474",
+  "#89cff0",
+  "#c8f3cds",
 ];
+const series = [44, 55];
 const chartOptions = {
   chart: {
-    type: "bar",
-    height: 350,
+    width: 380,
+    type: "pie",
   },
+  colors: colors,
+  labels: ["Mujer", "Hombre"],
   plotOptions: {
     bar: {
-      horizontal: false,
-      columnWidth: "55%",
-      endingShape: "rounded",
+      columnWidth: "45%",
+      distributed: true,
     },
   },
-  dataLabels: {
-    enabled: false,
-  },
-  stroke: {
+  legend: {
     show: true,
-    width: 2,
-    colors: ["transparent"],
   },
-  xaxis: {
-    categories: ["PVEM", "Juntos hacemos historia", "Va por México"],
-  },
-  yaxis: {
-    title: {
-      text: "$ (thousands)",
-    },
-  },
-  fill: {
-    opacity: 1,
-  },
-  tooltip: {
-    y: {
-      formatter: function (val) {
-        return "$ " + val + " thousands";
+  responsive: [
+    {
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 400,
+        },
+        legend: {
+          position: "bottom",
+        },
       },
     },
-  },
+  ],
 };
 </script>
 

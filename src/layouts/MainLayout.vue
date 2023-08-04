@@ -7,8 +7,8 @@
           style="height: 80px; width: 140px"
         ></q-img> -->
         <div class="text-h5 text-center">
-          Programa de Resultados <b class="text-pink-conoceles">E</b>lectorales
-          Preliminares 2024
+          Candidatas y Candidatos,
+          <b class="text-pink-conoceles">Conoceles</b>
         </div>
         <div class="text-h6 text-center">
           Elecciones Estatales de
@@ -17,8 +17,6 @@
       </div>
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-
-        <q-toolbar-title> Conoceles </q-toolbar-title>
       </q-toolbar>
       <q-tabs>
         <q-route-tab icon="home" to="/inicio" />
@@ -26,7 +24,7 @@
         <q-route-tab to="/page2" label="Presidencia y Sindicatura" />
         <q-route-tab to="/page3" label="Regidurias" />
       </q-tabs>
-      <!-- <div class="absolute-right q-pa-xs">
+      <div class="absolute-right q-pa-xs">
         <q-btn flat round dense>
           <i
             class="fa-brands fa-square-facebook fa-2xl"
@@ -36,7 +34,7 @@
         <q-btn flat round dense>
           <i class="fa-brands fa-youtube fa-2xl" style="color: #ffffff"></i>
         </q-btn>
-      </div> -->
+      </div>
     </q-header>
 
     <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
@@ -58,21 +56,20 @@
               </div>
               <q-btn
                 :to="{ name: 'diputaciones' }"
-                label="Numeralio"
-                glossy
-                color="purple"
+                label="Numeralia"
+                style="background: #d1308a; color: white"
               />
               <br />
               <!-- <q-btn color="purple" label="Candidatos y candidatas" /> -->
               <q-btn
                 :to="{ name: 'cardsDiputaciones' }"
                 label="Candidatos y candidatas"
-                outline
-                color="purple"
+                style="background: #d1308a; color: white"
               />
               <br />
 
               <div class="text-weight-bolder">Distrito</div>
+
               <q-btn-dropdown class="bg-gray-ieen-3 text-white" label="Todos">
                 <q-list>
                   <q-item clickable v-close-popup @click="onItemClick">

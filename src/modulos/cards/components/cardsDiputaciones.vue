@@ -64,8 +64,12 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <div class="text-subtitle1">HECTOR ALBERTO DE LUNA SANCHEZ</div>
-        <div class="text-caption text-grey">EDAD: 25</div>
+        <div class="text-subtitle1">
+          {{ item.selection == "prop" ? item.nombre_prop : item.nombre_sup }}
+        </div>
+        <div class="text-caption text-grey">
+          EDAD: {{ item.selection == "prop" ? item.edad_prop : item.edad_sup }}
+        </div>
       </q-card-section>
 
       <q-separator />
@@ -89,9 +93,13 @@ const cards = ref([
   {
     id: 1,
     visible: false,
-    selection: false,
+    selection: "prop",
     prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
+    nombre_prop: "CARLOS ROBERTO",
+    edad_prop: "25 años",
     sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+    nombre_sup: "MARIA LOPEZ",
+    edad_sup: "30 años",
     imgPartido1:
       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
     imgPartido2:
@@ -102,9 +110,13 @@ const cards = ref([
   {
     id: 2,
     visible: false,
-    selection: false,
+    selection: "prop",
     prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
+    nombre_prop: "CARLOS ROBERTO",
+    edad_prop: "25 años",
     sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+    nombre_sup: "MARIA LOPEZ",
+    edad_sup: "30 años",
     imgPartido1:
       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
     imgPartido2:
@@ -115,9 +127,13 @@ const cards = ref([
   {
     id: 3,
     visible: false,
-    selection: false,
+    selection: "prop",
     prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
+    nombre_prop: "CARLOS ROBERTO",
+    edad_prop: "25 años",
     sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+    nombre_sup: "MARIA LOPEZ",
+    edad_sup: "30 años",
     imgPartido1:
       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
     imgPartido2:
@@ -128,9 +144,13 @@ const cards = ref([
   {
     id: 4,
     visible: false,
-    selection: false,
+    selection: "prop",
     prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
+    nombre_prop: "CARLOS ROBERTO",
+    edad_prop: "25 años",
     sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+    nombre_sup: "MARIA LOPEZ",
+    edad_sup: "30 años",
     imgPartido1:
       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
     imgPartido2:
@@ -141,9 +161,13 @@ const cards = ref([
   {
     id: 5,
     visible: false,
-    selection: false,
+    selection: "prop",
     prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
+    nombre_prop: "CARLOS ROBERTO",
+    edad_prop: "25 años",
     sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+    nombre_sup: "MARIA LOPEZ",
+    edad_sup: "30 años",
     imgPartido1:
       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
     imgPartido2:

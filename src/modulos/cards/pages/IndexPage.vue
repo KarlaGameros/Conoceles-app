@@ -5,24 +5,24 @@
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
             <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el label="Diputaciones" icon="library_books" />
+            <q-breadcrumbs-el
+              label="Candidatas y candidatos"
+              icon="library_books"
+            />
           </q-breadcrumbs>
         </div>
       </div>
     </div>
-    <DiputacionesComp v-if="filtro == false" />
-    <cardsDiputaciones v-if="filtro == true" />
+    <cardsDiputaciones />
   </q-page>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
-import DiputacionesComp from "../components/diputacionesComp.vue";
-import cardsDiputaciones from "../../cards/components/cardsDiputaciones.vue";
+import cardsDiputaciones from "../components/cardsDiputaciones.vue";
 //-----------------------------------------------------------
 
 const $q = useQuasar();
-const filtro = false;
 </script>
 
 <style></style>

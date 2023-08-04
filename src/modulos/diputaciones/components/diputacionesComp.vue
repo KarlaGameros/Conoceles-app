@@ -17,8 +17,8 @@
         <chartRangoEdad />
       </div>
       <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
-        <div class="text-h6 q-mb-md">Grado academico</div>
-        <chartGradoAcademico class="flex flex-center" />
+        <div class="text-h6 q-mb-md">Sexo</div>
+        <chartSexo class="flex flex-center" />
       </div>
     </div>
   </div>

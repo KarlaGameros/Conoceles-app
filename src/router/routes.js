@@ -13,8 +13,7 @@ const routes = [
       {
         path: "/cardsDiputaciones",
         name: "cardsDiputaciones",
-        component: () =>
-          import("../modulos/diputaciones/components/cardsDiputaciones"),
+        component: () => import("../modulos/cards/pages/IndexPage"),
       },
       {
         path: "/detalleCantidato",
