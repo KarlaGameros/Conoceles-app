@@ -19,10 +19,18 @@
 import { useQuasar } from "quasar";
 import DiputacionesComp from "../components/diputacionesComp.vue";
 import cardsDiputaciones from "../../cards/components/cardsDiputaciones.vue";
+import { onMounted } from "vue";
+import { useCardsStore } from "src/stores/cards-store";
+
 //-----------------------------------------------------------
 
 const $q = useQuasar();
 const filtro = false;
+const cardsStore = useCardsStore();
+
+onMounted(() => {
+  cardsStore.actualizarMenu(true);
+});
 </script>
 
 <style></style>

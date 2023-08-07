@@ -8,10 +8,17 @@
   </q-page>
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script setup>
+import { useCardsStore } from "src/stores/cards-store";
+import { defineComponent, onMounted } from "vue";
 
-export default defineComponent({
-  name: "IndexPage",
+const cardsStore = useCardsStore();
+
+onMounted(() => {
+  cardsStore.actualizarMenu(false);
 });
+// export default defineComponent({
+
+//   name: "IndexPage",
+// });
 </script>

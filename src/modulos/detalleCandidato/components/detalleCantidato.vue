@@ -23,36 +23,34 @@
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
             <q-avatar size="600%">
-              <q-img
-                src="http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg"
-              />
+              <q-img :src="card.selection == 'prop' ? card.prop : card.sup" />
             </q-avatar>
           </div>
           <div class="col-12 q-pb-md" align="center">
-            <div class="text-h6">ROBERTO CARLOS</div>
-            <div class="text-subtitle1">Edad: 22 años</div>
-            <q-avatar square size="24px">
-              <img
-                src="https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png"
-                alt=""
-              />
+            <div class="text-h6">
+              {{
+                card.selection == "prop" ? card.nombre_prop : card.nombre_sup
+              }}
+            </div>
+            <div class="text-subtitle1">
+              Edad:
+              {{ card.selection == "prop" ? card.edad_prop : card.edad_sup }}
+            </div>
+            <q-avatar square size="24px" v-if="card.imgPartido1 != null">
+              <img :src="card.imgPartido1" alt="" />
             </q-avatar>
-            <q-avatar square size="24px">
-              <img
-                src="https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png"
-                alt=""
-              />
+            <q-avatar square size="24px" v-if="card.imgPartido2 != null">
+              <img :src="card.imgPartido2" alt="" />
             </q-avatar>
-            <q-avatar square size="24px">
-              <img
-                src="https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png"
-                alt=""
-              />
+            <q-avatar square size="24px" v-if="card.imgPartido3 != null">
+              <img :src="card.imgPartido3" alt="" />
             </q-avatar>
             <div class="q-pt-md">
               <q-btn-toggle
-                class="text-purple-ieen"
-                flat
+                v-model="card.selection"
+                push
+                glossy
+                toggle-color="purple"
                 :options="[
                   { label: 'Propietario', value: 'prop' },
                   { label: 'Suplente', value: 'sup' },
@@ -95,43 +93,64 @@
               <q-tab-panel name="generales">
                 <div class="row">
                   <div
-                    class="col-lg-3 col-md-4 col-sm-12 col-xs-12"
+                    class="col-lg-3 col-md-12 col-sm-12 col-xs-12"
                     align="center"
                   >
                     <q-avatar size="200px">
                       <q-img
-                        src="http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg"
+                        :src="card.selection == 'prop' ? card.prop : card.sup"
                       /> </q-avatar
                     ><br /><br />
-                    <q-avatar square size="50px">
-                      <img
-                        src="https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png"
-                        alt=""
-                      />
+                    <q-avatar
+                      square
+                      size="50px"
+                      v-if="card.imgPartido1 != null"
+                    >
+                      <img :src="card.imgPartido1" alt="" />
                     </q-avatar>
-                    <q-avatar square size="50px">
-                      <img
-                        src="https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png"
-                        alt=""
-                      />
+                    <q-avatar
+                      square
+                      size="50px"
+                      v-if="card.imgPartido2 != null"
+                    >
+                      <img :src="card.imgPartido2" alt="" />
                     </q-avatar>
-                    <q-avatar square size="50px">
-                      <img
-                        src="https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png"
-                        alt=""
-                      />
+                    <q-avatar
+                      square
+                      size="50px"
+                      v-if="card.imgPartido3 != null"
+                    >
+                      <img :src="card.imgPartido3" alt="" />
                     </q-avatar>
                   </div>
                   <br /><br />
                   <div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">
                     <div class="text-h6">Nombre (propietaria/o):</div>
-                    <div class="text-subtitle1">Roberto Carlos</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.nombre_prop
+                          : card.nombre_sup
+                      }}
+                    </div>
                     <br />
                     <div class="text-h6">Edad:</div>
-                    <div class="text-subtitle1">25</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.edad_prop
+                          : card.edad_sup
+                      }}
+                    </div>
                     <br />
                     <div class="text-h6">Sexo:</div>
-                    <div class="text-subtitle1">Hombre</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.sexo_prop
+                          : card.sexo_sup
+                      }}
+                    </div>
                     <br />
                     <!-- <div
                       class="bg-purple-ieen-1"
@@ -180,13 +199,31 @@
                   </div>
                   <div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">
                     <div class="text-h6">Cargo:</div>
-                    <div class="text-subtitle1">Diputado</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.cargo_prop
+                          : card.cargo_sup
+                      }}
+                    </div>
                     <br />
                     <div class="text-h6">Estado:</div>
-                    <div class="text-subtitle1">Nayarir</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.estado_prop
+                          : card.estado_sup
+                      }}
+                    </div>
                     <br />
                     <div class="text-h6">Número de fórmula:</div>
-                    <div class="text-subtitle1">12345</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.formula_prop
+                          : card.formula_sup
+                      }}
+                    </div>
                   </div>
                 </div>
               </q-tab-panel>
@@ -289,54 +326,38 @@
               </q-tab-panel>
 
               <q-tab-panel name="propuestas">
-                <div class="q-ma-md">
-                  <q-scroll-area
-                    visible
-                    :thumb-style="thumbStyle"
-                    :bar-style="barStyle"
-                    style="height: 200px"
-                    class="col"
-                    ref="firstRef"
-                    @scroll="onScrollFirst"
-                  >
-                    <div
-                      class="col-12 bg-purple-ieen-3"
-                      style="border-radius: 10px; color: white"
-                    >
-                      <div class="text-subtitle2" align="center">
-                        <q-icon name="import_contacts" /> PROPUESTA 1
-                      </div>
-                    </div>
-                    <div v-for="n in 100" :key="n" class="q-pa-sm text-justify">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </div>
-                  </q-scroll-area>
-
-                  <q-scroll-area
-                    visible
-                    :thumb-style="thumbStyle"
-                    :bar-style="barStyle"
-                    style="height: 200px"
-                    class="col"
-                    ref="secondRef"
-                    @scroll="onScrollSecond"
-                  >
-                    <div
-                      class="col-12 bg-purple-ieen-3"
-                      style="border-radius: 10px; color: white"
-                    >
-                      <div class="text-subtitle2" align="center">
-                        <q-icon name="import_contacts" /> PROPUESTA 2
-                      </div>
-                    </div>
-                    <div v-for="n in 100" :key="n" class="q-pa-sm text-justify">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua.
-                    </div>
-                  </q-scroll-area>
+                <div
+                  class="col-12 bg-purple-ieen-2"
+                  style="border-radius: 10px; color: white"
+                >
+                  <div class="text-subtitle2" align="center">
+                    <q-icon name="import_contacts" /> PROPUESTA 2
+                  </div>
+                </div>
+                <div class="q-pa-sm text-justify">
+                  El seguir fomentando el Comercio Local de mi Ciudad Acuña,
+                  impulsar los ejes carreteros que traerán prosperidad no
+                  únicamente para Acuña si no también para Jiménez y Zaragoza.
+                  Trabajar de la mano con los Alcaldes de los tres municipios
+                  que integran el Distrito 01, impulsar la contsrucción de un
+                  carril de carga y sentri en el puente internacional Acuña -
+                  Del Río.
+                </div>
+                <div
+                  class="col-12 bg-purple-ieen-3"
+                  style="border-radius: 10px; color: white"
+                >
+                  <div class="text-subtitle2" align="center">
+                    <q-icon name="import_contacts" /> PROPUESTA 2
+                  </div>
+                </div>
+                <div class="q-pa-sm text-justify">
+                  Para el mejoramiento al campo mayor recurso, que los recursos
+                  al campo lleguen en tiempo y forma cuando se necesiten, mayor
+                  recurso para la seguridad, educación, salud y deportes de
+                  nuestro Distrito. Mayores espacios deportivos, más recurso
+                  para los sistemas DIF del Distrito, pláticas en las colonias a
+                  través de Psicólogos, etc.
                 </div>
               </q-tab-panel>
 
@@ -379,8 +400,40 @@
 </template>
 
 <script setup>
+import { storeToRefs } from "pinia";
+import { useCardsStore } from "src/stores/cards-store";
 import { ref } from "vue";
 
+const cardsStore = useCardsStore();
+const { card } = storeToRefs(cardsStore);
 const tab = ref("generales");
+
+// const data = ref([
+//   {
+//     id: 1,
+//     visible: false,
+//     selection: "prop",
+//     prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
+//     nombre_prop: "CARLOS ROBERTO",
+//     edad_prop: "25 años",
+//     sexo_prop: "Hombre",
+//     cargo_prop: "Diputado",
+//     estado_prop: "Nayarit",
+//     formula_prop: "12456",
+//     sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+//     nombre_sup: "MARIA LOPEZ",
+//     edad_sup: "30 años",
+//     sexo_sup: "Mujer",
+//     cargo_sup: "Diputada",
+//     estado_sup: "Nayarit",
+//     formula_sup: "789456",
+//     imgPartido1:
+//       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
+//     imgPartido2:
+//       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
+//     imgPartido3:
+//       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
+//   },
+// ]);
 </script>
 <style></style>

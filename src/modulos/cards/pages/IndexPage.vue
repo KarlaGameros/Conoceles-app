@@ -5,6 +5,7 @@
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
             <q-breadcrumbs-el icon="home" to="/" />
+            <q-breadcrumbs-el icon="bar_chart" to="/diputaciones" />
             <q-breadcrumbs-el
               label="Candidatas y candidatos"
               icon="library_books"

@@ -18,10 +18,8 @@
     </div>
 
     <q-card
-      v-for="item in cards"
+      v-for="item in listCards"
       :key="item.id"
-      @mouseover="item.visible = true"
-      @mouseout="item.visible = false"
       class="my-card col-lg-2 col-md-2 col-sm-3 col-xs-12"
       flat
       bordered
@@ -38,13 +36,13 @@
       <q-card-section>
         <div class="row no-wrap items-center">
           <div class="col text-h6 ellipsis">DISTRITO</div>
-          <q-avatar square size="24px">
+          <q-avatar square size="24px" v-if="item.imgPartido1 != null">
             <img :src="item.imgPartido1" alt="" />
           </q-avatar>
-          <q-avatar square size="24px">
+          <q-avatar square size="24px" v-if="item.imgPartido2 != null">
             <img :src="item.imgPartido2" alt="" />
           </q-avatar>
-          <q-avatar square size="24px">
+          <q-avatar square size="24px" v-if="item.imgPartido3 != null">
             <img :src="item.imgPartido3" alt="" />
           </q-avatar>
         </div>
@@ -53,8 +51,9 @@
         <div>
           <q-btn-toggle
             v-model="item.selection"
-            class="text-purple-ieen"
-            flat
+            push
+            glossy
+            toggle-color="purple"
             :options="[
               { label: 'Propietario', value: 'prop' },
               { label: 'Suplente', value: 'sup' },
@@ -76,10 +75,17 @@
 
       <q-card-actions>
         <div class="col-10">
-          <q-btn flat color="pink" to="/detalleCantidato"> VER MAS </q-btn>
+          <q-btn
+            flat
+            class="text-purple-ieen-1"
+            to="/detalleCantidato"
+            @click="verMas(item.id)"
+          >
+            VER MAS
+          </q-btn>
         </div>
         <div class="col-2">
-          <q-btn flat icon="picture_as_pdf" color="pink"></q-btn>
+          <q-btn flat icon="picture_as_pdf" class="text-purple-ieen-1"></q-btn>
         </div>
       </q-card-actions>
     </q-card>
@@ -87,95 +93,23 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { storeToRefs } from "pinia";
+import { useCardsStore } from "src/stores/cards-store";
+import { onBeforeMount, onMounted, ref, watch } from "vue";
 
-const cards = ref([
-  {
-    id: 1,
-    visible: false,
-    selection: "prop",
-    prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
-    nombre_prop: "CARLOS ROBERTO",
-    edad_prop: "25 años",
-    sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-    nombre_sup: "MARIA LOPEZ",
-    edad_sup: "30 años",
-    imgPartido1:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
-    imgPartido2:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-    imgPartido3:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-  },
-  {
-    id: 2,
-    visible: false,
-    selection: "prop",
-    prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
-    nombre_prop: "CARLOS ROBERTO",
-    edad_prop: "25 años",
-    sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-    nombre_sup: "MARIA LOPEZ",
-    edad_sup: "30 años",
-    imgPartido1:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
-    imgPartido2:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-    imgPartido3:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-  },
-  {
-    id: 3,
-    visible: false,
-    selection: "prop",
-    prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
-    nombre_prop: "CARLOS ROBERTO",
-    edad_prop: "25 años",
-    sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-    nombre_sup: "MARIA LOPEZ",
-    edad_sup: "30 años",
-    imgPartido1:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
-    imgPartido2:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-    imgPartido3:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-  },
-  {
-    id: 4,
-    visible: false,
-    selection: "prop",
-    prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
-    nombre_prop: "CARLOS ROBERTO",
-    edad_prop: "25 años",
-    sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-    nombre_sup: "MARIA LOPEZ",
-    edad_sup: "30 años",
-    imgPartido1:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
-    imgPartido2:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-    imgPartido3:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-  },
-  {
-    id: 5,
-    visible: false,
-    selection: "prop",
-    prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
-    nombre_prop: "CARLOS ROBERTO",
-    edad_prop: "25 años",
-    sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-    nombre_sup: "MARIA LOPEZ",
-    edad_sup: "30 años",
-    imgPartido1:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
-    imgPartido2:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-    imgPartido3:
-      "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-  },
-]);
+const cardsStore = useCardsStore();
+const { listCards } = storeToRefs(cardsStore);
+
+onBeforeMount(() => {
+  cardsStore.loadCards();
+});
+onMounted(() => {
+  cardsStore.actualizarMenu(true);
+});
+
+const verMas = async (id) => {
+  cardsStore.loadCard(id);
+};
 </script>
 
 <style></style>
