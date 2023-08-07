@@ -18,7 +18,7 @@
   <br />
   <div class="text-h6">Distrito</div>
   <div class="row">
-    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 q-pa-md">
+    <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12 q-pa-md">
       <div class="shadow-7" style="border-radius: 20px">
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
@@ -61,7 +61,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+    <div class="col-lg-9 col-md-7 col-sm-12 col-xs-12">
       <div class="q-pa-md">
         <div class="q-gutter-y-md">
           <q-card>
