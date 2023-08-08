@@ -39,6 +39,7 @@ export const useCardsStore = defineStore("cards", {
           id: 1,
           visible: false,
           selection: "prop",
+          distrito: 1,
           prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
           nombre_prop: "CARLOS ROBERTO",
           edad_prop: "25 años",
@@ -64,6 +65,7 @@ export const useCardsStore = defineStore("cards", {
           id: 2,
           visible: false,
           selection: "prop",
+          distrito: 2,
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
           nombre_prop: "PALOMA DE LOS SANTOS",
           edad_prop: "25 años",
@@ -184,6 +186,15 @@ export const useCardsStore = defineStore("cards", {
         this.card.imgPartido2 = card.imgPartido2;
         this.card.imgPartido3 = card.imgPartido3;
       }
+    },
+
+    async filterCards(distrito) {
+      const filteredCards = this.listCards.filter(
+        (card) => card.distrito === distrito
+      );
+      console.log(filteredCards);
+      // Si deseas actualizar this.listCards con los elementos filtrados, puedes hacerlo:
+      this.listCards = filteredCards;
     },
   },
 });

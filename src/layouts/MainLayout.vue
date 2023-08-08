@@ -24,7 +24,7 @@
           <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
           <div class="absolute-center">
             <q-tabs>
-              <q-route-tab icon="home" to="/inicio" />
+              <q-route-tab icon="home" to="/" />
               <q-route-tab to="/diputaciones" label="Diputaciones" />
               <q-route-tab to="/page2" label="Presidencia y Sindicatura" />
               <q-route-tab to="/page3" label="Regidurias" />
@@ -62,7 +62,7 @@
               <br />
               <q-btn
                 :to="{ name: 'cardsDiputaciones' }"
-                label="Candidatos y candidatas"
+                label="Candidatas y candidatos"
                 style="background: #e97ebd; color: white"
               />
               <br />
@@ -70,8 +70,6 @@
           </q-item>
           <q-item>
             <q-item-section>
-              <!-- <q-btn color="purple" label="Candidatos y candidatas" /> -->
-
               <div class="text-weight-bolder">Distrito</div>
 
               <q-btn-dropdown
@@ -86,7 +84,7 @@
                     :key="distrito.id"
                     clickable
                     v-close-popup
-                    @click="onItemClick"
+                    @click="onItemClick(distrito)"
                   >
                     <q-item-section>
                       <q-item-label>{{
@@ -210,7 +208,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const cardsStore = useCardsStore();
 const { isHomePage } = storeToRefs(cardsStore);
@@ -269,6 +267,12 @@ const rango_edad = [
   { id: 6, edades: "50-59" },
   { id: 7, edades: "60 o más" },
 ];
+
+const onItemClick = (distrito) => {
+  cardsStore.loadCards();
+  cardsStore.filterCards(distrito.id);
+  console.log(distrito.id);
+};
 </script>
 <style lang="scss">
 .flex-center {

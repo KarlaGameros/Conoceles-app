@@ -5,7 +5,7 @@
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
             <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el label="Diputaciones" icon="library_books" />
+            <q-breadcrumbs-el label="Numeralia" icon="library_books" />
           </q-breadcrumbs>
         </div>
       </div>
