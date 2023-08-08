@@ -109,10 +109,12 @@
                     :key="item.id"
                     clickable
                     v-close-popup
-                    @click="onItemClick"
+                    @click="onPartido(item.siglas)"
                   >
                     <q-item-section>
-                      <q-item-label>{{ item.nombre }}</q-item-label>
+                      <q-item-label>{{
+                        `${item.siglas} - ${item.nombre}`
+                      }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -133,7 +135,7 @@
                     :key="item.id"
                     clickable
                     v-close-popup
-                    @click="onItemClick"
+                    @click="onRangoEdad(item.edades)"
                   >
                     <q-item-section>
                       <q-item-label>{{ item.edades }}</q-item-label>
@@ -223,6 +225,7 @@ const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
 
 const distritos = ref([
+  { id: "", nombre: "Todos" },
   { id: 1, nombre: "Acaponeta" },
   { id: 2, nombre: "Tecuala" },
   { id: 3, nombre: "Del Nayar" },
@@ -245,17 +248,41 @@ const distritos = ref([
 ]);
 
 const actor_politico = ref([
-  { id: 1, nombre: "PAN - Partido Acción Nacional" },
-  { id: 2, nombre: "PRI - Partido Revolucionario Institucional" },
-  { id: 3, nombre: "PRD - Partido de la Revolución Democrática" },
-  { id: 4, nombre: "PT - Partido del Trabajo" },
-  { id: 5, nombre: "PVEM - Partido Verde Ecologista de México" },
-  { id: 6, nombre: "MC - Partido Movimiento Ciudadano" },
-  { id: 7, nombre: "MORENA - Partido Morena" },
-  { id: 8, nombre: "NAN - Partido Nueva Alianza Nayarit" },
-  { id: 9, nombre: "MLPN - Partido Movimiento Levántate para Nayarit" },
-  { id: 10, nombre: "FXMN - Partido Fuerza por México Nayarit" },
-  { id: 11, nombre: "RSPN - Partido Redes Sociales Progresistas Nayarit" },
+  { id: 1, siglas: "PAN", nombre: "Partido Acción Nacional" },
+  {
+    id: 2,
+    siglas: "PRI",
+    nombre: "Partido Revolucionario Institucional",
+  },
+  {
+    id: 3,
+    siglas: "PRD",
+    nombre: "Partido de la Revolución Democrática",
+  },
+  { id: 4, siglas: "PT", nombre: "Partido del Trabajo" },
+  {
+    id: 5,
+    siglas: "PVEM",
+    nombre: "Partido Verde Ecologista de México",
+  },
+  { id: 6, siglas: "MC", nombre: "Partido Movimiento Ciudadano" },
+  { id: 7, siglas: "MORENA", nombre: "Partido Morena" },
+  { id: 8, siglas: "NAM", nombre: "Partido Nueva Alianza Nayarit" },
+  {
+    id: 9,
+    siglas: "MLPM",
+    nombre: "Partido Movimiento Levántate para Nayarit",
+  },
+  {
+    id: 10,
+    siglas: "FXMN",
+    nombre: "Partido Fuerza por México Nayarit",
+  },
+  {
+    id: 11,
+    siglas: "RSPN",
+    nombre: "Partido Redes Sociales Progresistas Nayarit",
+  },
 ]);
 
 const rango_edad = [
@@ -270,9 +297,25 @@ const rango_edad = [
 
 const onItemClick = (distrito) => {
   cardsStore.loadCards();
-  cardsStore.filterCards(distrito.id);
-  console.log(distrito.id);
+  if (distrito.id == "") {
+    cardsStore.loadCards();
+  } else {
+    cardsStore.filterCards(distrito.id);
+    distritos_Id.value = distrito.nombre;
+  }
+  //distritos_Id.value = distrito.nombre;
 };
+
+const onRangoEdad = (rango_edad) => {
+  console.log(rango_edad);
+  if (rango_edad == "Todos") {
+    cardsStore.loadCards();
+  } else {
+    cardsStore.filterEdad(rango_edad);
+  }
+};
+
+const onPartido = (partido) => {};
 </script>
 <style lang="scss">
 .flex-center {

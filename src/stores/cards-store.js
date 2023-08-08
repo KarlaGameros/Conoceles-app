@@ -42,14 +42,14 @@ export const useCardsStore = defineStore("cards", {
           distrito: 1,
           prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
           nombre_prop: "CARLOS ROBERTO",
-          edad_prop: "25 años",
+          edad_prop: 25,
           sexo_prop: "Hombre",
           cargo_prop: "Diputado",
           estado_prop: "Nayarit",
           formula_prop: "12456",
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
           nombre_sup: "MARIA LOPEZ",
-          edad_sup: "30 años",
+          edad_sup: 30,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
@@ -68,14 +68,14 @@ export const useCardsStore = defineStore("cards", {
           distrito: 2,
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
           nombre_prop: "PALOMA DE LOS SANTOS",
-          edad_prop: "25 años",
+          edad_prop: 25,
           sexo_prop: "Mujer",
           cargo_prop: "Diputada",
           estado_prop: "Nayarit",
           formula_prop: "12456",
           sup: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/ELISA%20CAROLINA.jpeg",
           nombre_sup: "MARIA LOPEZ",
-          edad_sup: "30 años",
+          edad_sup: 30,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
@@ -93,14 +93,14 @@ export const useCardsStore = defineStore("cards", {
           selection: "prop",
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/_aida%20casta%C3%B1a.jpg",
           nombre_prop: "AIDA GARCIA BADILLO",
-          edad_prop: "35 años",
+          edad_prop: 35,
           sexo_prop: "Mujer",
           cargo_prop: "Diputada",
           estado_prop: "Nayarit",
           formula_prop: "12456",
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
           nombre_sup: "MARIA LOPEZ",
-          edad_sup: "30 años",
+          edad_sup: 30,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
@@ -114,14 +114,14 @@ export const useCardsStore = defineStore("cards", {
           selection: "prop",
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
           nombre_prop: "CARLOS ROBERTO",
-          edad_prop: "25 años",
+          edad_prop: 25,
           sexo_prop: "Hombre",
           cargo_prop: "Diputado",
           estado_prop: "Nayarit",
           formula_prop: "12456",
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
           nombre_sup: "MARIA LOPEZ",
-          edad_sup: "30 años",
+          edad_sup: 30,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
@@ -139,14 +139,14 @@ export const useCardsStore = defineStore("cards", {
           selection: "prop",
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/griselda%20foto.jpeg",
           nombre_prop: "CARLOS ROBERTO",
-          edad_prop: "25 años",
+          edad_prop: 25,
           sexo_prop: "Hombre",
           cargo_prop: "Diputado",
           estado_prop: "Nayarit",
           formula_prop: "12456",
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
           nombre_sup: "MARIA LOPEZ",
-          edad_sup: "30 años",
+          edad_sup: 30,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
@@ -193,8 +193,28 @@ export const useCardsStore = defineStore("cards", {
         (card) => card.distrito === distrito
       );
       console.log(filteredCards);
-      // Si deseas actualizar this.listCards con los elementos filtrados, puedes hacerlo:
       this.listCards = filteredCards;
+    },
+
+    async filterEdad(rango_edad) {
+      if (rango_edad === "Todos") {
+        return this.listCards;
+      }
+
+      const rango = rango_edad.split("-").map(Number);
+      console.log("rango", rango);
+      const filteredList = this.listCards.filter((card) => {
+        const edad_prop = card.edad_prop;
+        if (rango.length === 2) {
+          return edad_prop >= rango[0] && edad_prop <= rango[1];
+        } else if (rango.length === 1 && rango[0] === 60) {
+          return edad_prop >= rango[0];
+        }
+        return false;
+      });
+
+      this.listCards = filteredList;
+      return filteredList;
     },
   },
 });
