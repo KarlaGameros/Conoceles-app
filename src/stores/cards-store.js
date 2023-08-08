@@ -4,7 +4,13 @@ import { api } from "src/boot/axios";
 export const useCardsStore = defineStore("cards", {
   state: () => ({
     isHomePage: false,
+    isCandidatosPage: false,
+    isDetallePage: false,
+    isChartPage: false,
     listCards: [],
+    listDistritos: [],
+    listEdades: [],
+    listActorPolitico: [],
     card: {
       id: null,
       selection: null,
@@ -33,6 +39,19 @@ export const useCardsStore = defineStore("cards", {
       console.log(this.isHomePage);
     },
 
+    actualizarCandidatos(valor) {
+      this.isCandidatosPage = valor;
+      console.log("valor", valor);
+    },
+
+    actualizarDetalle(valor) {
+      this.isDetallePage = valor;
+    },
+
+    actualizarChart(valor) {
+      this.isChartPage = valor;
+    },
+
     async loadCards() {
       this.listCards = [
         {
@@ -54,6 +73,7 @@ export const useCardsStore = defineStore("cards", {
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
           formula_sup: "789456",
+          siglas: 1,
           imgPartido1:
             "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
           imgPartido2:
@@ -80,6 +100,7 @@ export const useCardsStore = defineStore("cards", {
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
           formula_sup: "789456",
+          siglas: 2,
           imgPartido1:
             "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MORENA.png",
           imgPartido2:
@@ -101,6 +122,7 @@ export const useCardsStore = defineStore("cards", {
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
           nombre_sup: "MARIA LOPEZ",
           edad_sup: 30,
+          siglas: 3,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
@@ -122,6 +144,7 @@ export const useCardsStore = defineStore("cards", {
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
           nombre_sup: "MARIA LOPEZ",
           edad_sup: 30,
+          siglas: 4,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
@@ -147,6 +170,7 @@ export const useCardsStore = defineStore("cards", {
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
           nombre_sup: "MARIA LOPEZ",
           edad_sup: 30,
+          siglas: 5,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
@@ -159,6 +183,102 @@ export const useCardsStore = defineStore("cards", {
             "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
         },
       ];
+    },
+
+    async loadDistritos() {
+      const data = [
+        { id: "", nombre: "Todos" },
+        { id: 1, nombre: "Acaponeta" },
+        { id: 2, nombre: "Tecuala" },
+        { id: 3, nombre: "Del Nayar" },
+        { id: 4, nombre: "Santiago Ixcuintla" },
+        { id: 5, nombre: "San Blas" },
+        { id: 6, nombre: "Tepic" },
+        { id: 7, nombre: "Tepic" },
+        { id: 8, nombre: "Tepic" },
+        { id: 9, nombre: "Tepic" },
+        { id: 10, nombre: "Tepic" },
+        { id: 11, nombre: "Tepic" },
+        { id: 12, nombre: "Santa María del Oro" },
+        { id: 13, nombre: "Ixtlán del Río" },
+        { id: 14, nombre: "Xalisco" },
+        { id: 15, nombre: "Compostela" },
+        { id: 16, nombre: "Bucerias, Bahía de Banderas" },
+        { id: 17, nombre: "San vicente, Bahía de Banderas" },
+        { id: 18, nombre: "San José del Valle, Bahía de Banderas" },
+        { id: 19, nombre: "Representación proporcinal" },
+      ];
+      this.listDistritos = data.map((distrito) => {
+        return {
+          label: distrito.nombre,
+          value: distrito.id,
+        };
+      });
+    },
+
+    async loadEdades() {
+      const data = [
+        { id: 1, edades: "Todos" },
+        { id: 2, edades: "18-24" },
+        { id: 3, edades: "25-29" },
+        { id: 4, edades: "30-39" },
+        { id: 5, edades: "40-49" },
+        { id: 6, edades: "50-59" },
+        { id: 7, edades: "60 o más" },
+      ];
+      this.listEdades = data.map((edad) => {
+        return {
+          label: edad.edades,
+          value: edad.id,
+        };
+      });
+    },
+
+    async loadActorPolitico(siglas) {
+      const data = [
+        { id: 1, siglas: "PAN", nombre: "Partido Acción Nacional" },
+        {
+          id: 2,
+          siglas: "PRI",
+          nombre: "Partido Revolucionario Institucional",
+        },
+        {
+          id: 3,
+          siglas: "PRD",
+          nombre: "Partido de la Revolución Democrática",
+        },
+        { id: 4, siglas: "PT", nombre: "Partido del Trabajo" },
+        {
+          id: 5,
+          siglas: "PVEM",
+          nombre: "Partido Verde Ecologista de México",
+        },
+        { id: 6, siglas: "MC", nombre: "Partido Movimiento Ciudadano" },
+        { id: 7, siglas: "MORENA", nombre: "Partido Morena" },
+        { id: 8, siglas: "NAM", nombre: "Partido Nueva Alianza Nayarit" },
+        {
+          id: 9,
+          siglas: "MLPM",
+          nombre: "Partido Movimiento Levántate para Nayarit",
+        },
+        {
+          id: 10,
+          siglas: "FXMN",
+          nombre: "Partido Fuerza por México Nayarit",
+        },
+        {
+          id: 11,
+          siglas: "RSPN",
+          nombre: "Partido Redes Sociales Progresistas Nayarit",
+        },
+      ];
+      this.listActorPolitico = data.map((actorPolitico) => {
+        return {
+          siglas: actorPolitico.siglas,
+          label: `${actorPolitico.siglas}-${actorPolitico.nombre}`,
+          value: actorPolitico.id,
+        };
+      });
     },
 
     async loadCard(id) {
@@ -215,6 +335,22 @@ export const useCardsStore = defineStore("cards", {
 
       this.listCards = filteredList;
       return filteredList;
+    },
+
+    async filterActorPolitico(actor_politico) {
+      const filterActorPolitico = this.listCards.filter((actor) => {
+        actor.siglas === actor_politico;
+      });
+      this.listCards = filterActorPolitico;
+      console.log(filterActorPolitico);
+    },
+
+    async filterSexo(sexo) {
+      const filterSexo = this.listCards.filter((filter) => {
+        filter.sexo === sexo;
+      });
+      this.listCards = filterSexo;
+      console.log(filterSexo);
     },
   },
 });

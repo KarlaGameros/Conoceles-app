@@ -25,8 +25,16 @@
           <div class="absolute-center">
             <q-tabs>
               <q-route-tab icon="home" to="/" />
-              <q-route-tab to="/diputaciones" label="Diputaciones" />
-              <q-route-tab to="/page2" label="Presidencia y Sindicatura" />
+              <q-route-tab
+                @click="btnNumeralia(true)"
+                :to="{ name: 'diputaciones' }"
+                label="Diputaciones"
+              />
+              <q-route-tab
+                @click="btnNumeraliaPresidencia(true)"
+                :to="{ name: 'presidenciaSindicatura' }"
+                label="Presidencia y Sindicatura"
+              />
               <q-route-tab to="/page3" label="Regidurias" />
             </q-tabs>
           </div>
@@ -45,7 +53,11 @@
       >
         <q-list>
           <q-item>
-            <q-item-section class="bg-grey-3" style="border-radius: 10px">
+            <q-item-section
+              class="bg-grey-3"
+              style="border-radius: 10px"
+              v-if="isChartPage"
+            >
               <q-item-label
                 class="text-h5 label-title text-bold q-pa-xs"
                 style="color: gray"
@@ -55,15 +67,18 @@
                 Selecciona el reporte que deseas consultar:
               </div>
               <q-btn
+                v-if="isChartPage == true"
+                @click="btnNumeralia(true)"
                 :to="{ name: 'diputaciones' }"
                 label="Numeralia"
                 style="background: #d1308a; color: white"
               />
               <br />
               <q-btn
-                :to="{ name: 'cardsDiputaciones' }"
+                :to="{ name: 'diputaciones' }"
                 label="Candidatas y candidatos"
                 style="background: #e97ebd; color: white"
+                @click="btnCandidatos(true)"
               />
               <br />
             </q-item-section>
@@ -72,7 +87,7 @@
             <q-item-section>
               <div class="text-weight-bolder">Distrito</div>
 
-              <q-btn-dropdown
+              <!-- <q-btn-dropdown
                 class="bg-gray-ieen-3 text-white"
                 label="Seleccione una opción"
                 v-model="distritos_Id"
@@ -93,10 +108,16 @@
                     </q-item-section>
                   </q-item>
                 </q-list>
-              </q-btn-dropdown>
+              </q-btn-dropdown> -->
+              <q-select
+                v-model="distritos_Id"
+                :options="listDistritos"
+                hint="Selecciona un distrito"
+              >
+              </q-select>
               <br />
               <div class="text-weight-bolder">Actor político</div>
-              <q-btn-dropdown
+              <!-- <q-btn-dropdown
                 :disabled="distritos_Id === null"
                 v-model="actor_politico_Id"
                 :options="actor_politico"
@@ -118,11 +139,16 @@
                     </q-item-section>
                   </q-item>
                 </q-list>
-              </q-btn-dropdown>
-
+              </q-btn-dropdown> -->
+              <q-select
+                v-model="actor_politico_Id"
+                :options="listActorPolitico"
+                hint="Selecciona un actor político"
+              >
+              </q-select>
               <br />
               <div class="text-weight-bolder">Rango de edad</div>
-              <q-btn-dropdown
+              <!-- <q-btn-dropdown
                 :disabled="distritos_Id === null"
                 v-model="rango_edad_Id"
                 :options="rango_edad"
@@ -142,11 +168,16 @@
                     </q-item-section>
                   </q-item>
                 </q-list>
-              </q-btn-dropdown>
-
+              </q-btn-dropdown> -->
+              <q-select
+                v-model="rango_edad_Id"
+                :options="listEdades"
+                hint="Selecciona un rango de edad"
+              >
+              </q-select>
               <br />
               <div class="text-weight-bolder">Sexo</div>
-              <q-btn-dropdown
+              <!-- <q-btn-dropdown
                 :disabled="distritos_Id === null"
                 class="bg-gray-ieen-3 text-white"
                 label="Todos"
@@ -176,7 +207,13 @@
                     </q-item-section>
                   </q-item>
                 </q-list>
-              </q-btn-dropdown>
+              </q-btn-dropdown> -->
+              <q-select
+                v-model="sexo_Id"
+                :options="sexo"
+                hint="Selecciona un rango de edad"
+              >
+              </q-select>
             </q-item-section>
           </q-item>
         </q-list>
@@ -209,11 +246,23 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
+import { useQuasar } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
-import { ref, watch } from "vue";
+import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
+import { onBeforeMount, ref, watch } from "vue";
 
+const $q = useQuasar();
+const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
+const { isChartPagePS } = storeToRefs(presidenciaSindicaturiaStore);
 const cardsStore = useCardsStore();
-const { isHomePage } = storeToRefs(cardsStore);
+const {
+  isHomePage,
+  listDistritos,
+  isCandidatosPage,
+  isChartPage,
+  listEdades,
+  listActorPolitico,
+} = storeToRefs(cardsStore);
 
 const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => {
@@ -223,99 +272,76 @@ const toggleLeftDrawer = () => {
 const distritos_Id = ref(null);
 const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
+const sexo_Id = ref(null);
 
-const distritos = ref([
-  { id: "", nombre: "Todos" },
-  { id: 1, nombre: "Acaponeta" },
-  { id: 2, nombre: "Tecuala" },
-  { id: 3, nombre: "Del Nayar" },
-  { id: 4, nombre: "Santiago Ixcuintla" },
-  { id: 5, nombre: "San Blas" },
-  { id: 6, nombre: "Tepic" },
-  { id: 7, nombre: "Tepic" },
-  { id: 8, nombre: "Tepic" },
-  { id: 9, nombre: "Tepic" },
-  { id: 10, nombre: "Tepic" },
-  { id: 11, nombre: "Tepic" },
-  { id: 12, nombre: "Santa María del Oro" },
-  { id: 13, nombre: "Ixtlán del Río" },
-  { id: 14, nombre: "Xalisco" },
-  { id: 15, nombre: "Compostela" },
-  { id: 16, nombre: "Bucerias, Bahía de Banderas" },
-  { id: 17, nombre: "San vicente, Bahía de Banderas" },
-  { id: 18, nombre: "San José del Valle, Bahía de Banderas" },
-  { id: 19, nombre: "Representación proporcinal" },
-]);
-
-const actor_politico = ref([
-  { id: 1, siglas: "PAN", nombre: "Partido Acción Nacional" },
+const sexo = ref([
   {
-    id: 2,
-    siglas: "PRI",
-    nombre: "Partido Revolucionario Institucional",
+    value: 1,
+    label: "Mujer",
   },
   {
-    id: 3,
-    siglas: "PRD",
-    nombre: "Partido de la Revolución Democrática",
-  },
-  { id: 4, siglas: "PT", nombre: "Partido del Trabajo" },
-  {
-    id: 5,
-    siglas: "PVEM",
-    nombre: "Partido Verde Ecologista de México",
-  },
-  { id: 6, siglas: "MC", nombre: "Partido Movimiento Ciudadano" },
-  { id: 7, siglas: "MORENA", nombre: "Partido Morena" },
-  { id: 8, siglas: "NAM", nombre: "Partido Nueva Alianza Nayarit" },
-  {
-    id: 9,
-    siglas: "MLPM",
-    nombre: "Partido Movimiento Levántate para Nayarit",
+    value: 2,
+    label: "Hombre",
   },
   {
-    id: 10,
-    siglas: "FXMN",
-    nombre: "Partido Fuerza por México Nayarit",
-  },
-  {
-    id: 11,
-    siglas: "RSPN",
-    nombre: "Partido Redes Sociales Progresistas Nayarit",
+    value: 3,
+    label: "No binario",
   },
 ]);
 
-const rango_edad = [
-  { id: 1, edades: "Todos" },
-  { id: 2, edades: "18-24" },
-  { id: 3, edades: "25-29" },
-  { id: 4, edades: "30-39" },
-  { id: 5, edades: "40-49" },
-  { id: 6, edades: "50-59" },
-  { id: 7, edades: "60 o más" },
-];
+onBeforeMount(() => {
+  cardsStore.actualizarChart(true);
+  cardsStore.loadDistritos();
+  cardsStore.loadEdades();
+  cardsStore.loadActorPolitico();
 
-const onItemClick = (distrito) => {
+  distritos_Id.value = { value: 0, label: "Todos" };
+  rango_edad_Id.value = { value: 0, label: "Todos" };
+  actor_politico_Id.value = { value: 0, label: "Todos" };
+  sexo_Id.value = "Todos";
+});
+
+watch(distritos_Id, (val) => {
   cardsStore.loadCards();
-  if (distrito.id == "") {
+  if (distritos_Id.value.value == "") {
     cardsStore.loadCards();
   } else {
-    cardsStore.filterCards(distrito.id);
-    distritos_Id.value = distrito.nombre;
+    cardsStore.filterCards(distritos_Id.value.value);
   }
-  //distritos_Id.value = distrito.nombre;
-};
-
-const onRangoEdad = (rango_edad) => {
-  console.log(rango_edad);
-  if (rango_edad == "Todos") {
+});
+watch(rango_edad_Id, (val) => {
+  if (rango_edad_Id.value.label == "Todos") {
     cardsStore.loadCards();
   } else {
-    cardsStore.filterEdad(rango_edad);
+    cardsStore.filterEdad(rango_edad_Id.value.label);
   }
+});
+watch(actor_politico_Id, (val) => {
+  if (actor_politico_Id.value.value == "Todos") {
+    cardsStore.loadCards();
+  } else {
+    cardsStore.filterActorPolitico(actor_politico_Id.value.value);
+  }
+});
+watch(sexo_Id, (val) => {
+  if (sexo_Id.value.label == "Todos") {
+    cardsStore.loadCards();
+  } else {
+    cardsStore.filterSexo(sexo_Id.value.label);
+  }
+});
+const btnCandidatos = (valor) => {
+  cardsStore.actualizarChart(false);
+  cardsStore.actualizarDetalle(false);
+  cardsStore.actualizarCandidatos(valor);
 };
-
-const onPartido = (partido) => {};
+const btnNumeralia = (valor) => {
+  cardsStore.actualizarChart(valor);
+};
+const btnNumeraliaPresidencia = (valor) => {
+  cardsStore.actualizarChart(false);
+  presidenciaSindicaturiaStore.actualizarChart(valor);
+};
 </script>
 <style lang="scss">
 .flex-center {

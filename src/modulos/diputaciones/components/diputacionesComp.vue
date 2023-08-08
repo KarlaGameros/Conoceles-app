@@ -114,6 +114,7 @@ import chartSexo from "../../../charts/chartSexo.vue";
 import { ref } from "vue";
 
 const tab = ref("mails");
+
 const splitterModel = ref(20);
 </script>
 

@@ -21,7 +21,7 @@
 
 <script setup>
 import { useQuasar } from "quasar";
-import detalleCandidato from "../components/detalleCantidato.vue";
+import detalleCandidato from "../../diputaciones/components/detalleCantidato.vue";
 //-----------------------------------------------------------
 
 const $q = useQuasar();

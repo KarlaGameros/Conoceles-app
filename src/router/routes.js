@@ -11,14 +11,22 @@ const routes = [
         component: () => import("../modulos/diputaciones/pages/IndexPage"),
       },
       {
+        path: "/presidenciaSindicatura",
+        name: "presidenciaSindicatura",
+        component: () =>
+          import("../modulos/presidencia_sindicaturia/pages/IndexPage"),
+      },
+      {
         path: "/cardsDiputaciones",
         name: "cardsDiputaciones",
-        component: () => import("../modulos/cards/pages/IndexPage"),
+        component: () =>
+          import("../modulos/diputaciones/components/cardsDiputaciones"),
       },
       {
         path: "/detalleCantidato",
         name: "detalleCantidato",
-        component: () => import("../modulos/detalleCandidato/pages/IndexPage"),
+        component: () =>
+          import("../modulos/diputaciones/components/detalleCantidato"),
       },
     ],
   },

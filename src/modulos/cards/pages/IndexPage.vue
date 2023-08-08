@@ -14,13 +14,12 @@
         </div>
       </div>
     </div>
-    <cardsDiputaciones />
   </q-page>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
-import cardsDiputaciones from "../components/cardsDiputaciones.vue";
+//import cardsDiputaciones from "../../diputaciones/components/cardsDiputaciones.vue";
 //-----------------------------------------------------------
 
 const $q = useQuasar();
