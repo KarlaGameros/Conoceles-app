@@ -22,7 +22,7 @@
               icon="library_books"
             />
           </q-breadcrumbs>
-          <h5>Diputados</h5>
+          <h5>Diputaciones</h5>
         </div>
       </div>
     </div>

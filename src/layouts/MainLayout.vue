@@ -53,11 +53,7 @@
       >
         <q-list>
           <q-item>
-            <q-item-section
-              class="bg-grey-3"
-              style="border-radius: 10px"
-              v-if="isChartPage"
-            >
+            <q-item-section class="bg-grey-3" style="border-radius: 10px">
               <q-item-label
                 class="text-h5 label-title text-bold q-pa-xs"
                 style="color: gray"
@@ -67,7 +63,6 @@
                 Selecciona el reporte que deseas consultar:
               </div>
               <q-btn
-                v-if="isChartPage == true"
                 @click="btnNumeralia(true)"
                 :to="{ name: 'diputaciones' }"
                 label="Numeralia"
@@ -339,7 +334,6 @@ const btnNumeralia = (valor) => {
   cardsStore.actualizarChart(valor);
 };
 const btnNumeraliaPresidencia = (valor) => {
-  cardsStore.actualizarChart(false);
   presidenciaSindicaturiaStore.actualizarChart(valor);
 };
 </script>
