@@ -17,16 +17,9 @@ const routes = [
           import("../modulos/presidencia_sindicaturia/pages/IndexPage"),
       },
       {
-        path: "/cardsDiputaciones",
-        name: "cardsDiputaciones",
-        component: () =>
-          import("../modulos/diputaciones/components/cardsDiputaciones"),
-      },
-      {
-        path: "/detalleCantidato",
-        name: "detalleCantidato",
-        component: () =>
-          import("../modulos/diputaciones/components/detalleCantidato"),
+        path: "/regidurias",
+        name: "regidurias",
+        component: () => import("../modulos/regidurias/pages/IndexPage"),
       },
     ],
   },

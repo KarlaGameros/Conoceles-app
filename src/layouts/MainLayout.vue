@@ -22,31 +22,49 @@
       <q-toolbar>
         <div class="row">
           <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-          <div class="absolute-center">
+
+          <div class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9">
             <q-tabs>
               <q-route-tab icon="home" to="/" />
               <q-route-tab
-                @click="btnNumeralia(true)"
                 :to="{ name: 'diputaciones' }"
                 label="Diputaciones"
+                :active="isTabSelected('diputaciones')"
+                @click="setTabSelected('diputaciones')"
               />
               <q-route-tab
-                @click="btnNumeraliaPresidencia(true)"
                 :to="{ name: 'presidenciaSindicatura' }"
                 label="Presidencia y Sindicatura"
+                :active="isTabSelected('presidencia')"
+                @click="setTabSelected('presidencia')"
               />
-              <q-route-tab to="/page3" label="Regidurias" />
+              <q-route-tab
+                :to="{ name: 'regidurias' }"
+                label="Regidurias"
+                :active="isTabSelected('regidurias')"
+                @click="setTabSelected('regidurias')"
+              />
             </q-tabs>
+          </div>
+
+          <div class="absolute-right q-pa-md">
+            <a href="/base" style="color: #ffffff">Exportar base de datos </a>
+            <i class="fa-solid fa-database fa-2xl"></i>
           </div>
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
+    <q-drawer
+      v-if="selectedTab == 'diputaciones' && isHomePage == true"
+      show-if-above
+      v-model="leftDrawerOpen"
+      side="left"
+      bordered
+    >
       <q-scroll-area
-        v-if="isHomePage"
         style="
-          height: calc(100% - 150px);
+          height: calc(100% - 170px);
           margin-top: 50px;
           border-right: 1px solid #ddd;
         "
@@ -84,26 +102,26 @@
 
               <!-- <q-btn-dropdown
                 class="bg-gray-ieen-3 text-white"
-                label="Seleccione una opción"
                 v-model="distritos_Id"
-                :options="distritos"
+                auto-close
               >
                 <q-list>
                   <q-item
-                    v-for="distrito in distritos"
+                    v-for="distrito in listDistritos"
                     :key="distrito.id"
                     clickable
                     v-close-popup
                     @click="onItemClick(distrito)"
                   >
                     <q-item-section>
-                      <q-item-label>{{
-                        `${distrito.id} - ${distrito.nombre}`
-                      }}</q-item-label>
+                      <q-item-label>
+                        {{ `${distrito.value} - ${distrito.label}` }}
+                      </q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
               </q-btn-dropdown> -->
+
               <q-select
                 v-model="distritos_Id"
                 :options="listDistritos"
@@ -214,6 +232,187 @@
         </q-list>
       </q-scroll-area>
     </q-drawer>
+    <!---------------------------------------------------------------------------->
+    <q-drawer
+      v-if="selectedTab === 'presidencia'"
+      show-if-above
+      v-model="leftDrawerOpen"
+      side="left"
+      bordered
+    >
+      <q-scroll-area
+        style="
+          height: calc(100% - 170px);
+          margin-top: 50px;
+          border-right: 1px solid #ddd;
+        "
+      >
+        <q-list>
+          <q-item>
+            <q-item-section class="bg-grey-3" style="border-radius: 10px">
+              <q-item-label
+                class="text-h5 label-title text-bold q-pa-xs"
+                style="color: gray"
+                >Consulta</q-item-label
+              >
+              <div class="text-h6 q-pa-xs" style="color: grey">
+                Selecciona el reporte que deseas consultar:
+              </div>
+              <q-btn
+                @click="btnNumeraliaPresidencia(true)"
+                :to="{ name: 'presidenciaSindicatura' }"
+                label="Numeralia"
+                style="background: #d1308a; color: white"
+              />
+              <br />
+              <q-btn
+                :to="{ name: 'presidenciaSindicatura' }"
+                label="Candidatas y candidatos"
+                style="background: #e97ebd; color: white"
+                @click="btnCandidatosPresidencia(true)"
+              />
+              <br />
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <div class="text-weight-bolder">Municipio</div>
+
+              <q-select
+                color="purple"
+                v-model="municipio_Id"
+                :options="listMunicipios"
+                hint="Selecciona un municipio"
+              >
+              </q-select>
+              <br />
+              <div class="text-weight-bolder">Actor político</div>
+              <q-select
+                color="purple"
+                v-model="actor_politico_Id"
+                :options="listActorPolitico"
+                hint="Selecciona un actor político"
+              >
+              </q-select>
+              <br />
+              <div class="text-weight-bolder">Rango de edad</div>
+              <q-select
+                color="purple"
+                v-model="rango_edad_Id"
+                :options="listEdades"
+                hint="Selecciona un rango de edad"
+              >
+              </q-select>
+              <br />
+              <div class="text-weight-bolder">Sexo</div>
+              <q-select
+                color="purple"
+                v-model="sexo_Id"
+                :options="sexo"
+                hint="Selecciona un rango de edad"
+              >
+              </q-select>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
+    <!---------------------------------------------------------------------------->
+    <q-drawer
+      v-if="selectedTab === 'regidurias'"
+      show-if-above
+      v-model="leftDrawerOpen"
+      side="left"
+      bordered
+    >
+      <q-scroll-area
+        style="
+          height: calc(100% - 170px);
+          margin-top: 50px;
+          border-right: 1px solid #ddd;
+        "
+      >
+        <q-list>
+          <q-item>
+            <q-item-section class="bg-grey-3" style="border-radius: 10px">
+              <q-item-label
+                class="text-h5 label-title text-bold q-pa-xs"
+                style="color: gray"
+                >Consulta</q-item-label
+              >
+              <div class="text-h6 q-pa-xs" style="color: grey">
+                Selecciona el reporte que deseas consultar:
+              </div>
+              <q-btn
+                @click="btnNumeraliaRegidurias(true)"
+                :to="{ name: 'regidurias' }"
+                label="Numeralia"
+                style="background: #d1308a; color: white"
+              />
+              <br />
+              <q-btn
+                :to="{ name: 'regidurias' }"
+                label="Candidatas y candidatos"
+                style="background: #e97ebd; color: white"
+                @click="btnCandidatosRegidurias(true)"
+              />
+              <br />
+            </q-item-section>
+          </q-item>
+          <q-item>
+            <q-item-section>
+              <div class="text-weight-bolder">Municipio</div>
+
+              <q-select
+                color="purple"
+                v-model="municipio_Id"
+                :options="listMunicipios"
+                hint="Selecciona un municipio"
+              >
+              </q-select>
+              <br />
+              <div class="text-weight-bolder">Demarcación</div>
+
+              <q-select
+                color="purple"
+                v-model="demarcacion_Id"
+                :options="listDemarcacion"
+                hint="Selecciona una demarcación"
+              >
+              </q-select>
+              <br />
+              <div class="text-weight-bolder">Actor político</div>
+              <q-select
+                color="purple"
+                v-model="actor_politico_Id"
+                :options="listActorPolitico"
+                hint="Selecciona un actor político"
+              >
+              </q-select>
+              <br />
+              <div class="text-weight-bolder">Rango de edad</div>
+              <q-select
+                color="purple"
+                v-model="rango_edad_Id"
+                :options="listEdades"
+                hint="Selecciona un rango de edad"
+              >
+              </q-select>
+              <br />
+              <div class="text-weight-bolder">Sexo</div>
+              <q-select
+                color="purple"
+                v-model="sexo_Id"
+                :options="sexo"
+                hint="Selecciona un rango de edad"
+              >
+              </q-select>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
+    <!--------------------------------------------------------------------------------->
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -244,11 +443,16 @@ import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
-import { onBeforeMount, ref, watch } from "vue";
+import { useRegiduriasStore } from "src/stores/regidurias_store";
+import { onBeforeMount, onMounted, ref, watch } from "vue";
+
+//---------------------------------------------------------------------------------
 
 const $q = useQuasar();
-const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
-const { isChartPagePS } = storeToRefs(presidenciaSindicaturiaStore);
+const leftDrawerOpen = ref(false);
+const toggleLeftDrawer = () => {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+};
 const cardsStore = useCardsStore();
 const {
   isHomePage,
@@ -259,15 +463,19 @@ const {
   listActorPolitico,
 } = storeToRefs(cardsStore);
 
-const leftDrawerOpen = ref(false);
-const toggleLeftDrawer = () => {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
-};
-
 const distritos_Id = ref(null);
 const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
 const sexo_Id = ref(null);
+const selectedTab = ref(null);
+const menu = ref(false);
+//---------------------------------------------------------------------------------
+
+const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
+const { isChartPagePS, listMunicipios } = storeToRefs(
+  presidenciaSindicaturiaStore
+);
+const municipio_Id = ref(null);
 
 const sexo = ref([
   {
@@ -284,6 +492,19 @@ const sexo = ref([
   },
 ]);
 
+//---------------------------------------------------------------------------------
+
+const regiduriasStore = useRegiduriasStore();
+const { isChartPageRE, listDemarcacion } = storeToRefs(regiduriasStore);
+const demarcacion_Id = ref(null);
+//---------------------------------------------------------------------------------
+
+onMounted(() => {
+  const savedTab = localStorage.getItem("selectedTab");
+  if (savedTab) {
+    selectedTab.value = savedTab;
+  }
+});
 onBeforeMount(() => {
   cardsStore.actualizarChart(true);
   cardsStore.loadDistritos();
@@ -294,12 +515,24 @@ onBeforeMount(() => {
   rango_edad_Id.value = { value: 0, label: "Todos" };
   actor_politico_Id.value = { value: 0, label: "Todos" };
   sexo_Id.value = "Todos";
+
+  presidenciaSindicaturiaStore.actualizarChart(true);
+  presidenciaSindicaturiaStore.loadMunicipios();
+  municipio_Id.value = { value: 0, label: "Todos" };
+
+  regiduriasStore.actualizarChart(true);
+  regiduriasStore.loadDemarcaciones();
+  demarcacion_Id.value = { value: 0, label: "Todos" };
 });
+
+//---------------------------------------------------------------------------------
 
 watch(distritos_Id, (val) => {
   cardsStore.loadCards();
-  if (distritos_Id.value.value == "") {
+  if (distritos_Id.value.label == "Todos") {
+    console.log("entro");
     cardsStore.loadCards();
+    cardsStore.actualizarFiltro(true);
   } else {
     cardsStore.filterCards(distritos_Id.value.value);
   }
@@ -325,17 +558,73 @@ watch(sexo_Id, (val) => {
     cardsStore.filterSexo(sexo_Id.value.label);
   }
 });
+
+watch(menu, (val) => {
+  if (menu.value == true) {
+    distritos_Id.value = { value: 0, label: "Seleccione una opción" };
+    cardsStore.filterCards(distritos_Id.value.value);
+  }
+});
+//---------------------------------------------------------------------------------
+
 const btnCandidatos = (valor) => {
   cardsStore.actualizarChart(false);
   cardsStore.actualizarDetalle(false);
   cardsStore.actualizarCandidatos(valor);
+  cardsStore.actualizarFiltro(false);
+  menu.value = true;
 };
 const btnNumeralia = (valor) => {
   cardsStore.actualizarChart(valor);
+  cardsStore.actualizarDetalle(false);
+  limpiarFiltros();
+};
+
+//---------------------------------------------------------------------------------
+
+const btnCandidatosPresidencia = (valor) => {
+  presidenciaSindicaturiaStore.actualizarChart(false);
+  presidenciaSindicaturiaStore.actualizarDetalle(false);
+  presidenciaSindicaturiaStore.actualizarCandidatos(valor);
+  menu.value = true;
 };
 const btnNumeraliaPresidencia = (valor) => {
   presidenciaSindicaturiaStore.actualizarChart(valor);
+  presidenciaSindicaturiaStore.actualizarCandidatos(false);
+  presidenciaSindicaturiaStore.actualizarDetalle(false);
 };
+
+//---------------------------------------------------------------------------------
+const btnCandidatosRegidurias = (valor) => {
+  regiduriasStore.actualizarChart(false);
+  regiduriasStore.actualizarDetalle(false);
+  regiduriasStore.actualizarCandidatos(valor);
+};
+
+const btnNumeraliaRegidurias = (valor) => {
+  regiduriasStore.actualizarChart(valor);
+  regiduriasStore.actualizarCandidatos(false);
+  regiduriasStore.actualizarDetalle(false);
+};
+//---------------------------------------------------------------------------------
+
+const isTabSelected = (tab) => {
+  return selectedTab.value === tab;
+};
+const setTabSelected = (tab) => {
+  selectedTab.value = tab;
+  localStorage.setItem("selectedTab", tab);
+};
+
+const limpiarFiltros = () => {
+  if (menu.value == false) {
+    distritos_Id.value = { value: 0, label: "Seleccione una opción" };
+    cardsStore.filterCards(distritos_Id.value.value);
+  } else {
+    distritos_Id.value = { value: 0, label: "Todos" };
+  }
+};
+//---------------------------------------------------------------------------------
 </script>
 <style lang="scss">
 .flex-center {

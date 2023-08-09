@@ -401,11 +401,11 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { useCardsStore } from "src/stores/cards-store";
+import { useRegiduriasStore } from "src/stores/regidurias_store";
 import { ref } from "vue";
 
-const cardsStore = useCardsStore();
-const { card } = storeToRefs(cardsStore);
+const regiduriasStore = useRegiduriasStore();
+const { card } = storeToRefs(regiduriasStore);
 const tab = ref("generales");
 </script>
 <style></style>

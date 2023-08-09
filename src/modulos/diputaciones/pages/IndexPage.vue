@@ -22,7 +22,6 @@
               icon="library_books"
             />
           </q-breadcrumbs>
-          <h5>Diputaciones</h5>
         </div>
       </div>
     </div>
@@ -43,16 +42,20 @@ import { useCardsStore } from "src/stores/cards-store";
 import { storeToRefs } from "pinia";
 import DetalleCantidato from "../components/detalleCantidato.vue";
 
-//-----------------------------------------------------------
+//---------------------------------------------------------------------------------
 
 const $q = useQuasar();
 const cardsStore = useCardsStore();
 const { isCandidatosPage, isDetallePage, isChartPage, isHomePage } =
   storeToRefs(cardsStore);
 
+//---------------------------------------------------------------------------------
+
 onMounted(() => {
   cardsStore.actualizarMenu(true);
 });
+
+//---------------------------------------------------------------------------------
 
 const onCards = () => {
   cardsStore.actualizarCandidatos(true);

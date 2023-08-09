@@ -2,8 +2,8 @@
   <q-page class="flex flex-center">
     <img
       alt="PREP logo"
-      src="~assets/prep_logo.png"
-      style="width: 300px; height: 200px"
+      src="../assets/Imagen2.jpg"
+      style="width: 1000px; height: 600px"
     />
   </q-page>
 </template>

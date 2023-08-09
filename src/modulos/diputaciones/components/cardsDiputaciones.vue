@@ -1,5 +1,8 @@
 <template>
-  <div class="q-pa-md row items-start q-gutter-md flex flex-center">
+  <div
+    v-if="filtro == true"
+    class="q-pa-md row items-start q-gutter-md flex flex-center"
+  >
     <div style="border-radius: 20px">
       <q-banner
         :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
@@ -10,9 +13,10 @@
         </template>
         En este espacio tendrás la oportunidad de conocer a las personas
         candidatas, así como su trayectoria y sus principales propuestas de
-        campaña, entre otras cosas, lo que puede darte más información para
-        ejercer tu voto, para lo cual bastará que des un click en la opción que
-        desees consultar.
+        campaña, entre otras cosas, en la Elección de Diputaciones 2024 en el
+        Estado de Nayarit, lo que puede darte más información para ejercer tu
+        voto, para lo cual bastará que des un click en la opción que desees
+        consultar.
       </q-banner>
       <br />
     </div>
@@ -85,22 +89,51 @@
       </q-card-actions>
     </q-card>
   </div>
+  <div v-else>
+    <div style="border-radius: 20px">
+      <q-banner
+        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+        style="border-radius: 20px"
+      >
+        <template v-slot:avatar>
+          <q-icon name="ads_click" color="purple-ieen" />
+        </template>
+        Para conocer la información de la candidatura el sistema permite hacer
+        búsquedas por distrito, actor político, rango de edad, sexo, o bien,
+        exportar la base de datos.
+      </q-banner>
+      <br />
+    </div>
+    <div class="flex flex-center">
+      <img
+        alt="PREP logo"
+        src="../../../assets/Imagen2.jpg"
+        style="width: 1000px; height: 600px"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { onBeforeMount, onMounted, ref, watch } from "vue";
+import { onBeforeMount, onMounted } from "vue";
+
+//---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
-const { listCards } = storeToRefs(cardsStore);
+const { listCards, filtro } = storeToRefs(cardsStore);
+
+//---------------------------------------------------------------------------------
 
 onBeforeMount(() => {
-  cardsStore.loadCards();
+  //cardsStore.loadCards();
 });
 onMounted(() => {
   cardsStore.actualizarMenu(true);
 });
+
+//---------------------------------------------------------------------------------
 
 const verMas = async (id, valor) => {
   cardsStore.actualizarDetalle(valor);

@@ -10,10 +10,10 @@
         </template>
         En este espacio tendrás la oportunidad de conocer a las personas
         candidatas, así como su trayectoria y sus principales propuestas de
-        campaña, entre otras cosas, en la Elección de Presidentes y Sindicos
-        2024 en el Estado de Nayarit lo que puede darte más información para
-        ejercer tu voto, para lo cual bastará que des un click en la opción que
-        desees consultar.
+        campaña, entre otras cosas, en la Elección de Regidurias 2024 en el
+        Estado de Nayarit, lo que puede darte más información para ejercer tu
+        voto, para lo cual bastará que des un click en la opción que desees
+        consultar.
       </q-banner>
       <br />
     </div>
@@ -21,7 +21,7 @@
     <q-card
       v-for="item in listCards"
       :key="item.id"
-      class="my-card col-lg-2 col-md-2 col-sm-3 col-xs-12"
+      class="col-lg-2 col-md-2 col-sm-3 col-xs-12"
       flat
       bordered
       style="width: 255px"
@@ -36,7 +36,7 @@
 
       <q-card-section>
         <div class="row no-wrap items-center">
-          <div class="col text-h6 ellipsis">Municipio</div>
+          <div class="col text-h6 ellipsis">DISTRITO</div>
           <q-avatar square size="24px" v-if="item.imgPartido1 != null">
             <img :src="item.imgPartido1" alt="" />
           </q-avatar>
@@ -48,26 +48,18 @@
           </q-avatar>
         </div>
       </q-card-section>
-      <q-card-section class="q-pa-xs">
-        <div class="q-mb-md" style="text-align: center">
-          <q-btn-dropdown
-            color="purple"
-            :label="item.label || dropdownOptions[0].label"
-          >
-            <q-list>
-              <q-item
-                v-for="option in dropdownOptions"
-                :key="option.value"
-                clickable
-                @click="selectOption(item, option)"
-                v-close-popup
-              >
-                <q-item-section>
-                  <q-item-label>{{ option.label }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
+      <q-card-section>
+        <div>
+          <q-btn-toggle
+            v-model="item.selection"
+            push
+            glossy
+            toggle-color="purple"
+            :options="[
+              { label: 'Propietario', value: 'prop' },
+              { label: 'Suplente', value: 'sup' },
+            ]"
+          />
         </div>
       </q-card-section>
 
@@ -98,33 +90,28 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
-import { onBeforeMount, onMounted, ref, watch } from "vue";
+import { useRegiduriasStore } from "src/stores/regidurias_store";
+import { onBeforeMount, onMounted } from "vue";
 
-const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
-const { listCards } = storeToRefs(presidenciaSindicaturiaStore);
+//---------------------------------------------------------------------------------
 
-const dropdownOptions = [
-  { label: "Propietario Presidente", value: "prop" },
-  { label: "Suplente Presidente", value: "sup" },
-  { label: "Propietario Sindico", value: "propSin" },
-  { label: "Suplente Sindico", value: "supSin" },
-];
+const regiduriasStore = useRegiduriasStore();
+const { listCards } = storeToRefs(regiduriasStore);
+
+//---------------------------------------------------------------------------------
+
 onBeforeMount(() => {
-  presidenciaSindicaturiaStore.loadCards();
+  regiduriasStore.loadCards();
 });
 onMounted(() => {
-  presidenciaSindicaturiaStore.actualizarMenu(true);
+  regiduriasStore.actualizarMenu(true);
 });
 
-const verMas = async (id, valor) => {
-  presidenciaSindicaturiaStore.loadCard(id);
-  presidenciaSindicaturiaStore.actualizarDetalle(valor);
-};
+//---------------------------------------------------------------------------------
 
-const selectOption = (item, option) => {
-  item.selection = option.value;
-  item.label = option.label;
+const verMas = async (id, valor) => {
+  regiduriasStore.actualizarDetalle(valor);
+  regiduriasStore.loadCard(id);
 };
 </script>
 

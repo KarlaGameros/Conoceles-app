@@ -16,7 +16,7 @@
     </div>
   </div>
   <br />
-  <div class="text-h6">Distrito</div>
+  <div class="text-h6">Municipio</div>
   <div class="row">
     <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12 q-pa-md">
       <div class="shadow-7" style="border-radius: 20px">
@@ -401,39 +401,11 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { useCardsStore } from "src/stores/cards-store";
+import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { ref } from "vue";
 
-const cardsStore = useCardsStore();
-const { card } = storeToRefs(cardsStore);
+const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
+const { card } = storeToRefs(presidenciaSindicaturiaStore);
 const tab = ref("generales");
-
-// const data = ref([
-//   {
-//     id: 1,
-//     visible: false,
-//     selection: "prop",
-//     prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
-//     nombre_prop: "CARLOS ROBERTO",
-//     edad_prop: "25 años",
-//     sexo_prop: "Hombre",
-//     cargo_prop: "Diputado",
-//     estado_prop: "Nayarit",
-//     formula_prop: "12456",
-//     sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-//     nombre_sup: "MARIA LOPEZ",
-//     edad_sup: "30 años",
-//     sexo_sup: "Mujer",
-//     cargo_sup: "Diputada",
-//     estado_sup: "Nayarit",
-//     formula_sup: "789456",
-//     imgPartido1:
-//       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
-//     imgPartido2:
-//       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-//     imgPartido3:
-//       "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-//   },
-// ]);
 </script>
 <style></style>

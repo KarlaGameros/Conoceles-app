@@ -20,50 +20,49 @@
         </div>
       </div>
     </div>
-    <PresidenciaSindicatura v-if="isChartPagePS == true" />
-    <CardsPresidenciaSindicauria
+    <ChartsRegidurias v-if="isChartPageRE == true" />
+    <CardsRegidurias
       v-if="isCandidatosPage == true && isDetallePage == false"
     />
 
-    <DetalleCantidato v-if="isDetallePage == true" />
+    <DetalleCandidatosRegidurias v-if="isDetallePage == true" />
   </q-page>
 </template>
 
 <script setup>
-import { useQuasar } from "quasar";
-import PresidenciaSindicatura from "../components/presidenciaSindicaturiaCharts.vue";
-import CardsPresidenciaSindicauria from "../components/cardsPresidenciaSindicaturia.vue";
-import DetalleCantidato from "../components/detalleCantidato.vue";
-import { onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
+import { useQuasar } from "quasar";
+import { useRegiduriasStore } from "src/stores/regidurias_store";
+import { onMounted } from "vue";
+import CardsRegidurias from "../components/cardsRegidurias.vue";
+import ChartsRegidurias from "../components/chartsRegidurias.vue";
+import DetalleCandidatosRegidurias from "../components/detalleCandidatosRegidurias.vue";
 
 //---------------------------------------------------------------------------------
 
 const $q = useQuasar();
-const filtro = false;
-const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
-const { isCandidatosPage, isDetallePage, isChartPagePS } = storeToRefs(
-  presidenciaSindicaturiaStore
-);
+const regiduriasStore = useRegiduriasStore();
+const { isCandidatosPage, isDetallePage, isChartPageRE, isHomePage } =
+  storeToRefs(regiduriasStore);
 
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
-  presidenciaSindicaturiaStore.actualizarMenu(true);
+  regiduriasStore.actualizarMenu(true);
 });
 
 //---------------------------------------------------------------------------------
 
 const onCards = () => {
-  presidenciaSindicaturiaStore.actualizarCandidatos(true);
-  presidenciaSindicaturiaStore.actualizarDetalle(false);
+  regiduriasStore.actualizarCandidatos(true);
+  regiduriasStore.actualizarDetalle(false);
 };
 
 const onCharts = () => {
-  presidenciaSindicaturiaStore.actualizarChart(true);
-  presidenciaSindicaturiaStore.actualizarCandidatos(false);
-  presidenciaSindicaturiaStore.actualizarDetalle(false);
+  regiduriasStore.actualizarChart(true);
+  regiduriasStore.actualizarCandidatos(false);
+  regiduriasStore.actualizarDetalle(false);
 };
 </script>
+
 <style></style>

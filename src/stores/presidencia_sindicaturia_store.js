@@ -10,7 +10,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
       isDetallePage: false,
       isChartPagePS: false,
       listCards: [],
-      listDistritos: [],
+      listMunicipios: [],
       card: {
         id: null,
         selection: null,
@@ -36,12 +36,10 @@ export const usePresidenciaSindicaturiaStore = defineStore(
     actions: {
       actualizarMenu(valor) {
         this.isHomePage = valor;
-        console.log(this.isHomePage);
       },
 
       actualizarCandidatos(valor) {
         this.isCandidatosPage = valor;
-        console.log("valor", valor);
       },
 
       actualizarDetalle(valor) {
@@ -49,7 +47,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
       },
 
       actualizarChart(valor) {
-        this.isChartPage = valor;
+        this.isChartPagePS = valor;
       },
 
       async loadCards() {
@@ -58,6 +56,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             id: 1,
             visible: false,
             selection: "prop",
+            label: "",
             distrito: 1,
             prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
             nombre_prop: "CARLOS ROBERTO",
@@ -84,6 +83,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             id: 2,
             visible: false,
             selection: "prop",
+            label: "",
             distrito: 2,
             prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
             nombre_prop: "PALOMA DE LOS SANTOS",
@@ -110,6 +110,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             id: 3,
             visible: false,
             selection: "prop",
+            label: "",
             prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/_aida%20casta%C3%B1a.jpg",
             nombre_prop: "AIDA GARCIA BADILLO",
             edad_prop: 35,
@@ -131,6 +132,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             id: 4,
             visible: false,
             selection: "prop",
+            label: "",
             prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
             nombre_prop: "CARLOS ROBERTO",
             edad_prop: 25,
@@ -152,61 +154,37 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             imgPartido3:
               "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PVEM.png",
           },
-          {
-            id: 5,
-            visible: false,
-            selection: "prop",
-            prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/griselda%20foto.jpeg",
-            nombre_prop: "CARLOS ROBERTO",
-            edad_prop: 25,
-            sexo_prop: "Hombre",
-            cargo_prop: "Diputado",
-            estado_prop: "Nayarit",
-            formula_prop: "12456",
-            sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-            nombre_sup: "MARIA LOPEZ",
-            edad_sup: 30,
-            sexo_sup: "Mujer",
-            cargo_sup: "Diputada",
-            estado_sup: "Nayarit",
-            formula_sup: "789456",
-            imgPartido1:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
-            imgPartido2:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-            imgPartido3:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-          },
         ];
       },
 
-      async loadDistritos() {
+      async loadMunicipios() {
         const data = [
           { id: "", nombre: "Todos" },
           { id: 1, nombre: "Acaponeta" },
-          { id: 2, nombre: "Tecuala" },
-          { id: 3, nombre: "Del Nayar" },
-          { id: 4, nombre: "Santiago Ixcuintla" },
-          { id: 5, nombre: "San Blas" },
-          { id: 6, nombre: "Tepic" },
-          { id: 7, nombre: "Tepic" },
-          { id: 8, nombre: "Tepic" },
-          { id: 9, nombre: "Tepic" },
-          { id: 10, nombre: "Tepic" },
-          { id: 11, nombre: "Tepic" },
-          { id: 12, nombre: "Santa María del Oro" },
-          { id: 13, nombre: "Ixtlán del Río" },
-          { id: 14, nombre: "Xalisco" },
-          { id: 15, nombre: "Compostela" },
-          { id: 16, nombre: "Bucerias, Bahía de Banderas" },
-          { id: 17, nombre: "San vicente, Bahía de Banderas" },
-          { id: 18, nombre: "San José del Valle, Bahía de Banderas" },
-          { id: 19, nombre: "Representación proporcinal" },
+          { id: 2, nombre: "Ahuacatlán" },
+          { id: 3, nombre: "Amatlán de Cañas" },
+          { id: 4, nombre: "Bahía de Banderas" },
+          { id: 5, nombre: "Compostela" },
+          { id: 6, nombre: "Huajicori" },
+          { id: 7, nombre: "Ixtlán del Río" },
+          { id: 8, nombre: "Jala" },
+          { id: 9, nombre: "Del Nayar" },
+          { id: 10, nombre: "Rosamorada" },
+          { id: 11, nombre: "Ruiz" },
+          { id: 12, nombre: "San Blas" },
+          { id: 13, nombre: "San Pedro Lagunillas" },
+          { id: 14, nombre: "Santa María del Oro" },
+          { id: 15, nombre: "Santiago Ixcuintla" },
+          { id: 16, nombre: "Tecuala" },
+          { id: 17, nombre: "Tepic" },
+          { id: 18, nombre: "Tuxpan" },
+          { id: 19, nombre: "Xalisco" },
+          { id: 20, nombre: "La Yesca" },
         ];
-        this.listDistritos = data.map((distrito) => {
+        this.listMunicipios = data.map((municipio) => {
           return {
-            label: distrito.nombre,
-            value: distrito.id,
+            label: municipio.nombre,
+            value: municipio.id,
           };
         });
       },
