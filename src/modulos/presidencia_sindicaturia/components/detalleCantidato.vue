@@ -8,10 +8,10 @@
         <template v-slot:avatar>
           <q-icon name="error" color="purple-ieen" />
         </template>
-        La información es proporcionada por las personas candidatas a la "-----"
-        del Estado de Nayarit, por lo que su contenido es responsabilidad de los
-        actores políticos. El Instituto Electoral del Estado de Nayarit
-        únicamente apoya para su difusión.
+        La información es proporcionada por las personas candidatas a las
+        Presidencias y Sindicaturas del Estado de Nayarit, por lo que su
+        contenido es responsabilidad de los actores políticos. El Instituto
+        Estatal Electoral de Nayarit únicamente apoya para su difusión.
       </q-banner>
     </div>
   </div>

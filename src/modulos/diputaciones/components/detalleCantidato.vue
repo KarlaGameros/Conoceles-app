@@ -10,8 +10,8 @@
         </template>
         La información es proporcionada por las personas candidatas a las
         Diputaciones del Estado de Nayarit, por lo que su contenido es
-        responsabilidad de los actores políticos. El Instituto Electoral del
-        Estado de Nayarit únicamente apoya para su difusión.
+        responsabilidad de los actores políticos. El Instituto Estatal Electoral
+        de Nayarit únicamente apoya para su difusión.
       </q-banner>
     </div>
   </div>
