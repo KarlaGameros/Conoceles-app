@@ -1,5 +1,8 @@
 <template>
-  <div class="q-pa-md row items-start q-gutter-md flex flex-center">
+  <div
+    v-if="listCards != ''"
+    class="q-pa-md row items-start q-gutter-md flex flex-center"
+  >
     <div style="border-radius: 20px">
       <q-banner
         :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
@@ -16,6 +19,12 @@
         consultar.
       </q-banner>
       <br />
+      <q-btn
+        @click="backCards()"
+        flat
+        icon="arrow_back"
+        class="text-purple-ieen-1"
+      ></q-btn>
     </div>
 
     <q-card
@@ -81,17 +90,51 @@
           </q-btn>
         </div>
         <div class="col-2">
-          <q-btn flat icon="picture_as_pdf" class="text-purple-ieen-1"></q-btn>
+          <q-btn
+            @click="pdf()"
+            flat
+            icon="picture_as_pdf"
+            class="text-purple-ieen-1"
+          ></q-btn>
         </div>
       </q-card-actions>
     </q-card>
+  </div>
+  <div v-if="listCards == ''">
+    <div style="border-radius: 20px">
+      <q-banner
+        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+        style="border-radius: 20px"
+      >
+        <template v-slot:avatar>
+          <q-icon name="ads_click" color="purple-ieen" />
+        </template>
+        Para conocer la información de la candidatura el sistema permite hacer
+        búsquedas por distrito, actor político, rango de edad, sexo, o bien,
+        exportar la base de datos.
+      </q-banner>
+      <q-btn
+        @click="backCards()"
+        flat
+        icon="arrow_back"
+        class="text-purple-ieen-1"
+      ></q-btn>
+      <br />
+    </div>
+    <div class="flex flex-center">
+      <img
+        alt="PREP logo"
+        src="../../../assets/opcion2.png"
+        style="width: 900px; height: 600px"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { storeToRefs } from "pinia";
 import { useRegiduriasStore } from "src/stores/regidurias_store";
-import { onBeforeMount, onMounted } from "vue";
+import { onMounted } from "vue";
 
 //---------------------------------------------------------------------------------
 
@@ -100,9 +143,6 @@ const { listCards } = storeToRefs(regiduriasStore);
 
 //---------------------------------------------------------------------------------
 
-onBeforeMount(() => {
-  regiduriasStore.loadCards();
-});
 onMounted(() => {
   regiduriasStore.actualizarMenu(true);
 });
@@ -113,6 +153,21 @@ const verMas = async (id, valor) => {
   regiduriasStore.actualizarDetalle(valor);
   regiduriasStore.loadCard(id);
 };
+
+const pdf = () => {
+  const pdfURL = "https://eqpro.es/wp-content/uploads/2018/11/Ejemplo.pdf";
+  const link = document.createElement("a");
+  link.href = pdfURL;
+  link.target = "_blank";
+  link.download = "archivo.pdf";
+  link.click();
+};
+
+const backCards = () => {
+  regiduriasStore.actualizarCandidatos(false);
+  regiduriasStore.actualizarChart(true);
+};
+//---------------------------------------------------------------------------------
 </script>
 
 <style></style>

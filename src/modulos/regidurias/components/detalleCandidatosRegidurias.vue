@@ -16,7 +16,18 @@
     </div>
   </div>
   <br />
-  <div class="text-h6">Distrito</div>
+  <div class="row">
+    <q-btn
+      @click="backCards()"
+      flat
+      icon="arrow_back"
+      class="text-purple-ieen-1"
+    ></q-btn>
+    <div class="col-10 text-h6">Denarcación</div>
+    <q-btn @click="pdf()" flat icon="picture_as_pdf" class="text-purple-ieen-1"
+      >Descargar</q-btn
+    >
+  </div>
   <div class="row">
     <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12 q-pa-md">
       <div class="shadow-7" style="border-radius: 20px">
@@ -404,8 +415,17 @@ import { storeToRefs } from "pinia";
 import { useRegiduriasStore } from "src/stores/regidurias_store";
 import { ref } from "vue";
 
+//---------------------------------------------------------------------------------
 const regiduriasStore = useRegiduriasStore();
 const { card } = storeToRefs(regiduriasStore);
 const tab = ref("generales");
+
+//---------------------------------------------------------------------------------
+
+const backCards = () => {
+  regiduriasStore.actualizarCandidatos(true);
+  regiduriasStore.actualizarDetalle(false);
+};
+//---------------------------------------------------------------------------------
 </script>
 <style></style>

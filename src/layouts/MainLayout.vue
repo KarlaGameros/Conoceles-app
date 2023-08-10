@@ -100,27 +100,24 @@
             <q-item-section>
               <div class="text-weight-bolder">Distrito</div>
 
-              <!-- <q-btn-dropdown
+              <q-btn-dropdown
+                :label="distritos_Id.label"
                 class="bg-gray-ieen-3 text-white"
-                v-model="distritos_Id"
-                auto-close
               >
                 <q-list>
                   <q-item
-                    v-for="distrito in listDistritos"
-                    :key="distrito.id"
+                    v-for="option in listDistritos"
+                    :key="option.value"
                     clickable
+                    @click="selectOption(option)"
                     v-close-popup
-                    @click="onItemClick(distrito)"
                   >
                     <q-item-section>
-                      <q-item-label>
-                        {{ `${distrito.value} - ${distrito.label}` }}
-                      </q-item-label>
+                      <q-item-label>{{ option.label }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
-              </q-btn-dropdown> -->
+              </q-btn-dropdown>
 
               <q-select
                 v-model="distritos_Id"
@@ -190,37 +187,7 @@
               </q-select>
               <br />
               <div class="text-weight-bolder">Sexo</div>
-              <!-- <q-btn-dropdown
-                :disabled="distritos_Id === null"
-                class="bg-gray-ieen-3 text-white"
-                label="Todos"
-              >
-                <q-list>
-                  <q-item clickable v-close-popup @click="onItemClick">
-                    <q-item-section>
-                      <q-item-label>Todos</q-item-label>
-                    </q-item-section>
-                  </q-item>
 
-                  <q-item clickable v-close-popup @click="onItemClick">
-                    <q-item-section>
-                      <q-item-label>Hombre</q-item-label>
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item clickable v-close-popup @click="onItemClick">
-                    <q-item-section>
-                      <q-item-label>Mujer</q-item-label>
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item clickable v-close-popup @click="onItemClick">
-                    <q-item-section>
-                      <q-item-label>Binario</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown> -->
               <q-select
                 v-model="sexo_Id"
                 :options="sexo"
@@ -234,7 +201,7 @@
     </q-drawer>
     <!---------------------------------------------------------------------------->
     <q-drawer
-      v-if="selectedTab === 'presidencia'"
+      v-if="selectedTab === 'presidencia' && isHomePagePS == true"
       show-if-above
       v-model="leftDrawerOpen"
       side="left"
@@ -319,7 +286,7 @@
     </q-drawer>
     <!---------------------------------------------------------------------------->
     <q-drawer
-      v-if="selectedTab === 'regidurias'"
+      v-if="selectedTab === 'regidurias' && isHomePageRE == true"
       show-if-above
       v-model="leftDrawerOpen"
       side="left"
@@ -468,11 +435,11 @@ const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
 const sexo_Id = ref(null);
 const selectedTab = ref(null);
-const menu = ref(false);
+
 //---------------------------------------------------------------------------------
 
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
-const { isChartPagePS, listMunicipios } = storeToRefs(
+const { isChartPagePS, listMunicipios, isHomePagePS } = storeToRefs(
   presidenciaSindicaturiaStore
 );
 const municipio_Id = ref(null);
@@ -495,8 +462,10 @@ const sexo = ref([
 //---------------------------------------------------------------------------------
 
 const regiduriasStore = useRegiduriasStore();
-const { isChartPageRE, listDemarcacion } = storeToRefs(regiduriasStore);
+const { isChartPageRE, listDemarcacion, isHomePageRE } =
+  storeToRefs(regiduriasStore);
 const demarcacion_Id = ref(null);
+
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
@@ -505,6 +474,7 @@ onMounted(() => {
     selectedTab.value = savedTab;
   }
 });
+
 onBeforeMount(() => {
   cardsStore.actualizarChart(true);
   cardsStore.loadDistritos();
@@ -526,17 +496,8 @@ onBeforeMount(() => {
 });
 
 //---------------------------------------------------------------------------------
+//TODOS
 
-watch(distritos_Id, (val) => {
-  cardsStore.loadCards();
-  if (distritos_Id.value.label == "Todos") {
-    console.log("entro");
-    cardsStore.loadCards();
-    cardsStore.actualizarFiltro(true);
-  } else {
-    cardsStore.filterCards(distritos_Id.value.value);
-  }
-});
 watch(rango_edad_Id, (val) => {
   if (rango_edad_Id.value.label == "Todos") {
     cardsStore.loadCards();
@@ -551,6 +512,7 @@ watch(actor_politico_Id, (val) => {
     cardsStore.filterActorPolitico(actor_politico_Id.value.value);
   }
 });
+
 watch(sexo_Id, (val) => {
   if (sexo_Id.value.label == "Todos") {
     cardsStore.loadCards();
@@ -558,72 +520,109 @@ watch(sexo_Id, (val) => {
     cardsStore.filterSexo(sexo_Id.value.label);
   }
 });
-
-watch(menu, (val) => {
-  if (menu.value == true) {
-    distritos_Id.value = { value: 0, label: "Seleccione una opción" };
-    cardsStore.filterCards(distritos_Id.value.value);
-  }
-});
-//---------------------------------------------------------------------------------
-
-const btnCandidatos = (valor) => {
-  cardsStore.actualizarChart(false);
-  cardsStore.actualizarDetalle(false);
-  cardsStore.actualizarCandidatos(valor);
-  cardsStore.actualizarFiltro(false);
-  menu.value = true;
-};
-const btnNumeralia = (valor) => {
-  cardsStore.actualizarChart(valor);
-  cardsStore.actualizarDetalle(false);
-  limpiarFiltros();
-};
-
-//---------------------------------------------------------------------------------
-
-const btnCandidatosPresidencia = (valor) => {
-  presidenciaSindicaturiaStore.actualizarChart(false);
-  presidenciaSindicaturiaStore.actualizarDetalle(false);
-  presidenciaSindicaturiaStore.actualizarCandidatos(valor);
-  menu.value = true;
-};
-const btnNumeraliaPresidencia = (valor) => {
-  presidenciaSindicaturiaStore.actualizarChart(valor);
-  presidenciaSindicaturiaStore.actualizarCandidatos(false);
-  presidenciaSindicaturiaStore.actualizarDetalle(false);
-};
-
-//---------------------------------------------------------------------------------
-const btnCandidatosRegidurias = (valor) => {
-  regiduriasStore.actualizarChart(false);
-  regiduriasStore.actualizarDetalle(false);
-  regiduriasStore.actualizarCandidatos(valor);
-};
-
-const btnNumeraliaRegidurias = (valor) => {
-  regiduriasStore.actualizarChart(valor);
-  regiduriasStore.actualizarCandidatos(false);
-  regiduriasStore.actualizarDetalle(false);
-};
-//---------------------------------------------------------------------------------
-
 const isTabSelected = (tab) => {
   return selectedTab.value === tab;
 };
 const setTabSelected = (tab) => {
   selectedTab.value = tab;
   localStorage.setItem("selectedTab", tab);
-};
-
-const limpiarFiltros = () => {
-  if (menu.value == false) {
-    distritos_Id.value = { value: 0, label: "Seleccione una opción" };
-    cardsStore.filterCards(distritos_Id.value.value);
-  } else {
-    distritos_Id.value = { value: 0, label: "Todos" };
+  if (tab == "diputaciones") {
+    cardsStore.actualizarChart(true);
+    cardsStore.actualizarCandidatos(false);
+    cardsStore.actualizarDetalle(false);
+  } else if (tab == "presidencia") {
+    presidenciaSindicaturiaStore.actualizarChart(true);
+    presidenciaSindicaturiaStore.actualizarCandidatos(false);
+    presidenciaSindicaturiaStore.actualizarDetalle(false);
+    municipio_Id.value = { value: 0, label: "Todos" };
+  } else if (tab == "regidurias") {
+    regiduriasStore.actualizarChart(true);
+    regiduriasStore.actualizarCandidatos(false);
+    regiduriasStore.actualizarDetalle(false);
+    municipio_Id.value = { value: 0, label: "Todos" };
   }
 };
+
+watch(municipio_Id, (val) => {
+  if (municipio_Id.value.label == "Todos") {
+    if (selectedTab.value == "presidencia") {
+      presidenciaSindicaturiaStore.loadCards();
+    } else if (selectedTab.value == "regidurias") {
+      regiduriasStore.loadCards();
+    }
+  } else {
+    if (selectedTab.value == "presidencia") {
+      presidenciaSindicaturiaStore.loadCards();
+      presidenciaSindicaturiaStore.filterCards(municipio_Id.value.value);
+    } else if (selectedTab.value == "regidurias") {
+      regiduriasStore.loadCards();
+      regiduriasStore.filterCards(municipio_Id.value.value);
+    }
+  }
+});
+
+//---------------------------------------------------------------------------------
+//DIPUTACIONES
+
+watch(distritos_Id, (val) => {
+  cardsStore.loadCards();
+  if (distritos_Id.value.label == "Todos") {
+    cardsStore.loadCards();
+  } else {
+    cardsStore.loadCards();
+    cardsStore.filterCards(distritos_Id.value.value);
+  }
+});
+
+const btnCandidatos = (valor) => {
+  cardsStore.actualizarChart(false);
+  cardsStore.actualizarDetalle(false);
+  cardsStore.actualizarCandidatos(valor);
+  distritos_Id.value = { value: 0, label: "Seleccione una opción" };
+};
+const btnNumeralia = (valor) => {
+  cardsStore.actualizarChart(valor);
+  cardsStore.actualizarDetalle(false);
+  distritos_Id.value = { value: 0, label: "Todos" };
+};
+const selectOption = (option) => {
+  console.log("option", option);
+  distritos_Id.value.value = option.value;
+  distritos_Id.value.label = option.label;
+};
+//---------------------------------------------------------------------------------
+//PRESIDENCIA
+
+const btnCandidatosPresidencia = (valor) => {
+  presidenciaSindicaturiaStore.actualizarChart(false);
+  presidenciaSindicaturiaStore.actualizarDetalle(false);
+  presidenciaSindicaturiaStore.actualizarCandidatos(valor);
+
+  municipio_Id.value = { value: 0, label: "Seleccione una opción" };
+};
+const btnNumeraliaPresidencia = (valor) => {
+  presidenciaSindicaturiaStore.actualizarChart(valor);
+  presidenciaSindicaturiaStore.actualizarCandidatos(false);
+  presidenciaSindicaturiaStore.actualizarDetalle(false);
+  municipio_Id.value = { value: 0, label: "Todos" };
+};
+
+//---------------------------------------------------------------------------------
+//REGIDURIAS
+const btnCandidatosRegidurias = (valor) => {
+  regiduriasStore.actualizarChart(false);
+  regiduriasStore.actualizarDetalle(false);
+  regiduriasStore.actualizarCandidatos(valor);
+  municipio_Id.value = { value: 0, label: "Seleccione una opción" };
+};
+
+const btnNumeraliaRegidurias = (valor) => {
+  regiduriasStore.actualizarChart(valor);
+  regiduriasStore.actualizarCandidatos(false);
+  regiduriasStore.actualizarDetalle(false);
+  municipio_Id.value = { value: 0, label: "Todos" };
+};
+
 //---------------------------------------------------------------------------------
 </script>
 <style lang="scss">

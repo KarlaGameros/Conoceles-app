@@ -16,7 +16,18 @@
     </div>
   </div>
   <br />
-  <div class="text-h6">Distrito</div>
+  <div class="row">
+    <q-btn
+      @click="backCards()"
+      flat
+      icon="arrow_back"
+      class="text-purple-ieen-1"
+    ></q-btn>
+    <div class="col-10 text-h6">Distrito</div>
+    <q-btn @click="pdf()" flat icon="picture_as_pdf" class="text-purple-ieen-1"
+      >Descargar</q-btn
+    >
+  </div>
   <div class="row">
     <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12 q-pa-md">
       <div class="shadow-7" style="border-radius: 20px">
@@ -152,14 +163,35 @@
                       }}
                     </div>
                     <br />
-                    <!-- <div
-                      class="bg-purple-ieen-1"
-                      style="border-radius: 10px; color: white"
-                    >
-                      <div class="text-subtitle2" align="center">
-                        <q-icon name="school" /> MEDIOS DE CONTACTO PUBLICO
-                      </div>
-                    </div> -->
+                    <br />
+                  </div>
+                  <div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">
+                    <div class="text-h6">Cargo:</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.cargo_prop
+                          : card.cargo_sup
+                      }}
+                    </div>
+                    <br />
+                    <div class="text-h6">Estado:</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.estado_prop
+                          : card.estado_sup
+                      }}
+                    </div>
+                    <br />
+                    <div class="text-h6">Número de fórmula:</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.formula_prop
+                          : card.formula_sup
+                      }}
+                    </div>
                     <br />
                     <div>
                       <q-icon name="location_on" /> Via Alfredo del Mazo s/n,
@@ -195,34 +227,6 @@
                           style="color: #673e84"
                         ></i>
                       </q-btn>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">
-                    <div class="text-h6">Cargo:</div>
-                    <div class="text-subtitle1">
-                      {{
-                        card.selection == "prop"
-                          ? card.cargo_prop
-                          : card.cargo_sup
-                      }}
-                    </div>
-                    <br />
-                    <div class="text-h6">Estado:</div>
-                    <div class="text-subtitle1">
-                      {{
-                        card.selection == "prop"
-                          ? card.estado_prop
-                          : card.estado_sup
-                      }}
-                    </div>
-                    <br />
-                    <div class="text-h6">Número de fórmula:</div>
-                    <div class="text-subtitle1">
-                      {{
-                        card.selection == "prop"
-                          ? card.formula_prop
-                          : card.formula_sup
-                      }}
                     </div>
                   </div>
                 </div>
@@ -404,8 +408,19 @@ import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import { ref } from "vue";
 
+//---------------------------------------------------------------------------------
+
 const cardsStore = useCardsStore();
 const { card } = storeToRefs(cardsStore);
 const tab = ref("generales");
+
+//---------------------------------------------------------------------------------
+
+const backCards = () => {
+  cardsStore.actualizarCandidatos(true);
+  cardsStore.actualizarDetalle(false);
+};
+
+//---------------------------------------------------------------------------------
 </script>
 <style></style>

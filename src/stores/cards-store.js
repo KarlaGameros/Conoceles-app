@@ -7,7 +7,6 @@ export const useCardsStore = defineStore("cards", {
     isCandidatosPage: false,
     isDetallePage: false,
     isChartPage: false,
-    filtro: false,
     listCards: [],
     listDistritos: [],
     listEdades: [],
@@ -51,9 +50,7 @@ export const useCardsStore = defineStore("cards", {
       this.isChartPage = valor;
     },
 
-    actualizarFiltro(valor) {
-      this.filtro = valor;
-    },
+    //---------------------------------------------------------------------------------
 
     async loadCards() {
       this.listCards = [
@@ -115,6 +112,7 @@ export const useCardsStore = defineStore("cards", {
           id: 3,
           visible: false,
           selection: "prop",
+          distrito: 3,
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/_aida%20casta%C3%B1a.jpg",
           nombre_prop: "AIDA GARCIA BADILLO",
           edad_prop: 35,
@@ -137,6 +135,7 @@ export const useCardsStore = defineStore("cards", {
           id: 4,
           visible: false,
           selection: "prop",
+          distrito: 2,
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
           nombre_prop: "CARLOS ROBERTO",
           edad_prop: 25,
@@ -163,6 +162,7 @@ export const useCardsStore = defineStore("cards", {
           id: 5,
           visible: false,
           selection: "prop",
+          distrito: 2,
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/griselda%20foto.jpeg",
           nombre_prop: "CARLOS ROBERTO",
           edad_prop: 25,
@@ -186,7 +186,10 @@ export const useCardsStore = defineStore("cards", {
             "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
         },
       ];
+      console.log("this cards", this.listCards);
     },
+
+    //---------------------------------------------------------------------------------
 
     async loadDistritos() {
       const data = [
@@ -219,6 +222,8 @@ export const useCardsStore = defineStore("cards", {
       });
     },
 
+    //---------------------------------------------------------------------------------
+
     async loadEdades() {
       const data = [
         { id: 1, edades: "Todos" },
@@ -236,6 +241,8 @@ export const useCardsStore = defineStore("cards", {
         };
       });
     },
+
+    //---------------------------------------------------------------------------------
 
     async loadActorPolitico(siglas) {
       const data = [
@@ -284,8 +291,9 @@ export const useCardsStore = defineStore("cards", {
       });
     },
 
+    //---------------------------------------------------------------------------------
+
     async loadCard(id) {
-      console.log("id", id);
       const card = this.listCards.find((card) => card.id === id);
 
       if (card) {
@@ -311,12 +319,14 @@ export const useCardsStore = defineStore("cards", {
       }
     },
 
+    //---------------------------------------------------------------------------------
+
     async filterCards(distrito) {
       const filteredCards = this.listCards.filter(
         (card) => card.distrito === distrito
       );
-      console.log(filteredCards);
       this.listCards = filteredCards;
+      console.log("this", this.listCards);
     },
 
     async filterEdad(rango_edad) {

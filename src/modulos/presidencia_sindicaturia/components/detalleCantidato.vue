@@ -16,25 +16,61 @@
     </div>
   </div>
   <br />
-  <div class="text-h6">Municipio</div>
+
+  <div class="row">
+    <q-btn
+      @click="backCards()"
+      flat
+      icon="arrow_back"
+      class="text-purple-ieen-1"
+    ></q-btn>
+    <div class="col-10 text-h6">Municipio</div>
+    <q-btn @click="pdf()" flat icon="picture_as_pdf" class="text-purple-ieen-1"
+      >Descargar</q-btn
+    >
+  </div>
   <div class="row">
     <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12 q-pa-md">
       <div class="shadow-7" style="border-radius: 20px">
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
             <q-avatar size="600%">
-              <q-img :src="card.selection == 'prop' ? card.prop : card.sup" />
+              <q-img
+                :src="
+                  card.selection == 'prop'
+                    ? card.prop
+                    : card.selection == 'sup'
+                    ? card.sup
+                    : card.selection === 'propSin'
+                    ? card.prop_sin
+                    : card.sup_sin
+                "
+              />
             </q-avatar>
           </div>
           <div class="col-12 q-pb-md" align="center">
             <div class="text-h6">
               {{
-                card.selection == "prop" ? card.nombre_prop : card.nombre_sup
+                card.selection == "prop"
+                  ? card.nombre_prop
+                  : card.selection == "sup"
+                  ? card.nombre_sup
+                  : card.selection === "propSin"
+                  ? card.nombre_prop_sin
+                  : card.nombre_sup_sin
               }}
             </div>
             <div class="text-subtitle1">
               Edad:
-              {{ card.selection == "prop" ? card.edad_prop : card.edad_sup }}
+              {{
+                card.selection == "prop"
+                  ? card.edad_prop
+                  : card.selection == "sup"
+                  ? card.edad_sup
+                  : card.selection === "propSin"
+                  ? card.edad_prop_sin
+                  : card.edad_sup_sin
+              }}
             </div>
             <q-avatar square size="24px" v-if="card.imgPartido1 != null">
               <img :src="card.imgPartido1" alt="" />
@@ -45,17 +81,25 @@
             <q-avatar square size="24px" v-if="card.imgPartido3 != null">
               <img :src="card.imgPartido3" alt="" />
             </q-avatar>
-            <div class="q-pt-md">
-              <q-btn-toggle
-                v-model="card.selection"
-                push
-                glossy
-                toggle-color="purple"
-                :options="[
-                  { label: 'Propietario', value: 'prop' },
-                  { label: 'Suplente', value: 'sup' },
-                ]"
-              />
+            <div class="q-pa-md" style="text-align: center">
+              <q-btn-dropdown
+                color="purple"
+                :label="card.label || dropdownOptions[0].label"
+              >
+                <q-list>
+                  <q-item
+                    v-for="option in dropdownOptions"
+                    :key="option.value"
+                    clickable
+                    @click="selectOption(card, option)"
+                    v-close-popup
+                  >
+                    <q-item-section>
+                      <q-item-label>{{ option.label }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
             </div>
           </div>
         </div>
@@ -98,7 +142,15 @@
                   >
                     <q-avatar size="200px">
                       <q-img
-                        :src="card.selection == 'prop' ? card.prop : card.sup"
+                        :src="
+                          card.selection == 'prop'
+                            ? card.prop
+                            : card.selection == 'sup'
+                            ? card.sup
+                            : card.selection === 'propSin'
+                            ? card.prop_sin
+                            : card.sup_sin
+                        "
                       /> </q-avatar
                     ><br /><br />
                     <q-avatar
@@ -130,7 +182,11 @@
                       {{
                         card.selection == "prop"
                           ? card.nombre_prop
-                          : card.nombre_sup
+                          : card.selection == "sup"
+                          ? card.nombre_sup
+                          : card.selection === "propSin"
+                          ? card.nombre_prop_sin
+                          : card.nombre_sup_sin
                       }}
                     </div>
                     <br />
@@ -139,7 +195,11 @@
                       {{
                         card.selection == "prop"
                           ? card.edad_prop
-                          : card.edad_sup
+                          : card.selection == "sup"
+                          ? card.edad_sup
+                          : card.selection === "propSin"
+                          ? card.edad_prop_sin
+                          : card.edad_sup_sin
                       }}
                     </div>
                     <br />
@@ -148,18 +208,54 @@
                       {{
                         card.selection == "prop"
                           ? card.sexo_prop
-                          : card.sexo_sup
+                          : card.selection == "sup"
+                          ? card.sexo_sup
+                          : card.selection === "propSin"
+                          ? card.sexo_prop_sin
+                          : card.sexo_sup_sin
                       }}
                     </div>
                     <br />
-                    <!-- <div
-                      class="bg-purple-ieen-1"
-                      style="border-radius: 10px; color: white"
-                    >
-                      <div class="text-subtitle2" align="center">
-                        <q-icon name="school" /> MEDIOS DE CONTACTO PUBLICO
-                      </div>
-                    </div> -->
+                  </div>
+                  <div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">
+                    <div class="text-h6">Cargo:</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.cargo_prop
+                          : card.selection == "sup"
+                          ? card.cargo_sup
+                          : card.selection === "propSin"
+                          ? card.cargo_prop_sin
+                          : card.cargo_sup_sin
+                      }}
+                    </div>
+                    <br />
+                    <div class="text-h6">Estado:</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.estado_prop
+                          : card.selection == "sup"
+                          ? card.estado_sup
+                          : card.selection === "propSin"
+                          ? card.estado_prop_sin
+                          : card.estado_sup_sin
+                      }}
+                    </div>
+                    <br />
+                    <div class="text-h6">Número de fórmula:</div>
+                    <div class="text-subtitle1">
+                      {{
+                        card.selection == "prop"
+                          ? card.formula_prop
+                          : card.selection == "sup"
+                          ? card.formula_sup
+                          : card.selection === "propSin"
+                          ? card.formula_prop_sin
+                          : card.formula_sup_sin
+                      }}
+                    </div>
                     <br />
                     <div>
                       <q-icon name="location_on" /> Via Alfredo del Mazo s/n,
@@ -195,34 +291,6 @@
                           style="color: #673e84"
                         ></i>
                       </q-btn>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">
-                    <div class="text-h6">Cargo:</div>
-                    <div class="text-subtitle1">
-                      {{
-                        card.selection == "prop"
-                          ? card.cargo_prop
-                          : card.cargo_sup
-                      }}
-                    </div>
-                    <br />
-                    <div class="text-h6">Estado:</div>
-                    <div class="text-subtitle1">
-                      {{
-                        card.selection == "prop"
-                          ? card.estado_prop
-                          : card.estado_sup
-                      }}
-                    </div>
-                    <br />
-                    <div class="text-h6">Número de fórmula:</div>
-                    <div class="text-subtitle1">
-                      {{
-                        card.selection == "prop"
-                          ? card.formula_prop
-                          : card.formula_sup
-                      }}
                     </div>
                   </div>
                 </div>
@@ -404,8 +472,27 @@ import { storeToRefs } from "pinia";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { ref } from "vue";
 
+//---------------------------------------------------------------------------------
+
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
 const { card } = storeToRefs(presidenciaSindicaturiaStore);
 const tab = ref("generales");
+const dropdownOptions = [
+  { label: "Propietario Presidente", value: "prop" },
+  { label: "Suplente Presidente", value: "sup" },
+  { label: "Propietario Sindico", value: "propSin" },
+  { label: "Suplente Sindico", value: "supSin" },
+];
+//---------------------------------------------------------------------------------
+
+const backCards = () => {
+  presidenciaSindicaturiaStore.actualizarCandidatos(true);
+  presidenciaSindicaturiaStore.actualizarDetalle(false);
+};
+const selectOption = (card, option) => {
+  card.selection = option.value;
+  card.label = option.label;
+};
+//---------------------------------------------------------------------------------
 </script>
 <style></style>

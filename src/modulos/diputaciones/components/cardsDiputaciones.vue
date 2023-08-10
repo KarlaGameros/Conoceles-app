@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="filtro == true"
+    v-if="listCards != ''"
     class="q-pa-md row items-start q-gutter-md flex flex-center"
   >
     <div style="border-radius: 20px">
@@ -19,12 +19,18 @@
         consultar.
       </q-banner>
       <br />
+      <q-btn
+        @click="backCards()"
+        flat
+        icon="arrow_back"
+        class="text-purple-ieen-1"
+      ></q-btn>
     </div>
 
     <q-card
       v-for="item in listCards"
       :key="item.id"
-      class="my-card col-lg-2 col-md-2 col-sm-3 col-xs-12"
+      class="col-lg-2 col-md-2 col-sm-3 col-xs-12"
       flat
       bordered
       style="width: 255px"
@@ -84,12 +90,17 @@
           </q-btn>
         </div>
         <div class="col-2">
-          <q-btn flat icon="picture_as_pdf" class="text-purple-ieen-1"></q-btn>
+          <q-btn
+            @click="pdf()"
+            flat
+            icon="picture_as_pdf"
+            class="text-purple-ieen-1"
+          ></q-btn>
         </div>
       </q-card-actions>
     </q-card>
   </div>
-  <div v-else>
+  <div v-if="listCards == ''">
     <div style="border-radius: 20px">
       <q-banner
         :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
@@ -102,13 +113,19 @@
         búsquedas por distrito, actor político, rango de edad, sexo, o bien,
         exportar la base de datos.
       </q-banner>
+      <q-btn
+        @click="backCards()"
+        flat
+        icon="arrow_back"
+        class="text-purple-ieen-1"
+      ></q-btn>
       <br />
     </div>
     <div class="flex flex-center">
       <img
         alt="PREP logo"
-        src="../../../assets/Imagen2.jpg"
-        style="width: 1000px; height: 600px"
+        src="../../../assets/opcion1.png"
+        style="width: 618px; height: 579px"
       />
     </div>
   </div>
@@ -117,28 +134,40 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { onBeforeMount, onMounted } from "vue";
+import { onMounted } from "vue";
 
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
-const { listCards, filtro } = storeToRefs(cardsStore);
+const { listCards } = storeToRefs(cardsStore);
 
 //---------------------------------------------------------------------------------
 
-onBeforeMount(() => {
-  //cardsStore.loadCards();
-});
 onMounted(() => {
   cardsStore.actualizarMenu(true);
 });
-
 //---------------------------------------------------------------------------------
 
 const verMas = async (id, valor) => {
   cardsStore.actualizarDetalle(valor);
   cardsStore.loadCard(id);
 };
+
+const pdf = () => {
+  const pdfURL = "https://eqpro.es/wp-content/uploads/2018/11/Ejemplo.pdf";
+  const link = document.createElement("a");
+  link.href = pdfURL;
+  link.target = "_blank";
+  link.download = "archivo.pdf";
+  link.click();
+};
+
+const backCards = () => {
+  cardsStore.actualizarCandidatos(false);
+  cardsStore.actualizarChart(true);
+};
+
+//---------------------------------------------------------------------------------
 </script>
 
 <style></style>

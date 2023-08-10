@@ -3,7 +3,7 @@ import { api } from "src/boot/axios";
 
 export const useRegiduriasStore = defineStore("regidurias", {
   state: () => ({
-    isHomePage: false,
+    isHomePageRE: false,
     isCandidatosPage: false,
     isDetallePage: false,
     isChartPageRE: false,
@@ -34,7 +34,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
   }),
   actions: {
     actualizarMenu(valor) {
-      this.isHomePage = valor;
+      this.isHomePageRE = valor;
     },
 
     actualizarCandidatos(valor) {
@@ -57,7 +57,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
           id: 1,
           visible: false,
           selection: "prop",
-          distrito: 1,
+          municipio: 1,
           prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
           nombre_prop: "CARLOS ROBERTO",
           edad_prop: 25,
@@ -83,7 +83,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
           id: 2,
           visible: false,
           selection: "prop",
-          distrito: 2,
+          municipio: 2,
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
           nombre_prop: "PALOMA DE LOS SANTOS",
           edad_prop: 25,
@@ -112,6 +112,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/_aida%20casta%C3%B1a.jpg",
           nombre_prop: "AIDA GARCIA BADILLO",
           edad_prop: 35,
+          municipio: 2,
           sexo_prop: "Mujer",
           cargo_prop: "Diputada",
           estado_prop: "Nayarit",
@@ -219,11 +220,10 @@ export const useRegiduriasStore = defineStore("regidurias", {
 
     //---------------------------------------------------------------------------------
 
-    async filterCards(distrito) {
+    async filterCards(municipio) {
       const filteredCards = this.listCards.filter(
-        (card) => card.distrito === distrito
+        (card) => card.municipio === municipio
       );
-      console.log(filteredCards);
       this.listCards = filteredCards;
     },
 

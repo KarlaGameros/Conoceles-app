@@ -5,15 +5,10 @@
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
             <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el
-              icon="bar_chart"
-              to="/diputaciones"
-              @click="onCharts(true)"
-            />
+            <q-breadcrumbs-el icon="bar_chart" @click="onCharts(true)" />
             <q-breadcrumbs-el
               v-if="isCandidatosPage == true"
               icon="recent_actors"
-              to="/diputaciones"
               @click="onCards(true)"
             />
             <q-breadcrumbs-el
@@ -46,7 +41,7 @@ import DetalleCantidato from "../components/detalleCantidato.vue";
 
 const $q = useQuasar();
 const cardsStore = useCardsStore();
-const { isCandidatosPage, isDetallePage, isChartPage, isHomePage } =
+const { isCandidatosPage, isDetallePage, isChartPage } =
   storeToRefs(cardsStore);
 
 //---------------------------------------------------------------------------------
@@ -67,6 +62,8 @@ const onCharts = () => {
   cardsStore.actualizarCandidatos(false);
   cardsStore.actualizarDetalle(false);
 };
+
+//---------------------------------------------------------------------------------
 </script>
 
 <style></style>

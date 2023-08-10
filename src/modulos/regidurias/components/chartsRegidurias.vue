@@ -4,6 +4,9 @@
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
       style="border-radius: 20px"
     >
+      <template v-slot:avatar>
+        <q-icon name="search" color="purple-ieen" />
+      </template>
       Consulte la información proporcionada de manera obligatoria por las
       candidaturas que participan en la contienda electoral local 2023. La
       información es responsabilidad de los partidos políticos. El Instituto
@@ -87,12 +90,11 @@
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
 import chartGradoAcademico from "../../../charts/chartGradoAcademico.vue";
 import chartSexo from "../../../charts/chartSexo.vue";
-
 import { ref } from "vue";
 
-const tab = ref("mails");
+//---------------------------------------------------------------------------------
 
-const splitterModel = ref(20);
+const tab = ref("mails");
 </script>
 
 <style></style>

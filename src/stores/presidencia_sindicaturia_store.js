@@ -5,7 +5,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
   "presidenciaSindicaturia",
   {
     state: () => ({
-      isHomePage: false,
+      isHomePagePS: false,
       isCandidatosPage: false,
       isDetallePage: false,
       isChartPagePS: false,
@@ -28,6 +28,20 @@ export const usePresidenciaSindicaturiaStore = defineStore(
         sexo_sup: null,
         estado_sup: null,
         formula_sup: null,
+        prop_sin: null,
+        nombre_prop_sin: null,
+        edad_prop_sin: null,
+        sexo_prop_sin: null,
+        cargo_prop_sin: null,
+        estado_prop_sin: null,
+        formula_prop_sin: null,
+        sup_sin: null,
+        nombre_sup_sin: null,
+        edad_sup_sin: null,
+        cargo_sup_sin: null,
+        sexo_sup_sin: null,
+        estado_sup_sin: null,
+        formula_sup_sin: null,
         imgPartido1: null,
         imgPartido2: null,
         imgPartido3: null,
@@ -35,7 +49,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
     }),
     actions: {
       actualizarMenu(valor) {
-        this.isHomePage = valor;
+        this.isHomePagePS = valor;
       },
 
       actualizarCandidatos(valor) {
@@ -57,7 +71,50 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             visible: false,
             selection: "prop",
             label: "",
-            distrito: 1,
+            municipio: 1,
+            prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
+            nombre_prop: "CARLOS ROBERTO",
+            edad_prop: 25,
+            sexo_prop: "Hombre",
+            cargo_prop: "Prop. Presidente",
+            estado_prop: "Nayarit",
+            formula_prop: "12456",
+            sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+            nombre_sup: "MARIA LOPEZ",
+            edad_sup: 30,
+            sexo_sup: "Mujer",
+            cargo_sup: "Sup. Presidente",
+            estado_sup: "Nayarit",
+            formula_sup: "789456",
+            prop_sin:
+              "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
+            nombre_prop_sin: "ALEXIS LOPEZ",
+            edad_prop_sin: 35,
+            sexo_prop_sin: "Hombre",
+            cargo_prop_sin: "Prop. Sindico",
+            estado_prop_sin: "Nayarit",
+            formula_prop_sin: "42456",
+            sup_sin:
+              "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
+            nombre_sup_sin: "MARIA TORRES",
+            edad_sup_sin: 45,
+            sexo_sup_sin: "Mujer",
+            cargo_sup_sin: "Sup. Sindico",
+            estado_sup_sin: "Nayarit",
+            formula_sup_sin: "785456",
+            imgPartido1:
+              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
+            imgPartido2:
+              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
+            imgPartido3:
+              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
+          },
+          {
+            id: 2,
+            visible: false,
+            selection: "prop",
+            label: "",
+            municipio: 2,
             prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
             nombre_prop: "CARLOS ROBERTO",
             edad_prop: 25,
@@ -72,33 +129,22 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             cargo_sup: "Diputada",
             estado_sup: "Nayarit",
             formula_sup: "789456",
-            imgPartido1:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
-            imgPartido2:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-            imgPartido3:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-          },
-          {
-            id: 2,
-            visible: false,
-            selection: "prop",
-            label: "",
-            distrito: 2,
-            prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
-            nombre_prop: "PALOMA DE LOS SANTOS",
-            edad_prop: 25,
-            sexo_prop: "Mujer",
-            cargo_prop: "Diputada",
-            estado_prop: "Nayarit",
-            formula_prop: "12456",
-            sup: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/ELISA%20CAROLINA.jpeg",
-            nombre_sup: "MARIA LOPEZ",
-            edad_sup: 30,
-            sexo_sup: "Mujer",
-            cargo_sup: "Diputada",
-            estado_sup: "Nayarit",
-            formula_sup: "789456",
+            prop_sin:
+              "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
+            nombre_prop_sin: "ALEXIS LOPEZ",
+            edad_prop_sin: 35,
+            sexo_prop_sin: "Hombre",
+            cargo_prop_sin: "Diputado",
+            estado_prop_sin: "Nayarit",
+            formula_prop_sin: "42456",
+            sup_sin:
+              "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
+            nombre_sup_sin: "MARIA TORRES",
+            edad_sup_sin: 45,
+            sexo_sup_sin: "Mujer",
+            cargo_sup_sin: "Diputada",
+            estado_sup_sin: "Nayarit",
+            formula_sup_sin: "785456",
             imgPartido1:
               "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MORENA.png",
             imgPartido2:
@@ -111,29 +157,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             visible: false,
             selection: "prop",
             label: "",
-            prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/_aida%20casta%C3%B1a.jpg",
-            nombre_prop: "AIDA GARCIA BADILLO",
-            edad_prop: 35,
-            sexo_prop: "Mujer",
-            cargo_prop: "Diputada",
-            estado_prop: "Nayarit",
-            formula_prop: "12456",
-            sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-            nombre_sup: "MARIA LOPEZ",
-            edad_sup: 30,
-            sexo_sup: "Mujer",
-            cargo_sup: "Diputada",
-            estado_sup: "Nayarit",
-            formula_sup: "789456",
-            imgPartido1:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MC.png",
-          },
-          {
-            id: 4,
-            visible: false,
-            selection: "prop",
-            label: "",
-            prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
+            prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
             nombre_prop: "CARLOS ROBERTO",
             edad_prop: 25,
             sexo_prop: "Hombre",
@@ -147,6 +171,60 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             cargo_sup: "Diputada",
             estado_sup: "Nayarit",
             formula_sup: "789456",
+            prop_sin:
+              "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
+            nombre_prop_sin: "ALEXIS LOPEZ",
+            edad_prop_sin: 35,
+            sexo_prop_sin: "Hombre",
+            cargo_prop_sin: "Diputado",
+            estado_prop_sin: "Nayarit",
+            formula_prop_sin: "42456",
+            sup_sin:
+              "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
+            nombre_sup_sin: "MARIA TORRES",
+            edad_sup_sin: 45,
+            sexo_sup_sin: "Mujer",
+            cargo_sup_sin: "Diputada",
+            estado_sup_sin: "Nayarit",
+            formula_sup_sin: "785456",
+            imgPartido1:
+              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MC.png",
+          },
+          {
+            id: 4,
+            visible: false,
+            selection: "prop",
+            label: "",
+            prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
+            nombre_prop: "CARLOS ROBERTO",
+            edad_prop: 25,
+            sexo_prop: "Hombre",
+            cargo_prop: "Prop. Presidente",
+            estado_prop: "Nayarit",
+            formula_prop: "12456",
+            sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+            nombre_sup: "MARIA LOPEZ",
+            edad_sup: 30,
+            sexo_sup: "Mujer",
+            cargo_sup: "Sup. Presidente",
+            estado_sup: "Nayarit",
+            formula_sup: "789456",
+            prop_sin:
+              "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
+            nombre_prop_sin: "ALEXIS LOPEZ",
+            edad_prop_sin: 35,
+            sexo_prop_sin: "Hombre",
+            cargo_prop_sin: "Prop. Sindico",
+            estado_prop_sin: "Nayarit",
+            formula_prop_sin: "42456",
+            sup_sin:
+              "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
+            nombre_sup_sin: "MARIA TORRES",
+            edad_sup_sin: 45,
+            sexo_sup_sin: "Mujer",
+            cargo_sup_sin: "Sup. Sindico",
+            estado_sup_sin: "Nayarit",
+            formula_sup_sin: "785456",
             imgPartido1:
               "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MORENA.png",
             imgPartido2:
@@ -210,15 +288,30 @@ export const usePresidenciaSindicaturiaStore = defineStore(
           this.card.sexo_sup = card.sexo_sup;
           this.card.estado_sup = card.estado_sup;
           this.card.formula_sup = card.formula_sup;
+          this.card.prop_sin = card.prop_sin;
+          this.card.nombre_prop_sin = card.nombre_prop_sin;
+          this.card.edad_prop_sin = card.edad_prop_sin;
+          this.card.sexo_prop_sin = card.sexo_prop_sin;
+          this.card.cargo_prop_sin = card.cargo_prop_sin;
+          this.card.estado_prop_sin = card.estado_prop_sin;
+          this.card.formula_prop_sin = card.formula_prop_sin;
+          this.card.sup_sin = card.sup_sin;
+          this.card.nombre_sup_sin = card.nombre_sup_sin;
+          this.card.cargo_sup_sin = card.cargo_sup_sin;
+          this.card.edad_sup_sin = card.edad_sup_sin;
+          this.card.sexo_sup_sin = card.sexo_sup_sin;
+          this.card.estado_sup_sin = card.estado_sup_sin;
+          this.card.formula_sup_sin = card.formula_sup_sin;
           this.card.imgPartido1 = card.imgPartido1;
           this.card.imgPartido2 = card.imgPartido2;
           this.card.imgPartido3 = card.imgPartido3;
         }
+        console.log("this.card", this.card);
       },
 
-      async filterCards(distrito) {
+      async filterCards(municipio) {
         const filteredCards = this.listCards.filter(
-          (card) => card.distrito === distrito
+          (card) => card.municipio === municipio
         );
         console.log(filteredCards);
         this.listCards = filteredCards;
