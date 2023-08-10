@@ -198,6 +198,7 @@ const verMas = async (id, valor) => {
 const selectOption = (item, option) => {
   item.selection = option.value;
   item.label = option.label;
+  console.log("iten", item);
 };
 
 const pdf = () => {

@@ -14,6 +14,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
       card: {
         id: null,
         selection: null,
+        label: null,
         prop: null,
         nombre_prop: null,
         edad_prop: null,
@@ -273,6 +274,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
 
         if (card) {
           this.card.id = card.id;
+          this.card.label = card.label;
           this.card.prop = card.prop;
           this.card.selection = card.selection;
           this.card.nombre_prop = card.nombre_prop;
