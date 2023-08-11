@@ -44,8 +44,13 @@
       </div>
 
       <q-card-section>
-        <div class="row no-wrap items-center">
-          <div class="col text-h6 ellipsis">DISTRITO</div>
+        <div class="row text-overline flex-center">
+          Municipio de {{ item.municipio_name }}
+        </div>
+        <div class="row text-overline flex-center">
+          Demarcación {{ item.demarcacion }}
+        </div>
+        <div class="row no-wrap items-center flex-center">
           <q-avatar square size="24px" v-if="item.imgPartido1 != null">
             <img :src="item.imgPartido1" alt="" />
           </q-avatar>
@@ -124,7 +129,7 @@
     <div class="flex flex-center">
       <img
         alt="PREP logo"
-        src="../../../assets/opcion2.png"
+        src="../../../assets/opcion1.png"
         style="width: 900px; height: 600px"
       />
     </div>

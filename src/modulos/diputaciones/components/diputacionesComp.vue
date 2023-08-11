@@ -43,11 +43,14 @@
     <q-splitter style="height: 500px">
       <template v-slot:before>
         <q-tabs v-model="tab" vertical class="text-teal">
-          <q-tab name="alarms" label="Grado academico" />
-          <q-tab name="movies" label="Nivel de ingresos" />
-          <q-tab name="movies" label="Candidaturas indígenas" />
-          <q-tab name="movies" label="Candidaturas de discapacidad" />
-          <q-tab name="movies" label="Candidaturas afromexicanas" />
+          <q-tab name="grado_academico" label="Grado academico" />
+          <q-tab name="nivel_ingresos" label="Nivel de ingresos" />
+          <q-tab name="cand_indigenas" label="Candidaturas indígenas" />
+          <q-tab
+            name="cand_discapacidad"
+            label="Candidaturas de discapacidad"
+          />
+          <q-tab name="cand_afromexicanas" label="Candidaturas afromexicanas" />
           <q-tab name="movies" label="Candidaturas de la diversidad sexual" />
           <q-tab name="movies" label="Candidaturas migrantes" />
           <q-tab name="movies" label="Candidaturas de personas jovenes" />
@@ -63,22 +66,32 @@
           transition-prev="jump-up"
           transition-next="jump-up"
         >
-          <q-tab-panel name="mails">
-            <div class="text-h4 q-mb-md">Rango de edades</div>
-            <chartRangoEdad />
-          </q-tab-panel>
-
           <q-tab-panel
-            name="alarms"
+            name="grado_academico"
             class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
           >
             <div class="text-h4 q-mb-md">Grado academico</div>
             <chartGradoAcademico class="flex flex-center" />
           </q-tab-panel>
 
-          <q-tab-panel name="movies">
-            <div class="text-h4 q-mb-md"></div>
-            <chartSexo />
+          <q-tab-panel name="nivel_ingresos">
+            <div class="text-h4 q-mb-md">Nivel de ingresos</div>
+            <chartNivelIngresos class="flex flex-center" />
+          </q-tab-panel>
+
+          <q-tab-panel name="cand_indigenas">
+            <div class="text-h4 q-mb-md">Candidaturas Indigenas</div>
+            <chartCandIndigenas class="flex flex-center" />
+          </q-tab-panel>
+
+          <q-tab-panel name="cand_discapacidad">
+            <div class="text-h4 q-mb-md">Candidaturas con discapacidad</div>
+            <chartCandDiscapacidad class="flex flex-center" />
+          </q-tab-panel>
+
+          <q-tab-panel name="cand_afromexicanas">
+            <div class="text-h4 q-mb-md">Candidaturas Afromexicanas</div>
+            <chartCandAfromexicanas class="flex flex-center" />
           </q-tab-panel>
         </q-tab-panels>
       </template>
@@ -87,13 +100,17 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
 import chartGradoAcademico from "../../../charts/chartGradoAcademico.vue";
 import chartSexo from "../../../charts/chartSexo.vue";
-import { ref } from "vue";
+import chartNivelIngresos from "../../../charts/chartNivelIngresos.vue";
+import chartCandIndigenas from "../../../charts/chartCandidaturaIndigenas.vue";
+import chartCandDiscapacidad from "../../../charts/chartCandDiscapacidad.vue";
+import chartCandAfromexicanas from "../../../charts/chartCandAfromexicacas.vue";
 
 //---------------------------------------------------------------------------------
-const tab = ref("mails");
+const tab = ref("grado_academico");
 </script>
 
 <style></style>

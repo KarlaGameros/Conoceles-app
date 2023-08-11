@@ -13,7 +13,7 @@
 const series = [
   {
     name: "chartRangoEdad",
-    data: [21, 22, 10, 28],
+    data: [21, 22, 10, 28, 5, 20],
   },
 ];
 const chartOptions = {
@@ -21,9 +21,7 @@ const chartOptions = {
     height: 350,
     type: "bar",
     events: {
-      click: function (chart, w, e) {
-        // console.log(chart, w, e)
-      },
+      click: function (chart, w, e) {},
     },
   },
   plotOptions: {
@@ -39,7 +37,14 @@ const chartOptions = {
     show: false,
   },
   xaxis: {
-    categories: [["21-29"], ["30-40"], ["41-50"], ["51-60"]],
+    categories: [
+      ["18-24"],
+      ["25-29"],
+      ["30-39"],
+      ["40-49"],
+      ["50-59"],
+      ["60 o más"],
+    ],
     labels: {
       style: {
         fontSize: "12px",

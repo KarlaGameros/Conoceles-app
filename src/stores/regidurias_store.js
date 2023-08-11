@@ -15,6 +15,9 @@ export const useRegiduriasStore = defineStore("regidurias", {
       selection: null,
       prop: null,
       nombre_prop: null,
+      municipio: null,
+      municipio_name: null,
+      demarcacion: null,
       edad_prop: null,
       sexo_prop: null,
       cargo_prop: null,
@@ -58,6 +61,8 @@ export const useRegiduriasStore = defineStore("regidurias", {
           visible: false,
           selection: "prop",
           municipio: 1,
+          municipio_name: "Acaponeta",
+          demarcacion: 1,
           prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
           nombre_prop: "CARLOS ROBERTO",
           edad_prop: 25,
@@ -84,6 +89,8 @@ export const useRegiduriasStore = defineStore("regidurias", {
           visible: false,
           selection: "prop",
           municipio: 2,
+          municipio_name: "Ahuacatlán",
+          demarcacion: 2,
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
           nombre_prop: "PALOMA DE LOS SANTOS",
           edad_prop: 25,
@@ -113,6 +120,8 @@ export const useRegiduriasStore = defineStore("regidurias", {
           nombre_prop: "AIDA GARCIA BADILLO",
           edad_prop: 35,
           municipio: 2,
+          municipio_name: "Ahuacatlán",
+          demarcacion: 2,
           sexo_prop: "Mujer",
           cargo_prop: "Diputada",
           estado_prop: "Nayarit",
@@ -192,11 +201,13 @@ export const useRegiduriasStore = defineStore("regidurias", {
     //---------------------------------------------------------------------------------
 
     async loadCard(id) {
-      console.log("id", id);
       const card = this.listCards.find((card) => card.id === id);
 
       if (card) {
         this.card.id = card.id;
+        this.card.municipio = card.municipio;
+        this.card.municipio_name = card.municipio_name;
+        this.card.demarcacion = card.demarcacion;
         this.card.prop = card.prop;
         this.card.selection = card.selection;
         this.card.nombre_prop = card.nombre_prop;

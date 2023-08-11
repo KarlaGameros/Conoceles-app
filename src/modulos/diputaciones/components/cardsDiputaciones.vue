@@ -45,7 +45,8 @@
 
       <q-card-section>
         <div class="row no-wrap items-center">
-          <div class="col text-h6 ellipsis">DISTRITO</div>
+          <div class="col text-h6 ellipsis">Distrito {{ item.distrito }}</div>
+
           <q-avatar square size="24px" v-if="item.imgPartido1 != null">
             <img :src="item.imgPartido1" alt="" />
           </q-avatar>
@@ -55,6 +56,9 @@
           <q-avatar square size="24px" v-if="item.imgPartido3 != null">
             <img :src="item.imgPartido3" alt="" />
           </q-avatar>
+        </div>
+        <div class="row text-subtitle2 ellipsis">
+          {{ item.distrito_name }}
         </div>
       </q-card-section>
       <q-card-section>

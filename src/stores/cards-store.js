@@ -16,6 +16,7 @@ export const useCardsStore = defineStore("cards", {
       selection: null,
       prop: null,
       nombre_prop: null,
+      distrito_name: null,
       edad_prop: null,
       sexo_prop: null,
       cargo_prop: null,
@@ -59,6 +60,7 @@ export const useCardsStore = defineStore("cards", {
           visible: false,
           selection: "prop",
           distrito: 1,
+          distrito_name: "Acaponeta",
           prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
           nombre_prop: "CARLOS ROBERTO",
           edad_prop: 25,
@@ -86,6 +88,7 @@ export const useCardsStore = defineStore("cards", {
           visible: false,
           selection: "prop",
           distrito: 2,
+          distrito_name: "Tecuala",
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
           nombre_prop: "PALOMA DE LOS SANTOS",
           edad_prop: 25,
@@ -113,6 +116,7 @@ export const useCardsStore = defineStore("cards", {
           visible: false,
           selection: "prop",
           distrito: 3,
+          distrito_name: "Del Nayar",
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/_aida%20casta%C3%B1a.jpg",
           nombre_prop: "AIDA GARCIA BADILLO",
           edad_prop: 35,
@@ -136,6 +140,7 @@ export const useCardsStore = defineStore("cards", {
           visible: false,
           selection: "prop",
           distrito: 2,
+          distrito_name: "Tecuala",
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
           nombre_prop: "CARLOS ROBERTO",
           edad_prop: 25,
@@ -163,6 +168,7 @@ export const useCardsStore = defineStore("cards", {
           visible: false,
           selection: "prop",
           distrito: 2,
+          distrito_name: "Tecuala",
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/griselda%20foto.jpeg",
           nombre_prop: "CARLOS ROBERTO",
           edad_prop: 25,
@@ -301,6 +307,8 @@ export const useCardsStore = defineStore("cards", {
         this.card.prop = card.prop;
         this.card.selection = card.selection;
         this.card.nombre_prop = card.nombre_prop;
+        this.card.distrito = card.distrito;
+        this.card.distrito_name = card.distrito_name;
         this.card.edad_prop = card.edad_prop;
         this.card.sexo_prop = card.sexo_prop;
         this.card.cargo_prop = card.cargo_prop;

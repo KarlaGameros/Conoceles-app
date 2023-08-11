@@ -17,14 +17,21 @@
   </div>
   <br />
   <div class="row">
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
+      <q-btn
+        @click="backCards()"
+        flat
+        icon="arrow_back"
+        class="text-purple-ieen-1"
+      ></q-btn>
+      Municipio de {{ card.municipio_name }} - Demarcación
+      {{ card.demarcacion }}
+    </div>
     <q-btn
-      @click="backCards()"
+      @click="pdf()"
       flat
-      icon="arrow_back"
-      class="text-purple-ieen-1"
-    ></q-btn>
-    <div class="col-10 text-h6">Denarcación</div>
-    <q-btn @click="pdf()" flat icon="picture_as_pdf" class="text-purple-ieen-1"
+      icon="picture_as_pdf"
+      class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-ieen-1"
       >Descargar</q-btn
     >
   </div>

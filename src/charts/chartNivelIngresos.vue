@@ -1,47 +1,43 @@
 <template>
   <apexchart
-    type="pie"
-    width="400"
+    type="donut"
+    width="380"
     :options="chartOptions"
     :series="series"
   ></apexchart>
 </template>
 
 <script setup>
-const colors = [
-  "#f3cfc6",
-  "#77dd77",
-  "#c89ed3",
-  "#fdfd96",
-  "#f4c2c2",
-  "#74bbfb",
-  "#fbb474",
-  "#89cff0",
-  "#c8f3cds",
-];
-const series = [44, 55, 5];
+const series = [44, 55, 41, 17];
 const chartOptions = {
   chart: {
     width: 380,
-    type: "pie",
+    type: "donut",
   },
-  colors: colors,
-  labels: ["Mujer", "Hombre", "No binario"],
+  labels: [
+    "De $11,001 a $25,000",
+    "De $25,001 a $50,000",
+    "De $75,001 a $112,000",
+    "Más de $112,000",
+  ],
   plotOptions: {
-    bar: {
-      columnWidth: "45%",
-      distributed: true,
+    pie: {
+      startAngle: -90,
+      endAngle: 270,
     },
   },
-  legend: {
-    show: true,
+  dataLabels: {
+    enabled: false,
+  },
+  fill: {
+    type: "gradient",
   },
   responsive: [
     {
       breakpoint: 480,
       options: {
         chart: {
-          width: 400,
+          width: 200,
         },
         legend: {
           position: "bottom",

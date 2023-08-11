@@ -73,6 +73,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             selection: "prop",
             label: "",
             municipio: 1,
+            municipio_name: "Acaponeta",
             prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
             nombre_prop: "CARLOS ROBERTO",
             edad_prop: 25,
@@ -116,6 +117,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             selection: "prop",
             label: "",
             municipio: 2,
+            municipio_name: "Ahuacatlán",
             prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
             nombre_prop: "CARLOS ROBERTO",
             edad_prop: 25,
@@ -158,6 +160,8 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             visible: false,
             selection: "prop",
             label: "",
+            municipio: 17,
+            municipio_name: "Tepic",
             prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
             nombre_prop: "CARLOS ROBERTO",
             edad_prop: 25,
@@ -196,6 +200,8 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             visible: false,
             selection: "prop",
             label: "",
+            municipio: 2,
+            municipio_name: "Ahuacatlán",
             prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
             nombre_prop: "CARLOS ROBERTO",
             edad_prop: 25,
@@ -278,6 +284,8 @@ export const usePresidenciaSindicaturiaStore = defineStore(
           this.card.prop = card.prop;
           this.card.selection = card.selection;
           this.card.nombre_prop = card.nombre_prop;
+          this.card.municipio = card.municipio;
+          this.card.municipio_name = card.municipio_name;
           this.card.edad_prop = card.edad_prop;
           this.card.sexo_prop = card.sexo_prop;
           this.card.cargo_prop = card.cargo_prop;

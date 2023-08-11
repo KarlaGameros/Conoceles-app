@@ -1,47 +1,26 @@
 <template>
   <apexchart
     type="pie"
-    width="400"
+    width="380"
     :options="chartOptions"
     :series="series"
   ></apexchart>
 </template>
 
 <script setup>
-const colors = [
-  "#f3cfc6",
-  "#77dd77",
-  "#c89ed3",
-  "#fdfd96",
-  "#f4c2c2",
-  "#74bbfb",
-  "#fbb474",
-  "#89cff0",
-  "#c8f3cds",
-];
-const series = [44, 55, 5];
+const series = [44, 55, 13, 43, 22];
 const chartOptions = {
   chart: {
     width: 380,
     type: "pie",
   },
-  colors: colors,
-  labels: ["Mujer", "Hombre", "No binario"],
-  plotOptions: {
-    bar: {
-      columnWidth: "45%",
-      distributed: true,
-    },
-  },
-  legend: {
-    show: true,
-  },
+  labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
   responsive: [
     {
       breakpoint: 480,
       options: {
         chart: {
-          width: 400,
+          width: 200,
         },
         legend: {
           position: "bottom",

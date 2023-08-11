@@ -54,8 +54,10 @@
       </div>
 
       <q-card-section>
-        <div class="row no-wrap items-center">
-          <div class="col text-h6 ellipsis">Municipio</div>
+        <div class="col text-overline flex-center">
+          Municipio de {{ item.municipio_name }}
+        </div>
+        <div class="row no-wrap items-center flex-center">
           <q-avatar square size="24px" v-if="item.imgPartido1 != null">
             <img :src="item.imgPartido1" alt="" />
           </q-avatar>
@@ -66,6 +68,7 @@
             <img :src="item.imgPartido3" alt="" />
           </q-avatar>
         </div>
+        <div class="row text-center"></div>
       </q-card-section>
       <q-card-section class="q-pa-xs">
         <div class="q-mb-md" style="text-align: center">
@@ -159,7 +162,7 @@
     <div class="flex flex-center">
       <img
         alt="PREP logo"
-        src="../../../assets/opcion2.png"
+        src="../../../assets/opcion1.png"
         style="width: 900px; height: 600px"
       />
     </div>
