@@ -110,6 +110,7 @@
                     :key="option.value"
                     clickable
                     @click="selectOption(option)"
+                    v-model="distritos_Id"
                     v-close-popup
                   >
                     <q-item-section>
@@ -119,81 +120,95 @@
                 </q-list>
               </q-btn-dropdown>
 
-              <q-select
+              <!-- <q-select
                 v-model="distritos_Id"
                 :options="listDistritos"
                 hint="Selecciona un distrito"
               >
-              </q-select>
+              </q-select> -->
               <br />
               <div class="text-weight-bolder">Actor político</div>
-              <!-- <q-btn-dropdown
-                :disabled="distritos_Id === null"
-                v-model="actor_politico_Id"
-                :options="actor_politico"
+
+              <q-btn-dropdown
+                :label="actor_politico_Id.label"
                 class="bg-gray-ieen-3 text-white"
-                label="Todos"
               >
                 <q-list>
                   <q-item
-                    v-for="item in actor_politico"
-                    :key="item.id"
+                    v-for="option in listActorPolitico"
+                    :key="option.value"
                     clickable
+                    @click="selectOption(option)"
+                    v-model="actor_politico_Id"
                     v-close-popup
-                    @click="onPartido(item.siglas)"
                   >
                     <q-item-section>
-                      <q-item-label>{{
-                        `${item.siglas} - ${item.nombre}`
-                      }}</q-item-label>
+                      <q-item-label>{{ option.label }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
-              </q-btn-dropdown> -->
-              <q-select
+              </q-btn-dropdown>
+              <!-- <q-select
                 v-model="actor_politico_Id"
                 :options="listActorPolitico"
                 hint="Selecciona un actor político"
               >
-              </q-select>
+              </q-select> -->
               <br />
               <div class="text-weight-bolder">Rango de edad</div>
-              <!-- <q-btn-dropdown
-                :disabled="distritos_Id === null"
-                v-model="rango_edad_Id"
-                :options="rango_edad"
+              <q-btn-dropdown
+                :label="rango_edad_Id.label"
                 class="bg-gray-ieen-3 text-white"
-                label="Todos"
               >
                 <q-list>
                   <q-item
-                    v-for="item in rango_edad"
-                    :key="item.id"
+                    v-for="option in listEdades"
+                    :key="option.value"
                     clickable
+                    @click="selectOption(option)"
+                    v-model="rango_edad_Id"
                     v-close-popup
-                    @click="onRangoEdad(item.edades)"
                   >
                     <q-item-section>
-                      <q-item-label>{{ item.edades }}</q-item-label>
+                      <q-item-label>{{ option.label }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
-              </q-btn-dropdown> -->
-              <q-select
+              </q-btn-dropdown>
+              <!-- <q-select
                 v-model="rango_edad_Id"
                 :options="listEdades"
                 hint="Selecciona un rango de edad"
               >
-              </q-select>
+              </q-select> -->
               <br />
               <div class="text-weight-bolder">Sexo</div>
 
-              <q-select
+              <q-btn-dropdown
+                :label="sexo_Id.label"
+                class="bg-gray-ieen-3 text-white"
+              >
+                <q-list>
+                  <q-item
+                    v-for="option in sexo"
+                    :key="option.value"
+                    clickable
+                    @click="selectOption(option)"
+                    v-model="sexo_Id"
+                    v-close-popup
+                  >
+                    <q-item-section>
+                      <q-item-label>{{ option.label }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
+              <!-- <q-select
                 v-model="sexo_Id"
                 :options="sexo"
                 hint="Selecciona un rango de edad"
               >
-              </q-select>
+              </q-select> -->
             </q-item-section>
           </q-item>
         </q-list>
@@ -565,6 +580,7 @@ watch(municipio_Id, (val) => {
 //DIPUTACIONES
 
 watch(distritos_Id, (val) => {
+  console.log("entro");
   cardsStore.loadCards();
   if (distritos_Id.value.label == "Todos") {
     cardsStore.loadCards();
@@ -586,9 +602,18 @@ const btnNumeralia = (valor) => {
   distritos_Id.value = { value: 0, label: "Todos" };
 };
 const selectOption = (option) => {
-  console.log("option", option);
   distritos_Id.value.value = option.value;
   distritos_Id.value.label = option.label;
+  filtroDistrito(distritos_Id);
+};
+const filtroDistrito = (distritos_Id) => {
+  cardsStore.loadCards();
+  if (distritos_Id.value.label == "Todos") {
+    cardsStore.loadCards();
+  } else {
+    cardsStore.loadCards();
+    cardsStore.filterCards(distritos_Id.value.value);
+  }
 };
 //---------------------------------------------------------------------------------
 //PRESIDENCIA
