@@ -1,5 +1,4 @@
 <template>
-  <q-input v-model="filtro"></q-input>
   <div
     v-if="listCards != ''"
     class="q-pa-md row items-start q-gutter-md flex flex-center"
