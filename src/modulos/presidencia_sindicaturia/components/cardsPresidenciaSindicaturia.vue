@@ -1,6 +1,7 @@
 <template>
+  <q-input v-model="filtro"></q-input>
   <div
-    v-if="listCards != ''"
+    v-if="listCardsFiltro != ''"
     class="q-pa-md row items-start q-gutter-md flex flex-center"
   >
     <div style="border-radius: 20px">
@@ -26,9 +27,8 @@
         class="text-purple-ieen-1"
       ></q-btn>
     </div>
-
     <q-card
-      v-for="item in listCards"
+      v-for="item in listCardsFiltro"
       :key="item.id"
       class="my-card col-lg-2 col-md-2 col-sm-3 col-xs-12"
       flat
@@ -138,7 +138,7 @@
       </q-card-actions>
     </q-card>
   </div>
-  <div v-if="listCards == ''">
+  <div v-if="listCardsFiltro == ''">
     <div style="border-radius: 20px">
       <q-banner
         :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
@@ -171,24 +171,41 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
+import { useCardsStore } from "src/stores/cards-store";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 //---------------------------------------------------------------------------------
 
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
-const { listCards } = storeToRefs(presidenciaSindicaturiaStore);
+const candidatosStore = useCardsStore();
+const { listFiltroCards } = storeToRefs(candidatosStore);
 const dropdownOptions = [
   { label: "Propietario Presidente", value: "prop" },
   { label: "Suplente Presidente", value: "sup" },
   { label: "Propietario Sindico", value: "propSin" },
   { label: "Suplente Sindico", value: "supSin" },
 ];
-
+const filtro = ref("");
+const listCardsFiltro = ref(listFiltroCards.value);
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
   presidenciaSindicaturiaStore.actualizarMenu(true);
+});
+watch(listFiltroCards, (val) => {
+  listCardsFiltro.value = val;
+});
+watch(filtro, (val) => {
+  if (val.length == 0) {
+    listCardsFiltro.value = listFiltroCards.value;
+  } else if (val.length >= 3) {
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
+      x.nombre_prop.toLowerCase().includes(val.toLowerCase())
+    );
+  } else {
+    return;
+  }
 });
 
 //---------------------------------------------------------------------------------

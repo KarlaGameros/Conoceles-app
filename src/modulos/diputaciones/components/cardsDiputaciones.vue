@@ -1,4 +1,5 @@
 <template>
+  <q-input v-model="filtro"></q-input>
   <div
     v-if="listCards != ''"
     class="q-pa-md row items-start q-gutter-md flex flex-center"
@@ -19,16 +20,23 @@
         consultar.
       </q-banner>
       <br />
-      <q-btn
-        @click="backCards()"
-        flat
-        icon="arrow_back"
-        class="text-purple-ieen-1"
-      ></q-btn>
+      <div class="row">
+        <q-btn
+          @click="backCards()"
+          flat
+          icon="arrow_back"
+          class="text-purple-ieen-1"
+        ></q-btn>
+        <q-input borderless dense debounce="300" placeholder="Buscar..">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </div>
     </div>
 
     <q-card
-      v-for="item in listCards"
+      v-for="item in listCardsFiltro"
       :key="item.id"
       class="col-lg-2 col-md-2 col-sm-3 col-xs-12"
       flat
@@ -138,17 +146,34 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
-const { listCards } = storeToRefs(cardsStore);
+const { listFiltroCards } = storeToRefs(cardsStore);
+const filtro = ref("");
 
+const listCardsFiltro = ref(listFiltroCards.value);
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
   cardsStore.actualizarMenu(true);
+});
+
+watch(listFiltroCards, (val) => {
+  listCardsFiltro.value = val;
+});
+watch(filtro, (val) => {
+  if (val.length == 0) {
+    listCardsFiltro.value = listFiltroCards.value;
+  } else if (val.length >= 3) {
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
+      x.nombre_prop.toLowerCase().includes(val.toLowerCase())
+    );
+  } else {
+    return;
+  }
 });
 //---------------------------------------------------------------------------------
 
@@ -158,12 +183,6 @@ const verMas = async (id, valor) => {
 };
 
 const pdf = async () => {
-  // const pdfURL = "https://eqpro.es/wp-content/uploads/2018/11/Ejemplo.pdf";
-  // const link = document.createElement("a");
-  // link.href = pdfURL;
-  // link.target = "_blank";
-  // link.download = "archivo.pdf";
-  // link.click();
   pdfCandidato();
 };
 

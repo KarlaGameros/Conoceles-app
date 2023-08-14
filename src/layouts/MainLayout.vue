@@ -63,7 +63,7 @@
     </q-header>
 
     <q-drawer
-      v-if="selectedTab == 'diputaciones' && isHomePage == true"
+      v-if="isHomePage == true"
       show-if-above
       v-model="leftDrawerOpen"
       side="left"
@@ -88,25 +88,64 @@
                 Selecciona el reporte que deseas consultar:
               </div>
               <q-btn
+                v-if="selectedTab === 'diputaciones'"
                 @click="btnNumeralia(true)"
                 :to="{ name: 'diputaciones' }"
                 label="Numeralia"
-                style="background: #d1308a; color: white"
+                class="bg-pink-ieen"
               />
-              <br />
+              <br v-if="selectedTab === 'diputaciones'" />
               <q-btn
+                v-if="selectedTab === 'diputaciones'"
                 :to="{ name: 'diputaciones' }"
                 label="Candidatas y candidatos"
-                style="background: #e97ebd; color: white"
+                class="bg-pink-ieen-3"
                 @click="btnCandidatos(true)"
+              />
+              <!-------------------------------------->
+              <q-btn
+                v-if="selectedTab === 'presidencia'"
+                @click="btnNumeraliaPresidencia(true)"
+                :to="{ name: 'diputaciones' }"
+                label="Numeralia"
+                class="bg-pink-ieen"
+              />
+              <br v-if="selectedTab === 'presidencia'" />
+              <q-btn
+                v-if="selectedTab === 'presidencia'"
+                :to="{ name: 'presidenciaSindicatura' }"
+                label="Candidatas y candidatos"
+                class="bg-pink-ieen-3"
+                @click="btnCandidatosPresidencia(true)"
+              />
+              <!-------------------------------------->
+              <q-btn
+                v-if="selectedTab === 'regidurias'"
+                @click="btnNumeraliaRegidurias(true)"
+                :to="{ name: 'diputaciones' }"
+                label="Numeralia"
+                class="bg-pink-ieen"
+              />
+              <br v-if="selectedTab === 'regidurias'" />
+              <q-btn
+                v-if="selectedTab === 'regidurias'"
+                :to="{ name: 'regidurias' }"
+                label="Candidatas y candidatos"
+                class="bg-pink-ieen-3"
+                @click="btnCandidatosRegidurias(true)"
               />
               <br />
             </q-item-section>
           </q-item>
-          <q-item>
+          <q-item
+            v-if="selectedTab === 'diputaciones'"
+            :content-inset-level="2"
+            :header-inset-level="2"
+          >
             <q-item-section>
-              <div class="text-weight-bolder">Distrito</div>
-
+              <q-item-label class="text-purple-ieen label-title text-bold"
+                >Distrito</q-item-label
+              >
               <q-btn-dropdown
                 :label="distritos_Id.label"
                 class="bg-gray-ieen-3 text-white"
@@ -122,131 +161,24 @@
                   >
                     <q-item-section>
                       <q-item-label>{{
-                        `${option.value} - ${option.label}`
+                        `${option.value} ${option.label}`
                       }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
               </q-btn-dropdown>
-              <br />
-              <div class="text-weight-bolder">Actor político</div>
-
-              <q-btn-dropdown
-                :disable="distritos_Id.label == 'Seleccione una opción'"
-                :label="actor_politico_Id.label"
-                class="bg-gray-ieen-3 text-white"
-              >
-                <q-list>
-                  <q-item
-                    v-for="option in listActorPolitico"
-                    :key="option.value"
-                    clickable
-                    @click="filtroActorPolitico(option)"
-                    v-model="actor_politico_Id"
-                    v-close-popup
-                  >
-                    <q-item-section>
-                      <q-item-label>{{ option.label }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
-              <br />
-              <div class="text-weight-bolder">Rango de edad</div>
-              <q-btn-dropdown
-                :disable="distritos_Id.label == 'Seleccione una opción'"
-                :label="rango_edad_Id.label"
-                class="bg-gray-ieen-3 text-white"
-              >
-                <q-list>
-                  <q-item
-                    v-for="option in listEdades"
-                    :key="option.value"
-                    clickable
-                    @click="filtroEdades(option)"
-                    v-model="rango_edad_Id"
-                    v-close-popup
-                  >
-                    <q-item-section>
-                      <q-item-label>{{ option.label }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
-              <br />
-              <div class="text-weight-bolder">Sexo</div>
-
-              <q-btn-dropdown
-                :disable="distritos_Id.label == 'Seleccione una opción'"
-                :label="sexo_Id.label"
-                class="bg-gray-ieen-3 text-white"
-              >
-                <q-list>
-                  <q-item
-                    v-for="option in listSexo"
-                    :key="option.value"
-                    clickable
-                    @click="filtroSexo(option)"
-                    v-model="sexo_Id"
-                    v-close-popup
-                  >
-                    <q-item-section>
-                      <q-item-label>{{ option.label }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
             </q-item-section>
           </q-item>
-        </q-list>
-      </q-scroll-area>
-    </q-drawer>
-    <!---------------------------------------------------------------------------->
-    <q-drawer
-      v-if="selectedTab === 'presidencia' && isHomePagePS == true"
-      show-if-above
-      v-model="leftDrawerOpen"
-      side="left"
-      bordered
-    >
-      <q-scroll-area
-        style="
-          height: calc(100% - 170px);
-          margin-top: 50px;
-          border-right: 1px solid #ddd;
-        "
-      >
-        <q-list>
-          <q-item>
-            <q-item-section class="bg-grey-3" style="border-radius: 10px">
-              <q-item-label
-                class="text-h5 label-title text-bold q-pa-xs"
-                style="color: gray"
-                >Consulta</q-item-label
-              >
-              <div class="text-h6 q-pa-xs" style="color: grey">
-                Selecciona el reporte que deseas consultar:
-              </div>
-              <q-btn
-                @click="btnNumeraliaPresidencia(true)"
-                :to="{ name: 'presidenciaSindicatura' }"
-                label="Numeralia"
-                style="background: #d1308a; color: white"
-              />
-              <br />
-              <q-btn
-                :to="{ name: 'presidenciaSindicatura' }"
-                label="Candidatas y candidatos"
-                style="background: #e97ebd; color: white"
-                @click="btnCandidatosPresidencia(true)"
-              />
-              <br />
-            </q-item-section>
-          </q-item>
-          <q-item>
+
+          <q-item
+            v-if="selectedTab === 'presidencia' || selectedTab === 'regidurias'"
+            :content-inset-level="2"
+            :header-inset-level="2"
+          >
             <q-item-section>
-              <div class="text-weight-bolder">Municipio</div>
-
+              <q-item-label class="text-purple-ieen label-title text-bold"
+                >Municipio</q-item-label
+              >
               <q-btn-dropdown
                 :label="municipio_Id.label"
                 class="bg-gray-ieen-3 text-white"
@@ -266,147 +198,18 @@
                   </q-item>
                 </q-list>
               </q-btn-dropdown>
-              <br />
-              <div class="text-weight-bolder">Actor político</div>
-
-              <q-btn-dropdown
-                :disable="municipio_Id.label == 'Seleccione una opción'"
-                :label="actor_politico_Id.label"
-                class="bg-gray-ieen-3 text-white"
-              >
-                <q-list>
-                  <q-item
-                    v-for="option in listActorPolitico"
-                    :key="option.value"
-                    clickable
-                    @click="filtroActorPolitico(option)"
-                    v-model="actor_politico_Id"
-                    v-close-popup
-                  >
-                    <q-item-section>
-                      <q-item-label>{{ option.label }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
-              <br />
-              <div class="text-weight-bolder">Rango de edad</div>
-              <q-btn-dropdown
-                :disable="municipio_Id.label == 'Seleccione una opción'"
-                :label="rango_edad_Id.label"
-                class="bg-gray-ieen-3 text-white"
-              >
-                <q-list>
-                  <q-item
-                    v-for="option in listEdades"
-                    :key="option.value"
-                    clickable
-                    @click="filtroEdades(option)"
-                    v-model="rango_edad_Id"
-                    v-close-popup
-                  >
-                    <q-item-section>
-                      <q-item-label>{{ option.label }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
-              <br />
-              <div class="text-weight-bolder">Sexo</div>
-
-              <q-btn-dropdown
-                :disable="municipio_Id.label == 'Seleccione una opción'"
-                :label="sexo_Id.label"
-                class="bg-gray-ieen-3 text-white"
-              >
-                <q-list>
-                  <q-item
-                    v-for="option in listSexo"
-                    :key="option.value"
-                    clickable
-                    @click="filtroSexo(option)"
-                    v-model="sexo_Id"
-                    v-close-popup
-                  >
-                    <q-item-section>
-                      <q-item-label>{{ option.label }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
             </q-item-section>
           </q-item>
-        </q-list>
-      </q-scroll-area>
-    </q-drawer>
-    <!---------------------------------------------------------------------------->
-    <q-drawer
-      v-if="selectedTab === 'regidurias' && isHomePageRE == true"
-      show-if-above
-      v-model="leftDrawerOpen"
-      side="left"
-      bordered
-    >
-      <q-scroll-area
-        style="
-          height: calc(100% - 170px);
-          margin-top: 50px;
-          border-right: 1px solid #ddd;
-        "
-      >
-        <q-list>
-          <q-item>
-            <q-item-section class="bg-grey-3" style="border-radius: 10px">
-              <q-item-label
-                class="text-h5 label-title text-bold q-pa-xs"
-                style="color: gray"
-                >Consulta</q-item-label
-              >
-              <div class="text-h6 q-pa-xs" style="color: grey">
-                Selecciona el reporte que deseas consultar:
-              </div>
-              <q-btn
-                @click="btnNumeraliaRegidurias(true)"
-                :to="{ name: 'regidurias' }"
-                label="Numeralia"
-                style="background: #d1308a; color: white"
-              />
-              <br />
-              <q-btn
-                :to="{ name: 'regidurias' }"
-                label="Candidatas y candidatos"
-                style="background: #e97ebd; color: white"
-                @click="btnCandidatosRegidurias(true)"
-              />
-              <br />
-            </q-item-section>
-          </q-item>
-          <q-item>
+
+          <q-item
+            v-if="selectedTab === 'regidurias'"
+            :content-inset-level="2"
+            :header-inset-level="2"
+          >
             <q-item-section>
-              <div class="text-weight-bolder">Municipio</div>
-
-              <q-btn-dropdown
-                :label="municipio_Id.label"
-                class="bg-gray-ieen-3 text-white"
+              <q-item-label class="text-purple-ieen label-title text-bold"
+                >Demarcación</q-item-label
               >
-                <q-list>
-                  <q-item
-                    v-for="option in listMunicipios"
-                    :key="option.value"
-                    clickable
-                    @click="filtroMunicipiosRegidurias(option)"
-                    v-model="municipio_Id"
-                    v-close-popup
-                  >
-                    <q-item-section>
-                      <q-item-label>{{ option.label }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
-              <br />
-              <div class="text-weight-bolder">Demarcación</div>
-
               <q-btn-dropdown
                 :disable="municipio_Id.label == 'Seleccione una opción'"
                 :label="demarcacion_Id.label"
@@ -417,7 +220,7 @@
                     v-for="option in listDemarcacion"
                     :key="option.value"
                     clickable
-                    @click="selectOption(option)"
+                    @click="filtroDemarcacion(option)"
                     v-model="demarcacion_Id"
                     v-close-popup
                   >
@@ -427,11 +230,16 @@
                   </q-item>
                 </q-list>
               </q-btn-dropdown>
-              <br />
-              <div class="text-weight-bolder">Actor político</div>
+            </q-item-section>
+          </q-item>
 
+          <q-item :content-inset-level="2" :header-inset-level="2">
+            <q-item-section>
+              <q-item-label class="text-purple-ieen label-title text-bold"
+                >Actor político</q-item-label
+              >
               <q-btn-dropdown
-                :disable="municipio_Id.label == 'Seleccione una opción'"
+                :disable="distritos_Id.label == 'Seleccione una opción'"
                 :label="actor_politico_Id.label"
                 class="bg-gray-ieen-3 text-white"
               >
@@ -445,15 +253,21 @@
                     v-close-popup
                   >
                     <q-item-section>
-                      <q-item-label>{{ option.label }}</q-item-label>
+                      <q-item-label>{{ option.siglas }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
               </q-btn-dropdown>
-              <br />
-              <div class="text-weight-bolder">Rango de edad</div>
+            </q-item-section>
+          </q-item>
+
+          <q-item :content-inset-level="2" :header-inset-level="2">
+            <q-item-section>
+              <q-item-label class="text-purple-ieen label-title text-bold"
+                >Rango de edad</q-item-label
+              >
               <q-btn-dropdown
-                :disable="municipio_Id.label == 'Seleccione una opción'"
+                :disable="distritos_Id.label == 'Seleccione una opción'"
                 :label="rango_edad_Id.label"
                 class="bg-gray-ieen-3 text-white"
               >
@@ -472,17 +286,22 @@
                   </q-item>
                 </q-list>
               </q-btn-dropdown>
-              <br />
-              <div class="text-weight-bolder">Sexo</div>
+            </q-item-section>
+          </q-item>
 
+          <q-item :content-inset-level="2" :header-inset-level="2">
+            <q-item-section>
+              <q-item-label class="text-purple-ieen label-title text-bold"
+                >Sexo</q-item-label
+              >
               <q-btn-dropdown
-                :disable="municipio_Id.label == 'Seleccione una opción'"
+                :disable="distritos_Id.label == 'Seleccione una opción'"
                 :label="sexo_Id.label"
                 class="bg-gray-ieen-3 text-white"
               >
                 <q-list>
                   <q-item
-                    v-for="option in sexo"
+                    v-for="option in listSexo"
                     :key="option.value"
                     clickable
                     @click="filtroSexo(option)"
@@ -532,7 +351,7 @@ import { useQuasar } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { useRegiduriasStore } from "src/stores/regidurias_store";
-import { onBeforeMount, onMounted, ref, watch } from "vue";
+import { onBeforeMount, onMounted, ref, watch, watchEffect } from "vue";
 
 //---------------------------------------------------------------------------------
 
@@ -550,6 +369,8 @@ const {
   listEdades,
   listActorPolitico,
   listSexo,
+  listCards,
+  listFiltroCards,
 } = storeToRefs(cardsStore);
 
 const distritos_Id = ref(null);
@@ -557,7 +378,6 @@ const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
 const sexo_Id = ref(null);
 const selectedTab = ref(null);
-
 //---------------------------------------------------------------------------------
 
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
@@ -577,12 +397,14 @@ const demarcacion_Id = ref(null);
 
 onMounted(() => {
   const savedTab = localStorage.getItem("selectedTab");
+
   if (savedTab) {
     selectedTab.value = savedTab;
   }
 });
 
 onBeforeMount(() => {
+  cardsStore.loadCards();
   cardsStore.actualizarChart(true);
   cardsStore.loadDistritos();
   cardsStore.loadEdades();
@@ -603,31 +425,12 @@ onBeforeMount(() => {
   demarcacion_Id.value = { value: 0, label: "Todos" };
 });
 
+watch(listCards, (val) => {
+  listFiltroCards.value = val;
+});
 //---------------------------------------------------------------------------------
 //TODOS
 
-// watch(rango_edad_Id, (val) => {
-//   if (rango_edad_Id.value.label == "Todos") {
-//     cardsStore.loadCards();
-//   } else {
-//     cardsStore.filterEdad(rango_edad_Id.value.label);
-//   }
-// });
-// watch(actor_politico_Id, (val) => {
-//   if (actor_politico_Id.value.value == "Todos") {
-//     cardsStore.loadCards();
-//   } else {
-//     cardsStore.filterActorPolitico(actor_politico_Id.value.value);
-//   }
-// });
-
-// watch(sexo_Id, (val) => {
-//   if (sexo_Id.value.label == "Todos") {
-//     cardsStore.loadCards();
-//   } else {
-//     cardsStore.filterSexo(sexo_Id.value.label);
-//   }
-// });
 const isTabSelected = (tab) => {
   return selectedTab.value === tab;
 };
@@ -638,18 +441,19 @@ const setTabSelected = (tab) => {
     cardsStore.actualizarCandidatos(false);
     cardsStore.actualizarDetalle(false);
     cardsStore.actualizarChart(true);
+    limpiarFiltros();
   } else if (tab == "presidencia") {
     presidenciaSindicaturiaStore.actualizarCandidatos(false);
     presidenciaSindicaturiaStore.actualizarDetalle(false);
     presidenciaSindicaturiaStore.actualizarChart(true);
-
     municipio_Id.value = { value: 0, label: "Todos" };
+    limpiarFiltros();
   } else if (tab == "regidurias") {
     regiduriasStore.actualizarCandidatos(false);
     regiduriasStore.actualizarDetalle(false);
     regiduriasStore.actualizarChart(true);
-
     municipio_Id.value = { value: 0, label: "Todos" };
+    limpiarFiltros();
   }
 };
 
@@ -674,164 +478,64 @@ watch(municipio_Id, (val) => {
 //---------------------------------------------------------------------------------
 //DIPUTACIONES
 
-watch(distritos_Id, (val) => {
-  cardsStore.loadCards();
-  if (distritos_Id.value.label == "Todos") {
-    cardsStore.loadCards();
-  } else {
-    cardsStore.loadCards();
-    cardsStore.filterDistrito(distritos_Id.value.value);
-  }
-});
-
 const btnCandidatos = (valor) => {
   cardsStore.actualizarChart(false);
   cardsStore.actualizarDetalle(false);
   cardsStore.actualizarCandidatos(valor);
   distritos_Id.value = { value: 0, label: "Seleccione una opción" };
+  limpiarFiltros();
 };
 const btnNumeralia = (valor) => {
   cardsStore.actualizarChart(valor);
   cardsStore.actualizarDetalle(false);
+  cardsStore.actualizarCandidatos(false);
   distritos_Id.value = { value: 0, label: "Todos" };
+  limpiarFiltros();
 };
+const limpiarFiltros = () => {
+  actor_politico_Id.value = { value: 0, label: "Todos" };
+  rango_edad_Id.value = { value: 0, label: "Todos" };
+  sexo_Id.value = { value: 0, label: "Todos" };
+  demarcacion_Id.value = { value: 0, label: "Todos" };
+};
+
 const filtroDistritos = (option) => {
   distritos_Id.value.value = option.value;
   distritos_Id.value.label = option.label;
-
-  if (selectedTab.value == "diputaciones") {
-    if (option.label == "Todos") {
-      cardsStore.loadCards();
-    } else {
-      cardsStore.loadCards();
-      cardsStore.filterDistrito(option.value);
-    }
-  } else if (selectedTab.value == "presidencia") {
-    if (option.label == "Todos") {
-      presidenciaSindicaturiaStore.loadCards();
-    } else {
-      presidenciaSindicaturiaStore.loadCards();
-      presidenciaSindicaturiaStore.filterDistrito(option.value);
-    }
-  }
 };
 const filtroActorPolitico = (option) => {
   actor_politico_Id.value.value = option.value;
   actor_politico_Id.value.label = option.label;
-  if (selectedTab.value == "diputaciones") {
-    if (option.label == "Todos") {
-      filtroDistritos(distritos_Id.value);
-    } else {
-      filtroDistritos(distritos_Id.value);
-      cardsStore.filterActorPolitico(option.value);
-    }
-  } else if (selectedTab.value == "presidencia") {
-    if (option.label == "Todos") {
-      filtroDistritos(distritos_Id.value);
-    } else {
-      console.log("------------");
-      filtroDistritos(distritos_Id.value);
-      presidenciaSindicaturiaStore.filterActorPolitico(option.value);
-    }
-  }
 };
 const filtroEdades = (option) => {
   rango_edad_Id.value.value = option.value;
   rango_edad_Id.value.label = option.label;
-  if (selectedTab.value == "diputaciones") {
-    if (option.label == "Todos") {
-      filtroActorPolitico(actor_politico_Id.value);
-      filtroDistritos(distritos_Id.value);
-    } else {
-      filtroDistritos(distritos_Id.value);
-      filtroActorPolitico(actor_politico_Id.value);
-      cardsStore.filterEdad(option.label);
-    }
-  } else if (selectedTab.value == "presidencia") {
-    if (option.label == "Todos") {
-      filtroActorPolitico(actor_politico_Id.value);
-      filtroDistritos(distritos_Id.value);
-    } else {
-      filtroDistritos(distritos_Id.value);
-      filtroActorPolitico(actor_politico_Id.value);
-      presidenciaSindicaturiaStore.filterEdad(option.label);
-    }
-  }
 };
 const filtroSexo = (option) => {
   sexo_Id.value.value = option.value;
   sexo_Id.value.label = option.label;
-  if (selectedTab.value == "diputaciones") {
-    if (option.label == "Todos") {
-      filtroDistritos(distritos_Id.value);
-      filtroActorPolitico(actor_politico_Id.value);
-      filtroEdades(rango_edad_Id.value);
-    } else {
-      filtroDistritos(distritos_Id.value);
-      filtroActorPolitico(actor_politico_Id.value);
-      filtroEdades(rango_edad_Id.value);
-      cardsStore.filterSexo(option.label);
-    }
-  } else if (selectedTab.value == "presidencia") {
-    if (option.label == "Todos") {
-      filtroDistritos(distritos_Id.value);
-      filtroActorPolitico(actor_politico_Id.value);
-      filtroEdades(rango_edad_Id.value);
-    } else {
-      filtroDistritos(distritos_Id.value);
-      filtroActorPolitico(actor_politico_Id.value);
-      filtroEdades(rango_edad_Id.value);
-      presidenciaSindicaturiaStore.filterSexo(option.label);
-    }
-  }
-};
-const filtro = () => {
-  // if (distritos_Id.value.label == "Todos") {
-  //   cardsStore.filterDistrito(distritos_Id.value.value);
-  //   cardsStore.filtro(
-  //     distritos_Id.value.value,
-  //     actor_politico_Id.value.value,
-  //     rango_edad_Id.value.label,
-  //     sexo_Id.value.value
-  //   );
-  // } else {
-  //   cardsStore.filtro(
-  //     distritos_Id.value.value,
-  //     actor_politico_Id.value.value,
-  //     rango_edad_Id.value.label,
-  //     sexo_Id.value.value
-  //   );
-  // }
-  // cardsStore.filterDistrito(distritos_Id.value);
-  // cardsStore.filterActorPolitico(actor_politico_Id.value);
-  // cardsStore.filterEdad(rango_edad_Id.value.label);
-  // cardsStore.filterSexo(sexo_Id.value);
 };
 //---------------------------------------------------------------------------------
 //PRESIDENCIA
 
 const btnCandidatosPresidencia = (valor) => {
+  console.log("entro", valor);
   presidenciaSindicaturiaStore.actualizarChart(false);
   presidenciaSindicaturiaStore.actualizarDetalle(false);
   presidenciaSindicaturiaStore.actualizarCandidatos(valor);
-
   municipio_Id.value = { value: 0, label: "Seleccione una opción" };
+  limpiarFiltros();
 };
 const btnNumeraliaPresidencia = (valor) => {
   presidenciaSindicaturiaStore.actualizarChart(valor);
   presidenciaSindicaturiaStore.actualizarCandidatos(false);
   presidenciaSindicaturiaStore.actualizarDetalle(false);
   municipio_Id.value = { value: 0, label: "Todos" };
+  limpiarFiltros();
 };
 const filtroMunicipios = (option) => {
   municipio_Id.value.value = option.value;
   municipio_Id.value.label = option.label;
-  if (option.label == "Todos") {
-    presidenciaSindicaturiaStore.loadCards();
-  } else {
-    presidenciaSindicaturiaStore.loadCards();
-    presidenciaSindicaturiaStore.filterCards(option.value);
-  }
 };
 //---------------------------------------------------------------------------------
 //REGIDURIAS
@@ -840,6 +544,7 @@ const btnCandidatosRegidurias = (valor) => {
   regiduriasStore.actualizarDetalle(false);
   regiduriasStore.actualizarCandidatos(valor);
   municipio_Id.value = { value: 0, label: "Seleccione una opción" };
+  limpiarFiltros();
 };
 
 const btnNumeraliaRegidurias = (valor) => {
@@ -847,22 +552,87 @@ const btnNumeraliaRegidurias = (valor) => {
   regiduriasStore.actualizarCandidatos(false);
   regiduriasStore.actualizarDetalle(false);
   municipio_Id.value = { value: 0, label: "Todos" };
+  limpiarFiltros();
 };
 
-const filtroMunicipiosRegidurias = (option) => {
-  municipio_Id.value.value = option.value;
-  municipio_Id.value.label = option.label;
-  if (option.label == "Todos") {
-    regiduriasStore.loadCards();
-  } else {
-    regiduriasStore.loadCards();
-    regiduriasStore.filterCards(option.value);
-  }
+const filtroDemarcacion = (option) => {
+  demarcacion_Id.value.value = option.value;
+  demarcacion_Id.value.label = option.label;
 };
 //---------------------------------------------------------------------------------
-const limpiar = () => {
-  actor_politico_Id.value = { value: 0, label: "Todos" };
+const filtrar = (listCards, filtro) => {
+  console.log(filtro);
+
+  listFiltroCards.value = listCards.filter((item) => {
+    let cumple = true;
+    if (filtro.distrito !== undefined) {
+      if (filtro.distrito == "") {
+        cumple = cumple && item.distrito === item.distrito;
+      } else {
+        cumple = cumple && item.distrito === filtro.distrito;
+      }
+    }
+    if (filtro.actor_politico !== undefined) {
+      if (filtro.actor_politico == "") {
+        cumple = cumple && item.siglas === item.siglas;
+      } else {
+        cumple = cumple && item.siglas === filtro.actor_politico;
+      }
+    }
+
+    if (filtro.edad !== undefined) {
+      if (filtro.edad == "Todos") {
+        cumple = cumple && item.edad_prop > 0;
+      } else {
+        const rango = filtro.edad.split("-").map(Number);
+        if (rango.length === 2) {
+          cumple =
+            cumple && item.edad_prop >= rango[0] && item.edad_prop <= rango[1];
+        } else if (rango.length === 1 && rango[0] === 60) {
+          cumple = cumple && item.edad_prop >= rango[0];
+        }
+      }
+    }
+
+    if (filtro.sexo !== undefined) {
+      if (filtro.sexo == "Todos") {
+        cumple = cumple && item.sexo_prop === item.sexo_prop;
+      } else {
+        cumple = cumple && item.sexo_prop === filtro.sexo;
+      }
+    }
+
+    if (filtro.municipio !== undefined) {
+      if (filtro.municipio == "") {
+        cumple = cumple && item.municipio === item.municipio;
+      } else {
+        cumple = cumple && item.municipio === filtro.municipio;
+      }
+    }
+
+    if (filtro.demarcacion !== undefined) {
+      if (filtro.demarcacion == "") {
+        cumple = cumple && item.demarcacion_Id === item.demarcacion_Id;
+      } else {
+        cumple = cumple && item.demarcacion_Id === filtro.demarcacion;
+      }
+    }
+
+    return cumple;
+  });
 };
+watchEffect(() => {
+  const filtro = {};
+  if (distritos_Id.value != null) filtro.distrito = distritos_Id.value.value;
+  if (actor_politico_Id.value != null)
+    filtro.actor_politico = actor_politico_Id.value.value;
+  if (rango_edad_Id.value != null) filtro.edad = rango_edad_Id.value.label;
+  if (sexo_Id.value != null) filtro.sexo = sexo_Id.value.label;
+  if (municipio_Id.value != null) filtro.municipio = municipio_Id.value.value;
+  if (demarcacion_Id.value != null)
+    filtro.demarcacion = demarcacion_Id.value.value;
+  filtrar(listCards.value, filtro);
+});
 </script>
 <style lang="scss">
 .flex-center {
@@ -874,6 +644,7 @@ const limpiar = () => {
   color: #673e84 !important;
 }
 .bg-pink-ieen {
+  color: white;
   background: #d1308a !important;
 }
 .bg-pink-ieen-2 {
@@ -916,6 +687,7 @@ const limpiar = () => {
   color: #dd85ba !important;
 }
 .bg-pink-ieen-3 {
+  color: white;
   background: #dd85ba !important;
 }
 .text-gray-ieen-1 {

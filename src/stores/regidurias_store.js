@@ -63,6 +63,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
           municipio: 1,
           municipio_name: "Acaponeta",
           demarcacion: 1,
+          siglas: 2,
           prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
           nombre_prop: "CARLOS ROBERTO",
           edad_prop: 25,
@@ -77,12 +78,8 @@ export const useRegiduriasStore = defineStore("regidurias", {
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
           formula_sup: "789456",
-          imgPartido1:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
           imgPartido2:
             "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
         },
         {
           id: 2,
@@ -91,6 +88,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
           municipio: 2,
           municipio_name: "Ahuacatlán",
           demarcacion: 2,
+          siglas: 2,
           prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
           nombre_prop: "PALOMA DE LOS SANTOS",
           edad_prop: 25,
@@ -106,11 +104,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
           estado_sup: "Nayarit",
           formula_sup: "789456",
           imgPartido1:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MORENA.png",
-          imgPartido2:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PT.png",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PVEM.png",
+            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
         },
         {
           id: 3,
@@ -120,6 +114,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
           nombre_prop: "AIDA GARCIA BADILLO",
           edad_prop: 35,
           municipio: 2,
+          siglas: 1,
           municipio_name: "Ahuacatlán",
           demarcacion: 2,
           sexo_prop: "Mujer",
@@ -134,7 +129,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
           estado_sup: "Nayarit",
           formula_sup: "789456",
           imgPartido1:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MC.png",
+            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
         },
       ];
     },
@@ -189,6 +184,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
         { id: 8, nombre: "Demarcación 9" },
         { id: 10, nombre: "Demarcación 10" },
         { id: 11, nombre: "Demarcación 11" },
+        { id: "", nombre: "Representación proporcional" },
       ];
       this.listDemarcacion = data.map((demarcacion) => {
         return {
@@ -238,13 +234,26 @@ export const useRegiduriasStore = defineStore("regidurias", {
       this.listCards = filteredCards;
     },
 
+    async filterDemarcacion(demarcacion) {
+      const filterDemarcacion = this.listCards.filter(
+        (card) => card.demarcacion === demarcacion
+      );
+      this.listCards = filterDemarcacion;
+    },
+
+    async filterActorPolitico(actor_politico) {
+      const filterActorPolitico = this.listCards.filter(
+        (actor) => actor.siglas === actor_politico
+      );
+      this.listCards = filterActorPolitico;
+    },
+
     async filterEdad(rango_edad) {
+      console.log("edad", rango_edad);
       if (rango_edad === "Todos") {
         return this.listCards;
       }
-
       const rango = rango_edad.split("-").map(Number);
-      console.log("rango", rango);
       const filteredList = this.listCards.filter((card) => {
         const edad_prop = card.edad_prop;
         if (rango.length === 2) {
@@ -257,6 +266,13 @@ export const useRegiduriasStore = defineStore("regidurias", {
 
       this.listCards = filteredList;
       return filteredList;
+    },
+
+    async filterSexo(sexo) {
+      const filterSexo = this.listCards.filter(
+        (filter) => filter.sexo_prop === sexo
+      );
+      this.listCards = filterSexo;
     },
   },
 });

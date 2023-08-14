@@ -43,18 +43,21 @@
     <q-splitter style="height: 500px">
       <template v-slot:before>
         <q-tabs v-model="tab" vertical class="text-teal">
-          <q-tab name="grado_academico" label="Grado academico" />
+          <q-tab name="grado_academico" label="Grado académico" />
           <q-tab name="nivel_ingresos" label="Nivel de ingresos" />
           <q-tab name="cand_indigenas" label="Candidaturas indígenas" />
           <q-tab
             name="cand_discapacidad"
-            label="Candidaturas de discapacidad"
+            label="Candidaturas con discapacidad"
           />
           <q-tab name="cand_afromexicanas" label="Candidaturas afromexicanas" />
-          <q-tab name="movies" label="Candidaturas de la diversidad sexual" />
-          <q-tab name="movies" label="Candidaturas migrantes" />
-          <q-tab name="movies" label="Candidaturas de personas jovenes" />
-          <q-tab name="movies" label="Candidaturas de personas mayores" />
+          <q-tab
+            name="cand_div_sex"
+            label="Candidaturas de la diversidad sexual"
+          />
+          <q-tab name="cand_mig" label="Candidaturas migrantes" />
+          <q-tab name="cand_jov" label="Candidaturas de personas jóvenes" />
+          <q-tab name="cand_mayores" label="Candidaturas de personas mayores" />
         </q-tabs>
       </template>
       <template v-slot:after>
@@ -70,7 +73,7 @@
             name="grado_academico"
             class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
           >
-            <div class="text-h4 q-mb-md">Grado academico</div>
+            <div class="text-h4 q-mb-md">Grado académico</div>
             <chartGradoAcademico class="flex flex-center" />
           </q-tab-panel>
 
@@ -80,7 +83,7 @@
           </q-tab-panel>
 
           <q-tab-panel name="cand_indigenas">
-            <div class="text-h4 q-mb-md">Candidaturas Indigenas</div>
+            <div class="text-h4 q-mb-md">Candidaturas Indígenas</div>
             <chartCandIndigenas class="flex flex-center" />
           </q-tab-panel>
 
@@ -92,6 +95,28 @@
           <q-tab-panel name="cand_afromexicanas">
             <div class="text-h4 q-mb-md">Candidaturas Afromexicanas</div>
             <chartCandAfromexicanas class="flex flex-center" />
+          </q-tab-panel>
+
+          <q-tab-panel name="cand_div_sex">
+            <div class="text-h4 q-mb-md">
+              Candidaturas de la diversidad sexual
+            </div>
+            <chartCandDivSexual class="flex flex-center" />
+          </q-tab-panel>
+
+          <q-tab-panel name="cand_mig">
+            <div class="text-h4 q-mb-md">Candidaturas migrantes</div>
+            <chartCandMigrantes class="flex flex-center" />
+          </q-tab-panel>
+
+          <q-tab-panel name="cand_jov">
+            <div class="text-h4 q-mb-md">Candidaturas de personas jóvenes</div>
+            <chartCandJov class="flex flex-center" />
+          </q-tab-panel>
+
+          <q-tab-panel name="cand_mayores">
+            <div class="text-h4 q-mb-md">Candidaturas de personas mayores</div>
+            <chartCandMayores class="flex flex-center" />
           </q-tab-panel>
         </q-tab-panels>
       </template>
@@ -108,7 +133,10 @@ import chartNivelIngresos from "../../../charts/chartNivelIngresos.vue";
 import chartCandIndigenas from "../../../charts/chartCandidaturaIndigenas.vue";
 import chartCandDiscapacidad from "../../../charts/chartCandDiscapacidad.vue";
 import chartCandAfromexicanas from "../../../charts/chartCandAfromexicacas.vue";
-
+import chartCandDivSexual from "../../../charts/chartCandDivSexual.vue";
+import chartCandMigrantes from "../../../charts/chartMigrantes.vue";
+import chartCandJov from "../../../charts/chartCandJovenes.vue";
+import chartCandMayores from "../../../charts/chartCandMayores.vue";
 //---------------------------------------------------------------------------------
 const tab = ref("grado_academico");
 </script>

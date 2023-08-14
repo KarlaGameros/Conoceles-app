@@ -1,6 +1,7 @@
 <template>
+  <q-input v-model="filtro"></q-input>
   <div
-    v-if="listCards != ''"
+    v-if="listCardsFiltro != ''"
     class="q-pa-md row items-start q-gutter-md flex flex-center"
   >
     <div style="border-radius: 20px">
@@ -28,7 +29,7 @@
     </div>
 
     <q-card
-      v-for="item in listCards"
+      v-for="item in listCardsFiltro"
       :key="item.id"
       class="col-lg-2 col-md-2 col-sm-3 col-xs-12"
       flat
@@ -105,7 +106,7 @@
       </q-card-actions>
     </q-card>
   </div>
-  <div v-if="listCards == ''">
+  <div v-if="listCardsFiltro == ''">
     <div style="border-radius: 20px">
       <q-banner
         :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
@@ -138,18 +139,36 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
+import { useCardsStore } from "src/stores/cards-store";
 import { useRegiduriasStore } from "src/stores/regidurias_store";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 //---------------------------------------------------------------------------------
 
+const candidatosStore = useCardsStore();
 const regiduriasStore = useRegiduriasStore();
-const { listCards } = storeToRefs(regiduriasStore);
+const { listFiltroCards } = storeToRefs(candidatosStore);
+const filtro = ref("");
+const listCardsFiltro = ref(listFiltroCards.value);
 
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
   regiduriasStore.actualizarMenu(true);
+});
+watch(listFiltroCards, (val) => {
+  listCardsFiltro.value = val;
+});
+watch(filtro, (val) => {
+  if (val.length == 0) {
+    listCardsFiltro.value = listFiltroCards.value;
+  } else if (val.length >= 3) {
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
+      x.nombre_prop.toLowerCase().includes(val.toLowerCase())
+    );
+  } else {
+    return;
+  }
 });
 
 //---------------------------------------------------------------------------------

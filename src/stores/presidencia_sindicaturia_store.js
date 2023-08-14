@@ -106,10 +106,6 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             cargo_sup_sin: "Sup. Sindico",
             estado_sup_sin: "Nayarit",
             formula_sup_sin: "785456",
-            imgPartido1:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
-            imgPartido2:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
             imgPartido3:
               "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
           },
@@ -151,12 +147,8 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             cargo_sup_sin: "Diputada",
             estado_sup_sin: "Nayarit",
             formula_sup_sin: "785456",
-            imgPartido1:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MORENA.png",
-            imgPartido2:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PT.png",
             imgPartido3:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PVEM.png",
+              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
           },
           {
             id: 3,
@@ -197,7 +189,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             estado_sup_sin: "Nayarit",
             formula_sup_sin: "785456",
             imgPartido1:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MC.png",
+              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
           },
           {
             id: 4,
@@ -238,11 +230,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             estado_sup_sin: "Nayarit",
             formula_sup_sin: "785456",
             imgPartido1:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MORENA.png",
-            imgPartido2:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PT.png",
-            imgPartido3:
-              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PVEM.png",
+              "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
           },
         ];
       },
