@@ -121,7 +121,9 @@
                     v-close-popup
                   >
                     <q-item-section>
-                      <q-item-label>{{ option.label }}</q-item-label>
+                      <q-item-label>{{
+                        `${option.value} - ${option.label}`
+                      }}</q-item-label>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -139,7 +141,7 @@
                     v-for="option in listActorPolitico"
                     :key="option.value"
                     clickable
-                    @click="selectOption(option)"
+                    @click="filtroActorPolitico(option)"
                     v-model="actor_politico_Id"
                     v-close-popup
                   >
@@ -161,7 +163,7 @@
                     v-for="option in listEdades"
                     :key="option.value"
                     clickable
-                    @click="selectOption(option)"
+                    @click="filtroEdades(option)"
                     v-model="rango_edad_Id"
                     v-close-popup
                   >
@@ -181,10 +183,10 @@
               >
                 <q-list>
                   <q-item
-                    v-for="option in sexo"
+                    v-for="option in listSexo"
                     :key="option.value"
                     clickable
-                    @click="selectOption(option)"
+                    @click="filtroSexo(option)"
                     v-model="sexo_Id"
                     v-close-popup
                   >
@@ -277,7 +279,7 @@
                     v-for="option in listActorPolitico"
                     :key="option.value"
                     clickable
-                    @click="selectOption(option)"
+                    @click="filtroActorPolitico(option)"
                     v-model="actor_politico_Id"
                     v-close-popup
                   >
@@ -299,7 +301,7 @@
                     v-for="option in listEdades"
                     :key="option.value"
                     clickable
-                    @click="selectOption(option)"
+                    @click="filtroEdades(option)"
                     v-model="rango_edad_Id"
                     v-close-popup
                   >
@@ -319,10 +321,10 @@
               >
                 <q-list>
                   <q-item
-                    v-for="option in sexo"
+                    v-for="option in listSexo"
                     :key="option.value"
                     clickable
-                    @click="selectOption(option)"
+                    @click="filtroSexo(option)"
                     v-model="sexo_Id"
                     v-close-popup
                   >
@@ -438,7 +440,7 @@
                     v-for="option in listActorPolitico"
                     :key="option.value"
                     clickable
-                    @click="selectOption(option)"
+                    @click="filtroActorPolitico(option)"
                     v-model="actor_politico_Id"
                     v-close-popup
                   >
@@ -460,7 +462,7 @@
                     v-for="option in listEdades"
                     :key="option.value"
                     clickable
-                    @click="selectOption(option)"
+                    @click="filtroEdades(option)"
                     v-model="rango_edad_Id"
                     v-close-popup
                   >
@@ -483,7 +485,7 @@
                     v-for="option in sexo"
                     :key="option.value"
                     clickable
-                    @click="selectOption(option)"
+                    @click="filtroSexo(option)"
                     v-model="sexo_Id"
                     v-close-popup
                   >
@@ -547,6 +549,7 @@ const {
   isChartPage,
   listEdades,
   listActorPolitico,
+  listSexo,
 } = storeToRefs(cardsStore);
 
 const distritos_Id = ref(null);
@@ -562,21 +565,6 @@ const { isChartPagePS, listMunicipios, isHomePagePS } = storeToRefs(
   presidenciaSindicaturiaStore
 );
 const municipio_Id = ref(null);
-
-const sexo = ref([
-  {
-    value: 1,
-    label: "Mujer",
-  },
-  {
-    value: 2,
-    label: "Hombre",
-  },
-  {
-    value: 3,
-    label: "No binario",
-  },
-]);
 
 //---------------------------------------------------------------------------------
 
@@ -599,6 +587,7 @@ onBeforeMount(() => {
   cardsStore.loadDistritos();
   cardsStore.loadEdades();
   cardsStore.loadActorPolitico();
+  cardsStore.loadSexo();
 
   distritos_Id.value = { value: 0, label: "Todos" };
   rango_edad_Id.value = { value: 0, label: "Todos" };
@@ -691,7 +680,7 @@ watch(distritos_Id, (val) => {
     cardsStore.loadCards();
   } else {
     cardsStore.loadCards();
-    cardsStore.filterCards(distritos_Id.value.value);
+    cardsStore.filterDistrito(distritos_Id.value.value);
   }
 });
 
@@ -709,12 +698,114 @@ const btnNumeralia = (valor) => {
 const filtroDistritos = (option) => {
   distritos_Id.value.value = option.value;
   distritos_Id.value.label = option.label;
-  if (option.label == "Todos") {
-    cardsStore.loadCards();
-  } else {
-    cardsStore.loadCards();
-    cardsStore.filterCards(option.value);
+
+  if (selectedTab.value == "diputaciones") {
+    if (option.label == "Todos") {
+      cardsStore.loadCards();
+    } else {
+      cardsStore.loadCards();
+      cardsStore.filterDistrito(option.value);
+    }
+  } else if (selectedTab.value == "presidencia") {
+    if (option.label == "Todos") {
+      presidenciaSindicaturiaStore.loadCards();
+    } else {
+      presidenciaSindicaturiaStore.loadCards();
+      presidenciaSindicaturiaStore.filterDistrito(option.value);
+    }
   }
+};
+const filtroActorPolitico = (option) => {
+  actor_politico_Id.value.value = option.value;
+  actor_politico_Id.value.label = option.label;
+  if (selectedTab.value == "diputaciones") {
+    if (option.label == "Todos") {
+      filtroDistritos(distritos_Id.value);
+    } else {
+      filtroDistritos(distritos_Id.value);
+      cardsStore.filterActorPolitico(option.value);
+    }
+  } else if (selectedTab.value == "presidencia") {
+    if (option.label == "Todos") {
+      filtroDistritos(distritos_Id.value);
+    } else {
+      console.log("------------");
+      filtroDistritos(distritos_Id.value);
+      presidenciaSindicaturiaStore.filterActorPolitico(option.value);
+    }
+  }
+};
+const filtroEdades = (option) => {
+  rango_edad_Id.value.value = option.value;
+  rango_edad_Id.value.label = option.label;
+  if (selectedTab.value == "diputaciones") {
+    if (option.label == "Todos") {
+      filtroActorPolitico(actor_politico_Id.value);
+      filtroDistritos(distritos_Id.value);
+    } else {
+      filtroDistritos(distritos_Id.value);
+      filtroActorPolitico(actor_politico_Id.value);
+      cardsStore.filterEdad(option.label);
+    }
+  } else if (selectedTab.value == "presidencia") {
+    if (option.label == "Todos") {
+      filtroActorPolitico(actor_politico_Id.value);
+      filtroDistritos(distritos_Id.value);
+    } else {
+      filtroDistritos(distritos_Id.value);
+      filtroActorPolitico(actor_politico_Id.value);
+      presidenciaSindicaturiaStore.filterEdad(option.label);
+    }
+  }
+};
+const filtroSexo = (option) => {
+  sexo_Id.value.value = option.value;
+  sexo_Id.value.label = option.label;
+  if (selectedTab.value == "diputaciones") {
+    if (option.label == "Todos") {
+      filtroDistritos(distritos_Id.value);
+      filtroActorPolitico(actor_politico_Id.value);
+      filtroEdades(rango_edad_Id.value);
+    } else {
+      filtroDistritos(distritos_Id.value);
+      filtroActorPolitico(actor_politico_Id.value);
+      filtroEdades(rango_edad_Id.value);
+      cardsStore.filterSexo(option.label);
+    }
+  } else if (selectedTab.value == "presidencia") {
+    if (option.label == "Todos") {
+      filtroDistritos(distritos_Id.value);
+      filtroActorPolitico(actor_politico_Id.value);
+      filtroEdades(rango_edad_Id.value);
+    } else {
+      filtroDistritos(distritos_Id.value);
+      filtroActorPolitico(actor_politico_Id.value);
+      filtroEdades(rango_edad_Id.value);
+      presidenciaSindicaturiaStore.filterSexo(option.label);
+    }
+  }
+};
+const filtro = () => {
+  // if (distritos_Id.value.label == "Todos") {
+  //   cardsStore.filterDistrito(distritos_Id.value.value);
+  //   cardsStore.filtro(
+  //     distritos_Id.value.value,
+  //     actor_politico_Id.value.value,
+  //     rango_edad_Id.value.label,
+  //     sexo_Id.value.value
+  //   );
+  // } else {
+  //   cardsStore.filtro(
+  //     distritos_Id.value.value,
+  //     actor_politico_Id.value.value,
+  //     rango_edad_Id.value.label,
+  //     sexo_Id.value.value
+  //   );
+  // }
+  // cardsStore.filterDistrito(distritos_Id.value);
+  // cardsStore.filterActorPolitico(actor_politico_Id.value);
+  // cardsStore.filterEdad(rango_edad_Id.value.label);
+  // cardsStore.filterSexo(sexo_Id.value);
 };
 //---------------------------------------------------------------------------------
 //PRESIDENCIA
@@ -769,6 +860,9 @@ const filtroMunicipiosRegidurias = (option) => {
   }
 };
 //---------------------------------------------------------------------------------
+const limpiar = () => {
+  actor_politico_Id.value = { value: 0, label: "Todos" };
+};
 </script>
 <style lang="scss">
 .flex-center {

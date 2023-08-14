@@ -5,7 +5,7 @@
       style="border-radius: 20px"
     >
       Consulte la información proporcionada de manera obligatoria por las
-      candidaturas que participan en la contienda electoral local 2023. La
+      candidaturas que participan en la contienda electoral local 2024. La
       información es responsabilidad de los partidos políticos. El Instituto
       únicamente apoya para su difusión.
     </q-banner>

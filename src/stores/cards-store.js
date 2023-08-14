@@ -11,6 +11,7 @@ export const useCardsStore = defineStore("cards", {
     listDistritos: [],
     listEdades: [],
     listActorPolitico: [],
+    listSexo: [],
     card: {
       id: null,
       selection: null,
@@ -76,10 +77,6 @@ export const useCardsStore = defineStore("cards", {
           estado_sup: "Nayarit",
           formula_sup: "789456",
           siglas: 1,
-          imgPartido1:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
-          imgPartido2:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
           imgPartido3:
             "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
         },
@@ -103,13 +100,9 @@ export const useCardsStore = defineStore("cards", {
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
           formula_sup: "789456",
-          siglas: 2,
+          siglas: 7,
           imgPartido1:
             "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MORENA.png",
-          imgPartido2:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PT.png",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PVEM.png",
         },
         {
           id: 3,
@@ -127,7 +120,7 @@ export const useCardsStore = defineStore("cards", {
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
           nombre_sup: "MARIA LOPEZ",
           edad_sup: 30,
-          siglas: 3,
+          siglas: 6,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
@@ -151,17 +144,13 @@ export const useCardsStore = defineStore("cards", {
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
           nombre_sup: "MARIA LOPEZ",
           edad_sup: 30,
-          siglas: 4,
+          siglas: 7,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
           formula_sup: "789456",
           imgPartido1:
             "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MORENA.png",
-          imgPartido2:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PT.png",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PVEM.png",
         },
         {
           id: 5,
@@ -179,17 +168,13 @@ export const useCardsStore = defineStore("cards", {
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
           nombre_sup: "MARIA LOPEZ",
           edad_sup: 30,
-          siglas: 5,
+          siglas: 2,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
           estado_sup: "Nayarit",
           formula_sup: "789456",
-          imgPartido1:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRD.png",
           imgPartido2:
             "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
         },
       ];
       console.log("this cards", this.listCards);
@@ -248,10 +233,25 @@ export const useCardsStore = defineStore("cards", {
       });
     },
 
+    async loadSexo(sexo) {
+      const data = [
+        { id: "", sexo: "Todos" },
+        { id: 1, sexo: "Mujer" },
+        { id: 2, sexo: "Hombre" },
+        { id: 3, sexo: "No binario" },
+      ];
+      this.listSexo = data.map((sexo) => {
+        return {
+          label: sexo.sexo,
+          value: sexo.id,
+        };
+      });
+    },
     //---------------------------------------------------------------------------------
 
     async loadActorPolitico(siglas) {
       const data = [
+        { id: "", siglas: "", nombre: "Todos" },
         { id: 1, siglas: "PAN", nombre: "Partido Acción Nacional" },
         {
           id: 2,
@@ -329,7 +329,7 @@ export const useCardsStore = defineStore("cards", {
 
     //---------------------------------------------------------------------------------
 
-    async filterCards(distrito) {
+    async filterDistrito(distrito) {
       const filteredCards = this.listCards.filter(
         (card) => card.distrito === distrito
       );
@@ -338,12 +338,11 @@ export const useCardsStore = defineStore("cards", {
     },
 
     async filterEdad(rango_edad) {
+      console.log("edad", rango_edad);
       if (rango_edad === "Todos") {
         return this.listCards;
       }
-
       const rango = rango_edad.split("-").map(Number);
-      console.log("rango", rango);
       const filteredList = this.listCards.filter((card) => {
         const edad_prop = card.edad_prop;
         if (rango.length === 2) {
@@ -359,19 +358,18 @@ export const useCardsStore = defineStore("cards", {
     },
 
     async filterActorPolitico(actor_politico) {
-      const filterActorPolitico = this.listCards.filter((actor) => {
-        actor.siglas === actor_politico;
-      });
+      const filterActorPolitico = this.listCards.filter(
+        (actor) => actor.siglas === actor_politico
+      );
       this.listCards = filterActorPolitico;
-      console.log(filterActorPolitico);
+      console.log("filterActorPolitico", filterActorPolitico);
     },
 
     async filterSexo(sexo) {
-      const filterSexo = this.listCards.filter((filter) => {
-        filter.sexo === sexo;
-      });
+      const filterSexo = this.listCards.filter(
+        (filter) => filter.sexo_prop === sexo
+      );
       this.listCards = filterSexo;
-      console.log(filterSexo);
     },
   },
 });

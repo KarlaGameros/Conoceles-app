@@ -16,6 +16,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
         selection: null,
         label: null,
         prop: null,
+        siglas: null,
         nombre_prop: null,
         edad_prop: null,
         sexo_prop: null,
@@ -73,6 +74,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             selection: "prop",
             label: "",
             municipio: 1,
+            siglas: 1,
             municipio_name: "Acaponeta",
             prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
             nombre_prop: "CARLOS ROBERTO",
@@ -116,6 +118,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             visible: false,
             selection: "prop",
             label: "",
+            siglas: 1,
             municipio: 2,
             municipio_name: "Ahuacatlán",
             prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
@@ -160,6 +163,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             visible: false,
             selection: "prop",
             label: "",
+            siglas: 2,
             municipio: 17,
             municipio_name: "Tepic",
             prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
@@ -200,6 +204,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
             visible: false,
             selection: "prop",
             label: "",
+            siglas: 2,
             municipio: 2,
             municipio_name: "Ahuacatlán",
             prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
@@ -284,6 +289,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
           this.card.prop = card.prop;
           this.card.selection = card.selection;
           this.card.nombre_prop = card.nombre_prop;
+          this.card.siglas = card.siglas;
           this.card.municipio = card.municipio;
           this.card.municipio_name = card.municipio_name;
           this.card.edad_prop = card.edad_prop;
@@ -327,6 +333,15 @@ export const usePresidenciaSindicaturiaStore = defineStore(
         this.listCards = filteredCards;
       },
 
+      async filterActorPolitico(actor_politico) {
+        console.log("fil", actor_politico);
+        const filterActorPolitico = this.listCards.filter(
+          (actor) => actor.siglas === actor_politico
+        );
+        this.listCards = filterActorPolitico;
+        console.log("list", filterActorPolitico);
+      },
+
       async filterEdad(rango_edad) {
         if (rango_edad === "Todos") {
           return this.listCards;
@@ -346,6 +361,13 @@ export const usePresidenciaSindicaturiaStore = defineStore(
 
         this.listCards = filteredList;
         return filteredList;
+      },
+
+      async filterSexo(sexo) {
+        const filterSexo = this.listCards.filter(
+          (filter) => filter.sexo_prop === sexo
+        );
+        this.listCards = filterSexo;
       },
     },
   }

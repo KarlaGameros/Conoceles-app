@@ -130,7 +130,7 @@
       <img
         alt="PREP logo"
         src="../../../assets/opcion1.png"
-        style="width: 900px; height: 600px"
+        style="width: 618px; height: 579px"
       />
     </div>
   </div>

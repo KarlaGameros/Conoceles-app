@@ -139,7 +139,7 @@
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import { onMounted } from "vue";
-
+import pdfCandidato from "../../../helpers/pdf";
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
@@ -157,13 +157,14 @@ const verMas = async (id, valor) => {
   cardsStore.loadCard(id);
 };
 
-const pdf = () => {
-  const pdfURL = "https://eqpro.es/wp-content/uploads/2018/11/Ejemplo.pdf";
-  const link = document.createElement("a");
-  link.href = pdfURL;
-  link.target = "_blank";
-  link.download = "archivo.pdf";
-  link.click();
+const pdf = async () => {
+  // const pdfURL = "https://eqpro.es/wp-content/uploads/2018/11/Ejemplo.pdf";
+  // const link = document.createElement("a");
+  // link.href = pdfURL;
+  // link.target = "_blank";
+  // link.download = "archivo.pdf";
+  // link.click();
+  pdfCandidato();
 };
 
 const backCards = () => {
