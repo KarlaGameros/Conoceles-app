@@ -37,6 +37,7 @@ import DetalleCantidato from "../components/detalleCantidato.vue";
 import { onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
+import { useCardsStore } from "src/stores/cards-store";
 
 //---------------------------------------------------------------------------------
 
@@ -46,11 +47,12 @@ const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
 const { isCandidatosPage, isDetallePage, isChartPagePS } = storeToRefs(
   presidenciaSindicaturiaStore
 );
-
+const cardsStore = useCardsStore();
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
   presidenciaSindicaturiaStore.actualizarMenu(true);
+  cardsStore.actualizarMenu(true);
 });
 
 //---------------------------------------------------------------------------------

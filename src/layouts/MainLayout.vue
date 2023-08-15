@@ -87,51 +87,82 @@
               <div class="text-h6 q-pa-xs" style="color: grey">
                 Selecciona el reporte que deseas consultar:
               </div>
+              <!---------------DIPUTACIONES------------------------------------>
               <q-btn
                 v-if="selectedTab === 'diputaciones'"
                 @click="btnNumeralia(true)"
                 :to="{ name: 'diputaciones' }"
                 label="Numeralia"
-                class="bg-pink-ieen"
+                :class="{
+                  'bg-pink-ieen':
+                    selectedTab === 'diputaciones' && numeraliaSelected,
+                  'bg-pink-ieen-3':
+                    selectedTab === 'diputaciones' && !numeraliaSelected,
+                }"
               />
               <br v-if="selectedTab === 'diputaciones'" />
               <q-btn
                 v-if="selectedTab === 'diputaciones'"
                 :to="{ name: 'diputaciones' }"
                 label="Candidatas y candidatos"
-                class="bg-pink-ieen-3"
+                :class="{
+                  'bg-pink-ieen':
+                    selectedTab === 'diputaciones' && candidatosSelected,
+                  'bg-pink-ieen-3':
+                    selectedTab === 'diputaciones' && !candidatosSelected,
+                }"
                 @click="btnCandidatos(true)"
               />
-              <!-------------------------------------->
+              <!---------------PRESIDENCIA------------------------------------>
               <q-btn
                 v-if="selectedTab === 'presidencia'"
                 @click="btnNumeraliaPresidencia(true)"
-                :to="{ name: 'diputaciones' }"
+                :to="{ name: 'presidenciaSindicatura' }"
                 label="Numeralia"
-                class="bg-pink-ieen"
+                :class="{
+                  'bg-pink-ieen':
+                    selectedTab === 'presidencia' && numeraliaSelected,
+                  'bg-pink-ieen-3':
+                    selectedTab === 'presidencia' && !numeraliaSelected,
+                }"
               />
               <br v-if="selectedTab === 'presidencia'" />
               <q-btn
                 v-if="selectedTab === 'presidencia'"
                 :to="{ name: 'presidenciaSindicatura' }"
                 label="Candidatas y candidatos"
-                class="bg-pink-ieen-3"
+                :class="{
+                  'bg-pink-ieen':
+                    selectedTab === 'presidencia' && candidatosSelected,
+                  'bg-pink-ieen-3':
+                    selectedTab === 'presidencia' && !candidatosSelected,
+                }"
                 @click="btnCandidatosPresidencia(true)"
               />
-              <!-------------------------------------->
+              <!---------------REGIDURIAS------------------------------------>
               <q-btn
                 v-if="selectedTab === 'regidurias'"
                 @click="btnNumeraliaRegidurias(true)"
-                :to="{ name: 'diputaciones' }"
+                :to="{ name: 'regidurias' }"
                 label="Numeralia"
-                class="bg-pink-ieen"
+                :class="{
+                  'bg-pink-ieen':
+                    selectedTab === 'regidurias' && numeraliaSelected,
+                  'bg-pink-ieen-3':
+                    selectedTab === 'regidurias' && !numeraliaSelected,
+                }"
               />
               <br v-if="selectedTab === 'regidurias'" />
               <q-btn
                 v-if="selectedTab === 'regidurias'"
                 :to="{ name: 'regidurias' }"
                 label="Candidatas y candidatos"
-                class="bg-pink-ieen-3"
+                :class="{
+                  'bg-pink-ieen':
+                    selectedTab === 'regidurias' && candidatosSelected,
+                  'bg-pink-ieen-3':
+                    selectedTab === 'regidurias' && !candidatosSelected,
+                }"
                 @click="btnCandidatosRegidurias(true)"
               />
               <br />
@@ -319,7 +350,6 @@
         </q-list>
       </q-scroll-area>
     </q-drawer>
-    <!--------------------------------------------------------------------------------->
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -364,8 +394,6 @@ const cardsStore = useCardsStore();
 const {
   isHomePage,
   listDistritos,
-  isCandidatosPage,
-  isChartPage,
   listEdades,
   listActorPolitico,
   listSexo,
@@ -378,19 +406,19 @@ const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
 const sexo_Id = ref(null);
 const selectedTab = ref(null);
+
+const numeraliaSelected = ref(true);
+const candidatosSelected = ref(false);
 //---------------------------------------------------------------------------------
 
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
-const { isChartPagePS, listMunicipios, isHomePagePS } = storeToRefs(
-  presidenciaSindicaturiaStore
-);
+const { listMunicipios } = storeToRefs(presidenciaSindicaturiaStore);
 const municipio_Id = ref(null);
 
 //---------------------------------------------------------------------------------
 
 const regiduriasStore = useRegiduriasStore();
-const { isChartPageRE, listDemarcacion, isHomePageRE } =
-  storeToRefs(regiduriasStore);
+const { listDemarcacion } = storeToRefs(regiduriasStore);
 const demarcacion_Id = ref(null);
 
 //---------------------------------------------------------------------------------
@@ -405,24 +433,23 @@ onMounted(() => {
 
 onBeforeMount(() => {
   cardsStore.loadCards();
-  cardsStore.actualizarChart(true);
   cardsStore.loadDistritos();
   cardsStore.loadEdades();
   cardsStore.loadActorPolitico();
   cardsStore.loadSexo();
+  presidenciaSindicaturiaStore.loadMunicipios();
+  regiduriasStore.loadDemarcaciones();
 
   distritos_Id.value = { value: 0, label: "Todos" };
   rango_edad_Id.value = { value: 0, label: "Todos" };
   actor_politico_Id.value = { value: 0, label: "Todos" };
   sexo_Id.value = { value: 0, label: "Todos" };
-
-  presidenciaSindicaturiaStore.actualizarChart(true);
-  presidenciaSindicaturiaStore.loadMunicipios();
   municipio_Id.value = { value: 0, label: "Todos" };
-
-  regiduriasStore.actualizarChart(true);
-  regiduriasStore.loadDemarcaciones();
   demarcacion_Id.value = { value: 0, label: "Todos" };
+
+  cardsStore.actualizarChart(true);
+  presidenciaSindicaturiaStore.actualizarChart(true);
+  regiduriasStore.actualizarChart(true);
 });
 
 watch(listCards, (val) => {
@@ -430,7 +457,6 @@ watch(listCards, (val) => {
 });
 //---------------------------------------------------------------------------------
 //TODOS
-
 const isTabSelected = (tab) => {
   return selectedTab.value === tab;
 };
@@ -457,24 +483,6 @@ const setTabSelected = (tab) => {
   }
 };
 
-watch(municipio_Id, (val) => {
-  if (municipio_Id.value.label == "Todos") {
-    if (selectedTab.value == "presidencia") {
-      presidenciaSindicaturiaStore.loadCards();
-    } else if (selectedTab.value == "regidurias") {
-      regiduriasStore.loadCards();
-    }
-  } else {
-    if (selectedTab.value == "presidencia") {
-      presidenciaSindicaturiaStore.loadCards();
-      presidenciaSindicaturiaStore.filterCards(municipio_Id.value.value);
-    } else if (selectedTab.value == "regidurias") {
-      regiduriasStore.loadCards();
-      regiduriasStore.filterCards(municipio_Id.value.value);
-    }
-  }
-});
-
 //---------------------------------------------------------------------------------
 //DIPUTACIONES
 
@@ -483,6 +491,8 @@ const btnCandidatos = (valor) => {
   cardsStore.actualizarDetalle(false);
   cardsStore.actualizarCandidatos(valor);
   distritos_Id.value = { value: 0, label: "Seleccione una opción" };
+  numeraliaSelected.value = false;
+  candidatosSelected.value = true;
   limpiarFiltros();
 };
 const btnNumeralia = (valor) => {
@@ -490,6 +500,8 @@ const btnNumeralia = (valor) => {
   cardsStore.actualizarDetalle(false);
   cardsStore.actualizarCandidatos(false);
   distritos_Id.value = { value: 0, label: "Todos" };
+  numeraliaSelected.value = true;
+  candidatosSelected.value = false;
   limpiarFiltros();
 };
 const limpiarFiltros = () => {
@@ -519,11 +531,12 @@ const filtroSexo = (option) => {
 //PRESIDENCIA
 
 const btnCandidatosPresidencia = (valor) => {
-  console.log("entro", valor);
   presidenciaSindicaturiaStore.actualizarChart(false);
   presidenciaSindicaturiaStore.actualizarDetalle(false);
   presidenciaSindicaturiaStore.actualizarCandidatos(valor);
   municipio_Id.value = { value: 0, label: "Seleccione una opción" };
+  numeraliaSelected.value = false;
+  candidatosSelected.value = true;
   limpiarFiltros();
 };
 const btnNumeraliaPresidencia = (valor) => {
@@ -531,6 +544,8 @@ const btnNumeraliaPresidencia = (valor) => {
   presidenciaSindicaturiaStore.actualizarCandidatos(false);
   presidenciaSindicaturiaStore.actualizarDetalle(false);
   municipio_Id.value = { value: 0, label: "Todos" };
+  numeraliaSelected.value = true;
+  candidatosSelected.value = false;
   limpiarFiltros();
 };
 const filtroMunicipios = (option) => {
@@ -544,6 +559,8 @@ const btnCandidatosRegidurias = (valor) => {
   regiduriasStore.actualizarDetalle(false);
   regiduriasStore.actualizarCandidatos(valor);
   municipio_Id.value = { value: 0, label: "Seleccione una opción" };
+  numeraliaSelected.value = false;
+  candidatosSelected.value = true;
   limpiarFiltros();
 };
 
@@ -552,6 +569,8 @@ const btnNumeraliaRegidurias = (valor) => {
   regiduriasStore.actualizarCandidatos(false);
   regiduriasStore.actualizarDetalle(false);
   municipio_Id.value = { value: 0, label: "Todos" };
+  numeraliaSelected.value = true;
+  candidatosSelected.value = false;
   limpiarFiltros();
 };
 

@@ -19,18 +19,22 @@
         consultar.
       </q-banner>
       <br />
-      <div class="row">
-        <q-btn
-          @click="backCards()"
-          flat
-          icon="arrow_back"
-          class="text-purple-ieen-1"
-        ></q-btn>
-        <q-input borderless dense debounce="300" placeholder="Buscar..">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+      <div class="row q-gutter-md justify-between">
+        <div>
+          <q-btn
+            @click="backCards()"
+            flat
+            icon="arrow_back"
+            class="text-purple-ieen-1"
+          ></q-btn>
+        </div>
+        <div>
+          <q-input borderless dense debounce="300" placeholder="Buscar..">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
       </div>
     </div>
 

@@ -37,6 +37,7 @@ import { onMounted } from "vue";
 import CardsRegidurias from "../components/cardsRegidurias.vue";
 import ChartsRegidurias from "../components/chartsRegidurias.vue";
 import DetalleCandidatosRegidurias from "../components/detalleCandidatosRegidurias.vue";
+import { useCardsStore } from "src/stores/cards-store";
 
 //---------------------------------------------------------------------------------
 
@@ -44,11 +45,12 @@ const $q = useQuasar();
 const regiduriasStore = useRegiduriasStore();
 const { isCandidatosPage, isDetallePage, isChartPageRE, isHomePage } =
   storeToRefs(regiduriasStore);
+const cardsStore = useCardsStore();
 
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
-  regiduriasStore.actualizarMenu(true);
+  cardsStore.actualizarMenu(true);
 });
 
 //---------------------------------------------------------------------------------
