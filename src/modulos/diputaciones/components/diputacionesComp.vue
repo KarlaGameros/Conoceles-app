@@ -1,5 +1,21 @@
 <template>
   <div style="border-radius: 20px">
+    <div class="text-center q-pb-md">
+      <q-btn
+        rounded
+        class="bg-pink-ieen"
+        v-if="isSmallScreen"
+        :to="{ name: 'diputaciones' }"
+        label="Numeralia"
+      />
+      <q-btn
+        class="bg-pink-ieen-3"
+        rounded
+        v-if="isSmallScreen"
+        :to="{ name: 'diputaciones' }"
+        label="Candidatas y candidatos"
+      />
+    </div>
     <q-banner
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
       style="border-radius: 20px"
@@ -40,9 +56,20 @@
   </div>
   <br />
   <div>
+    <q-tabs v-if="isSmallScreen" v-model="tab" vertical class="text-teal">
+      <q-tab name="grado_academico" label="Grado académico" />
+      <q-tab name="nivel_ingresos" label="Nivel de ingresos" />
+      <q-tab name="cand_indigenas" label="Candidaturas indígenas" />
+      <q-tab name="cand_discapacidad" label="Candidaturas con discapacidad" />
+      <q-tab name="cand_afromexicanas" label="Candidaturas afromexicanas" />
+      <q-tab name="cand_div_sex" label="Candidaturas de la diversidad sexual" />
+      <q-tab name="cand_mig" label="Candidaturas migrantes" />
+      <q-tab name="cand_jov" label="Candidaturas de personas jóvenes" />
+      <q-tab name="cand_mayores" label="Candidaturas de personas mayores" />
+    </q-tabs>
     <q-splitter style="height: 500px">
       <template v-slot:before>
-        <q-tabs v-model="tab" vertical class="text-teal">
+        <q-tabs v-if="!isSmallScreen" v-model="tab" vertical class="text-teal">
           <q-tab name="grado_academico" label="Grado académico" />
           <q-tab name="nivel_ingresos" label="Nivel de ingresos" />
           <q-tab name="cand_indigenas" label="Candidaturas indígenas" />
@@ -125,7 +152,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
 import chartGradoAcademico from "../../../charts/chartGradoAcademico.vue";
 import chartSexo from "../../../charts/chartSexo.vue";
@@ -139,6 +166,13 @@ import chartCandJov from "../../../charts/chartCandJovenes.vue";
 import chartCandMayores from "../../../charts/chartCandMayores.vue";
 //---------------------------------------------------------------------------------
 const tab = ref("grado_academico");
+const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
 </script>
 
 <style></style>

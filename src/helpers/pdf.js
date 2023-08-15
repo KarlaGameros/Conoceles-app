@@ -167,7 +167,7 @@ const PdfCandidato = async () => {
       190
     );
     //---------------------------------------------
-    doc.save("ValePrestamo" + ".pdf");
+    doc.save("Candidato" + ".pdf");
     return {
       success: true,
       msj: "Recibo generado con éxito",

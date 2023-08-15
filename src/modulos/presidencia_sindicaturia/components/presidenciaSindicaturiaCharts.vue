@@ -4,6 +4,9 @@
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
       style="border-radius: 20px"
     >
+      <template v-slot:avatar>
+        <q-icon name="search" color="purple-ieen" />
+      </template>
       Consulte la información proporcionada de manera obligatoria por las
       candidaturas que participan en la contienda electoral local 2024. La
       información es responsabilidad de los partidos políticos. El Instituto

@@ -4,6 +4,7 @@ import { api } from "src/boot/axios";
 export const useCardsStore = defineStore("cards", {
   state: () => ({
     isHomePage: false,
+    back: false,
     isCandidatosPage: false,
     isDetallePage: false,
     isChartPage: false,
@@ -16,9 +17,10 @@ export const useCardsStore = defineStore("cards", {
     card: {
       id: null,
       selection: null,
+      label: null,
       prop: null,
+      siglas: null,
       nombre_prop: null,
-      distrito_name: null,
       edad_prop: null,
       sexo_prop: null,
       cargo_prop: null,
@@ -31,6 +33,20 @@ export const useCardsStore = defineStore("cards", {
       sexo_sup: null,
       estado_sup: null,
       formula_sup: null,
+      prop_sin: null,
+      nombre_prop_sin: null,
+      edad_prop_sin: null,
+      sexo_prop_sin: null,
+      cargo_prop_sin: null,
+      estado_prop_sin: null,
+      formula_prop_sin: null,
+      sup_sin: null,
+      nombre_sup_sin: null,
+      edad_sup_sin: null,
+      cargo_sup_sin: null,
+      sexo_sup_sin: null,
+      estado_sup_sin: null,
+      formula_sup_sin: null,
       imgPartido1: null,
       imgPartido2: null,
       imgPartido3: null,
@@ -53,6 +69,10 @@ export const useCardsStore = defineStore("cards", {
       this.isChartPage = valor;
     },
 
+    actualizarBack(valor) {
+      this.back = valor;
+    },
+
     //---------------------------------------------------------------------------------
 
     async loadCards() {
@@ -66,6 +86,8 @@ export const useCardsStore = defineStore("cards", {
           siglas: 1,
           municipio_name: "Acaponeta",
           demarcacion_Id: 1,
+          distrito: 1,
+          distrito_name: "Acaponeta",
           prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
           nombre_prop: "CARLOS ROBERTO",
           edad_prop: 25,
@@ -105,18 +127,22 @@ export const useCardsStore = defineStore("cards", {
           selection: "prop",
           label: "",
           siglas: 1,
+          distrito: 1,
+          distrito: "Acaponeta",
           municipio: 2,
           municipio_name: "Ahuacatlán",
           demarcacion_Id: 1,
+          distrito: 3,
+          distrito_name: "Del Nayar",
           prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
-          nombre_prop: "CARLOS ROBERTO",
+          nombre_prop: "GILBERTO MARTINES",
           edad_prop: 25,
           sexo_prop: "Hombre",
           cargo_prop: "Diputado",
           estado_prop: "Nayarit",
           formula_prop: "12456",
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-          nombre_sup: "MARIA LOPEZ",
+          nombre_sup: "TANIA LOPEZ",
           edad_sup: 30,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
@@ -124,7 +150,7 @@ export const useCardsStore = defineStore("cards", {
           formula_sup: "789456",
           prop_sin:
             "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
-          nombre_prop_sin: "ALEXIS LOPEZ",
+          nombre_prop_sin: "JUAN LOPEZ",
           edad_prop_sin: 35,
           sexo_prop_sin: "Hombre",
           cargo_prop_sin: "Diputado",
@@ -132,7 +158,7 @@ export const useCardsStore = defineStore("cards", {
           formula_prop_sin: "42456",
           sup_sin:
             "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
-          nombre_sup_sin: "MARIA TORRES",
+          nombre_sup_sin: "KENIA TORRES",
           edad_sup_sin: 45,
           sexo_sup_sin: "Mujer",
           cargo_sup_sin: "Diputada",
@@ -150,15 +176,17 @@ export const useCardsStore = defineStore("cards", {
           municipio: 17,
           municipio_name: "Tepic",
           demarcacion_Id: 2,
+          distrito: 2,
+          distrito_name: "Tecuala",
           prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
-          nombre_prop: "CARLOS ROBERTO",
+          nombre_prop: "LUIS TAPIA",
           edad_prop: 25,
           sexo_prop: "Hombre",
           cargo_prop: "Diputado",
           estado_prop: "Nayarit",
           formula_prop: "12456",
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-          nombre_sup: "MARIA LOPEZ",
+          nombre_sup: "BEATRIZ LOPEZ",
           edad_sup: 30,
           sexo_sup: "Mujer",
           cargo_sup: "Diputada",
@@ -166,7 +194,7 @@ export const useCardsStore = defineStore("cards", {
           formula_sup: "789456",
           prop_sin:
             "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
-          nombre_prop_sin: "ALEXIS LOPEZ",
+          nombre_prop_sin: "RAMON LOPEZ",
           edad_prop_sin: 35,
           sexo_prop_sin: "Hombre",
           cargo_prop_sin: "Diputado",
@@ -174,7 +202,7 @@ export const useCardsStore = defineStore("cards", {
           formula_prop_sin: "42456",
           sup_sin:
             "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
-          nombre_sup_sin: "MARIA TORRES",
+          nombre_sup_sin: "GUADALUPE TORRES",
           edad_sup_sin: 45,
           sexo_sup_sin: "Mujer",
           cargo_sup_sin: "Diputada",
@@ -192,15 +220,17 @@ export const useCardsStore = defineStore("cards", {
           municipio: 2,
           municipio_name: "Ahuacatlán",
           demarcacion_Id: 2,
+          distrito: 2,
+          distrito_name: "Tecuala",
           prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-05%20at%2011.32.55%20PM.jpeg",
-          nombre_prop: "CARLOS ROBERTO",
+          nombre_prop: "FERNANDO PEREZ",
           edad_prop: 25,
           sexo_prop: "Hombre",
           cargo_prop: "Prop. Presidente",
           estado_prop: "Nayarit",
           formula_prop: "12456",
           sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
-          nombre_sup: "MARIA LOPEZ",
+          nombre_sup: "MIRIAM SMITH",
           edad_sup: 30,
           sexo_sup: "Mujer",
           cargo_sup: "Sup. Presidente",
@@ -208,7 +238,7 @@ export const useCardsStore = defineStore("cards", {
           formula_sup: "789456",
           prop_sin:
             "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
-          nombre_prop_sin: "ALEXIS LOPEZ",
+          nombre_prop_sin: "EMILIO GAMEROS",
           edad_prop_sin: 35,
           sexo_prop_sin: "Hombre",
           cargo_prop_sin: "Prop. Sindico",
@@ -216,7 +246,7 @@ export const useCardsStore = defineStore("cards", {
           formula_prop_sin: "42456",
           sup_sin:
             "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
-          nombre_sup_sin: "MARIA TORRES",
+          nombre_sup_sin: "ALEJANDRA GOMEZ",
           edad_sup_sin: 45,
           sexo_sup_sin: "Mujer",
           cargo_sup_sin: "Sup. Sindico",
@@ -225,6 +255,138 @@ export const useCardsStore = defineStore("cards", {
           imgPartido1:
             "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
         },
+        {
+          id: 5,
+          visible: false,
+          selection: "prop",
+          label: "",
+          municipio: 1,
+          siglas: 1,
+          municipio_name: "Acaponeta",
+          demarcacion_Id: 1,
+          distrito: 1,
+          distrito_name: "Acaponeta",
+          prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
+          nombre_prop: "MARIA VALDEZ",
+          edad_prop: 25,
+          sexo_prop: "Mujer",
+          cargo_prop: "Prop. Presidente",
+          estado_prop: "Nayarit",
+          formula_prop: "12456",
+          sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+          nombre_sup: "LUZ ESQUEDA",
+          edad_sup: 30,
+          sexo_sup: "Mujer",
+          cargo_sup: "Sup. Presidente",
+          estado_sup: "Nayarit",
+          formula_sup: "789456",
+          prop_sin:
+            "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
+          nombre_prop_sin: "ANGEL CASTRO",
+          edad_prop_sin: 35,
+          sexo_prop_sin: "Hombre",
+          cargo_prop_sin: "Prop. Sindico",
+          estado_prop_sin: "Nayarit",
+          formula_prop_sin: "42456",
+          sup_sin:
+            "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
+          nombre_sup_sin: "KAREN ORTEGA",
+          edad_sup_sin: 45,
+          sexo_sup_sin: "Mujer",
+          cargo_sup_sin: "Sup. Sindico",
+          estado_sup_sin: "Nayarit",
+          formula_sup_sin: "785456",
+          imgPartido3:
+            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MC.png",
+        },
+        {
+          id: 6,
+          visible: false,
+          selection: "prop",
+          label: "",
+          municipio: 1,
+          siglas: 1,
+          municipio_name: "Acaponeta",
+          demarcacion_Id: 1,
+          distrito: 1,
+          distrito_name: "Acaponeta",
+          prop: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
+          nombre_prop: "GRECIA VALDEZ",
+          edad_prop: 25,
+          sexo_prop: "Mujer",
+          cargo_prop: "Prop. Presidente",
+          estado_prop: "Nayarit",
+          formula_prop: "12456",
+          sup: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+          nombre_sup: "MARY ORTEGA",
+          edad_sup: 30,
+          sexo_sup: "Mujer",
+          cargo_sup: "Sup. Presidente",
+          estado_sup: "Nayarit",
+          formula_sup: "789456",
+          prop_sin:
+            "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
+          nombre_prop_sin: "JONAH MONTES",
+          edad_prop_sin: 35,
+          sexo_prop_sin: "Hombre",
+          cargo_prop_sin: "Prop. Sindico",
+          estado_prop_sin: "Nayarit",
+          formula_prop_sin: "42456",
+          sup_sin:
+            "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
+          nombre_sup_sin: "OMAR GAMEROS",
+          edad_sup_sin: 45,
+          sexo_sup_sin: "Hombre",
+          cargo_sup_sin: "Sup. Sindico",
+          estado_sup_sin: "Nayarit",
+          formula_sup_sin: "785456",
+          imgPartido3:
+            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MC.png",
+        },
+        {
+          id: 7,
+          visible: false,
+          selection: "prop",
+          label: "",
+          municipio: 1,
+          siglas: 1,
+          municipio_name: "Acaponeta",
+          demarcacion_Id: 1,
+          distrito: 1,
+          distrito_name: "Acaponeta",
+          prop: "http://www.conoceles-coahuila.org/archivos/fotos_candidaturas/WhatsApp%20Image%202023-04-14%20at%2012.44.11%20PM.jpeg",
+          nombre_prop: "MARTIN DE LA ROSA",
+          edad_prop: 25,
+          sexo_prop: "Hombre",
+          cargo_prop: "Prop. Presidente",
+          estado_prop: "Nayarit",
+          formula_prop: "12456",
+          sup: "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
+          nombre_sup: "LUZ MARIA LOPEZ",
+          edad_sup: 30,
+          sexo_sup: "Mujer",
+          cargo_sup: "Sup. Presidente",
+          estado_sup: "Nayarit",
+          formula_sup: "789456",
+          prop_sin:
+            "https://conoceles-coahuila.org/archivos/fotos_candidaturas/nacho%20corona.png",
+          nombre_prop_sin: "MIGUEL LOPEZ",
+          edad_prop_sin: 35,
+          sexo_prop_sin: "Hombre",
+          cargo_prop_sin: "Prop. Sindico",
+          estado_prop_sin: "Nayarit",
+          formula_prop_sin: "42456",
+          sup_sin:
+            "https://conoceles-coahuila.org/archivos/fotos_candidaturas/paloma%20%20de%20los%20santos.jpg",
+          nombre_sup_sin: "MARGARITA TORRES",
+          edad_sup_sin: 45,
+          sexo_sup_sin: "Mujer",
+          cargo_sup_sin: "Sup. Sindico",
+          estado_sup_sin: "Nayarit",
+          formula_sup_sin: "785456",
+          imgPartido3:
+            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/RSP.png",
+        },
       ];
     },
 
@@ -232,7 +394,7 @@ export const useCardsStore = defineStore("cards", {
 
     async loadDistritos() {
       const data = [
-        { id: "", nombre: "Todos" },
+        { id: 0, nombre: "Todos" },
         { id: 1, nombre: "Acaponeta" },
         { id: 2, nombre: "Tecuala" },
         { id: 3, nombre: "Del Nayar" },
@@ -255,7 +417,10 @@ export const useCardsStore = defineStore("cards", {
       ];
       this.listDistritos = data.map((distrito) => {
         return {
-          label: distrito.nombre,
+          label:
+            distrito.id == 0
+              ? distrito.nombre
+              : `${distrito.id} - ${distrito.nombre}`,
           value: distrito.id,
         };
       });
@@ -281,7 +446,7 @@ export const useCardsStore = defineStore("cards", {
       });
     },
 
-    async loadSexo(sexo) {
+    async loadSexo() {
       const data = [
         { id: "", sexo: "Todos" },
         { id: 1, sexo: "Mujer" },
@@ -338,11 +503,10 @@ export const useCardsStore = defineStore("cards", {
       ];
       this.listActorPolitico = data.map((actorPolitico) => {
         return {
-          siglas:
+          label:
             actorPolitico.id == 0
               ? actorPolitico.nombre
               : `${actorPolitico.siglas}-${actorPolitico.nombre}`,
-          label: actorPolitico.siglas,
           value: actorPolitico.id,
         };
       });
@@ -355,11 +519,16 @@ export const useCardsStore = defineStore("cards", {
 
       if (card) {
         this.card.id = card.id;
+        this.card.label = card.label;
         this.card.prop = card.prop;
         this.card.selection = card.selection;
         this.card.nombre_prop = card.nombre_prop;
+        this.card.demarcacion_Id = card.demarcacion_Id;
+        this.card.siglas = card.siglas;
         this.card.distrito = card.distrito;
         this.card.distrito_name = card.distrito_name;
+        this.card.municipio = card.municipio;
+        this.card.municipio_name = card.municipio_name;
         this.card.edad_prop = card.edad_prop;
         this.card.sexo_prop = card.sexo_prop;
         this.card.cargo_prop = card.cargo_prop;
@@ -372,6 +541,20 @@ export const useCardsStore = defineStore("cards", {
         this.card.sexo_sup = card.sexo_sup;
         this.card.estado_sup = card.estado_sup;
         this.card.formula_sup = card.formula_sup;
+        this.card.prop_sin = card.prop_sin;
+        this.card.nombre_prop_sin = card.nombre_prop_sin;
+        this.card.edad_prop_sin = card.edad_prop_sin;
+        this.card.sexo_prop_sin = card.sexo_prop_sin;
+        this.card.cargo_prop_sin = card.cargo_prop_sin;
+        this.card.estado_prop_sin = card.estado_prop_sin;
+        this.card.formula_prop_sin = card.formula_prop_sin;
+        this.card.sup_sin = card.sup_sin;
+        this.card.nombre_sup_sin = card.nombre_sup_sin;
+        this.card.cargo_sup_sin = card.cargo_sup_sin;
+        this.card.edad_sup_sin = card.edad_sup_sin;
+        this.card.sexo_sup_sin = card.sexo_sup_sin;
+        this.card.estado_sup_sin = card.estado_sup_sin;
+        this.card.formula_sup_sin = card.formula_sup_sin;
         this.card.imgPartido1 = card.imgPartido1;
         this.card.imgPartido2 = card.imgPartido2;
         this.card.imgPartido3 = card.imgPartido3;
@@ -385,11 +568,9 @@ export const useCardsStore = defineStore("cards", {
         (card) => card.distrito === distrito
       );
       this.listCards = filteredCards;
-      console.log("this", this.listCards);
     },
 
     async filterEdad(rango_edad) {
-      console.log("edad", rango_edad);
       if (rango_edad === "Todos") {
         return this.listCards;
       }
@@ -413,7 +594,6 @@ export const useCardsStore = defineStore("cards", {
         (actor) => actor.siglas === actor_politico
       );
       this.listCards = filterActorPolitico;
-      console.log("filterActorPolitico", filterActorPolitico);
     },
 
     async filterSexo(sexo) {

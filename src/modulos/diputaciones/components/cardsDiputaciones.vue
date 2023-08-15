@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="listCards != ''"
-    class="q-pa-md row items-start q-gutter-md flex flex-center"
-  >
+  <div class="q-pa-md row items-start q-gutter-md flex flex-center">
     <div style="border-radius: 20px">
       <q-banner
         :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
@@ -20,16 +17,25 @@
       </q-banner>
       <br />
       <div class="row q-gutter-md justify-between">
-        <div>
-          <q-btn
-            @click="backCards()"
-            flat
-            icon="arrow_back"
-            class="text-purple-ieen-1"
-          ></q-btn>
+        <div class="col-6">
+          <q-avatar class="bg-purple-ieen-1" text-color="white"
+            ><q-btn @click="backCards()" flat icon="reply">
+              <q-tooltip>Regresar</q-tooltip>
+            </q-btn></q-avatar
+          >
         </div>
-        <div>
-          <q-input borderless dense debounce="300" placeholder="Buscar..">
+        <div class="col-3">
+          <q-radio v-model="shape" val="prop" label="Propietarios" />
+          <q-radio v-model="shape" val="sup" label="Suplentes" />
+        </div>
+        <div class="col-2">
+          <q-input
+            v-model="filtro"
+            borderless
+            dense
+            debounce="300"
+            placeholder="Buscar.."
+          >
             <template v-slot:append>
               <q-icon name="search" />
             </template>
@@ -99,9 +105,9 @@
       <q-separator />
 
       <q-card-actions>
-        <div class="col-10">
+        <div class="col-8">
           <q-btn flat class="text-purple-ieen-1" @click="verMas(item.id, true)">
-            VER MAS
+            VER MÁS
           </q-btn>
         </div>
         <div class="col-2">
@@ -110,38 +116,26 @@
             flat
             icon="picture_as_pdf"
             class="text-purple-ieen-1"
-          ></q-btn>
+          >
+            <q-tooltip>PDF de ambos candidatos</q-tooltip>
+          </q-btn>
+        </div>
+        <div class="col-2">
+          <q-btn
+            @click="pdf()"
+            flat
+            icon="picture_as_pdf"
+            class="text-purple-ieen-1"
+          >
+            <q-tooltip>PDF del candidado seleccionado</q-tooltip>
+          </q-btn>
         </div>
       </q-card-actions>
     </q-card>
   </div>
-  <div v-if="listCards == ''">
-    <div style="border-radius: 20px">
-      <q-banner
-        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
-        style="border-radius: 20px"
-      >
-        <template v-slot:avatar>
-          <q-icon name="ads_click" color="purple-ieen" />
-        </template>
-        Para conocer la información de la candidatura el sistema permite hacer
-        búsquedas por distrito, actor político, rango de edad, sexo, o bien,
-        exportar la base de datos.
-      </q-banner>
-      <q-btn
-        @click="backCards()"
-        flat
-        icon="arrow_back"
-        class="text-purple-ieen-1"
-      ></q-btn>
-      <br />
-    </div>
-    <div class="flex flex-center">
-      <img
-        alt="PREP logo"
-        src="../../../assets/opcion1.png"
-        style="width: 618px; height: 579px"
-      />
+  <div class="q-pa-lg flex flex-center">
+    <div class="q-pa-lg flex flex-center">
+      <q-pagination v-model="current" :max="5" direction-links color="purple" />
     </div>
   </div>
 </template>
@@ -156,8 +150,9 @@ import pdfCandidato from "../../../helpers/pdf";
 const cardsStore = useCardsStore();
 const { listFiltroCards } = storeToRefs(cardsStore);
 const filtro = ref("");
-
+const current = ref(1);
 const listCardsFiltro = ref(listFiltroCards.value);
+const shape = ref("prop");
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
@@ -178,6 +173,11 @@ watch(filtro, (val) => {
     return;
   }
 });
+watch(shape, (val) => {
+  listCardsFiltro.value.forEach((item) => {
+    item.selection = val;
+  });
+});
 //---------------------------------------------------------------------------------
 
 const verMas = async (id, valor) => {
@@ -192,6 +192,7 @@ const pdf = async () => {
 const backCards = () => {
   cardsStore.actualizarCandidatos(false);
   cardsStore.actualizarChart(true);
+  cardsStore.actualizarBack(true);
 };
 
 //---------------------------------------------------------------------------------

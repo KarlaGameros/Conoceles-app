@@ -18,12 +18,11 @@
   <br />
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
-      <q-btn
-        @click="backCards()"
-        flat
-        icon="arrow_back"
-        class="text-purple-ieen-1"
-      ></q-btn>
+      <q-avatar class="bg-purple-ieen-1" text-color="white"
+        ><q-btn @click="backCards()" flat icon="reply">
+          <q-tooltip>Regresar</q-tooltip>
+        </q-btn></q-avatar
+      >
       Distrito {{ `${card.distrito} - ${card.distrito_name}` }}
     </div>
     <q-btn
@@ -413,7 +412,7 @@
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import { ref } from "vue";
-
+import pdfCandidato from "../../../helpers/pdf";
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
@@ -425,6 +424,10 @@ const tab = ref("generales");
 const backCards = () => {
   cardsStore.actualizarCandidatos(true);
   cardsStore.actualizarDetalle(false);
+};
+
+const pdf = async () => {
+  pdfCandidato();
 };
 
 //---------------------------------------------------------------------------------

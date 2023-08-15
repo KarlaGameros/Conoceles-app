@@ -1,9 +1,5 @@
 <template>
-  <q-input v-model="filtro"></q-input>
-  <div
-    v-if="listCardsFiltro != ''"
-    class="q-pa-md row items-start q-gutter-md flex flex-center"
-  >
+  <div class="q-pa-md row items-start q-gutter-md flex flex-center">
     <div style="border-radius: 20px">
       <q-banner
         :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
@@ -20,12 +16,26 @@
         desees consultar.
       </q-banner>
       <br />
-      <q-btn
-        @click="backCards()"
-        flat
-        icon="arrow_back"
-        class="text-purple-ieen-1"
-      ></q-btn>
+      <div class="row q-gutter-md justify-between">
+        <q-avatar class="bg-purple-ieen-1" text-color="white"
+          ><q-btn @click="backCards()" flat icon="reply">
+            <q-tooltip>Regresar</q-tooltip>
+          </q-btn></q-avatar
+        >
+        <div>
+          <q-input
+            v-model="filtro"
+            borderless
+            dense
+            debounce="300"
+            placeholder="Buscar.."
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
+      </div>
     </div>
     <q-card
       v-for="item in listCardsFiltro"
@@ -122,9 +132,19 @@
       <q-separator />
 
       <q-card-actions>
-        <div class="col-10">
+        <div class="col-8">
           <q-btn flat class="text-purple-ieen-1" @click="verMas(item.id, true)">
-            VER MAS
+            VER MÁS
+          </q-btn>
+        </div>
+        <div class="col-2">
+          <q-btn
+            @click="pdf()"
+            flat
+            icon="picture_as_pdf"
+            class="text-purple-ieen-1"
+          >
+            <q-tooltip>PDF de ambos candidatos</q-tooltip>
           </q-btn>
         </div>
         <div class="col-2">
@@ -138,33 +158,9 @@
       </q-card-actions>
     </q-card>
   </div>
-  <div v-if="listCardsFiltro == ''">
-    <div style="border-radius: 20px">
-      <q-banner
-        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
-        style="border-radius: 20px"
-      >
-        <template v-slot:avatar>
-          <q-icon name="ads_click" color="purple-ieen" />
-        </template>
-        Para conocer la información de la candidatura el sistema permite hacer
-        búsquedas por distrito, actor político, rango de edad, sexo, o bien,
-        exportar la base de datos.
-      </q-banner>
-      <q-btn
-        @click="backCards()"
-        flat
-        icon="arrow_back"
-        class="text-purple-ieen-1"
-      ></q-btn>
-      <br />
-    </div>
-    <div class="flex flex-center">
-      <img
-        alt="PREP logo"
-        src="../../../assets/opcion1.png"
-        style="width: 618px; height: 579px"
-      />
+  <div class="q-pa-lg flex flex-center">
+    <div class="q-pa-lg flex flex-center">
+      <q-pagination v-model="current" :max="5" direction-links color="purple" />
     </div>
   </div>
 </template>
@@ -174,7 +170,7 @@ import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { onMounted, ref, watch } from "vue";
-
+import pdfCandidato from "../../../helpers/pdf";
 //---------------------------------------------------------------------------------
 
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
@@ -188,6 +184,7 @@ const dropdownOptions = [
 ];
 const filtro = ref("");
 const listCardsFiltro = ref(listFiltroCards.value);
+const current = ref(1);
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
@@ -211,28 +208,23 @@ watch(filtro, (val) => {
 //---------------------------------------------------------------------------------
 
 const verMas = async (id, valor) => {
-  presidenciaSindicaturiaStore.loadCard(id);
+  candidatosStore.loadCard(id);
   presidenciaSindicaturiaStore.actualizarDetalle(valor);
 };
 
 const selectOption = (item, option) => {
   item.selection = option.value;
   item.label = option.label;
-  console.log("iten", item);
 };
 
-const pdf = () => {
-  const pdfURL = "https://eqpro.es/wp-content/uploads/2018/11/Ejemplo.pdf";
-  const link = document.createElement("a");
-  link.href = pdfURL;
-  link.target = "_blank";
-  link.download = "archivo.pdf";
-  link.click();
+const pdf = async () => {
+  pdfCandidato();
 };
 
 const backCards = () => {
   presidenciaSindicaturiaStore.actualizarCandidatos(false);
   presidenciaSindicaturiaStore.actualizarChart(true);
+  candidatosStore.actualizarBack(true);
 };
 
 //---------------------------------------------------------------------------------

@@ -19,12 +19,11 @@
 
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
-      <q-btn
-        @click="backCards()"
-        flat
-        icon="arrow_back"
-        class="text-purple-ieen-1"
-      ></q-btn>
+      <q-avatar class="bg-purple-ieen-1" text-color="white"
+        ><q-btn @click="backCards()" flat icon="reply">
+          <q-tooltip>Regresar</q-tooltip>
+        </q-btn></q-avatar
+      >
       Municipio de {{ card.municipio_name }}
     </div>
     <q-btn
@@ -475,13 +474,15 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
+import { useCardsStore } from "src/stores/cards-store";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { ref } from "vue";
-
+import pdfCandidato from "../../../helpers/pdf";
 //---------------------------------------------------------------------------------
 
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
-const { card } = storeToRefs(presidenciaSindicaturiaStore);
+const candidatosStore = useCardsStore();
+const { card } = storeToRefs(candidatosStore);
 const tab = ref("generales");
 const dropdownOptions = [
   { label: "Propietario Presidente", value: "prop" },
@@ -499,6 +500,10 @@ const selectOption = (card, option) => {
   card.selection = option.value;
   card.label = option.label;
 };
+const pdf = async () => {
+  pdfCandidato();
+};
+
 //---------------------------------------------------------------------------------
 </script>
 <style></style>

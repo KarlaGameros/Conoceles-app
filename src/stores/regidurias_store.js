@@ -249,7 +249,6 @@ export const useRegiduriasStore = defineStore("regidurias", {
     },
 
     async filterEdad(rango_edad) {
-      console.log("edad", rango_edad);
       if (rango_edad === "Todos") {
         return this.listCards;
       }

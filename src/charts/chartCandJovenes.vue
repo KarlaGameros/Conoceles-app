@@ -1,10 +1,5 @@
 <template>
-  <apexchart
-    type="donut"
-    width="380"
-    :options="chartOptions"
-    :series="series"
-  ></apexchart>
+  <apexchart type="donut" :options="chartOptions" :series="series"></apexchart>
 </template>
 
 <script setup>
@@ -72,7 +67,7 @@ const chartOptions = {
       breakpoint: 480,
       options: {
         chart: {
-          width: 200,
+          width: 380,
         },
         legend: {
           position: "bottom",

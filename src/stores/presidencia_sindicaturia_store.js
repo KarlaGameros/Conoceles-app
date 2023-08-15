@@ -268,7 +268,6 @@ export const usePresidenciaSindicaturiaStore = defineStore(
       },
 
       async loadCard(id) {
-        console.log("id", id);
         const card = this.listCards.find((card) => card.id === id);
 
         if (card) {
@@ -310,24 +309,20 @@ export const usePresidenciaSindicaturiaStore = defineStore(
           this.card.imgPartido2 = card.imgPartido2;
           this.card.imgPartido3 = card.imgPartido3;
         }
-        console.log("this.card", this.card);
       },
 
       async filterCards(municipio) {
         const filteredCards = this.listCards.filter(
           (card) => card.municipio === municipio
         );
-        console.log(filteredCards);
         this.listCards = filteredCards;
       },
 
       async filterActorPolitico(actor_politico) {
-        console.log("fil", actor_politico);
         const filterActorPolitico = this.listCards.filter(
           (actor) => actor.siglas === actor_politico
         );
         this.listCards = filterActorPolitico;
-        console.log("list", filterActorPolitico);
       },
 
       async filterEdad(rango_edad) {
@@ -336,7 +331,6 @@ export const usePresidenciaSindicaturiaStore = defineStore(
         }
 
         const rango = rango_edad.split("-").map(Number);
-        console.log("rango", rango);
         const filteredList = this.listCards.filter((card) => {
           const edad_prop = card.edad_prop;
           if (rango.length === 2) {
