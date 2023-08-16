@@ -4,6 +4,7 @@
       <div class="row bg-gray-ieen-3">
         <div class="col-1 q-pl-md">
           <q-img
+            v-if="!isSmallScreen"
             src="../assets/IEEN300.png"
             style="height: 60px; width: 100px"
           ></q-img>
@@ -24,13 +25,25 @@
           <q-btn
             v-if="isHomePage == true"
             dense
+            class="absolute-left"
             flat
             round
             icon="menu"
             @click="toggleLeftDrawer"
           />
+          <q-btn
+            class="absolute-right"
+            flat
+            @click="drawerRight = !drawerRight"
+            round
+            dense
+            icon="menu"
+          />
 
-          <div class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9">
+          <div
+            v-if="!isSmallScreen"
+            class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9"
+          >
             <q-tabs>
               <q-route-tab icon="home" to="/" />
               <q-route-tab
@@ -94,7 +107,7 @@
               <!---------------DIPUTACIONES------------------------------------>
               <q-btn
                 rounded
-                v-if="selectedTab === 'diputaciones' && !isSmallScreen"
+                v-if="selectedTab === 'diputaciones'"
                 @click="btnNumeralia(true)"
                 :to="{ name: 'diputaciones' }"
                 label="Numeralia"
@@ -105,10 +118,10 @@
                     selectedTab === 'diputaciones' && !numeraliaSelected,
                 }"
               />
-              <br v-if="selectedTab === 'diputaciones' && !isSmallScreen" />
+              <br v-if="selectedTab === 'diputaciones'" />
               <q-btn
                 rounded
-                v-if="selectedTab === 'diputaciones' && !isSmallScreen"
+                v-if="selectedTab === 'diputaciones'"
                 :to="{ name: 'diputaciones' }"
                 label="Candidatas y candidatos"
                 :class="{
@@ -289,6 +302,66 @@
       </q-scroll-area>
     </q-drawer>
 
+    <q-drawer
+      v-if="drawerRight == true"
+      side="right"
+      v-model="drawerRight"
+      show-if-above
+      bordered
+      :width="200"
+      :breakpoint="500"
+      :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+    >
+      <q-scroll-area class="fit">
+        <q-list padding class="menu-list">
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <router-link to="/">
+                <q-icon name="home" />
+                Inicio
+              </router-link>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <router-link
+                :to="{ name: 'diputaciones' }"
+                :active="isTabSelected('diputaciones')"
+                @click="setTabSelected('diputaciones')"
+              >
+                <q-item-section> Send </q-item-section>
+              </router-link>
+            </q-item-section>
+          </q-item>
+          <q-item clickable v-ripple>
+            <q-item-section>
+              <router-link
+                :to="{ name: 'presidenciaSindicatura' }"
+                :active="isTabSelected('presidencia')"
+                @click="setTabSelected('presidencia')"
+              >
+                Presidencia
+              </router-link>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <router-link
+                :to="{ name: 'regidurias' }"
+                label="Regidurias"
+                :active="isTabSelected('regidurias')"
+                @click="setTabSelected('regidurias')"
+              >
+                Regiduriasx
+              </router-link>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
+
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -329,6 +402,7 @@ const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
+const drawerRight = ref(false);
 const cardsStore = useCardsStore();
 const {
   isHomePage,
@@ -408,11 +482,13 @@ const isTabSelected = (tab) => {
   return selectedTab.value === tab;
 };
 const setTabSelected = (tab) => {
+  console.log("set", tab);
   selectedTab.value = tab;
-  numeraliaSelected.value = true;
-  candidatosSelected.value = false;
+  // numeraliaSelected.value = true;
+  // candidatosSelected.value = false;
   localStorage.setItem("selectedTab", tab);
   if (tab == "diputaciones") {
+    console.log("entro diputaciones");
     cardsStore.actualizarCandidatos(false);
     cardsStore.actualizarDetalle(false);
     cardsStore.actualizarChart(true);

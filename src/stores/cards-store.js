@@ -66,6 +66,7 @@ export const useCardsStore = defineStore("cards", {
     },
 
     actualizarChart(valor) {
+      console.log("entro2", valor);
       this.isChartPage = valor;
     },
 

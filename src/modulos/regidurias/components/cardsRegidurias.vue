@@ -17,18 +17,30 @@
       </q-banner>
       <br />
       <div class="row q-gutter-md justify-between">
-        <q-avatar class="bg-purple-ieen-1" text-color="white"
-          ><q-btn @click="backCards()" flat icon="reply">
-            <q-tooltip>Regresar</q-tooltip>
-          </q-btn></q-avatar
-        >
-        <div>
+        <div class="col-6">
+          <q-avatar class="bg-purple-ieen-1" text-color="white"
+            ><q-btn @click="backCards()" flat icon="reply">
+              <q-tooltip>Regresar</q-tooltip>
+            </q-btn></q-avatar
+          >
+        </div>
+        <div class="col-3">
+          Buscar por:
+          <q-radio
+            v-model="shape"
+            color="purple"
+            val="prop"
+            label="Propietario"
+          />
+          <q-radio v-model="shape" color="purple" val="sup" label="Suplente" />
+        </div>
+        <div class="col-2">
           <q-input
             v-model="filtro"
-            borderless
+            color="purple"
             dense
             debounce="300"
-            placeholder="Buscar.."
+            placeholder="Ingrese un nombre"
           >
             <template v-slot:append>
               <q-icon name="search" />
@@ -147,6 +159,7 @@ const { listFiltroCards } = storeToRefs(candidatosStore);
 const filtro = ref("");
 const listCardsFiltro = ref(listFiltroCards.value);
 const current = ref(1);
+const shape = ref("prop");
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
@@ -166,7 +179,11 @@ watch(filtro, (val) => {
     return;
   }
 });
-
+watch(shape, (val) => {
+  listCardsFiltro.value.forEach((item) => {
+    item.selection = val;
+  });
+});
 //---------------------------------------------------------------------------------
 
 const verMas = async (id, valor) => {

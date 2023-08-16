@@ -25,16 +25,22 @@
           >
         </div>
         <div class="col-3">
-          <q-radio v-model="shape" val="prop" label="Propietarios" />
-          <q-radio v-model="shape" val="sup" label="Suplentes" />
+          Buscar por:
+          <q-radio
+            v-model="shape"
+            color="purple"
+            val="prop"
+            label="Propietario"
+          />
+          <q-radio v-model="shape" color="purple" val="sup" label="Suplente" />
         </div>
         <div class="col-2">
           <q-input
             v-model="filtro"
-            borderless
+            color="purple"
             dense
             debounce="300"
-            placeholder="Buscar.."
+            placeholder="Ingrese un nombre"
           >
             <template v-slot:append>
               <q-icon name="search" />

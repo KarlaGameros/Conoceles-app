@@ -1,6 +1,6 @@
 <template>
   <div style="border-radius: 20px">
-    <div class="text-center q-pb-md">
+    <!-- <div class="text-center q-pb-md">
       <q-btn
         rounded
         class="bg-pink-ieen"
@@ -15,7 +15,7 @@
         :to="{ name: 'diputaciones' }"
         label="Candidatas y candidatos"
       />
-    </div>
+    </div> -->
     <q-banner
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
       style="border-radius: 20px"
