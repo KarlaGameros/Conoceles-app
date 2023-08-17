@@ -1,18 +1,17 @@
 <template>
   <div class="row">
     <div class="col-12 shadow-7" style="border-radius: 20px">
-      <q-banner
-        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
-        style="border-radius: 20px"
-      >
-        <template v-slot:avatar>
+      <banner>
+        <template v-slot:icono>
           <q-icon name="error" color="purple-ieen" />
         </template>
-        La información es proporcionada por las personas candidatas a las
-        Presidencias y Sindicaturas del Estado de Nayarit, por lo que su
-        contenido es responsabilidad de los actores políticos. El Instituto
-        Estatal Electoral de Nayarit únicamente apoya para su difusión.
-      </q-banner>
+        <template v-slot:contenido>
+          La información es proporcionada por las personas candidatas a las
+          Presidencias y Sindicaturas del Estado de Nayarit, por lo que su
+          contenido es responsabilidad de los actores políticos. El Instituto
+          Estatal Electoral de Nayarit únicamente apoya para su difusión.
+        </template>
+      </banner>
     </div>
   </div>
   <br />
@@ -478,6 +477,7 @@ import { useCardsStore } from "src/stores/cards-store";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { ref } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
+import banner from "../../../components/bannerComp.vue";
 //---------------------------------------------------------------------------------
 
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();

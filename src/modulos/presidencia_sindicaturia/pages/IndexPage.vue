@@ -20,6 +20,8 @@
         </div>
       </div>
     </div>
+    <filtros v-if="isSmallScreen" />
+    <br />
     <PresidenciaSindicatura v-if="isChartPagePS == true" />
     <CardsPresidenciaSindicauria
       v-if="isCandidatosPage == true && isDetallePage == false"
@@ -34,15 +36,14 @@ import { useQuasar } from "quasar";
 import PresidenciaSindicatura from "../components/presidenciaSindicaturiaCharts.vue";
 import CardsPresidenciaSindicauria from "../components/cardsPresidenciaSindicaturia.vue";
 import DetalleCantidato from "../components/detalleCantidato.vue";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { useCardsStore } from "src/stores/cards-store";
-
+import filtros from "../../../components/filtrosComp.vue";
 //---------------------------------------------------------------------------------
-
+const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const $q = useQuasar();
-const filtro = false;
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
 const { isCandidatosPage, isDetallePage, isChartPagePS } = storeToRefs(
   presidenciaSindicaturiaStore
@@ -67,5 +68,11 @@ const onCharts = () => {
   presidenciaSindicaturiaStore.actualizarCandidatos(false);
   presidenciaSindicaturiaStore.actualizarDetalle(false);
 };
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
 </script>
 <style></style>

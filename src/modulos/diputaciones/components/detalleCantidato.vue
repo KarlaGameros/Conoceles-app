@@ -1,24 +1,26 @@
 <template>
   <div class="row">
     <div class="col-12 shadow-7" style="border-radius: 20px">
-      <q-banner
-        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
-        style="border-radius: 20px"
-      >
-        <template v-slot:avatar>
+      <banner>
+        <template v-slot:icono>
           <q-icon name="error" color="purple-ieen" />
         </template>
-        La información es proporcionada por las personas candidatas a las
-        Diputaciones del Estado de Nayarit, por lo que su contenido es
-        responsabilidad de los actores políticos. El Instituto Estatal Electoral
-        de Nayarit únicamente apoya para su difusión.
-      </q-banner>
+        <template v-slot:contenido>
+          La información es proporcionada por las personas candidatas a las
+          Diputaciones del Estado de Nayarit, por lo que su contenido es
+          responsabilidad de los actores políticos. El Instituto Estatal
+          Electoral de Nayarit únicamente apoya para su difusión.
+        </template>
+      </banner>
     </div>
   </div>
   <br />
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
-      <q-avatar class="bg-purple-ieen-1" text-color="white"
+      <q-avatar
+        v-if="!isSmallScreen"
+        class="bg-purple-ieen-1"
+        text-color="white"
         ><q-btn @click="backCards()" flat icon="reply">
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
@@ -411,14 +413,22 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
+import banner from "../../../components/bannerComp.vue";
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
 const { card } = storeToRefs(cardsStore);
 const tab = ref("generales");
+const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
 //---------------------------------------------------------------------------------
 
 const backCards = () => {

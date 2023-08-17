@@ -1,55 +1,48 @@
 <template>
-  <div class="q-pa-md row items-start q-gutter-md flex flex-center">
-    <div style="border-radius: 20px">
-      <q-banner
-        :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
-        style="border-radius: 20px"
+  <banner>
+    <template v-slot:icono>
+      <q-icon name="badge" color="purple-ieen" />
+    </template>
+    <template v-slot:contenido>
+      En este espacio tendrás la oportunidad de conocer a las personas
+      candidatas, así como su trayectoria y sus principales propuestas de
+      campaña, entre otras cosas, en la Elección de Diputaciones 2024 en el
+      Estado de Nayarit, lo que puede darte más información para ejercer tu
+      voto, para lo cual bastará que des un click en la opción que desees
+      consultar.
+    </template>
+  </banner>
+  <div class="row justify-between q-pt-md">
+    <div class="col-lg-6 col-md-3 col-sm-2 col-xs-2">
+      <q-avatar
+        v-if="!isSmallScreen"
+        class="bg-purple-ieen-1"
+        text-color="white"
+        ><q-btn @click="backCards()" flat icon="reply">
+          <q-tooltip>Regresar</q-tooltip>
+        </q-btn></q-avatar
       >
-        <template v-slot:avatar>
-          <q-icon name="badge" color="purple-ieen" />
-        </template>
-        En este espacio tendrás la oportunidad de conocer a las personas
-        candidatas, así como su trayectoria y sus principales propuestas de
-        campaña, entre otras cosas, en la Elección de Diputaciones 2024 en el
-        Estado de Nayarit, lo que puede darte más información para ejercer tu
-        voto, para lo cual bastará que des un click en la opción que desees
-        consultar.
-      </q-banner>
-      <br />
-      <div class="row q-gutter-md justify-between">
-        <div class="col-6">
-          <q-avatar class="bg-purple-ieen-1" text-color="white"
-            ><q-btn @click="backCards()" flat icon="reply">
-              <q-tooltip>Regresar</q-tooltip>
-            </q-btn></q-avatar
-          >
-        </div>
-        <div class="col-3">
-          Buscar por:
-          <q-radio
-            v-model="shape"
-            color="purple"
-            val="prop"
-            label="Propietario"
-          />
-          <q-radio v-model="shape" color="purple" val="sup" label="Suplente" />
-        </div>
-        <div class="col-2">
-          <q-input
-            v-model="filtro"
-            color="purple"
-            dense
-            debounce="300"
-            placeholder="Ingrese un nombre"
-          >
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </div>
-      </div>
     </div>
-
+    <div class="col-lg-3 col-md-5 col-sm-9 col-xs-12">
+      Buscar por:
+      <q-radio v-model="shape" color="purple" val="prop" label="Propietario" />
+      <q-radio v-model="shape" color="purple" val="sup" label="Suplente" />
+    </div>
+    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+      <q-input
+        v-model="filtro"
+        color="purple"
+        dense
+        debounce="300"
+        placeholder="Ingrese un nombre"
+      >
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+    </div>
+  </div>
+  <div class="q-pa-md row items-start q-gutter-md flex flex-center">
     <q-card
       v-for="item in listCardsFiltro"
       :key="item.id"
@@ -151,6 +144,9 @@ import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import { onMounted, ref, watch } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
+
+import banner from "../../../components/bannerComp.vue";
+
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
@@ -159,6 +155,14 @@ const filtro = ref("");
 const current = ref(1);
 const listCardsFiltro = ref(listFiltroCards.value);
 const shape = ref("prop");
+const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
+
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
@@ -171,9 +175,13 @@ watch(listFiltroCards, (val) => {
 watch(filtro, (val) => {
   if (val.length == 0) {
     listCardsFiltro.value = listFiltroCards.value;
-  } else if (val.length >= 3) {
+  } else if (val.length >= 3 && shape.value == "prop") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_prop.toLowerCase().includes(val.toLowerCase())
+    );
+  } else if (val.length >= 3 && shape.value == "sup") {
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
+      x.nombre_sup.toLowerCase().includes(val.toLowerCase())
     );
   } else {
     return;

@@ -5,6 +5,7 @@ export const useCardsStore = defineStore("cards", {
   state: () => ({
     isHomePage: false,
     back: false,
+    selectedTab: null,
     isCandidatosPage: false,
     isDetallePage: false,
     isChartPage: false,
@@ -66,12 +67,15 @@ export const useCardsStore = defineStore("cards", {
     },
 
     actualizarChart(valor) {
-      console.log("entro2", valor);
       this.isChartPage = valor;
     },
 
     actualizarBack(valor) {
       this.back = valor;
+    },
+
+    actualizarTab(valor) {
+      this.selectedTab = valor;
     },
 
     //---------------------------------------------------------------------------------

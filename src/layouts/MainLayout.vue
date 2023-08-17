@@ -23,7 +23,7 @@
       <q-toolbar>
         <div class="row">
           <q-btn
-            v-if="isHomePage == true"
+            v-if="isHomePage"
             dense
             class="absolute-left"
             flat
@@ -31,21 +31,18 @@
             icon="menu"
             @click="toggleLeftDrawer"
           />
-          <q-btn
-            class="absolute-right"
-            flat
-            @click="drawerRight = !drawerRight"
-            round
-            dense
-            icon="menu"
-          />
 
           <div
             v-if="!isSmallScreen"
             class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9"
           >
             <q-tabs>
-              <q-route-tab icon="home" to="/" />
+              <q-route-tab
+                icon="home"
+                to="/"
+                :active="isTabSelected('inicio')"
+                @click="setTabSelected('inicio')"
+              />
               <q-route-tab
                 :to="{ name: 'diputaciones' }"
                 label="Diputaciones"
@@ -66,26 +63,26 @@
               />
             </q-tabs>
           </div>
+          <div class="absolute-center" v-else>
+            <strong>{{ selectedTabUpperCase }}</strong>
+          </div>
 
-          <div v-if="!isSmallScreen" class="absolute-right q-pa-md">
-            <a href="/base" style="color: #ffffff">Exportar base de datos </a>
-            <i class="fa-solid fa-database fa-2xl"></i>
+          <div class="absolute-right q-pa-md">
+            <i class="fa-solid fa-database fa-2xl"
+              ><q-tooltip>Exportar base de datos</q-tooltip></i
+            >
           </div>
         </div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
-      v-if="isHomePage == true"
+      v-if="isHomePage"
       show-if-above
       v-model="leftDrawerOpen"
       side="left"
       bordered
     >
-      <div v-if="isSmallScreen" class="absolute-right q-pa-md">
-        <a href="/base" class="text-purple-4">Exportar base de datos </a>
-        <i class="fa-solid fa-database" style="color: #753088"></i>
-      </div>
       <q-scroll-area
         style="
           height: calc(100% - 100px);
@@ -93,7 +90,7 @@
           border-right: 1px solid #ddd;
         "
       >
-        <q-list>
+        <q-list v-if="!isSmallScreen">
           <q-item>
             <q-item-section class="bg-grey-3" style="border-radius: 10px">
               <q-item-label
@@ -112,10 +109,8 @@
                 :to="{ name: 'diputaciones' }"
                 label="Numeralia"
                 :class="{
-                  'bg-pink-ieen':
-                    selectedTab === 'diputaciones' && numeraliaSelected,
-                  'bg-pink-ieen-3':
-                    selectedTab === 'diputaciones' && !numeraliaSelected,
+                  'bg-pink-ieen': numeraliaSelected,
+                  'bg-pink-ieen-3': !numeraliaSelected,
                 }"
               />
               <br v-if="selectedTab === 'diputaciones'" />
@@ -125,10 +120,8 @@
                 :to="{ name: 'diputaciones' }"
                 label="Candidatas y candidatos"
                 :class="{
-                  'bg-pink-ieen':
-                    selectedTab === 'diputaciones' && candidatosSelected,
-                  'bg-pink-ieen-3':
-                    selectedTab === 'diputaciones' && !candidatosSelected,
+                  'bg-pink-ieen': candidatosSelected,
+                  'bg-pink-ieen-3': !candidatosSelected,
                 }"
                 @click="btnCandidatos(true)"
               />
@@ -140,10 +133,8 @@
                 :to="{ name: 'presidenciaSindicatura' }"
                 label="Numeralia"
                 :class="{
-                  'bg-pink-ieen':
-                    selectedTab === 'presidencia' && numeraliaSelected,
-                  'bg-pink-ieen-3':
-                    selectedTab === 'presidencia' && !numeraliaSelected,
+                  'bg-pink-ieen': numeraliaSelected,
+                  'bg-pink-ieen-3': !numeraliaSelected,
                 }"
               />
               <br v-if="selectedTab === 'presidencia'" />
@@ -153,10 +144,8 @@
                 :to="{ name: 'presidenciaSindicatura' }"
                 label="Candidatas y candidatos"
                 :class="{
-                  'bg-pink-ieen':
-                    selectedTab === 'presidencia' && candidatosSelected,
-                  'bg-pink-ieen-3':
-                    selectedTab === 'presidencia' && !candidatosSelected,
+                  'bg-pink-ieen': candidatosSelected,
+                  'bg-pink-ieen-3': !candidatosSelected,
                 }"
                 @click="btnCandidatosPresidencia(true)"
               />
@@ -168,10 +157,8 @@
                 :to="{ name: 'regidurias' }"
                 label="Numeralia"
                 :class="{
-                  'bg-pink-ieen':
-                    selectedTab === 'regidurias' && numeraliaSelected,
-                  'bg-pink-ieen-3':
-                    selectedTab === 'regidurias' && !numeraliaSelected,
+                  'bg-pink-ieen': numeraliaSelected,
+                  'bg-pink-ieen-3': !numeraliaSelected,
                 }"
               />
               <br v-if="selectedTab === 'regidurias'" />
@@ -181,10 +168,8 @@
                 :to="{ name: 'regidurias' }"
                 label="Candidatas y candidatos"
                 :class="{
-                  'bg-pink-ieen':
-                    selectedTab === 'regidurias' && candidatosSelected,
-                  'bg-pink-ieen-3':
-                    selectedTab === 'regidurias' && !candidatosSelected,
+                  'bg-pink-ieen': candidatosSelected,
+                  'bg-pink-ieen-3': !candidatosSelected,
                 }"
                 @click="btnCandidatosRegidurias(true)"
               />
@@ -299,30 +284,7 @@
             </q-item-section>
           </q-item>
         </q-list>
-      </q-scroll-area>
-    </q-drawer>
-
-    <q-drawer
-      v-if="drawerRight == true"
-      side="right"
-      v-model="drawerRight"
-      show-if-above
-      bordered
-      :width="200"
-      :breakpoint="500"
-      :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
-    >
-      <q-scroll-area class="fit">
-        <q-list padding class="menu-list">
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <router-link to="/">
-                <q-icon name="home" />
-                Inicio
-              </router-link>
-            </q-item-section>
-          </q-item>
-
+        <q-list v-else bordered separator>
           <q-item clickable v-ripple>
             <q-item-section avatar>
               <router-link
@@ -330,10 +292,11 @@
                 :active="isTabSelected('diputaciones')"
                 @click="setTabSelected('diputaciones')"
               >
-                <q-item-section> Send </q-item-section>
+                Diputaciones
               </router-link>
             </q-item-section>
           </q-item>
+
           <q-item clickable v-ripple>
             <q-item-section>
               <router-link
@@ -347,15 +310,16 @@
           </q-item>
 
           <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <router-link
-                :to="{ name: 'regidurias' }"
-                label="Regidurias"
-                :active="isTabSelected('regidurias')"
-                @click="setTabSelected('regidurias')"
+            <q-item-section>
+              <q-item-label
+                ><router-link
+                  :to="{ name: 'regidurias' }"
+                  :active="isTabSelected('regidurias')"
+                  @click="setTabSelected('regidurias')"
+                >
+                  Regidurias
+                </router-link></q-item-label
               >
-                Regiduriasx
-              </router-link>
             </q-item-section>
           </q-item>
         </q-list>
@@ -393,8 +357,14 @@ import { useQuasar } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { useRegiduriasStore } from "src/stores/regidurias_store";
-import { onBeforeMount, onMounted, ref, watch, watchEffect } from "vue";
-
+import {
+  computed,
+  onBeforeMount,
+  onMounted,
+  ref,
+  watch,
+  watchEffect,
+} from "vue";
 //---------------------------------------------------------------------------------
 
 const $q = useQuasar();
@@ -402,10 +372,10 @@ const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
-const drawerRight = ref(false);
 const cardsStore = useCardsStore();
 const {
   isHomePage,
+  isDetallePage,
   listDistritos,
   listEdades,
   listActorPolitico,
@@ -419,12 +389,10 @@ const distritos_Id = ref(null);
 const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
 const sexo_Id = ref(null);
-const selectedTab = ref(null);
 
 const numeraliaSelected = ref(true);
 const candidatosSelected = ref(false);
 //---------------------------------------------------------------------------------
-
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
 const { listMunicipios } = storeToRefs(presidenciaSindicaturiaStore);
 const municipio_Id = ref(null);
@@ -434,7 +402,7 @@ const municipio_Id = ref(null);
 const regiduriasStore = useRegiduriasStore();
 const { listDemarcacion } = storeToRefs(regiduriasStore);
 const demarcacion_Id = ref(null);
-
+const selectedTab = ref("");
 //---------------------------------------------------------------------------------
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
@@ -448,13 +416,6 @@ watch(back, (val) => {
   if (val == true) {
     numeraliaSelected.value = true;
     candidatosSelected.value = false;
-  }
-});
-onMounted(() => {
-  const savedTab = localStorage.getItem("selectedTab");
-
-  if (savedTab) {
-    selectedTab.value = savedTab;
   }
 });
 
@@ -471,43 +432,50 @@ onBeforeMount(() => {
   regiduriasStore.actualizarChart(true);
   limpiarFiltros();
 });
-
+onMounted(() => {
+  const savedTab = localStorage.getItem("selectedTab");
+  if (savedTab) {
+    selectedTab.value = savedTab;
+  }
+});
 watch(listCards, (val) => {
   listFiltroCards.value = val;
 });
-
 //---------------------------------------------------------------------------------
 //TODOS
 const isTabSelected = (tab) => {
   return selectedTab.value === tab;
 };
 const setTabSelected = (tab) => {
-  console.log("set", tab);
+  cardsStore.actualizarTab(tab);
   selectedTab.value = tab;
-  // numeraliaSelected.value = true;
-  // candidatosSelected.value = false;
+  numeraliaSelected.value = true;
+  candidatosSelected.value = false;
   localStorage.setItem("selectedTab", tab);
   if (tab == "diputaciones") {
-    console.log("entro diputaciones");
     cardsStore.actualizarCandidatos(false);
     cardsStore.actualizarDetalle(false);
     cardsStore.actualizarChart(true);
-    limpiarFiltros();
   } else if (tab == "presidencia") {
     presidenciaSindicaturiaStore.actualizarCandidatos(false);
     presidenciaSindicaturiaStore.actualizarDetalle(false);
     presidenciaSindicaturiaStore.actualizarChart(true);
-    municipio_Id.value = { value: 0, label: "Todos" };
-    limpiarFiltros();
   } else if (tab == "regidurias") {
     regiduriasStore.actualizarCandidatos(false);
     regiduriasStore.actualizarDetalle(false);
     regiduriasStore.actualizarChart(true);
-    municipio_Id.value = { value: 0, label: "Todos" };
-    limpiarFiltros();
+  } else if (tab == "inicio") {
+    cardsStore.actualizarMenu(false);
   }
 };
 
+const selectedTabUpperCase = computed(() => {
+  if (selectedTab.value !== null) {
+    return selectedTab.value.toUpperCase();
+  } else {
+    return "";
+  }
+});
 //---------------------------------------------------------------------------------
 //DIPUTACIONES
 
@@ -583,7 +551,6 @@ const btnNumeraliaRegidurias = (valor) => {
   candidatosSelected.value = false;
   limpiarFiltros();
 };
-
 //---------------------------------------------------------------------------------
 const filtrar = (listCards, filtro) => {
   listFiltroCards.value = listCards.filter((item) => {
@@ -644,6 +611,7 @@ const filtrar = (listCards, filtro) => {
     return cumple;
   });
 };
+
 watchEffect(() => {
   const filtro = {};
   if (distritos_Id.value != null) filtro.distrito = distritos_Id.value.value;

@@ -1,17 +1,16 @@
 <template>
   <div style="border-radius: 20px">
-    <q-banner
-      :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
-      style="border-radius: 20px"
-    >
-      <template v-slot:avatar>
+    <banner>
+      <template v-slot:icono>
         <q-icon name="search" color="purple-ieen" />
       </template>
-      Consulte la información proporcionada de manera obligatoria por las
-      candidaturas que participan en la contienda electoral local 2024. La
-      información es responsabilidad de los partidos políticos. El Instituto
-      únicamente apoya para su difusión.
-    </q-banner>
+      <template v-slot:contenido>
+        Consulte la información proporcionada de manera obligatoria por las
+        candidaturas que participan en la contienda electoral local 2024. La
+        información es responsabilidad de los partidos políticos. El Instituto
+        únicamente apoya para su difusión.
+      </template>
+    </banner>
   </div>
   <div class="q-pa-md example-row-equal-width">
     <div class="row">
@@ -125,7 +124,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
 import chartGradoAcademico from "../../../charts/chartGradoAcademico.vue";
 import chartSexo from "../../../charts/chartSexo.vue";
@@ -137,8 +136,18 @@ import chartCandDivSexual from "../../../charts/chartCandDivSexual.vue";
 import chartCandMigrantes from "../../../charts/chartMigrantes.vue";
 import chartCandJov from "../../../charts/chartCandJovenes.vue";
 import chartCandMayores from "../../../charts/chartCandMayores.vue";
+import banner from "../../../components/bannerComp.vue";
 //---------------------------------------------------------------------------------
 const tab = ref("grado_academico");
+
+const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
+
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
 </script>
 
 <style></style>

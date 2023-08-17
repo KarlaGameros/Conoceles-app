@@ -20,6 +20,8 @@
         </div>
       </div>
     </div>
+    <filtros v-if="isSmallScreen" />
+    <br />
     <DiputacionesComp v-if="isChartPage == true" />
     <CardsDiputaciones
       v-if="isCandidatosPage == true && isDetallePage == false"
@@ -32,24 +34,26 @@
 import { useQuasar } from "quasar";
 import DiputacionesComp from "../components/diputacionesComp.vue";
 import CardsDiputaciones from "../components/cardsDiputaciones.vue";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
 import { storeToRefs } from "pinia";
 import DetalleCantidato from "../components/detalleCantidato.vue";
-
+import filtros from "../../../components/filtrosComp.vue";
 //---------------------------------------------------------------------------------
-
+const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const $q = useQuasar();
 const cardsStore = useCardsStore();
 const { isCandidatosPage, isDetallePage, isChartPage } =
   storeToRefs(cardsStore);
-
+const numeraliaSelected = ref(true);
+const candidatosSelected = ref(false);
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
+  numeraliaSelected.value = true;
+  candidatosSelected.value = false;
   cardsStore.actualizarMenu(true);
 });
-
 //---------------------------------------------------------------------------------
 
 const onCards = () => {
@@ -62,6 +66,12 @@ const onCharts = () => {
   cardsStore.actualizarCandidatos(false);
   cardsStore.actualizarDetalle(false);
 };
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
 
 //---------------------------------------------------------------------------------
 </script>
