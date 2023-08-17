@@ -29,7 +29,7 @@
   <div>
     <q-list v-if="isSmallScreen" dark padding bordered class="rounded-borders">
       <q-expansion-item
-        class="bg-grey-3"
+        class="bg-grey-3 text-justify"
         style="border-radius: 20px"
         label="Seguir viendo estadísticas de las personas candidatas"
         header-class="text-black"

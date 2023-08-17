@@ -1,13 +1,15 @@
 <template>
   <apexchart
     type="pie"
-    width="400"
+    width="500"
     :options="chartOptions"
     :series="series"
   ></apexchart>
 </template>
 
 <script setup>
+import { onMounted } from "vue";
+
 const colors = [
   "#f3cfc6",
   "#77dd77",
@@ -26,7 +28,19 @@ const chartOptions = {
     type: "pie",
   },
   colors: colors,
-  labels: ["Mujer", "Hombre", "No binario"],
+
+  style: {
+    fontSize: "18px",
+    fontWeight: "bold",
+  },
+  xaxis: {
+    categories: ["Mujer", "Hombre", "No binario"],
+    labels: {
+      style: {
+        fontSize: "30px", // Ajusta el tamaño de fuente aquí
+      },
+    },
+  },
   plotOptions: {
     bar: {
       columnWidth: "45%",
@@ -50,6 +64,20 @@ const chartOptions = {
     },
   ],
 };
+
+onMounted(() => {
+  setTimeout(() => {
+    console.log("Cargo");
+    let spans = document.querySelectorAll(".apexcharts-legend-text");
+    for (let span of spans) {
+      span.style.fontSize = "18px";
+    }
+  }, 1000);
+});
 </script>
 
-<style></style>
+<style scoped>
+.apexcharts-legend-text {
+  font-size: 20px !important;
+}
+</style>

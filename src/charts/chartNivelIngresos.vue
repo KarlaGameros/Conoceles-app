@@ -1,7 +1,7 @@
 <template>
   <apexchart
     type="donut"
-    width="380"
+    width="500"
     :options="chartOptions"
     :series="series"
   ></apexchart>
@@ -11,7 +11,7 @@
 const series = [44, 55, 41, 17];
 const chartOptions = {
   chart: {
-    width: 380,
+    width: 500,
     type: "donut",
   },
   labels: [

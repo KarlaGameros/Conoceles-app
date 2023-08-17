@@ -1,6 +1,4 @@
 <template>
-  <!--------------------------------------------------->
-
   <div v-if="isSmallScreen" class="bg-grey-2" style="border-radius: 20px">
     <div class="text-h6 q-pl-md text-bold" style="color: grey">CONSULTA:</div>
     <div class="subtitule-2 q-pl-md" style="color: grey">
@@ -78,10 +76,11 @@
         @click="btnCandidatosRegidurias(true)"
       />
     </div>
+    <!--------------------FILTROS PARA SMALLSCREEN----------------------------->
     <q-list v-if="!isDetallePage" dark bordered class="rounded-borders">
       <q-expansion-item
         expand-icon-class="text-purple"
-        label="Filtrar"
+        label="Seleccionar filtros de consulta"
         header-class="text-black"
       >
         <q-card class="bg-grey-5">
@@ -281,10 +280,11 @@ watch(listCards, (val) => {
 });
 
 watch(selectedTab, (val) => {
-  const savedTab = localStorage.getItem("selectedTab");
-  if (savedTab) {
-    selectedTab.value = savedTab;
-  }
+  console.log("sele", val);
+  // const savedTab = localStorage.getItem("selectedTab");
+  // if (savedTab) {
+  //   selectedTab.value = savedTab;
+  // }
 });
 //---------------------------------------------------------------------------------
 //DIPUTACIONES
@@ -320,6 +320,7 @@ const limpiarFiltros = () => {
 //PRESIDENCIA
 
 const btnCandidatosPresidencia = (valor) => {
+  console.log("entrpppp");
   presidenciaSindicaturiaStore.actualizarChart(false);
   presidenciaSindicaturiaStore.actualizarDetalle(false);
   presidenciaSindicaturiaStore.actualizarCandidatos(valor);

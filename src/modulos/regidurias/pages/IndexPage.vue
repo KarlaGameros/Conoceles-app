@@ -24,7 +24,11 @@
     <br />
     <ChartsRegidurias v-if="isChartPageRE == true" />
     <CardsRegidurias
-      v-if="isCandidatosPage == true && isDetallePage == false"
+      v-if="
+        isCandidatosPage == true &&
+        isDetallePage == false &&
+        isChartPageRE == false
+      "
     />
 
     <DetalleCandidatosRegidurias v-if="isDetallePage == true" />

@@ -144,7 +144,6 @@ import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import { onMounted, ref, watch } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
-
 import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
@@ -157,12 +156,6 @@ const listCardsFiltro = ref(listFiltroCards.value);
 const shape = ref("prop");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
@@ -192,6 +185,13 @@ watch(shape, (val) => {
     item.selection = val;
   });
 });
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
+
 //---------------------------------------------------------------------------------
 
 const verMas = async (id, valor) => {

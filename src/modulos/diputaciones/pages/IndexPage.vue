@@ -24,7 +24,11 @@
     <br />
     <DiputacionesComp v-if="isChartPage == true" />
     <CardsDiputaciones
-      v-if="isCandidatosPage == true && isDetallePage == false"
+      v-if="
+        isCandidatosPage == true &&
+        isDetallePage == false &&
+        isChartPage == false
+      "
     />
     <DetalleCantidato v-if="isDetallePage == true" />
   </q-page>
@@ -54,6 +58,13 @@ onMounted(() => {
   candidatosSelected.value = false;
   cardsStore.actualizarMenu(true);
 });
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
+
 //---------------------------------------------------------------------------------
 
 const onCards = () => {
@@ -66,12 +77,6 @@ const onCharts = () => {
   cardsStore.actualizarCandidatos(false);
   cardsStore.actualizarDetalle(false);
 };
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 
 //---------------------------------------------------------------------------------
 </script>

@@ -24,7 +24,11 @@
     <br />
     <PresidenciaSindicatura v-if="isChartPagePS == true" />
     <CardsPresidenciaSindicauria
-      v-if="isCandidatosPage == true && isDetallePage == false"
+      v-if="
+        isCandidatosPage == true &&
+        isDetallePage == false &&
+        isChartPagePS == false
+      "
     />
 
     <DetalleCantidato v-if="isDetallePage == true" />

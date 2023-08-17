@@ -11,8 +11,17 @@
     <img
       alt="PREP logo"
       src="../assets/opcion2.png"
-      style="width: 800px; height: 700px"
+      :style="
+        isSmallScreen
+          ? 'width: 400px; height: 350px'
+          : 'width: 800px; height: 700px'
+      "
     />
+    <div class="absolute-bottom-right">
+      <div class="text-subtitle1 q-pr-md text-purple-ieen">
+        <strong>Eres el visitante número:</strong> 100
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -20,12 +29,19 @@
 import { useCardsStore } from "src/stores/cards-store";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { useRegiduriasStore } from "src/stores/regidurias_store";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const cardsStore = useCardsStore();
 const presidenciaStore = usePresidenciaSindicaturiaStore();
 const regiduriasStore = useRegiduriasStore();
+const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
 onMounted(() => {
   cardsStore.actualizarMenu(false);
   presidenciaStore.actualizarMenu(false);

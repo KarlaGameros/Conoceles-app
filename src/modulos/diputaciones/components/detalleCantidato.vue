@@ -416,6 +416,7 @@ import { useCardsStore } from "src/stores/cards-store";
 import { ref, watch } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
+
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
@@ -423,12 +424,15 @@ const { card } = storeToRefs(cardsStore);
 const tab = ref("generales");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
+//---------------------------------------------------------------------------------
+
 watch(
   () => window.innerWidth,
   (width) => {
     isSmallScreen.value = width <= 768;
   }
 );
+
 //---------------------------------------------------------------------------------
 
 const backCards = () => {
