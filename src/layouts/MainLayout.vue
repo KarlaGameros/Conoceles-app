@@ -23,7 +23,7 @@
       <q-toolbar>
         <div class="row">
           <q-btn
-            v-if="isHomePage"
+            v-if="isHomePage || isSmallScreen"
             dense
             class="absolute-left"
             flat
@@ -77,7 +77,7 @@
     </q-header>
 
     <q-drawer
-      v-if="isHomePage"
+      v-if="isHomePage || isSmallScreen"
       show-if-above
       v-model="leftDrawerOpen"
       side="left"
@@ -284,43 +284,57 @@
             </q-item-section>
           </q-item>
         </q-list>
-        <q-list v-else bordered separator>
+        <q-list v-else class="absolute-center">
           <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <router-link
-                :to="{ name: 'diputaciones' }"
-                :active="isTabSelected('diputaciones')"
-                @click="setTabSelected('diputaciones')"
-              >
-                Diputaciones
-              </router-link>
-            </q-item-section>
+            <q-btn
+              label="Inicio"
+              rounded
+              style="width: 250px"
+              :to="{ name: 'inicio' }"
+              :class="{
+                'bg-pink-ieen': numeraliaSelected,
+                'bg-pink-ieen-3': !numeraliaSelected,
+              }"
+            />
           </q-item>
 
           <q-item clickable v-ripple>
-            <q-item-section>
-              <router-link
-                :to="{ name: 'presidenciaSindicatura' }"
-                :active="isTabSelected('presidencia')"
-                @click="setTabSelected('presidencia')"
-              >
-                Presidencia
-              </router-link>
-            </q-item-section>
+            <q-btn
+              label="Diputaciones"
+              rounded
+              style="width: 250px"
+              :to="{ name: 'diputaciones' }"
+              :class="{
+                'bg-pink-ieen': numeraliaSelected,
+                'bg-pink-ieen-3': !numeraliaSelected,
+              }"
+            />
           </q-item>
 
           <q-item clickable v-ripple>
-            <q-item-section>
-              <q-item-label
-                ><router-link
-                  :to="{ name: 'regidurias' }"
-                  :active="isTabSelected('regidurias')"
-                  @click="setTabSelected('regidurias')"
-                >
-                  Regidurias
-                </router-link></q-item-label
-              >
-            </q-item-section>
+            <q-btn
+              label="Presidencia y Sindicatura"
+              rounded
+              style="width: 250px"
+              :to="{ name: 'presidenciaSindicatura' }"
+              :class="{
+                'bg-pink-ieen': numeraliaSelected,
+                'bg-pink-ieen-3': !numeraliaSelected,
+              }"
+            />
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-btn
+              label="Regidurias"
+              rounded
+              style="width: 250px"
+              :to="{ name: 'regidurias' }"
+              :class="{
+                'bg-pink-ieen': numeraliaSelected,
+                'bg-pink-ieen-3': !numeraliaSelected,
+              }"
+            />
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -333,17 +347,43 @@
     <q-footer elevated class="bg-pink-ieen text-white">
       <q-toolbar>
         <q-toolbar-title>
-          <div>&#169; Unidad Técnica de Informática y Estadística</div>
-          <div v-if="!isSmallScreen" class="absolute-right q-pa-xs">
-            <q-btn flat round dense>
-              <i
-                class="fa-brands fa-square-facebook fa-2xl"
-                style="color: #ffffff"
-              ></i>
-            </q-btn>
-            <q-btn flat round dense>
-              <i class="fa-brands fa-youtube fa-2xl" style="color: #ffffff"></i>
-            </q-btn>
+          <div class="row">
+            <div
+              :class="isSmallScreen ? 'col-5 text-subtitle2' : 'col-5 text-h6'"
+            >
+              &#169; 2024 Instituto Estatal Electoral de Nayarit
+            </div>
+
+            <div v-if="!isSmallScreen" class="absolute-right q-pa-xs">
+              <q-btn flat round dense>
+                <i
+                  class="fa-brands fa-square-facebook fa-2xl"
+                  style="color: #ffffff"
+                ></i>
+              </q-btn>
+              <q-btn flat round dense>
+                <i
+                  class="fa-brands fa-youtube fa-2xl"
+                  style="color: #ffffff"
+                ></i>
+              </q-btn>
+            </div>
+          </div>
+          <div class="row">
+            <div class="text-caption">
+              <div class="row">
+                <q-icon name="home" color="white" />Domicilio
+              </div>
+              <div class="row">
+                Av. Country Club 13, Colonia Versalles, 63138, Tepic, Nayarit
+              </div>
+            </div>
+            <div class="text-caption">
+              <div class="row">
+                <q-icon name="home" color="white" />Telefono
+              </div>
+              <div class="row">(311) - 210 - 3233 /35 /36</div>
+            </div>
           </div>
         </q-toolbar-title>
       </q-toolbar>
@@ -433,6 +473,7 @@ onBeforeMount(() => {
   limpiarFiltros();
 });
 onMounted(() => {
+  cardsStore.actualizarTab("diputaciones");
   const savedTab = localStorage.getItem("selectedTab");
   if (savedTab) {
     selectedTab.value = savedTab;
@@ -447,7 +488,6 @@ const isTabSelected = (tab) => {
   return selectedTab.value === tab;
 };
 const setTabSelected = (tab) => {
-  cardsStore.actualizarTab(tab);
   selectedTab.value = tab;
   numeraliaSelected.value = true;
   candidatosSelected.value = false;
@@ -470,7 +510,7 @@ const setTabSelected = (tab) => {
 };
 
 const selectedTabUpperCase = computed(() => {
-  if (selectedTab.value !== null) {
+  if (selectedTab.value == "presidencia") {
     return selectedTab.value.toUpperCase();
   } else {
     return "";

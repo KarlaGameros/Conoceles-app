@@ -34,7 +34,7 @@
         style="border-radius: 20px"
         label="Seguir viendo estadísticas de las personas candidatas"
         header-class="text-black"
-        expand-icon-class="text-black"
+        expand-icon-class="text-purple"
       >
         <q-tabs v-model="tab" vertical class="text-teal">
           <q-tab name="grado_academico" label="Grado académico" />

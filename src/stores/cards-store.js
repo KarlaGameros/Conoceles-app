@@ -75,6 +75,7 @@ export const useCardsStore = defineStore("cards", {
     },
 
     actualizarTab(valor) {
+      console.log("valor", valor);
       this.selectedTab = valor;
     },
 

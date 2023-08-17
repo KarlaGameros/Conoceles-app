@@ -73,14 +73,14 @@
         label="Candidatas y candidatos"
         :class="{
           'bg-pink-ieen': candidatosSelected,
-          'bg-pink-ieen-3': selectedTab === 'regidurias' && !candidatosSelected,
+          'bg-pink-ieen-3': !candidatosSelected,
         }"
         @click="btnCandidatosRegidurias(true)"
       />
     </div>
     <q-list v-if="!isDetallePage" dark bordered class="rounded-borders">
       <q-expansion-item
-        icon="expand_more"
+        expand-icon-class="text-purple"
         label="Filtrar"
         header-class="text-black"
       >
