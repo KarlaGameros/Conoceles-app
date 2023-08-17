@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR lff">
+  <q-layout :view="isSmallScreen ? 'hHh lpR lff' : 'hHh lpR lFf'">
     <q-header elevated class="bg-pink-ieen text-white" height-hint="98">
       <div class="row bg-gray-ieen-3">
         <div class="col-1 q-pl-md">
