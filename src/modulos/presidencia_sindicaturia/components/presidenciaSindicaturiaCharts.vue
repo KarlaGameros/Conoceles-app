@@ -56,7 +56,13 @@
     </q-list>
     <q-splitter style="height: 500px">
       <template v-if="!isSmallScreen" v-slot:before>
-        <q-tabs v-model="tab" vertical class="text-teal">
+        <q-tabs
+          v-model="tab"
+          vertical
+          class="text-purple"
+          active-bg-color="purple-3"
+          active-color="white"
+        >
           <q-tab name="grado_academico" label="Grado académico" />
           <q-tab name="nivel_ingresos" label="Nivel de ingresos" />
           <q-tab name="cand_indigenas" label="Candidaturas indígenas" />
@@ -87,49 +93,49 @@
             name="grado_academico"
             class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
           >
-            <div class="text-h4 q-mb-md">Grado académico</div>
+            <div class="text-h6 q-mb-md">Grado académico</div>
             <chartGradoAcademico class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="nivel_ingresos">
-            <div class="text-h4 q-mb-md">Nivel de ingresos</div>
+            <div class="text-h6 q-mb-md">Nivel de ingresos</div>
             <chartNivelIngresos class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_indigenas">
-            <div class="text-h4 q-mb-md">Candidaturas Indígenas</div>
+            <div class="text-h6 q-mb-md">Candidaturas Indígenas</div>
             <chartCandIndigenas class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_discapacidad">
-            <div class="text-h4 q-mb-md">Candidaturas con discapacidad</div>
+            <div class="text-h6 q-mb-md">Candidaturas con discapacidad</div>
             <chartCandDiscapacidad class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_afromexicanas">
-            <div class="text-h4 q-mb-md">Candidaturas Afromexicanas</div>
+            <div class="text-h6 q-mb-md">Candidaturas Afromexicanas</div>
             <chartCandAfromexicanas class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_div_sex">
-            <div class="text-h4 q-mb-md">
+            <div class="text-h6 q-mb-md">
               Candidaturas de la diversidad sexual
             </div>
             <chartCandDivSexual class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_mig">
-            <div class="text-h4 q-mb-md">Candidaturas migrantes</div>
+            <div class="text-h6 q-mb-md">Candidaturas migrantes</div>
             <chartCandMigrantes class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_jov">
-            <div class="text-h4 q-mb-md">Candidaturas de personas jóvenes</div>
+            <div class="text-h6 q-mb-md">Candidaturas de personas jóvenes</div>
             <chartCandJov class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_mayores">
-            <div class="text-h4 q-mb-md">Candidaturas de personas mayores</div>
+            <div class="text-h6 q-mb-md">Candidaturas de personas mayores</div>
             <chartCandMayores class="flex flex-center" />
           </q-tab-panel>
         </q-tab-panels>

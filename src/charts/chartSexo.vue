@@ -1,7 +1,7 @@
 <template>
   <apexchart
     type="pie"
-    width="500"
+    width="450"
     :options="chartOptions"
     :series="series"
   ></apexchart>
@@ -33,14 +33,7 @@ const chartOptions = {
     fontSize: "18px",
     fontWeight: "bold",
   },
-  xaxis: {
-    categories: ["Mujer", "Hombre", "No binario"],
-    labels: {
-      style: {
-        fontSize: "30px", // Ajusta el tamaño de fuente aquí
-      },
-    },
-  },
+  labels: ["Mujer", "Hombre", "No binario"],
   plotOptions: {
     bar: {
       columnWidth: "45%",

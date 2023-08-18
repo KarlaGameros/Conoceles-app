@@ -16,11 +16,11 @@
 
   <div class="q-pa-md example-row-equal-width">
     <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="text-h6 q-mb-md">Rango de edades</div>
         <chartRangoEdad />
       </div>
-      <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="text-h6 q-mb-md">Sexo</div>
         <chartSexo class="flex flex-center" />
       </div>
