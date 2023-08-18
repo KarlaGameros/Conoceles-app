@@ -1,4 +1,5 @@
 <template>
+  <!---------------------------BANNER--------------------------->
   <banner>
     <template v-slot:icono>
       <q-icon name="badge" color="purple-ieen" />
@@ -11,6 +12,7 @@
       lo cual bastará que des un click en la opción que desees consultar.
     </template>
   </banner>
+  <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row justify-between q-pt-md">
     <div class="col-lg-6 col-md-3 col-sm-2 col-xs-2">
       <q-avatar
@@ -22,7 +24,7 @@
         </q-btn></q-avatar
       >
     </div>
-    <div class="col-lg-3 col-md-5 col-sm-9 col-xs-12">
+    <div class="col-lg-3 col-md-5 col-sm-9 col-xs-12 text-subtitle2">
       Buscar por:
       <q-radio v-model="shape" color="purple" val="prop" label="Propietario" />
       <q-radio v-model="shape" color="purple" val="sup" label="Suplente" />
@@ -41,6 +43,7 @@
       </q-input>
     </div>
   </div>
+  <!---------------------------CARDS--------------------------->
   <div class="q-pa-md row items-start q-gutter-md flex flex-center">
     <q-card
       v-for="item in listCardsFiltro"
@@ -144,6 +147,7 @@ import { useRegiduriasStore } from "src/stores/regidurias_store";
 import { onMounted, ref, watch } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
+
 //---------------------------------------------------------------------------------
 
 const candidatosStore = useCardsStore();
@@ -155,17 +159,20 @@ const current = ref(1);
 const shape = ref("prop");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
+//---------------------------------------------------------------------------------
+
+onMounted(() => {
+  regiduriasStore.actualizarMenu(true);
+});
+
+//---------------------------------------------------------------------------------
+
 watch(
   () => window.innerWidth,
   (width) => {
     isSmallScreen.value = width <= 768;
   }
 );
-//---------------------------------------------------------------------------------
-
-onMounted(() => {
-  regiduriasStore.actualizarMenu(true);
-});
 watch(listFiltroCards, (val) => {
   listCardsFiltro.value = val;
 });
@@ -189,6 +196,7 @@ watch(shape, (val) => {
     item.selection = val;
   });
 });
+
 //---------------------------------------------------------------------------------
 
 const verMas = async (id, valor) => {

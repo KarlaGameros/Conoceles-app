@@ -1,4 +1,5 @@
 <template>
+  <!---------------------------BANNER--------------------------->
   <banner>
     <template v-slot:icono>
       <q-icon name="badge" color="purple-ieen" />
@@ -12,19 +13,19 @@
       consultar.
     </template>
   </banner>
+  <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row justify-between q-pt-md">
-    <div class="col-lg-4 col-md-3 col-sm-2 col-xs-2">
-      <q-avatar
-        v-if="!isSmallScreen"
-        class="bg-purple-ieen-1"
-        text-color="white"
+    <div v-if="!isSmallScreen" class="col-lg-4 col-md-3 col-sm-2 col-xs-2">
+      <q-avatar class="bg-purple-ieen-1" text-color="white"
         ><q-btn @click="backCards()" flat icon="reply">
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
       >
     </div>
-    <div class="col-lg-1 col-md-5 col-sm-9 col-xs-9 q-pt-md">Buscar por:</div>
-    <div class="col-lg-4 col-md-5 col-sm-9 col-xs-9">
+    <div class="col-lg-1 col-md-2 col-sm-3 col-xs-4 q-pt-md text-subtitle2">
+      Buscar por:
+    </div>
+    <div class="col-lg-4 col-md-5 col-sm-5 col-xs-8">
       <q-btn-dropdown
         :label="options || dropdownOptions[0].label"
         color="purple"
@@ -45,7 +46,7 @@
         </q-list>
       </q-btn-dropdown>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-12">
       <q-input
         v-model="filtro"
         color="purple"
@@ -59,6 +60,7 @@
       </q-input>
     </div>
   </div>
+  <!---------------------------CARDS--------------------------->
   <div class="q-pa-md row items-start q-gutter-md flex flex-center">
     <q-card
       v-for="item in listCardsFiltro"
@@ -195,6 +197,7 @@ import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicat
 import { onMounted, ref, watch } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
+
 //---------------------------------------------------------------------------------
 
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
@@ -212,18 +215,21 @@ const listCardsFiltro = ref(listFiltroCards.value);
 const current = ref(1);
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
   presidenciaSindicaturiaStore.actualizarMenu(true);
   options.value = "Propietario Presidente";
 });
+
+//---------------------------------------------------------------------------------
+
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
 watch(listFiltroCards, (val) => {
   listCardsFiltro.value = val;
 });
@@ -231,7 +237,6 @@ watch(filtro, (val) => {
   if (val.length == 0) {
     listCardsFiltro.value = listFiltroCards.value;
   } else if (val.length >= 3 && options.value == "Propietario Presidente") {
-    console.log("entro", options.value);
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_prop.toLowerCase().includes(val.toLowerCase())
     );

@@ -20,17 +20,23 @@
         </div>
       </div>
     </div>
-    <filtros v-if="isSmallScreen" />
+    <filtros v-show="isSmallScreen" />
     <br />
-    <DiputacionesComp v-if="isChartPage == true" />
-    <CardsDiputaciones
-      v-if="
+    <div v-show="isChartPage">
+      <DiputacionesComp />
+    </div>
+    <div
+      v-show="
         isCandidatosPage == true &&
         isDetallePage == false &&
         isChartPage == false
       "
-    />
-    <DetalleCantidato v-if="isDetallePage == true" />
+    >
+      <CardsDiputaciones />
+    </div>
+    <div v-show="isDetallePage">
+      <DetalleCantidato />
+    </div>
   </q-page>
 </template>
 

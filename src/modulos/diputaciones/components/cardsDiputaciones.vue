@@ -1,4 +1,5 @@
 <template>
+  <!---------------------------BANNER--------------------------->
   <banner>
     <template v-slot:icono>
       <q-icon name="badge" color="purple-ieen" />
@@ -12,18 +13,16 @@
       consultar.
     </template>
   </banner>
+  <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row justify-between q-pt-md">
-    <div class="col-lg-6 col-md-3 col-sm-2 col-xs-2">
-      <q-avatar
-        v-if="!isSmallScreen"
-        class="bg-purple-ieen-1"
-        text-color="white"
+    <div v-if="!isSmallScreen" class="col-lg-6 col-md-3 col-sm-2 col-xs-2">
+      <q-avatar class="bg-purple-ieen-1" text-color="white"
         ><q-btn @click="backCards()" flat icon="reply">
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
       >
     </div>
-    <div class="col-lg-3 col-md-5 col-sm-9 col-xs-12">
+    <div class="col-lg-3 col-md-5 col-sm-9 col-xs-12 text-subtitle2">
       Buscar por:
       <q-radio v-model="shape" color="purple" val="prop" label="Propietario" />
       <q-radio v-model="shape" color="purple" val="sup" label="Suplente" />
@@ -42,6 +41,7 @@
       </q-input>
     </div>
   </div>
+  <!---------------------------CARDS--------------------------->
   <div class="q-pa-md row items-start q-gutter-md flex flex-center">
     <q-card
       v-for="item in listCardsFiltro"
@@ -132,6 +132,7 @@
       </q-card-actions>
     </q-card>
   </div>
+  <!---------------------------PAGINACION--------------------------->
   <div class="q-pa-lg flex flex-center">
     <div class="q-pa-lg flex flex-center">
       <q-pagination v-model="current" :max="5" direction-links color="purple" />
@@ -142,7 +143,14 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { onMounted, ref, watch } from "vue";
+import {
+  onActivated,
+  onBeforeMount,
+  onDeactivated,
+  onMounted,
+  ref,
+  watch,
+} from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 
@@ -191,6 +199,14 @@ watch(
     isSmallScreen.value = width <= 768;
   }
 );
+
+onBeforeMount(() => {
+  console.log("onBeforeMount");
+});
+
+onMounted(() => {
+  console.log("onMounted");
+});
 
 //---------------------------------------------------------------------------------
 

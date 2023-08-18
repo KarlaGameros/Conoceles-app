@@ -7,12 +7,12 @@
             <q-breadcrumbs-el icon="home" to="/" />
             <q-breadcrumbs-el icon="bar_chart" @click="onCharts(true)" />
             <q-breadcrumbs-el
-              v-if="isCandidatosPage == true"
+              v-if="isCandidatosPage"
               icon="recent_actors"
               @click="onCards(true)"
             />
             <q-breadcrumbs-el
-              v-if="isDetallePage == true"
+              v-if="isDetallePage"
               label="Detalle del candidato o candidata"
               icon="library_books"
             />
@@ -20,18 +20,24 @@
         </div>
       </div>
     </div>
-    <filtros v-if="isSmallScreen" />
+    <filtros v-show="isSmallScreen" />
     <br />
-    <PresidenciaSindicatura v-if="isChartPagePS == true" />
-    <CardsPresidenciaSindicauria
-      v-if="
+    <div v-show="isChartPagePS">
+      <PresidenciaSindicatura />
+    </div>
+    <div
+      v-show="
         isCandidatosPage == true &&
         isDetallePage == false &&
         isChartPagePS == false
       "
-    />
+    >
+      <CardsPresidenciaSindicauria />
+    </div>
 
-    <DetalleCantidato v-if="isDetallePage == true" />
+    <div v-show="isDetallePage">
+      <DetalleCantidato />
+    </div>
   </q-page>
 </template>
 
@@ -45,7 +51,9 @@ import { storeToRefs } from "pinia";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { useCardsStore } from "src/stores/cards-store";
 import filtros from "../../../components/filtrosComp.vue";
+
 //---------------------------------------------------------------------------------
+
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const $q = useQuasar();
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
@@ -53,12 +61,22 @@ const { isCandidatosPage, isDetallePage, isChartPagePS } = storeToRefs(
   presidenciaSindicaturiaStore
 );
 const cardsStore = useCardsStore();
+
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
   presidenciaSindicaturiaStore.actualizarMenu(true);
   cardsStore.actualizarMenu(true);
 });
+
+//---------------------------------------------------------------------------------
+
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
 
 //---------------------------------------------------------------------------------
 
@@ -72,11 +90,5 @@ const onCharts = () => {
   presidenciaSindicaturiaStore.actualizarCandidatos(false);
   presidenciaSindicaturiaStore.actualizarDetalle(false);
 };
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 </script>
 <style></style>

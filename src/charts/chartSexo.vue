@@ -60,7 +60,6 @@ const chartOptions = {
 
 onMounted(() => {
   setTimeout(() => {
-    console.log("Cargo");
     let spans = document.querySelectorAll(".apexcharts-legend-text");
     for (let span of spans) {
       span.style.fontSize = "18px";

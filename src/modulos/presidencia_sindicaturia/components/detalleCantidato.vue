@@ -1,21 +1,18 @@
 <template>
-  <div class="row">
-    <div class="col-12 shadow-7" style="border-radius: 20px">
-      <banner>
-        <template v-slot:icono>
-          <q-icon name="error" color="purple-ieen" />
-        </template>
-        <template v-slot:contenido>
-          La información es proporcionada por las personas candidatas a las
-          Presidencias y Sindicaturas del Estado de Nayarit, por lo que su
-          contenido es responsabilidad de los actores políticos. El Instituto
-          Estatal Electoral de Nayarit únicamente apoya para su difusión.
-        </template>
-      </banner>
-    </div>
-  </div>
+  <!---------------------------BANNER--------------------------->
+  <banner>
+    <template v-slot:icono>
+      <q-icon name="error" color="purple-ieen" />
+    </template>
+    <template v-slot:contenido>
+      La información es proporcionada por las personas candidatas a las
+      Presidencias y Sindicaturas del Estado de Nayarit, por lo que su contenido
+      es responsabilidad de los actores políticos. El Instituto Estatal
+      Electoral de Nayarit únicamente apoya para su difusión.
+    </template>
+  </banner>
   <br />
-
+  <!---------------------------BUTTON BACK AND PDF--------------------------->
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
       <q-avatar class="bg-purple-ieen-1" text-color="white"
@@ -33,6 +30,7 @@
       >Descargar</q-btn
     >
   </div>
+  <!---------------------------CANDIDATE DETAIL--------------------------->
   <div class="row">
     <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12 q-pa-md">
       <div class="shadow-7" style="border-radius: 20px">
@@ -478,6 +476,7 @@ import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicat
 import { ref } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
+
 //---------------------------------------------------------------------------------
 
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
@@ -490,6 +489,7 @@ const dropdownOptions = [
   { label: "Propietario Sindico", value: "propSin" },
   { label: "Suplente Sindico", value: "supSin" },
 ];
+
 //---------------------------------------------------------------------------------
 
 const backCards = () => {

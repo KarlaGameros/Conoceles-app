@@ -49,6 +49,7 @@ export const useRegiduriasStore = defineStore("regidurias", {
     },
 
     actualizarChart(valor) {
+      console.log("act", valor);
       this.isChartPageRE = valor;
     },
 

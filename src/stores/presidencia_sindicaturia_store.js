@@ -55,6 +55,7 @@ export const usePresidenciaSindicaturiaStore = defineStore(
       },
 
       actualizarCandidatos(valor) {
+        console.log("-----candidatos", valor);
         this.isCandidatosPage = valor;
       },
 
@@ -63,8 +64,8 @@ export const usePresidenciaSindicaturiaStore = defineStore(
       },
 
       actualizarChart(valor) {
+        console.log("---------", valor);
         this.isChartPagePS = valor;
-        console.log("val", valor);
       },
 
       async loadMunicipios() {

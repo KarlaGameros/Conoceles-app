@@ -1,14 +1,17 @@
 <template>
   <div class="row">
-    <highcharts :options="chartOptions"></highcharts>
+    <highcharts class="chart" :options="chartOptions"></highcharts>
   </div>
 </template>
 
 <script>
 import Highcharts from "highcharts";
-import highchartsVue from "highcharts-vue";
 import drilldown from "highcharts/modules/drilldown";
+import { ref, watch } from "vue";
 drilldown(Highcharts);
+
+//---------------------------------------------------------------------------------
+
 export default {
   data() {
     return {
@@ -19,10 +22,18 @@ export default {
         title: {
           text: "",
         },
+        align: "center",
         xAxis: {
           type: "category",
         },
-
+        accessibility: {
+          announceNewData: {
+            enabled: true,
+          },
+        },
+        yAxis: {
+          title: "",
+        },
         legend: {
           enabled: false,
         },
@@ -75,6 +86,11 @@ export default {
           },
         ],
         drilldown: {
+          breadcrumbs: {
+            position: {
+              align: "right",
+            },
+          },
           series: [
             {
               id: "18-24",
@@ -108,12 +124,43 @@ export default {
                 ["Persona no binaria", 1],
               ],
             },
+            {
+              id: "50-59",
+              data: [
+                ["Mujer", 4],
+                ["Hombre", 2],
+                ["Persona no binaria", 1],
+              ],
+            },
+            {
+              id: "60 o más",
+              data: [
+                ["Mujer", 4],
+                ["Hombre", 2],
+                ["Persona no binaria", 1],
+              ],
+            },
           ],
         },
       },
+      isSmallScreen: ref(false),
     };
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.chart {
+  width: 650px;
+  min-width: 310px;
+  max-width: 800px;
+}
+
+@media screen and (max-width: 780px) {
+  .chart {
+    height: 300px;
+    min-width: 310px;
+    max-width: 800px;
+  }
+}
+</style>

@@ -7,12 +7,12 @@
             <q-breadcrumbs-el icon="home" to="/" />
             <q-breadcrumbs-el icon="bar_chart" @click="onCharts(true)" />
             <q-breadcrumbs-el
-              v-if="isCandidatosPage == true"
+              v-if="isCandidatosPage"
               icon="recent_actors"
               @click="onCards(true)"
             />
             <q-breadcrumbs-el
-              v-if="isDetallePage == true"
+              v-if="isDetallePage"
               label="Detalle del candidato o candidata"
               icon="library_books"
             />
@@ -20,18 +20,24 @@
         </div>
       </div>
     </div>
-    <filtros v-if="isSmallScreen" />
+    <filtros v-show="isSmallScreen" />
     <br />
-    <ChartsRegidurias v-if="isChartPageRE == true" />
-    <CardsRegidurias
-      v-if="
+    <div v-show="isChartPageRE">
+      <ChartsRegidurias />
+    </div>
+    <div
+      v-show="
         isCandidatosPage == true &&
         isDetallePage == false &&
         isChartPageRE == false
       "
-    />
+    >
+      <CardsRegidurias />
+    </div>
 
-    <DetalleCandidatosRegidurias v-if="isDetallePage == true" />
+    <div v-show="isDetallePage">
+      <DetalleCandidatosRegidurias />
+    </div>
   </q-page>
 </template>
 
@@ -45,7 +51,9 @@ import ChartsRegidurias from "../components/chartsRegidurias.vue";
 import DetalleCandidatosRegidurias from "../components/detalleCandidatosRegidurias.vue";
 import { useCardsStore } from "src/stores/cards-store";
 import filtros from "../../../components/filtrosComp.vue";
+
 //---------------------------------------------------------------------------------
+
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const $q = useQuasar();
 const regiduriasStore = useRegiduriasStore();
@@ -58,6 +66,8 @@ const cardsStore = useCardsStore();
 onMounted(() => {
   cardsStore.actualizarMenu(true);
 });
+
+//---------------------------------------------------------------------------------
 
 watch(
   () => window.innerWidth,

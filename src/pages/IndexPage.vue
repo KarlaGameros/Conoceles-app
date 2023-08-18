@@ -31,10 +31,22 @@ import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicat
 import { useRegiduriasStore } from "src/stores/regidurias_store";
 import { onMounted, ref, watch } from "vue";
 
+//---------------------------------------------------------------------------------
+
 const cardsStore = useCardsStore();
 const presidenciaStore = usePresidenciaSindicaturiaStore();
 const regiduriasStore = useRegiduriasStore();
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
+
+//---------------------------------------------------------------------------------
+
+onMounted(() => {
+  cardsStore.actualizarMenu(false);
+  presidenciaStore.actualizarMenu(false);
+  regiduriasStore.actualizarMenu(false);
+});
+
+//---------------------------------------------------------------------------------
 
 watch(
   () => window.innerWidth,
@@ -42,9 +54,4 @@ watch(
     isSmallScreen.value = width <= 768;
   }
 );
-onMounted(() => {
-  cardsStore.actualizarMenu(false);
-  presidenciaStore.actualizarMenu(false);
-  regiduriasStore.actualizarMenu(false);
-});
 </script>
