@@ -1,6 +1,6 @@
 <template>
   <apexchart
-    width="500"
+    width="450"
     type="pie"
     :options="chartOptions"
     :series="series"
