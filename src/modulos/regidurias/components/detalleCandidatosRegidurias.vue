@@ -16,7 +16,7 @@
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
       <q-avatar class="bg-purple-ieen-1" text-color="white"
-        ><q-btn @click="backCards()" flat icon="reply">
+        ><q-btn :to="{ name: 'cardsRegidurias' }" flat icon="reply">
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
       >
@@ -47,10 +47,7 @@
                 card.selection == "prop" ? card.nombre_prop : card.nombre_sup
               }}
             </div>
-            <div class="text-subtitle1">
-              Edad:
-              {{ card.selection == "prop" ? card.edad_prop : card.edad_sup }}
-            </div>
+
             <q-avatar square size="24px" v-if="card.imgPartido1 != null">
               <img :src="card.imgPartido1" alt="" />
             </q-avatar>
@@ -415,26 +412,22 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { useRegiduriasStore } from "src/stores/regidurias_store";
-import { ref } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
 
-const regiduriasStore = useRegiduriasStore();
 const candidatosStore = useCardsStore();
 const { card } = storeToRefs(candidatosStore);
 const tab = ref("generales");
 
 //---------------------------------------------------------------------------------
-
-const backCards = () => {
-  regiduriasStore.actualizarCandidatos(true);
-  regiduriasStore.actualizarDetalle(false);
-};
+onMounted(() => {
+  candidatosStore.actualizarButtonColor(true);
+});
 const pdf = async () => {
   pdfCandidato();
 };

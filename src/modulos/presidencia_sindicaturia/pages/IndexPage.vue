@@ -5,47 +5,19 @@
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
             <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el icon="bar_chart" @click="onCharts(true)" />
-            <q-breadcrumbs-el
-              v-if="isCandidatosPage"
-              icon="recent_actors"
-              @click="onCards(true)"
-            />
-            <q-breadcrumbs-el
-              v-if="isDetallePage"
-              label="Detalle del candidato o candidata"
-              icon="library_books"
-            />
+            <q-breadcrumbs-el icon="bar_chart" />
           </q-breadcrumbs>
         </div>
       </div>
     </div>
-    <filtros v-show="isSmallScreen" />
-    <br />
-    <div v-show="isChartPagePS">
-      <PresidenciaSindicatura />
-    </div>
-    <div
-      v-show="
-        isCandidatosPage == true &&
-        isDetallePage == false &&
-        isChartPagePS == false
-      "
-    >
-      <CardsPresidenciaSindicauria />
-    </div>
-
-    <div v-show="isDetallePage">
-      <DetalleCantidato />
-    </div>
+    <filtros v-show="isSmallScreen" class="q-mb-md" />
+    <PresidenciaSindicatura />
   </q-page>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
 import PresidenciaSindicatura from "../components/presidenciaSindicaturiaCharts.vue";
-import CardsPresidenciaSindicauria from "../components/cardsPresidenciaSindicaturia.vue";
-import DetalleCantidato from "../components/detalleCantidato.vue";
 import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";

@@ -39,7 +39,7 @@
             <q-tabs>
               <q-route-tab
                 icon="home"
-                to="/"
+                to="/inicio"
                 :active="isTabSelected('inicio')"
                 @click="setTabSelected('inicio')"
               />
@@ -122,14 +122,11 @@
                     selectedTab == 'diputaciones'
                       ? 'diputaciones'
                       : selectedTab == 'presidencia'
-                      ? 'presidencia'
+                      ? 'presidenciaSindicatura'
                       : 'regidurias',
                 }"
                 label="Numeralia"
-                :class="{
-                  'bg-pink-ieen': numeraliaSelected,
-                  'bg-pink-ieen-3': !numeraliaSelected,
-                }"
+                :class="buttons == false ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
               />
               <br />
               <q-btn
@@ -137,16 +134,13 @@
                 :to="{
                   name:
                     selectedTab == 'diputaciones'
-                      ? 'diputaciones'
+                      ? 'diputacionesCards'
                       : selectedTab == 'presidencia'
-                      ? 'presidencia'
-                      : 'regidurias',
+                      ? 'cardsPresidenciaSindicatura'
+                      : 'cardsRegidurias',
                 }"
                 label="Candidatas y candidatos"
-                :class="{
-                  'bg-pink-ieen': candidatosSelected,
-                  'bg-pink-ieen-3': !candidatosSelected,
-                }"
+                :class="buttons ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
                 @click="activaCandidatos"
               />
             </q-item-section>
@@ -261,7 +255,7 @@
           </q-item>
         </q-list>
         <!---------------------------DRAWER ISSMALLSCREEN--------------------------->
-        <!-- <q-list v-else class="absolute">
+        <q-list v-else class="absolute">
           <div class="text-center q-pb-md">
             <q-img
               src="../assets/IEEN300.png"
@@ -328,7 +322,7 @@
               }"
             />
           </q-item>
-        </q-list> -->
+        </q-list>
       </q-scroll-area>
     </q-drawer>
 
@@ -412,6 +406,7 @@ const {
   listCards,
   listFiltroCards,
   back,
+  buttons,
 } = storeToRefs(cardsStore);
 const distritos_Id = ref(null);
 const actor_politico_Id = ref(null);
@@ -445,28 +440,25 @@ onBeforeMount(() => {
   cardsStore.loadSexo();
   presidenciaSindicaturiaStore.loadMunicipios();
   regiduriasStore.loadDemarcaciones();
-  cardsStore.actualizarChart(true);
-  // presidenciaSindicaturiaStore.actualizarChart(true);
-  // regiduriasStore.actualizarChart(true);
   limpiarFiltros();
-  if (selectedTab.value == "") {
-    selectedTab.value = "inicio";
-  } else {
-    const savedTab = localStorage.getItem("selectedTab");
-    if (savedTab) {
-      selectedTab.value = savedTab;
-    }
-  }
+  // if (selectedTab.value == "") {
+  //   selectedTab.value = "inicio";
+  // } else {
+  //   const savedTab = localStorage.getItem("selectedTab");
+  //   if (savedTab) {
+  //     selectedTab.value = savedTab;
+  //   }
+  // }
 });
 onMounted(() => {
-  if (selectedTab.value == "") {
-    selectedTab.value = "inicio";
-  } else {
-    const savedTab = localStorage.getItem("selectedTab");
-    if (savedTab) {
-      selectedTab.value = savedTab;
-    }
-  }
+  // if (selectedTab.value == "") {
+  //   selectedTab.value = "inicio";
+  // } else {
+  //   const savedTab = localStorage.getItem("selectedTab");
+  //   if (savedTab) {
+  //     selectedTab.value = savedTab;
+  //   }
+  // }
 });
 
 //---------------------------------------------------------------------------------
@@ -488,100 +480,35 @@ watch(listCards, (val) => {
   listFiltroCards.value = val;
 });
 
+watch(selectedTab, (val) => {
+  console.log("val", val);
+});
 //---------------------------------------------------------------------------------
 //TODOS
 
 const isTabSelected = (tab) => {
-  console.log("entrooo", tab);
-
-  // const savedTab = localStorage.getItem("selectedTab");
-  // if (savedTab) {
-  //   return selectedTab.value === savedTab;
-  // }
+  if (selectedTab.value == "") {
+    selectedTab.value = "inicio";
+  } else {
+    const savedTab = localStorage.getItem("selectedTab");
+    if (savedTab) {
+      selectedTab.value = savedTab;
+    }
+  }
 };
 const setTabSelected = (tab) => {
-  cardsStore.actualizarTab(tab);
   selectedTab.value = tab;
   localStorage.setItem("selectedTab", tab);
-  if (tab == "diputaciones") {
-    cardsStore.actualizarCandidatos(false);
-    cardsStore.actualizarDetalle(false);
-    cardsStore.actualizarChart(true);
-    numeraliaSelected.value = true;
-    candidatosSelected.value = false;
-  } else if (tab == "presidencia") {
-    presidenciaSindicaturiaStore.actualizarCandidatos(false);
-    presidenciaSindicaturiaStore.actualizarDetalle(false);
-    presidenciaSindicaturiaStore.actualizarChart(true);
-    numeraliaSelected.value = true;
-    candidatosSelected.value = false;
-  } else if (tab == "regidurias") {
-    regiduriasStore.actualizarCandidatos(false);
-    regiduriasStore.actualizarDetalle(false);
-    regiduriasStore.actualizarChart(true);
-    numeraliaSelected.value = true;
-    candidatosSelected.value = false;
-  } else if (tab == "inicio") {
-    cardsStore.actualizarMenu(false);
-  }
 };
 
 //---------------------------------------------------------------------------------
-//DIPUTACIONES
 const activaNumeralia = () => {
-  switch (selectedTab.value) {
-    case "diputaciones":
-      cardsStore.actualizarChart(true);
-      cardsStore.actualizarDetalle(false);
-      cardsStore.actualizarCandidatos(false);
-      numeraliaSelected.value = true;
-      candidatosSelected.value = false;
-      break;
-    case "presidencia":
-      presidenciaSindicaturiaStore.actualizarChart(true);
-      presidenciaSindicaturiaStore.actualizarCandidatos(false);
-      presidenciaSindicaturiaStore.actualizarDetalle(false);
-      numeraliaSelected.value = true;
-      candidatosSelected.value = false;
-      break;
-    case "regidurias":
-      regiduriasStore.actualizarChart(true);
-      regiduriasStore.actualizarCandidatos(false);
-      regiduriasStore.actualizarDetalle(false);
-      numeraliaSelected.value = true;
-      candidatosSelected.value = false;
-      break;
-  }
+  cardsStore.actualizarButtonColor(false);
   limpiarFiltros();
 };
 
 const activaCandidatos = () => {
-  switch (selectedTab.value) {
-    case "diputaciones":
-      cardsStore.actualizarChart(false);
-      cardsStore.actualizarDetalle(false);
-      cardsStore.actualizarCandidatos(true);
-      numeraliaSelected.value = false;
-      candidatosSelected.value = true;
-      cardsStore.actualizarBack(false);
-      break;
-    case "presidencia":
-      presidenciaSindicaturiaStore.actualizarChart(false);
-      presidenciaSindicaturiaStore.actualizarDetalle(false);
-      presidenciaSindicaturiaStore.actualizarCandidatos(true);
-      numeraliaSelected.value = false;
-      candidatosSelected.value = true;
-      cardsStore.actualizarBack(false);
-      break;
-    case "regidurias":
-      regiduriasStore.actualizarChart(false);
-      regiduriasStore.actualizarDetalle(false);
-      regiduriasStore.actualizarCandidatos(true);
-      numeraliaSelected.value = false;
-      candidatosSelected.value = true;
-      cardsStore.actualizarBack(false);
-      break;
-  }
+  cardsStore.actualizarButtonColor(true);
   limpiarFiltros();
 };
 

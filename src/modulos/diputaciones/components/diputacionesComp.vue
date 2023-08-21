@@ -184,14 +184,7 @@
 </template>
 
 <script setup>
-import {
-  onActivated,
-  onBeforeMount,
-  onDeactivated,
-  onMounted,
-  ref,
-  watch,
-} from "vue";
+import { onMounted, ref, watch } from "vue";
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
 import chartGradoAcademico from "../../../charts/chartGradoAcademico.vue";
 import chartSexo from "../../../charts/chartSexo.vue";
@@ -204,13 +197,17 @@ import chartCandMigrantes from "../../../charts/chartMigrantes.vue";
 import chartCandJov from "../../../charts/chartCandJovenes.vue";
 import chartCandMayores from "../../../charts/chartCandMayores.vue";
 import banner from "../../../components/bannerComp.vue";
+import { useCardsStore } from "src/stores/cards-store";
 
 //---------------------------------------------------------------------------------
 
 const tab = ref("grado_academico");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const open_tab = ref(false);
+const useCards = useCardsStore();
+
 //---------------------------------------------------------------------------------
+
 watch(
   () => window.innerWidth,
   (width) => {
@@ -218,20 +215,8 @@ watch(
   }
 );
 
-onBeforeMount(() => {
-  console.log("onBeforeMount");
-});
-
 onMounted(() => {
-  console.log("onMounted");
-});
-
-onActivated(() => {
-  console.log("onMounted");
-});
-
-onDeactivated(() => {
-  console.log("onDeactivated");
+  useCards.actualizarButtonColor(false);
 });
 </script>
 

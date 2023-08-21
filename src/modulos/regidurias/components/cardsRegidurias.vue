@@ -14,16 +14,6 @@
   </banner>
   <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row justify-between q-pt-md">
-    <div class="col-lg-6 col-md-3 col-sm-2 col-xs-2">
-      <q-avatar
-        v-if="!isSmallScreen"
-        class="bg-purple-ieen-1"
-        text-color="white"
-        ><q-btn @click="backCards()" flat icon="reply">
-          <q-tooltip>Regresar</q-tooltip>
-        </q-btn></q-avatar
-      >
-    </div>
     <div class="col-lg-3 col-md-5 col-sm-9 col-xs-12 text-subtitle2">
       Buscar por:
       <q-radio v-model="shape" color="purple" val="prop" label="Propietario" />
@@ -62,10 +52,10 @@
       </div>
 
       <q-card-section class="q-pt-none">
-        <div class="text-subtitle1">
+        <div class="text-subtitle1 text-center">
           {{ item.selection == "prop" ? item.nombre_prop : item.nombre_sup }}
         </div>
-        <div class="row">
+        <div class="row text-center">
           <div class="text-caption text-grey col-6">
             EDAD:
             {{ item.selection == "prop" ? item.edad_prop : item.edad_sup }}
@@ -115,7 +105,12 @@
 
       <q-card-actions>
         <div class="col-8">
-          <q-btn flat class="text-purple-ieen-1" @click="verMas(item.id, true)">
+          <q-btn
+            :to="{ name: 'detalleRegidurias' }"
+            flat
+            class="text-purple-ieen-1"
+            @click="verMas(item.id)"
+          >
             VER MÁS
           </q-btn>
         </div>
@@ -150,15 +145,14 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { useRegiduriasStore } from "src/stores/regidurias_store";
 import { onMounted, ref, watch } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
+import { useRouter } from "vue-router";
 
 //---------------------------------------------------------------------------------
-
+const router = useRouter();
 const candidatosStore = useCardsStore();
-const regiduriasStore = useRegiduriasStore();
 const { listFiltroCards } = storeToRefs(candidatosStore);
 const filtro = ref("");
 const listCardsFiltro = ref(listFiltroCards.value);
@@ -169,7 +163,8 @@ const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
-  regiduriasStore.actualizarMenu(true);
+  candidatosStore.actualizarMenu(true);
+  candidatosStore.actualizarButtonColor(true);
 });
 
 //---------------------------------------------------------------------------------
@@ -206,20 +201,15 @@ watch(shape, (val) => {
 
 //---------------------------------------------------------------------------------
 
-const verMas = async (id, valor) => {
-  regiduriasStore.actualizarDetalle(valor);
+const verMas = async (id) => {
   candidatosStore.loadCard(id);
+  router.push({ name: "detalleRegidurias", params: { id: id } });
 };
 
 const pdf = async () => {
   pdfCandidato();
 };
 
-const backCards = () => {
-  regiduriasStore.actualizarCandidatos(false);
-  regiduriasStore.actualizarChart(true);
-  candidatosStore.actualizarBack(true);
-};
 //---------------------------------------------------------------------------------
 </script>
 

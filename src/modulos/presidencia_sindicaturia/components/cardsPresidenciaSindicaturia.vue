@@ -15,17 +15,12 @@
   </banner>
   <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row justify-between q-pt-md">
-    <div v-if="!isSmallScreen" class="col-lg-4 col-md-3 col-sm-2 col-xs-2">
-      <q-avatar class="bg-purple-ieen-1" text-color="white"
-        ><q-btn @click="backCards()" flat icon="reply">
-          <q-tooltip>Regresar</q-tooltip>
-        </q-btn></q-avatar
-      >
-    </div>
-    <div class="col-lg-1 col-md-2 col-sm-3 col-xs-4 q-pt-md text-subtitle2">
+    <div
+      class="col-lg-6 col-md-2 col-sm-3 col-xs-4 q-pt-md text-subtitle2 text-right"
+    >
       Buscar por:
     </div>
-    <div class="col-lg-4 col-md-5 col-sm-5 col-xs-8">
+    <div class="col-lg-3 col-md-5 col-sm-5 col-xs-8 text-center">
       <q-btn-dropdown
         :label="options || dropdownOptions[0].label"
         color="purple"
@@ -88,7 +83,7 @@
         </div>
       </div>
       <q-card-section class="q-pt-none">
-        <div class="text-subtitle1">
+        <div class="text-subtitle1 text-center">
           {{
             item.selection == "prop"
               ? item.nombre_prop
@@ -99,7 +94,7 @@
               : item.nombre_sup_sin
           }}
         </div>
-        <div class="row">
+        <div class="row text-center">
           <div class="text-caption text-grey col-6">
             EDAD:
             {{
@@ -170,7 +165,12 @@
 
       <q-card-actions>
         <div class="col-8">
-          <q-btn flat class="text-purple-ieen-1" @click="verMas(item.id, true)">
+          <q-btn
+            :to="{ name: 'detallePresidenciaSindicatura' }"
+            flat
+            class="text-purple-ieen-1"
+            @click="verMas(item.id)"
+          >
             VER MÁS
           </q-btn>
         </div>
@@ -203,16 +203,15 @@
 </template>
 
 <script setup>
+import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
-import { onMounted, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
 
-const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
 const candidatosStore = useCardsStore();
 const { listFiltroCards } = storeToRefs(candidatosStore);
 const dropdownOptions = [
@@ -226,11 +225,13 @@ const filtro = ref("");
 const listCardsFiltro = ref(listFiltroCards.value);
 const current = ref(1);
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
+const router = useRouter();
 
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
-  presidenciaSindicaturiaStore.actualizarMenu(true);
+  candidatosStore.actualizarMenu(true);
+  candidatosStore.actualizarButtonColor(true);
   options.value = "Propietario Presidente";
 });
 
@@ -271,9 +272,9 @@ watch(filtro, (val) => {
 
 //---------------------------------------------------------------------------------
 
-const verMas = async (id, valor) => {
+const verMas = async (id) => {
   candidatosStore.loadCard(id);
-  presidenciaSindicaturiaStore.actualizarDetalle(valor);
+  router.push({ name: "detallePresidenciaSindicatura", params: { id: id } });
 };
 
 const selectOption = (item, option) => {
@@ -289,12 +290,6 @@ const selectOptionFiltro = (option) => {
 };
 const pdf = async () => {
   pdfCandidato();
-};
-
-const backCards = () => {
-  presidenciaSindicaturiaStore.actualizarCandidatos(false);
-  presidenciaSindicaturiaStore.actualizarChart(true);
-  candidatosStore.actualizarBack(true);
 };
 
 //---------------------------------------------------------------------------------

@@ -15,11 +15,8 @@
   <!---------------------------BUTTON BACK AND PDF--------------------------->
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
-      <q-avatar
-        v-if="!isSmallScreen"
-        class="bg-purple-ieen-1"
-        text-color="white"
-        ><q-btn @click="backCards()" flat icon="reply">
+      <q-avatar class="bg-purple-ieen-1" text-color="white"
+        ><q-btn :to="{ name: 'diputacionesCards' }" flat icon="reply">
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
       >
@@ -49,10 +46,7 @@
                 card.selection == "prop" ? card.nombre_prop : card.nombre_sup
               }}
             </div>
-            <div class="text-subtitle1">
-              Edad:
-              {{ card.selection == "prop" ? card.edad_prop : card.edad_sup }}
-            </div>
+
             <q-avatar square size="24px" v-if="card.imgPartido1 != null">
               <img :src="card.imgPartido1" alt="" />
             </q-avatar>
@@ -412,7 +406,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 
@@ -424,7 +418,9 @@ const tab = ref("generales");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 //---------------------------------------------------------------------------------
-
+onMounted(() => {
+  cardsStore.actualizarButtonColor(true);
+});
 watch(
   () => window.innerWidth,
   (width) => {
@@ -434,15 +430,8 @@ watch(
 
 //---------------------------------------------------------------------------------
 
-const backCards = () => {
-  cardsStore.actualizarCandidatos(true);
-  cardsStore.actualizarDetalle(false);
-};
-
 const pdf = async () => {
   pdfCandidato();
 };
-
-//---------------------------------------------------------------------------------
 </script>
 <style></style>

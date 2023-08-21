@@ -4,7 +4,7 @@ import { api } from "src/boot/axios";
 export const useCardsStore = defineStore("cards", {
   state: () => ({
     isHomePage: false,
-    back: false,
+    buttons: false,
     selectedTab: null,
     isCandidatosPage: false,
     isDetallePage: false,
@@ -59,7 +59,6 @@ export const useCardsStore = defineStore("cards", {
     },
 
     actualizarCandidatos(valor) {
-      console.log("va", valor);
       this.isCandidatosPage = valor;
     },
 
@@ -77,7 +76,10 @@ export const useCardsStore = defineStore("cards", {
 
     actualizarTab(valor) {
       this.selectedTab = valor;
-      console.log("---", valor);
+    },
+
+    actualizarButtonColor(valor) {
+      this.buttons = valor;
     },
 
     //---------------------------------------------------------------------------------
@@ -522,8 +524,7 @@ export const useCardsStore = defineStore("cards", {
     //---------------------------------------------------------------------------------
 
     async loadCard(id) {
-      const card = this.listCards.find((card) => card.id === id);
-
+      const card = this.listCards.find((card) => card.id == id);
       if (card) {
         this.card.id = card.id;
         this.card.label = card.label;

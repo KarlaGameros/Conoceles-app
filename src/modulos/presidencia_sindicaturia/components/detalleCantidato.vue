@@ -16,7 +16,7 @@
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
       <q-avatar class="bg-purple-ieen-1" text-color="white"
-        ><q-btn @click="backCards()" flat icon="reply">
+        ><q-btn :to="{ name: 'cardsPresidenciaSindicatura' }" flat icon="reply">
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
       >
@@ -62,18 +62,7 @@
                   : card.nombre_sup_sin
               }}
             </div>
-            <div class="text-subtitle1">
-              Edad:
-              {{
-                card.selection == "prop"
-                  ? card.edad_prop
-                  : card.selection == "sup"
-                  ? card.edad_sup
-                  : card.selection === "propSin"
-                  ? card.edad_prop_sin
-                  : card.edad_sup_sin
-              }}
-            </div>
+
             <q-avatar square size="24px" v-if="card.imgPartido1 != null">
               <img :src="card.imgPartido1" alt="" />
             </q-avatar>
@@ -470,16 +459,14 @@
 </template>
 
 <script setup>
+import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
-import { ref } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
-
-const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
+const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const candidatosStore = useCardsStore();
 const { card } = storeToRefs(candidatosStore);
 const tab = ref("generales");
@@ -491,11 +478,18 @@ const dropdownOptions = [
 ];
 
 //---------------------------------------------------------------------------------
+onMounted(() => {
+  candidatosStore.actualizarButtonColor(true);
+});
 
-const backCards = () => {
-  presidenciaSindicaturiaStore.actualizarCandidatos(true);
-  presidenciaSindicaturiaStore.actualizarDetalle(false);
-};
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
+//---------------------------------------------------------------------------------
+
 const selectOption = (card, option) => {
   card.selection = option.value;
   card.label = option.label;

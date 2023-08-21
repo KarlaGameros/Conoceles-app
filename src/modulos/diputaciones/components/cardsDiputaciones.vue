@@ -15,19 +15,12 @@
   </banner>
   <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row justify-between q-pt-md">
-    <div v-if="!isSmallScreen" class="col-lg-6 col-md-3 col-sm-2 col-xs-2">
-      <q-avatar class="bg-purple-ieen-1" text-color="white"
-        ><q-btn @click="backCards()" flat icon="reply">
-          <q-tooltip>Regresar</q-tooltip>
-        </q-btn></q-avatar
-      >
-    </div>
-    <div class="col-lg-3 col-md-5 col-sm-9 col-xs-12 text-subtitle2">
+    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 text-subtitle2">
       Buscar por:
       <q-radio v-model="shape" color="purple" val="prop" label="Propietario" />
       <q-radio v-model="shape" color="purple" val="sup" label="Suplente" />
     </div>
-    <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
       <q-input
         v-model="filtro"
         color="purple"
@@ -59,10 +52,10 @@
         </div>
       </div>
       <q-card-section class="q-pt-none">
-        <div class="text-subtitle1">
+        <div class="text-subtitle1 text-center">
           {{ item.selection == "prop" ? item.nombre_prop : item.nombre_sup }}
         </div>
-        <div class="row">
+        <div class="row text-center">
           <div class="text-caption text-grey col-6">
             EDAD:
             {{ item.selection == "prop" ? item.edad_prop : item.edad_sup }}
@@ -111,7 +104,12 @@
 
       <q-card-actions>
         <div class="col-8">
-          <q-btn flat class="text-purple-ieen-1" @click="verMas(item.id, true)">
+          <q-btn
+            :to="{ name: 'diputacionesDetalle' }"
+            flat
+            class="text-purple-ieen-1"
+            @click="verMas(item.id)"
+          >
             VER MÁS
           </q-btn>
         </div>
@@ -147,22 +145,17 @@
 </template>
 
 <script setup>
+import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
+import { useRouter } from "vue-router";
 import { useCardsStore } from "src/stores/cards-store";
-import {
-  onActivated,
-  onBeforeMount,
-  onDeactivated,
-  onMounted,
-  ref,
-  watch,
-} from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
+const router = useRouter();
 const { listFiltroCards } = storeToRefs(cardsStore);
 const filtro = ref("");
 const current = ref(1);
@@ -174,8 +167,10 @@ const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 onMounted(() => {
   cardsStore.actualizarMenu(true);
+  cardsStore.actualizarButtonColor(true);
 });
 
+//---------------------------------------------------------------------------------
 watch(listFiltroCards, (val) => {
   listCardsFiltro.value = val;
 });
@@ -208,22 +203,14 @@ watch(
 
 //---------------------------------------------------------------------------------
 
-const verMas = async (id, valor) => {
-  cardsStore.actualizarDetalle(valor);
+const verMas = async (id) => {
   cardsStore.loadCard(id);
+  router.push({ name: "diputacionesDetalle", params: { id: id } });
 };
 
 const pdf = async () => {
   pdfCandidato();
 };
-
-const backCards = () => {
-  cardsStore.actualizarCandidatos(false);
-  cardsStore.actualizarChart(true);
-  cardsStore.actualizarBack(true);
-};
-
-//---------------------------------------------------------------------------------
 </script>
 
 <style></style>

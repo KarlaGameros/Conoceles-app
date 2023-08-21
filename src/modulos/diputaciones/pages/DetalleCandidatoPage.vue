@@ -5,31 +5,42 @@
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
             <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el icon="bar_chart" />
+            <q-breadcrumbs-el
+              icon="recent_actors"
+              :to="{ name: 'diputacionesCards' }"
+            />
+            <q-breadcrumbs-el
+              label="Detalle del candidato o candidata"
+              icon="library_books"
+            />
           </q-breadcrumbs>
         </div>
       </div>
     </div>
     <filtros v-show="isSmallScreen" class="q-mb-md" />
-    <DiputacionesComp />
+    <DetalleCantidato />
   </q-page>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { defineProps, onMounted, ref, watch } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
-import DiputacionesComp from "../components/diputacionesComp.vue";
+import DetalleCantidato from "../components/detalleCantidato.vue";
 import filtros from "../../../components/filtrosComp.vue";
+
 //---------------------------------------------------------------------------------
 
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const cardsStore = useCardsStore();
+const props = defineProps({
+  id: { type: Number, required: true },
+});
+const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 //---------------------------------------------------------------------------------
 
-onMounted(() => {
+onMounted(async () => {
   cardsStore.actualizarMenu(true);
-  cardsStore.actualizarButtonColor(false);
+  await cardsStore.loadCard(props.id);
 });
 
 //---------------------------------------------------------------------------------
