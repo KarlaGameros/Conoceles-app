@@ -63,6 +63,8 @@ onMounted(() => {
   numeraliaSelected.value = true;
   candidatosSelected.value = false;
   cardsStore.actualizarMenu(true);
+  cardsStore.actualizarCandidatos(false);
+  cardsStore.actualizarChart(true);
 });
 watch(
   () => window.innerWidth,

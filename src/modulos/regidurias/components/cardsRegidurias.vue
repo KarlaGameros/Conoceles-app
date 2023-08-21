@@ -61,6 +61,22 @@
         </div>
       </div>
 
+      <q-card-section class="q-pt-none">
+        <div class="text-subtitle1">
+          {{ item.selection == "prop" ? item.nombre_prop : item.nombre_sup }}
+        </div>
+        <div class="row">
+          <div class="text-caption text-grey col-6">
+            EDAD:
+            {{ item.selection == "prop" ? item.edad_prop : item.edad_sup }}
+          </div>
+          <div class="text-caption text-grey col-6">
+            SEXO:
+            {{ item.selection == "prop" ? item.sexo_prop : item.sexo_sup }}
+          </div>
+        </div>
+      </q-card-section>
+
       <q-card-section>
         <div class="row text-overline flex-center">
           Municipio de {{ item.municipio_name }}
@@ -92,15 +108,6 @@
               { label: 'Suplente', value: 'sup' },
             ]"
           />
-        </div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        <div class="text-subtitle1">
-          {{ item.selection == "prop" ? item.nombre_prop : item.nombre_sup }}
-        </div>
-        <div class="text-caption text-grey">
-          EDAD: {{ item.selection == "prop" ? item.edad_prop : item.edad_sup }}
         </div>
       </q-card-section>
 

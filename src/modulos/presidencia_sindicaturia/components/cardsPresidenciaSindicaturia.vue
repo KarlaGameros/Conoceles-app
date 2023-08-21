@@ -87,7 +87,45 @@
           </q-avatar>
         </div>
       </div>
-
+      <q-card-section class="q-pt-none">
+        <div class="text-subtitle1">
+          {{
+            item.selection == "prop"
+              ? item.nombre_prop
+              : item.selection == "sup"
+              ? item.nombre_sup
+              : item.selection === "propSin"
+              ? item.nombre_prop_sin
+              : item.nombre_sup_sin
+          }}
+        </div>
+        <div class="row">
+          <div class="text-caption text-grey col-6">
+            EDAD:
+            {{
+              item.selection == "prop"
+                ? item.edad_prop
+                : item.selection == "sup"
+                ? item.edad_sup
+                : item.selection === "propSin"
+                ? item.edad_prop_sin
+                : item.edad_sup_sin
+            }}
+          </div>
+          <div class="text-caption text-grey col-6">
+            SEXO:
+            {{
+              item.selection == "prop"
+                ? item.sexo_prop
+                : item.selection == "sup"
+                ? item.sexo_sup
+                : item.selection === "propSin"
+                ? item.sexo_prop_sin
+                : item.sexo_sup_sin
+            }}
+          </div>
+        </div>
+      </q-card-section>
       <q-card-section>
         <div class="col text-overline flex-center">
           Municipio de {{ item.municipio_name }}
@@ -125,32 +163,6 @@
               </q-item>
             </q-list>
           </q-btn-dropdown>
-        </div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        <div class="text-subtitle1">
-          {{
-            item.selection == "prop"
-              ? item.nombre_prop
-              : item.selection == "sup"
-              ? item.nombre_sup
-              : item.selection === "propSin"
-              ? item.nombre_prop_sin
-              : item.nombre_sup_sin
-          }}
-        </div>
-        <div class="text-caption text-grey">
-          EDAD:
-          {{
-            item.selection == "prop"
-              ? item.edad_prop
-              : item.selection == "sup"
-              ? item.edad_sup
-              : item.selection === "propSin"
-              ? item.edad_prop_sin
-              : item.edad_sup_sin
-          }}
         </div>
       </q-card-section>
 

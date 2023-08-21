@@ -261,7 +261,7 @@
           </q-item>
         </q-list>
         <!---------------------------DRAWER ISSMALLSCREEN--------------------------->
-        <q-list v-else class="absolute">
+        <!-- <q-list v-else class="absolute">
           <div class="text-center q-pb-md">
             <q-img
               src="../assets/IEEN300.png"
@@ -328,7 +328,7 @@
               }"
             />
           </q-item>
-        </q-list>
+        </q-list> -->
       </q-scroll-area>
     </q-drawer>
 
@@ -446,8 +446,8 @@ onBeforeMount(() => {
   presidenciaSindicaturiaStore.loadMunicipios();
   regiduriasStore.loadDemarcaciones();
   cardsStore.actualizarChart(true);
-  presidenciaSindicaturiaStore.actualizarChart(true);
-  regiduriasStore.actualizarChart(true);
+  // presidenciaSindicaturiaStore.actualizarChart(true);
+  // regiduriasStore.actualizarChart(true);
   limpiarFiltros();
   if (selectedTab.value == "") {
     selectedTab.value = "inicio";
@@ -492,7 +492,12 @@ watch(listCards, (val) => {
 //TODOS
 
 const isTabSelected = (tab) => {
-  return selectedTab.value === tab;
+  console.log("entrooo", tab);
+
+  // const savedTab = localStorage.getItem("selectedTab");
+  // if (savedTab) {
+  //   return selectedTab.value === savedTab;
+  // }
 };
 const setTabSelected = (tab) => {
   cardsStore.actualizarTab(tab);
