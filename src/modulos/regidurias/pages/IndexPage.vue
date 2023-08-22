@@ -5,17 +5,7 @@
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
             <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el icon="bar_chart" @click="onCharts(true)" />
-            <q-breadcrumbs-el
-              v-if="isCandidatosPage"
-              icon="recent_actors"
-              @click="onCards(true)"
-            />
-            <q-breadcrumbs-el
-              v-if="isDetallePage"
-              label="Detalle del candidato o candidata"
-              icon="library_books"
-            />
+            <q-breadcrumbs-el icon="bar_chart" label="Numeralia" />
           </q-breadcrumbs>
         </div>
       </div>
@@ -26,7 +16,6 @@
 </template>
 
 <script setup>
-import { useRegiduriasStore } from "src/stores/regidurias_store";
 import { onMounted, ref, watch } from "vue";
 import ChartsRegidurias from "../components/chartsRegidurias.vue";
 import { useCardsStore } from "src/stores/cards-store";
@@ -35,7 +24,6 @@ import filtros from "../../../components/filtrosComp.vue";
 //---------------------------------------------------------------------------------
 
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
-const regiduriasStore = useRegiduriasStore();
 const cardsStore = useCardsStore();
 
 //---------------------------------------------------------------------------------
@@ -53,17 +41,6 @@ watch(
   }
 );
 //---------------------------------------------------------------------------------
-
-const onCards = () => {
-  regiduriasStore.actualizarCandidatos(true);
-  regiduriasStore.actualizarDetalle(false);
-};
-
-const onCharts = () => {
-  regiduriasStore.actualizarChart(true);
-  regiduriasStore.actualizarCandidatos(false);
-  regiduriasStore.actualizarDetalle(false);
-};
 </script>
 
 <style></style>

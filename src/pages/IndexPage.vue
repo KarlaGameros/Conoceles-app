@@ -47,13 +47,6 @@ onMounted(() => {
   cardsStore.actualizarMenu(false);
   presidenciaStore.actualizarMenu(false);
   regiduriasStore.actualizarMenu(false);
-  if (screen.width < 576) {
-    console.log("pequeña");
-  } else if (screen.width < 768) {
-    console.log("Mediana");
-  } else {
-    console.log("Grande");
-  }
 });
 
 //---------------------------------------------------------------------------------

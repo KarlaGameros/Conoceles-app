@@ -71,11 +71,16 @@
                 : "INICIO"
             }}</strong>
           </div>
-
-          <div class="absolute-right q-pa-md">
-            <i class="fa-solid fa-database fa-2xl"
-              ><q-tooltip>Exportar base de datos</q-tooltip></i
-            >
+          <div v-if="isSmallScreen" class="absolute-right q-pa-xs">
+            <q-btn flat icon="folder_open">
+              <q-tooltip>Exportar base de datos</q-tooltip>
+            </q-btn>
+          </div>
+          <div v-else class="absolute-right q-pa-xs">
+            Exportar base de datos
+            <q-btn flat icon="folder_open">
+              <q-tooltip>Exportar base de datos</q-tooltip>
+            </q-btn>
           </div>
         </div>
       </q-toolbar>
@@ -94,7 +99,7 @@
       <q-scroll-area
         style="
           height: calc(100% - 100px);
-          margin-top: 50px;
+          margin-top: 20px;
           border-right: 1px solid #ddd;
         "
       >
@@ -335,7 +340,7 @@
               :class="
                 isSmallScreen
                   ? 'col-12 text-subtitle2 text-center'
-                  : 'col-lg-4 col-md-4 col-sm-12 col-xs-12 text-h6'
+                  : 'col-lg-4 col-md-4 col-sm-12 col-xs-12 text-subtitle1'
               "
             >
               &#169; 2024 Instituto Estatal Electoral de Nayarit
@@ -395,7 +400,6 @@ const toggleLeftDrawer = () => {
 const cardsStore = useCardsStore();
 const {
   isHomePage,
-  isDetallePage,
   listDistritos,
   listEdades,
   listActorPolitico,
@@ -424,7 +428,6 @@ const regiduriasStore = useRegiduriasStore();
 const { listDemarcacion } = storeToRefs(regiduriasStore);
 const demarcacion_Id = ref(null);
 const selectedTab = ref("");
-
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 //---------------------------------------------------------------------------------
@@ -438,6 +441,7 @@ onBeforeMount(() => {
   presidenciaSindicaturiaStore.loadMunicipios();
   regiduriasStore.loadDemarcaciones();
   limpiarFiltros();
+  selectedTab.value = localStorage.getItem("selectedTab");
   // if (selectedTab.value == "") {
   //   selectedTab.value = "inicio";
   // } else {

@@ -14,13 +14,13 @@
     </template>
   </banner>
   <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
-  <div class="row justify-between q-pt-md">
+  <div class="row q-pt-md">
     <div
-      class="col-lg-6 col-md-2 col-sm-3 col-xs-4 q-pt-md text-subtitle2 text-right"
+      class="col-lg-6 col-md-2 col-sm-3 col-xs-4 q-pt-md text-subtitle2 text-right q-pr-xs"
     >
       Buscar por:
     </div>
-    <div class="col-lg-3 col-md-5 col-sm-5 col-xs-8 text-center">
+    <div class="col-lg-3 col-md-5 col-sm-5 col-xs-8">
       <q-btn-dropdown
         :label="options || dropdownOptions[0].label"
         color="purple"
@@ -195,10 +195,15 @@
       </q-card-actions>
     </q-card>
   </div>
+  <!---------------------------PAGINACION--------------------------->
   <div class="q-pa-lg flex flex-center">
-    <div class="q-pa-lg flex flex-center">
-      <q-pagination v-model="current" :max="5" direction-links color="purple" />
-    </div>
+    <q-pagination
+      v-model="pageActual"
+      :max="paginas"
+      color="purple"
+      input
+      input-class="text-purple"
+    />
   </div>
 </template>
 
@@ -223,16 +228,17 @@ const dropdownOptions = [
 const options = ref("");
 const filtro = ref("");
 const listCardsFiltro = ref(listFiltroCards.value);
-const current = ref(1);
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const router = useRouter();
-
+let pageActual = ref("");
+let paginas = ref("");
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
   candidatosStore.actualizarMenu(true);
   candidatosStore.actualizarButtonColor(true);
   options.value = "Propietario Presidente";
+  pageActual.value = 1;
 });
 
 //---------------------------------------------------------------------------------
@@ -248,7 +254,7 @@ watch(listFiltroCards, (val) => {
 });
 watch(filtro, (val) => {
   if (val.length == 0) {
-    listCardsFiltro.value = listFiltroCards.value;
+    mostrarElementosPage(pageActual.value);
   } else if (val.length >= 3 && options.value == "Propietario Presidente") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_prop.toLowerCase().includes(val.toLowerCase())
@@ -269,7 +275,24 @@ watch(filtro, (val) => {
     return;
   }
 });
-
+//---------------------------------------------------------------------------------
+//PAGINATION
+const elementosPorPage = 5;
+watch(pageActual, (val) => {
+  const pag = listFiltroCards.value.length / 5;
+  if (pag % 1 !== 0) {
+    paginas.value = pag + 1;
+  } else {
+    paginas.value = pag;
+  }
+  mostrarElementosPage(val);
+});
+const mostrarElementosPage = (pagina) => {
+  const inicio = (pagina - 1) * elementosPorPage;
+  const fin = inicio + elementosPorPage;
+  const elementos = listFiltroCards.value.slice(inicio, fin);
+  listCardsFiltro.value = elementos;
+};
 //---------------------------------------------------------------------------------
 
 const verMas = async (id) => {

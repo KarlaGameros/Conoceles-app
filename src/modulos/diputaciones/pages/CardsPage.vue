@@ -5,7 +5,10 @@
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
             <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el icon="recent_actors" />
+            <q-breadcrumbs-el
+              icon="recent_actors"
+              label="Candidatas y candidatos"
+            />
           </q-breadcrumbs>
         </div>
       </div>
