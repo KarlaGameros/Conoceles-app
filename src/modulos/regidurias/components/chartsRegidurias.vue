@@ -190,7 +190,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
 import chartGradoAcademico from "../../../charts/chartGradoAcademico.vue";
 import chartSexo from "../../../charts/chartSexo.vue";
@@ -203,13 +203,18 @@ import chartCandMigrantes from "../../../charts/chartMigrantes.vue";
 import chartCandJov from "../../../charts/chartCandJovenes.vue";
 import chartCandMayores from "../../../charts/chartCandMayores.vue";
 import banner from "../../../components/bannerComp.vue";
+import { useCardsStore } from "src/stores/cards-store";
 
 //---------------------------------------------------------------------------------
-
+const useCards = useCardsStore();
 const tab = ref("grado_academico");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const open_tab = ref(false);
 //---------------------------------------------------------------------------------
+
+onMounted(() => {
+  useCards.actualizarButtonColor(false);
+});
 
 watch(
   () => window.innerWidth,

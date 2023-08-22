@@ -15,7 +15,7 @@
         :style="
           isSmallScreen
             ? 'width: 400px; height: 350px'
-            : 'width: 800px; height: 700px'
+            : 'width: 650px; height: 550px'
         "
       />
     </div>

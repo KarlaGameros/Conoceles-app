@@ -1,5 +1,5 @@
 <template>
-  <q-layout :view="isSmallScreen ? 'hHh lpR lff' : 'hHh lpR lFf'">
+  <q-layout :view="isSmallScreen ? 'hHh lpR lff' : 'hHh lpR fFf'">
     <q-header elevated class="bg-pink-ieen text-white" height-hint="98">
       <div class="row bg-gray-ieen-3">
         <div class="col-1 q-pl-md">
@@ -40,25 +40,21 @@
               <q-route-tab
                 icon="home"
                 to="/inicio"
-                :active="isTabSelected('inicio')"
                 @click="setTabSelected('inicio')"
               />
               <q-route-tab
                 :to="{ name: 'diputaciones' }"
                 label="Diputaciones"
-                :active="isTabSelected('diputaciones')"
                 @click="setTabSelected('diputaciones')"
               />
               <q-route-tab
                 :to="{ name: 'presidenciaSindicatura' }"
                 label="Presidencia y Sindicatura"
-                :active="isTabSelected('presidencia')"
                 @click="setTabSelected('presidencia')"
               />
               <q-route-tab
                 :to="{ name: 'regidurias' }"
                 label="Regidurias"
-                :active="isTabSelected('regidurias')"
                 @click="setTabSelected('regidurias')"
               />
             </q-tabs>
@@ -339,20 +335,20 @@
               :class="
                 isSmallScreen
                   ? 'col-12 text-subtitle2 text-center'
-                  : 'col-lg-4 col-md-4 col-sm-4 col-xs-12 text-h6'
+                  : 'col-lg-4 col-md-4 col-sm-12 col-xs-12 text-h6'
               "
             >
               &#169; 2024 Instituto Estatal Electoral de Nayarit
             </div>
 
             <div
-              class="col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center text-caption"
+              class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center text-caption"
             >
               <div><q-icon name="home" color="white" />Domicilio</div>
               Av. Country Club 13, Colonia Versalles, 63138, Tepic, Nayarit
             </div>
             <div
-              class="text-caption col-lg-4 col-md-4 col-sm-12 col-xs-12 text-center"
+              class="text-caption col-lg-4 col-md-3 col-sm-6 col-xs-12 text-center"
             >
               <div><q-icon name="phone" color="white" />Teléfono</div>
               (311) - 210 - 3235 /36 /47
@@ -387,9 +383,10 @@ import { useCardsStore } from "src/stores/cards-store";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { useRegiduriasStore } from "src/stores/regidurias_store";
 import { onBeforeMount, onMounted, ref, watch, watchEffect } from "vue";
+import { useRouter } from "vue-router";
 
 //---------------------------------------------------------------------------------
-
+const route = useRouter();
 const $q = useQuasar();
 const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => {
@@ -414,7 +411,7 @@ const rango_edad_Id = ref(null);
 const sexo_Id = ref(null);
 const numeraliaSelected = ref(true);
 const candidatosSelected = ref(false);
-
+const selected = ref(null);
 //---------------------------------------------------------------------------------
 
 const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
@@ -480,9 +477,6 @@ watch(listCards, (val) => {
   listFiltroCards.value = val;
 });
 
-watch(selectedTab, (val) => {
-  console.log("val", val);
-});
 //---------------------------------------------------------------------------------
 //TODOS
 
@@ -495,6 +489,7 @@ const isTabSelected = (tab) => {
       selectedTab.value = savedTab;
     }
   }
+  return route.name === tab;
 };
 const setTabSelected = (tab) => {
   selectedTab.value = tab;

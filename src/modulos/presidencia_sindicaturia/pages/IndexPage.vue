@@ -37,7 +37,6 @@ const cardsStore = useCardsStore();
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
-  presidenciaSindicaturiaStore.actualizarMenu(true);
   cardsStore.actualizarMenu(true);
 });
 
@@ -51,16 +50,5 @@ watch(
 );
 
 //---------------------------------------------------------------------------------
-
-const onCards = () => {
-  presidenciaSindicaturiaStore.actualizarCandidatos(true);
-  presidenciaSindicaturiaStore.actualizarDetalle(false);
-};
-
-const onCharts = () => {
-  presidenciaSindicaturiaStore.actualizarChart(true);
-  presidenciaSindicaturiaStore.actualizarCandidatos(false);
-  presidenciaSindicaturiaStore.actualizarDetalle(false);
-};
 </script>
 <style></style>

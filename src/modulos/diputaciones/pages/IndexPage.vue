@@ -29,7 +29,6 @@ const cardsStore = useCardsStore();
 
 onMounted(() => {
   cardsStore.actualizarMenu(true);
-  cardsStore.actualizarButtonColor(false);
 });
 
 //---------------------------------------------------------------------------------
