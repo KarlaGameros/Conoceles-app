@@ -16,11 +16,9 @@
   <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row q-pt-md">
     <div
-      class="col-lg-6 col-md-2 col-sm-3 col-xs-4 q-pt-md text-subtitle2 text-right q-pr-xs"
+      class="col-lg-9 col-md-2 col-sm-3 col-xs-4 text-subtitle2 text-right q-pr-md"
     >
       Buscar por:
-    </div>
-    <div class="col-lg-3 col-md-5 col-sm-5 col-xs-8">
       <q-btn-dropdown
         :label="options || dropdownOptions[0].label"
         color="purple"

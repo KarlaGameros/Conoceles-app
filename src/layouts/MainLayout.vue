@@ -72,13 +72,16 @@
             }}</strong>
           </div>
           <div v-if="isSmallScreen" class="absolute-right q-pa-xs">
-            <q-btn flat icon="folder_open">
+            <q-btn flat>
+              <i class="fa-solid fa-database fa-2xl" style="color: #ffffff"></i>
               <q-tooltip>Exportar base de datos</q-tooltip>
             </q-btn>
           </div>
           <div v-else class="absolute-right q-pa-xs">
             Exportar base de datos
-            <q-btn flat icon="folder_open">
+
+            <q-btn flat>
+              <i class="fa-solid fa-database fa-2xl" style="color: #ffffff"></i>
               <q-tooltip>Exportar base de datos</q-tooltip>
             </q-btn>
           </div>

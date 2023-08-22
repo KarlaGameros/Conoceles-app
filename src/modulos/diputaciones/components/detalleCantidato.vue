@@ -94,7 +94,7 @@
               <q-tab name="propuestas" label="Principales propuestas" />
               <q-tab
                 name="propuesta_genero"
-                label="PROPUESTA EN MATERIA DE GÉNERO O, EN SU CASO, DEL GRUPO EN SITUACIÓN DE DISCRIMINACIÓN QUE REPRESENTO"
+                label="PROPUESTA EN MATERIA DE GÉNERO"
               ></q-tab>
             </q-tabs>
 
@@ -366,6 +366,16 @@
               </q-tab-panel>
 
               <q-tab-panel name="propuesta_genero">
+                <div
+                  class="col-12 bg-purple-ieen-3"
+                  style="border-radius: 10px; color: white"
+                >
+                  <div class="text-subtitle2" align="center">
+                    <q-icon name="import_contacts" /> PROPUESTA EN MATERIA DE
+                    GÉNERO O, EN SU CASO, DEL GRUPO EN SITUACIÓN DE
+                    DISCRIMINACIÓN QUE REPRESENTO
+                  </div>
+                </div>
                 <div class="text-subtitle1 text-justify">
                   Las mujeres hemos sido la voz de la justicia, la igualdad y la
                   inclusión, hemos logrado grandes avances y aún hay mucho por
