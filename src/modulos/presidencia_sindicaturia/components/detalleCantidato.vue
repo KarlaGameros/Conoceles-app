@@ -32,7 +32,7 @@
   </div>
   <!---------------------------CANDIDATE DETAIL--------------------------->
   <div class="row">
-    <div class="col-lg-3 col-md-5 col-sm-12 col-xs-12 q-pa-md">
+    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 q-pa-md">
       <div class="shadow-7" style="border-radius: 20px">
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
@@ -96,7 +96,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-9 col-md-7 col-sm-12 col-xs-12">
+    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
       <div class="q-pa-md">
         <div class="q-gutter-y-md">
           <q-card>
@@ -167,7 +167,7 @@
                     </q-avatar>
                   </div>
                   <br /><br />
-                  <div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">
+                  <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
                     <div class="text-h6">Nombre (propietaria/o):</div>
                     <div class="text-subtitle1">
                       {{
@@ -208,7 +208,7 @@
                     </div>
                     <br />
                   </div>
-                  <div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">
+                  <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
                     <div class="text-h6">Cargo:</div>
                     <div class="text-subtitle1">
                       {{
@@ -316,7 +316,7 @@
                     <q-icon name="school" /> ESTUDIOS
                   </div>
                 </div>
-                <div class="row">
+                <div class="row q-pa-sm">
                   <div class="col">
                     <div class="text-h6">Grado maximo de estudios:</div>
                     <div class="text-subtitle1">Licenciatura</div>
@@ -335,7 +335,7 @@
                     <q-icon name="import_contacts" /> CURSOS
                   </div>
                 </div>
-                <div class="text-subtitle1 text-justify">
+                <div class="q-pa-sm text-subtitle1 text-justify">
                   Cursos Tomados por la Secretaría de Relaciones Exteriores en
                   el año de 2002 sobre ingreso de datos al sistema de Protección
                   Consular de igual manera cursos por la misma Secretaría de
@@ -393,7 +393,7 @@
                     <q-icon name="import_contacts" /> PROPUESTA 2
                   </div>
                 </div>
-                <div class="q-pa-sm text-justify">
+                <div class="q-pa-sm text-subtitle1 text-justify">
                   El seguir fomentando el Comercio Local de mi Ciudad Acuña,
                   impulsar los ejes carreteros que traerán prosperidad no
                   únicamente para Acuña si no también para Jiménez y Zaragoza.
@@ -410,7 +410,7 @@
                     <q-icon name="import_contacts" /> PROPUESTA 2
                   </div>
                 </div>
-                <div class="q-pa-sm text-justify">
+                <div class="q-pa-sm text-subtitle1 text-justify">
                   Para el mejoramiento al campo mayor recurso, que los recursos
                   al campo lleguen en tiempo y forma cuando se necesiten, mayor
                   recurso para la seguridad, educación, salud y deportes de
@@ -431,7 +431,7 @@
                     DISCRIMINACIÓN QUE REPRESENTO
                   </div>
                 </div>
-                <div class="text-subtitle1 text-justify">
+                <div class="q-pa-sm text-subtitle1 text-justify">
                   Las mujeres hemos sido la voz de la justicia, la igualdad y la
                   inclusión, hemos logrado grandes avances y aún hay mucho por
                   hacer. Como Gobernadora del Estado de México, me comprometo a
