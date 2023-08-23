@@ -3,13 +3,9 @@
     <q-header elevated class="bg-pink-ieen text-white" height-hint="98">
       <div class="row bg-gray-ieen-3">
         <div class="col-1 q-pl-md">
-          <q-img
-            v-if="!isSmallScreen"
-            src="../assets/IEEN300.png"
-            style="height: 60px; width: 100px"
-          ></q-img>
+          <q-img v-if="!isSmallScreen" src="../assets/IEEN300.png"></q-img>
         </div>
-        <div class="col-11">
+        <div :class="!isSmallScreen ? 'col-9' : 'col-12'">
           <div class="text-h5 text-center">
             Candidatas y Candidatos,
             <b class="text-pink-conoceles">Conóceles</b>
@@ -18,6 +14,9 @@
             Elecciones Estatales de
             <b class="text-pink-conoceles">Nayarit</b>
           </div>
+        </div>
+        <div v-if="!isSmallScreen" class="col-2 q-pr-xl">
+          <q-img src="../assets/Conoceles2@300x.png"></q-img>
         </div>
       </div>
       <q-toolbar>
@@ -260,11 +259,8 @@
         </q-list>
         <!---------------------------DRAWER ISSMALLSCREEN--------------------------->
         <q-list v-else class="absolute">
-          <div class="text-center q-pb-md">
-            <q-img
-              src="../assets/IEEN300.png"
-              style="height: 80px; width: 150px"
-            ></q-img>
+          <div class="text-center q-pa-md">
+            <q-img src="../assets/Conoceles2@300x.png"></q-img>
           </div>
           <q-item clickable v-ripple>
             <q-btn
@@ -390,7 +386,7 @@ import { useQuasar } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
 import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
 import { useRegiduriasStore } from "src/stores/regidurias_store";
-import { onBeforeMount, onMounted, ref, watch, watchEffect } from "vue";
+import { onBeforeMount, ref, watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 
 //---------------------------------------------------------------------------------
@@ -445,26 +441,7 @@ onBeforeMount(() => {
   regiduriasStore.loadDemarcaciones();
   limpiarFiltros();
   selectedTab.value = localStorage.getItem("selectedTab");
-  // if (selectedTab.value == "") {
-  //   selectedTab.value = "inicio";
-  // } else {
-  //   const savedTab = localStorage.getItem("selectedTab");
-  //   if (savedTab) {
-  //     selectedTab.value = savedTab;
-  //   }
-  // }
 });
-onMounted(() => {
-  // if (selectedTab.value == "") {
-  //   selectedTab.value = "inicio";
-  // } else {
-  //   const savedTab = localStorage.getItem("selectedTab");
-  //   if (savedTab) {
-  //     selectedTab.value = savedTab;
-  //   }
-  // }
-});
-
 //---------------------------------------------------------------------------------
 
 watch(
