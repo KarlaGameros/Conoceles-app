@@ -1,21 +1,30 @@
 <template>
   <q-layout :view="isSmallScreen ? 'hHh lpR lff' : 'hHh lpR fFf'">
-    <q-header elevated class="bg-pink-ieen text-white" height-hint="98">
-      <div class="row bg-gray-ieen-3">
-        <div class="col-1 q-pl-md">
+    <q-header elevated class="bg-pink-ieen" height-hint="98">
+      <div class="row bg-grey-3">
+        <div class="col-lg-1 col-md-2 col-sm-3 col-xs-3 q-pl-xl q-pt-md">
           <q-img v-if="!isSmallScreen" src="../assets/IEEN300.png"></q-img>
         </div>
-        <div :class="!isSmallScreen ? 'col-9' : 'col-12'">
-          <div class="text-h5 text-center">
+        <div
+          :class="
+            !isSmallScreen
+              ? 'col-lg-9 col-md-8 col-sm-6 col-xs-6 q-pr-xl q-pt-md'
+              : 'col-12'
+          "
+        >
+          <div class="text-h5 text-center text-bold text-grey-8">
             Candidatas y Candidatos,
             <b class="text-pink-conoceles">Conóceles</b>
           </div>
-          <div class="text-h6 text-center">
+          <div class="text-h6 text-center text-grey-8 text-bold">
             Elecciones Estatales de
             <b class="text-pink-conoceles">Nayarit</b>
           </div>
         </div>
-        <div v-if="!isSmallScreen" class="col-2 q-pr-xl">
+        <div
+          v-if="!isSmallScreen"
+          class="col-lg-2 col-md-2 col-sm-3 col-xs-3 q-pr-xl"
+        >
           <q-img src="../assets/Conoceles2@300x.png"></q-img>
         </div>
       </div>
