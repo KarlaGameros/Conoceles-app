@@ -33,7 +33,7 @@
   </div>
   <!---------------------------CANDIDATE DETAIL--------------------------->
   <div class="row">
-    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 q-pa-md">
+    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 q-pa-xs">
       <div class="shadow-7" style="border-radius: 20px">
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
@@ -74,10 +74,62 @@
       </div>
     </div>
     <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-      <div class="q-pa-md">
+      <q-list
+        v-if="isSmallScreen"
+        dark
+        padding
+        bordered
+        class="rounded-borders"
+      >
+        <q-expansion-item
+          icon="manage_search"
+          class="bg-grey-3 text-justify"
+          style="border-radius: 20px"
+          :label="tab"
+          header-class="text-purple"
+          expand-icon-class="text-purple"
+          v-model="open_tab"
+        >
+          <q-tabs
+            v-model="tab"
+            vertical
+            class="text-purple"
+            active-bg-color="purple-3"
+            active-color="white"
+          >
+            <q-tab
+              name="DATOS GENERALES"
+              label="DATOS GENERALES"
+              @click="open_tab = !open_tab"
+            />
+            <q-tab
+              name="HISTORIA PROFESIONAL Y/O LABORAL"
+              label="HISTORIA PROFESIONAL Y/O LABORAL"
+              @click="open_tab = !open_tab"
+            />
+            <q-tab
+              name="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
+              label="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
+              @click="open_tab = !open_tab"
+            />
+            <q-tab
+              name="PROPUESTAS"
+              label="PROPUESTAS"
+              @click="open_tab = !open_tab"
+            />
+            <q-tab
+              name="PROPUESTA EN MATERIA DE GÉNERO"
+              label="PROPUESTA EN MATERIA DE GÉNERO"
+              @click="open_tab = !open_tab"
+            ></q-tab>
+          </q-tabs>
+        </q-expansion-item>
+      </q-list>
+      <div class="q-pa-xs">
         <div class="q-gutter-y-md">
           <q-card>
             <q-tabs
+              v-if="!isSmallScreen"
               v-model="tab"
               dense
               class="text-grey"
@@ -86,15 +138,18 @@
               align="justify"
               narrow-indicator
             >
-              <q-tab name="generales" label="Datos generales" />
-              <q-tab name="estudios" label="Historia profesional y/o laboral" />
+              <q-tab name="DATOS GENERALES" label="DATOS GENERALES" />
               <q-tab
-                name="porque_cargo_publico"
-                label="¿Por qué quiero ocupar un cargo público?"
+                name="HISTORIA PROFESIONAL Y/O LABORAL"
+                label="HISTORIA PROFESIONAL Y/O LABORAL"
               />
-              <q-tab name="propuestas" label="Principales propuestas" />
               <q-tab
-                name="propuesta_genero"
+                name="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
+                label="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
+              />
+              <q-tab name="PROPUESTAS" label="PROPUESTAS" />
+              <q-tab
+                name="PROPUESTA EN MATERIA DE GÉNERO"
                 label="PROPUESTA EN MATERIA DE GÉNERO"
               ></q-tab>
             </q-tabs>
@@ -102,7 +157,7 @@
             <q-separator />
 
             <q-tab-panels v-model="tab" animated>
-              <q-tab-panel name="generales">
+              <q-tab-panel name="DATOS GENERALES">
                 <div class="row">
                   <div
                     class="col-lg-3 col-md-12 col-sm-12 col-xs-12"
@@ -136,8 +191,8 @@
                     </q-avatar>
                   </div>
                   <br /><br />
-                  <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
-                    <div class="text-h6">Nombre (propietaria/o):</div>
+                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    <div class="text-h6 q-pt-md">Nombre (propietaria/o):</div>
                     <div class="text-subtitle1">
                       {{
                         card.selection == "prop"
@@ -149,7 +204,6 @@
                           : card.nombre_sup_sin
                       }}
                     </div>
-                    <br />
                     <div class="text-h6">Edad:</div>
                     <div class="text-subtitle1">
                       {{
@@ -162,7 +216,6 @@
                           : card.edad_sup_sin
                       }}
                     </div>
-                    <br />
                     <div class="text-h6">Sexo:</div>
                     <div class="text-subtitle1">
                       {{
@@ -175,9 +228,8 @@
                           : card.sexo_sup_sin
                       }}
                     </div>
-                    <br />
                   </div>
-                  <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6">
+                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                     <div class="text-h6">Cargo:</div>
                     <div class="text-subtitle1">
                       {{
@@ -190,7 +242,6 @@
                           : card.cargo_sup_sin
                       }}
                     </div>
-                    <br />
                     <div class="text-h6">Estado:</div>
                     <div class="text-subtitle1">
                       {{
@@ -203,7 +254,6 @@
                           : card.estado_sup_sin
                       }}
                     </div>
-                    <br />
                     <div class="text-h6">Número de fórmula:</div>
                     <div class="text-subtitle1">
                       {{
@@ -256,7 +306,7 @@
                 </div>
               </q-tab-panel>
 
-              <q-tab-panel name="estudios">
+              <q-tab-panel name="HISTORIA PROFESIONAL Y/O LABORAL">
                 <div class="text-subtitle1 text-justify">
                   Estudié la primaria en el Colegio Americano de Acuña.
                   Secundaria 2 años en la Secundaria numero 1 en ciudad Acuña,
@@ -321,7 +371,7 @@
                 </div>
               </q-tab-panel>
 
-              <q-tab-panel name="porque_cargo_publico">
+              <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?">
                 <div class="text-subtitle1 text-justify">
                   Aspiro ser la Primera Gobernadora del Estado de México, porque
                   quiero que los mexiquenses tengan una mejor calidad de vida y
@@ -353,13 +403,16 @@
                 </div>
               </q-tab-panel>
 
-              <q-tab-panel name="propuestas">
+              <q-tab-panel name="PROPUESTAS">
+                <div class="text-subtitle1 text-center text-bold q-pb-md">
+                  PRINCIPALES PROPUESTAS
+                </div>
                 <div
                   class="col-12 bg-purple-ieen-2"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
-                    <q-icon name="import_contacts" /> PROPUESTA 2
+                    <q-icon name="import_contacts" /> PROPUESTA 1
                   </div>
                 </div>
                 <div class="q-pa-sm text-subtitle1 text-justify">
@@ -389,7 +442,7 @@
                 </div>
               </q-tab-panel>
 
-              <q-tab-panel name="propuesta_genero">
+              <q-tab-panel name="PROPUESTA EN MATERIA DE GÉNERO">
                 <div
                   class="col-12 bg-purple-ieen-3"
                   style="border-radius: 10px; color: white"
@@ -438,7 +491,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import pdfCandidato from "../../../helpers/pdf";
@@ -448,12 +501,22 @@ import banner from "../../../components/bannerComp.vue";
 
 const candidatosStore = useCardsStore();
 const { card } = storeToRefs(candidatosStore);
-const tab = ref("generales");
+const tab = ref("DATOS GENERALES");
+const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
+const open_tab = ref(false);
 
 //---------------------------------------------------------------------------------
 onMounted(() => {
   candidatosStore.actualizarButtonColor(true);
 });
+
+watch(
+  () => window.innerWidth,
+  (width) => {
+    isSmallScreen.value = width <= 768;
+  }
+);
+
 const pdf = async () => {
   pdfCandidato();
 };

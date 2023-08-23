@@ -16,7 +16,7 @@
   <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row q-pt-md">
     <div
-      class="col-lg-9 col-md-2 col-sm-3 col-xs-4 text-subtitle2 text-right q-pr-md"
+      class="col-lg-9 col-md-2 col-sm-3 col-xs-3 text-subtitle2 text-right q-pr-md"
     >
       Buscar por:
       <q-btn-dropdown
@@ -275,9 +275,9 @@ watch(filtro, (val) => {
 });
 //---------------------------------------------------------------------------------
 //PAGINATION
-const elementosPorPage = 5;
+const elementosPorPage = 8;
 watch(pageActual, (val) => {
-  const pag = listFiltroCards.value.length / 5;
+  const pag = listFiltroCards.value.length / elementosPorPage;
   if (pag % 1 !== 0) {
     paginas.value = pag + 1;
   } else {

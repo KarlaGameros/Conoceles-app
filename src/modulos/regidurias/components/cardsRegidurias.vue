@@ -208,9 +208,9 @@ watch(shape, (val) => {
 });
 //---------------------------------------------------------------------------------
 //PAGINATION
-const elementosPorPage = 5;
+const elementosPorPage = 8;
 watch(pageActual, (val) => {
-  const pag = listFiltroCards.value.length / 5;
+  const pag = listFiltroCards.value.length / elementosPorPage;
   if (pag % 1 !== 0) {
     paginas.value = pag + 1;
   } else {
