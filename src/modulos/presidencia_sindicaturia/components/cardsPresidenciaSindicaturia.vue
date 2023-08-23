@@ -167,7 +167,7 @@
             :to="{ name: 'detallePresidenciaSindicatura' }"
             flat
             class="text-purple-ieen-1"
-            @click="verMas(item.id)"
+            @click="verMas(item.id, item.selection)"
           >
             VER MÁS
           </q-btn>
@@ -293,9 +293,12 @@ const mostrarElementosPage = (pagina) => {
 };
 //---------------------------------------------------------------------------------
 
-const verMas = async (id) => {
+const verMas = async (id, selection) => {
   candidatosStore.loadCard(id);
-  router.push({ name: "detallePresidenciaSindicatura", params: { id: id } });
+  router.push({
+    name: "detallePresidenciaSindicatura",
+    params: { id: id, selection: selection },
+  });
 };
 
 const selectOption = (item, option) => {

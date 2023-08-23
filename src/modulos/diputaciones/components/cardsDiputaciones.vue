@@ -110,7 +110,7 @@
             :to="{ name: 'diputacionesDetalle' }"
             flat
             class="text-purple-ieen-1"
-            @click="verMas(item.id)"
+            @click="verMas(item.id, item.selection)"
           >
             VER MÁS
           </q-btn>
@@ -228,9 +228,12 @@ const mostrarElementosPage = (pagina) => {
 };
 //---------------------------------------------------------------------------------
 
-const verMas = async (id) => {
+const verMas = async (id, selection) => {
   cardsStore.loadCard(id);
-  router.push({ name: "diputacionesDetalle", params: { id: id } });
+  router.push({
+    name: "diputacionesDetalle",
+    params: { id: id, selection: selection },
+  });
 };
 
 const pdf = async () => {

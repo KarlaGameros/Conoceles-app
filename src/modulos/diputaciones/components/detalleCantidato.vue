@@ -159,7 +159,7 @@
               <q-tab-panel name="DATOS GENERALES">
                 <div class="row">
                   <div
-                    class="col-lg-3 col-md-12 col-sm-12 col-xs-12"
+                    class="col-lg-3 col-md-12 col-sm-12 col-xs-12 q-pb-md"
                     align="center"
                   >
                     <q-avatar size="200px">
@@ -189,8 +189,14 @@
                       <img :src="card.imgPartido3" alt="" />
                     </q-avatar>
                   </div>
-                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                    <div class="text-h6 q-pt-md">Nombre (propietaria/o):</div>
+                  <div
+                    :class="
+                      isSmallScreen
+                        ? 'text-center col-lg-4 col-md-6 col-sm-12 col-xs-12'
+                        : 'col-lg-4 col-md-6 col-sm-12 col-xs-12'
+                    "
+                  >
+                    <div class="text-h6">Nombre (propietaria/o):</div>
                     <div class="text-subtitle1">
                       {{
                         card.selection == "prop"
@@ -215,7 +221,13 @@
                       }}
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                  <div
+                    :class="
+                      isSmallScreen
+                        ? 'text-center col-lg-4 col-md-6 col-sm-12 col-xs-12'
+                        : 'col-lg-4 col-md-6 col-sm-12 col-xs-12'
+                    "
+                  >
                     <div class="text-h6">Cargo:</div>
                     <div class="text-subtitle1">
                       {{

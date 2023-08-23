@@ -16,7 +16,7 @@ const routes = [
         component: () => import("../modulos/diputaciones/pages/CardsPage"),
       },
       {
-        path: "/diputacionesDetalle/:id",
+        path: "/diputacionesDetalle/:id/:selection",
         name: "diputacionesDetalle",
         props: true,
         component: () =>
@@ -38,7 +38,7 @@ const routes = [
           ),
       },
       {
-        path: "/detallePresidenciaSindicatura/:id",
+        path: "/detallePresidenciaSindicatura/:id/:selection",
         name: "detallePresidenciaSindicatura",
         props: true,
         component: () =>
@@ -58,7 +58,7 @@ const routes = [
           import("../modulos/regidurias/pages/CardsRegiduriasPage"),
       },
       {
-        path: "/detalleRegidurias/:id",
+        path: "/detalleRegidurias/:id/:selection",
         name: "detalleRegidurias",
         props: true,
         component: () =>

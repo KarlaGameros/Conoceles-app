@@ -33,6 +33,7 @@ import filtros from "../../../components/filtrosComp.vue";
 const cardsStore = useCardsStore();
 const props = defineProps({
   id: { type: Number, required: true },
+  selection: { type: String },
 });
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
@@ -40,7 +41,7 @@ const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 onMounted(async () => {
   cardsStore.actualizarMenu(true);
-  await cardsStore.loadCard(props.id);
+  await cardsStore.loadCard(props.id, props.selection);
 });
 
 //---------------------------------------------------------------------------------

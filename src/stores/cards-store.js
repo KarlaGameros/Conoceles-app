@@ -745,13 +745,23 @@ export const useCardsStore = defineStore("cards", {
 
     //---------------------------------------------------------------------------------
 
-    async loadCard(id) {
+    async loadCard(id, selection) {
       const card = this.listCards.find((card) => card.id == id);
+      let option;
+      if (selection == "prop") {
+        option = "PROPIETARIO PRESIDENTE";
+      } else if (selection == "sup") {
+        option = "SUPLENTE PRESIDENTE";
+      } else if (selection == "propSin") {
+        option = "PROPIETARIO SINDICO";
+      } else {
+        option = "SUPLENTE SINDICO";
+      }
       if (card) {
         this.card.id = card.id;
-        this.card.label = card.label;
+        this.card.label = option;
         this.card.prop = card.prop;
-        this.card.selection = card.selection;
+        this.card.selection = selection;
         this.card.nombre_prop = card.nombre_prop;
         this.card.demarcacion_Id = card.demarcacion_Id;
         this.card.siglas = card.siglas;
@@ -789,6 +799,7 @@ export const useCardsStore = defineStore("cards", {
         this.card.imgPartido2 = card.imgPartido2;
         this.card.imgPartido3 = card.imgPartido3;
       }
+      console.log("this card", this.card);
     },
 
     //---------------------------------------------------------------------------------
