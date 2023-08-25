@@ -24,6 +24,7 @@
     </div>
     <q-btn
       @click="pdf()"
+      :disable="activar_pdf == true"
       flat
       icon="picture_as_pdf"
       class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-ieen-1"
@@ -551,7 +552,7 @@ const dropdownOptions = [
   { label: "Suplente Sindico", value: "supSin" },
 ];
 const open_tab = ref(false);
-
+const activar_pdf = ref(false);
 //---------------------------------------------------------------------------------
 onMounted(() => {
   candidatosStore.actualizarButtonColor(true);
@@ -571,6 +572,10 @@ const selectOption = (card, option) => {
 };
 const pdf = async () => {
   pdfCandidato();
+  activar_pdf.value = true;
+  setTimeout(() => {
+    activar_pdf.value = false;
+  }, 5000);
 };
 
 //---------------------------------------------------------------------------------

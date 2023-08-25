@@ -24,6 +24,7 @@
       {{ card.demarcacion_Id }}
     </div>
     <q-btn
+      :disable="activar_pdf"
       @click="pdf()"
       flat
       icon="picture_as_pdf"
@@ -515,7 +516,7 @@ const { card } = storeToRefs(candidatosStore);
 const tab = ref("DATOS GENERALES");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const open_tab = ref(false);
-
+const activar_pdf = ref(false);
 //---------------------------------------------------------------------------------
 onMounted(() => {
   candidatosStore.actualizarButtonColor(true);
@@ -530,6 +531,10 @@ watch(
 
 const pdf = async () => {
   pdfCandidato();
+  activar_pdf.value = true;
+  setTimeout(() => {
+    activar_pdf.value = false;
+  }, 5000);
 };
 
 //---------------------------------------------------------------------------------

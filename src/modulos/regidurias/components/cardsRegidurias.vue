@@ -118,6 +118,7 @@
         </div>
         <div class="col-2">
           <q-btn
+            :disable="activar_pdf == true"
             @click="pdf()"
             flat
             icon="picture_as_pdf"
@@ -128,6 +129,7 @@
         </div>
         <div class="col-2">
           <q-btn
+            :disable="activar_pdf == true"
             @click="pdf()"
             flat
             icon="picture_as_pdf"
@@ -167,6 +169,7 @@ const shape = ref("prop");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 let pageActual = ref("");
 let paginas = ref("");
+const activar_pdf = ref(false);
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
@@ -236,6 +239,10 @@ const verMas = async (id, selection) => {
 
 const pdf = async () => {
   pdfCandidato();
+  activar_pdf.value = true;
+  setTimeout(() => {
+    activar_pdf.value = false;
+  }, 5000);
 };
 
 //---------------------------------------------------------------------------------
