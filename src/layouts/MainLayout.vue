@@ -487,6 +487,7 @@ const isTabSelected = (tab) => {
 const setTabSelected = (tab) => {
   selectedTab.value = tab;
   localStorage.setItem("selectedTab", tab);
+  limpiarFiltros();
 };
 
 //---------------------------------------------------------------------------------
