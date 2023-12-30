@@ -32,16 +32,15 @@ import filtros from "../../../components/filtrosComp.vue";
 
 const cardsStore = useCardsStore();
 const props = defineProps({
-  id: { type: Number, required: true },
-  selection: { type: String },
+  id: { type: String, required: true },
 });
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 //---------------------------------------------------------------------------------
 
-onMounted(async () => {
+onMounted(() => {
   cardsStore.actualizarMenu(true);
-  await cardsStore.loadCard(props.id, props.selection);
+  cardsStore.loadCandidatoById(props.id);
 });
 
 //---------------------------------------------------------------------------------

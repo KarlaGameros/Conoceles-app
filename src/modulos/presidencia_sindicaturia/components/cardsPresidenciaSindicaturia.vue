@@ -16,7 +16,7 @@
   <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row q-pt-md">
     <div
-      class="col-lg-9 col-md-2 col-sm-3 col-xs-3 text-subtitle2 text-right q-pr-md"
+      class="col-lg-9 col-md-9 col-sm-9 col-xs-12 text-subtitle2 text-right q-pr-md"
     >
       Buscar por:
       <q-btn-dropdown
@@ -39,7 +39,7 @@
         </q-list>
       </q-btn-dropdown>
     </div>
-    <div class="col-lg-3 col-md-2 col-sm-4 col-xs-12">
+    <div class="col-lg-3 col-md-2 col-sm-3 col-xs-12">
       <q-input
         v-model="filtro"
         color="purple"
@@ -69,9 +69,9 @@
             <q-img
               :src="
                 item.selection == 'prop'
-                  ? item.prop
+                  ? item.url_Foto_Propietario
                   : item.selection == 'sup'
-                  ? item.sup
+                  ? item.url_Foto_Suplente
                   : item.selection === 'propSin'
                   ? item.prop_sin
                   : item.sup_sin
@@ -84,12 +84,12 @@
         <div class="text-subtitle1 text-center">
           {{
             item.selection == "prop"
-              ? item.nombre_prop
+              ? item.nombre_Completo_Propietario
               : item.selection == "sup"
-              ? item.nombre_sup
+              ? item.nombre_Completo_Suplente
               : item.selection === "propSin"
-              ? item.nombre_prop_sin
-              : item.nombre_sup_sin
+              ? item.nombre_Completo_Propietario_2
+              : item.nombre_Completo_Suplente_2
           }}
         </div>
         <div class="row text-center">
@@ -109,29 +109,34 @@
             SEXO:
             {{
               item.selection == "prop"
-                ? item.sexo_prop
+                ? item.sexo_Propietario
                 : item.selection == "sup"
-                ? item.sexo_sup
+                ? item.sexo_Suplente
                 : item.selection === "propSin"
-                ? item.sexo_prop_sin
-                : item.sexo_sup_sin
+                ? item.sexo_Propietario_2
+                : item.sexo_Suplente_2
             }}
           </div>
         </div>
       </q-card-section>
       <q-card-section>
         <div class="col text-overline flex-center">
-          Municipio de {{ item.municipio_name }}
+          Municipio de {{ item.municipio }}
         </div>
         <div class="row no-wrap items-center flex-center">
-          <q-avatar square size="24px" v-if="item.imgPartido1 != null">
-            <img :src="item.imgPartido1" alt="" />
-          </q-avatar>
-          <q-avatar square size="24px" v-if="item.imgPartido2 != null">
-            <img :src="item.imgPartido2" alt="" />
-          </q-avatar>
-          <q-avatar square size="24px" v-if="item.imgPartido3 != null">
-            <img :src="item.imgPartido3" alt="" />
+          <q-avatar square size="24px">
+            <img
+              :src="
+                item.selection == 'prop'
+                  ? item.url_Logo_Partido_Propietario
+                  : item.selection == 'sup'
+                  ? item.url_Logo_Partido_Suplente
+                  : item.selection == 'propSin'
+                  ? url_Logo_Partido_Propietario_2
+                  : url_Logo_Partido_Suplente_2
+              "
+              alt=""
+            />
           </q-avatar>
         </div>
         <div class="row text-center"></div>
@@ -167,7 +172,7 @@
             :to="{ name: 'detallePresidenciaSindicatura' }"
             flat
             class="text-purple-ieen-1"
-            @click="verMas(item.id, item.selection)"
+            @click="verMas(item.id)"
           >
             VER MÁS
           </q-btn>
@@ -208,6 +213,7 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
@@ -217,8 +223,10 @@ import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
 
+const $q = useQuasar();
 const candidatosStore = useCardsStore();
-const { listFiltroCards } = storeToRefs(candidatosStore);
+const { list_Filtro_Candidatos, listFiltroCards } =
+  storeToRefs(candidatosStore);
 const dropdownOptions = [
   { label: "Propietario Presidente", value: "prop" },
   { label: "Suplente Presidente", value: "sup" },
@@ -227,12 +235,13 @@ const dropdownOptions = [
 ];
 const options = ref("");
 const filtro = ref("");
-const listCardsFiltro = ref(listFiltroCards.value);
+const listCardsFiltro = ref();
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const router = useRouter();
 let pageActual = ref("");
 let paginas = ref("");
 const activar_pdf = ref(false);
+
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
@@ -240,9 +249,14 @@ onMounted(() => {
   candidatosStore.actualizarButtonColor(true);
   options.value = "Propietario Presidente";
   pageActual.value = 1;
+  candidatosStore.filtrarCandidatos("Presidencias y Sindicaturas");
 });
 
 //---------------------------------------------------------------------------------
+
+watch(listFiltroCards, (val) => {
+  listCardsFiltro.value = val;
+});
 
 watch(
   () => window.innerWidth,
@@ -250,37 +264,36 @@ watch(
     isSmallScreen.value = width <= 768;
   }
 );
-watch(listFiltroCards, (val) => {
-  listCardsFiltro.value = val;
-});
+
 watch(filtro, (val) => {
   if (val.length == 0) {
     mostrarElementosPage(pageActual.value);
   } else if (val.length >= 3 && options.value == "Propietario Presidente") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
-      x.nombre_prop.toLowerCase().includes(val.toLowerCase())
+      x.nombre_Completo_Propietario.toLowerCase().includes(val.toLowerCase())
     );
   } else if (val.length >= 3 && options.value == "Suplente Presidente") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
-      x.nombre_sup.toLowerCase().includes(val.toLowerCase())
+      x.nombre_Completo_Suplente.toLowerCase().includes(val.toLowerCase())
     );
   } else if (val.length >= 3 && options.value == "Propietario Sindico") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
-      x.nombre_prop_sin.toLowerCase().includes(val.toLowerCase())
+      x.nombre_Completo_Propietario_2.toLowerCase().includes(val.toLowerCase())
     );
   } else if (val.length >= 3 && options.value == "Suplente Sindico") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
-      x.nombre_sup_sin.toLowerCase().includes(val.toLowerCase())
+      x.nombre_Completo_Suplente_2.toLowerCase().includes(val.toLowerCase())
     );
   } else {
     return;
   }
 });
+
 //---------------------------------------------------------------------------------
 //PAGINATION
 const elementosPorPage = 8;
 watch(pageActual, (val) => {
-  const pag = listFiltroCards.value.length / elementosPorPage;
+  const pag = list_Filtro_Candidatos.value.length / elementosPorPage;
   if (pag % 1 !== 0) {
     paginas.value = pag + 1;
   } else {
@@ -291,16 +304,17 @@ watch(pageActual, (val) => {
 const mostrarElementosPage = (pagina) => {
   const inicio = (pagina - 1) * elementosPorPage;
   const fin = inicio + elementosPorPage;
-  const elementos = listFiltroCards.value.slice(inicio, fin);
+  const elementos = list_Filtro_Candidatos.value.slice(inicio, fin);
   listCardsFiltro.value = elementos;
 };
+
 //---------------------------------------------------------------------------------
 
-const verMas = async (id, selection) => {
-  candidatosStore.loadCard(id);
+const verMas = async (id) => {
+  await candidatosStore.loadCandidatoById(id);
   router.push({
     name: "detallePresidenciaSindicatura",
-    params: { id: id, selection: selection },
+    params: { id: id },
   });
 };
 

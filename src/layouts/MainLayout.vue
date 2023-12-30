@@ -44,37 +44,41 @@
             v-if="!isSmallScreen"
             class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9"
           >
-            <q-tabs>
+            <q-tabs v-model="tabElecciones">
               <q-route-tab
+                name="inicio"
                 icon="home"
                 to="/inicio"
                 @click="setTabSelected('inicio')"
               />
               <q-route-tab
+                name="Diputaciones"
                 :to="{ name: 'diputaciones' }"
                 label="Diputaciones"
-                @click="setTabSelected('diputaciones')"
+                @click="setTabSelected('Diputaciones')"
               />
               <q-route-tab
+                name="Presidencias y Sindicaturas"
                 :to="{ name: 'presidenciaSindicatura' }"
-                label="Presidencia y Sindicatura"
-                @click="setTabSelected('presidencia')"
+                label="Presidencias y Sindicaturas"
+                @click="setTabSelected('Presidencias y Sindicaturas')"
               />
               <q-route-tab
+                name="Regidurías"
                 :to="{ name: 'regidurias' }"
-                label="Regidurias"
-                @click="setTabSelected('regidurias')"
+                label="Regidurías"
+                @click="setTabSelected('Regidurías')"
               />
             </q-tabs>
           </div>
           <!---------------------------HEADER ISSMALLSREEN--------------------------->
           <div class="absolute-center" v-else>
             <strong>{{
-              selectedTab == "diputaciones"
+              selectedTab == "Diputaciones"
                 ? "DIPUTACIONES"
-                : selectedTab == "presidencia"
+                : selectedTab == "Presidencias y Sindicaturas"
                 ? "PRESIDENCIA Y SINDICATURA"
-                : selectedTab == "regidurias"
+                : selectedTab == "Regidurías"
                 ? "REGIDURIAS"
                 : "INICIO"
             }}</strong>
@@ -131,9 +135,9 @@
                 @click="activaNumeralia"
                 :to="{
                   name:
-                    selectedTab == 'diputaciones'
+                    selectedTab == 'Diputaciones'
                       ? 'diputaciones'
-                      : selectedTab == 'presidencia'
+                      : selectedTab == 'Presidencias y Sindicaturas'
                       ? 'presidenciaSindicatura'
                       : 'regidurias',
                 }"
@@ -145,9 +149,9 @@
                 rounded
                 :to="{
                   name:
-                    selectedTab == 'diputaciones'
+                    selectedTab == 'Diputaciones'
                       ? 'diputacionesCards'
-                      : selectedTab == 'presidencia'
+                      : selectedTab == 'Presidencias y Sindicaturas'
                       ? 'cardsPresidenciaSindicatura'
                       : 'cardsRegidurias',
                 }"
@@ -159,7 +163,7 @@
           </q-item>
           <!---------------FILTERS--------------->
           <q-item
-            v-if="selectedTab === 'diputaciones'"
+            v-if="selectedTab === 'Diputaciones'"
             :content-inset-level="2"
             :header-inset-level="2"
           >
@@ -172,14 +176,17 @@
                 rounded
                 outlined
                 bg-color="grey-3"
-                v-model="distritos_Id"
-                :options="listDistritos"
+                v-model="distrito_Id"
+                :options="list_Distritos"
               />
             </q-item-section>
           </q-item>
 
           <q-item
-            v-if="selectedTab === 'presidencia' || selectedTab === 'regidurias'"
+            v-if="
+              selectedTab === 'Presidencias y Sindicaturas' ||
+              selectedTab === 'Regidurías'
+            "
             :content-inset-level="2"
             :header-inset-level="2"
           >
@@ -193,13 +200,13 @@
                 rounded
                 bg-color="grey-3"
                 v-model="municipio_Id"
-                :options="listMunicipios"
+                :options="list_Municipios"
               />
             </q-item-section>
           </q-item>
 
           <q-item
-            v-if="selectedTab === 'regidurias'"
+            v-if="selectedTab === 'Regidurías'"
             :content-inset-level="2"
             :header-inset-level="2"
           >
@@ -213,7 +220,7 @@
                 bg-color="grey-3"
                 rounded
                 v-model="demarcacion_Id"
-                :options="listDemarcacion"
+                :options="list_Demarcaciones"
               />
             </q-item-section>
           </q-item>
@@ -229,7 +236,7 @@
                 outlined
                 bg-color="grey-3"
                 v-model="actor_politico_Id"
-                :options="listActorPolitico"
+                :options="list_Partidos_Politicos"
               />
             </q-item-section>
           </q-item>
@@ -245,7 +252,7 @@
                 outlined
                 bg-color="grey-3"
                 v-model="rango_edad_Id"
-                :options="listEdades"
+                :options="list_Edades"
               />
             </q-item-section>
           </q-item>
@@ -261,7 +268,7 @@
                 outlined
                 bg-color="grey-3"
                 v-model="sexo_Id"
-                :options="listSexo"
+                :options="list_Sexo"
               />
             </q-item-section>
           </q-item>
@@ -289,15 +296,15 @@
 
           <q-item clickable v-ripple>
             <q-btn
-              :active="isTabSelected('diputaciones')"
-              @click="setTabSelected('diputaciones')"
+              :active="isTabSelected('Diputaciones')"
+              @click="setTabSelected('Diputaciones')"
               label="Diputaciones"
               rounded
               style="width: 260px"
               :to="{ name: 'diputaciones' }"
               :class="{
-                'bg-pink-ieen': selectedTab === 'diputaciones',
-                'bg-pink-ieen-3': selectedTab !== 'diputaciones',
+                'bg-pink-ieen': selectedTab === 'Diputaciones',
+                'bg-pink-ieen-3': selectedTab !== 'Diputaciones',
               }"
             />
           </q-item>
@@ -393,14 +400,16 @@
 import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
-import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
-import { useRegiduriasStore } from "src/stores/regidurias_store";
 import { onBeforeMount, ref, watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
+import { useConfiguracionStore } from "src/stores/configuracion-store";
+import { getCurrentLocation, getDataDevice } from "../helpers/CurrentLocation";
 
 //---------------------------------------------------------------------------------
-const route = useRouter();
+
 const $q = useQuasar();
+const configuracionStore = useConfiguracionStore();
+const route = useRouter();
 const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -408,50 +417,67 @@ const toggleLeftDrawer = () => {
 const cardsStore = useCardsStore();
 const {
   isHomePage,
-  listDistritos,
-  listEdades,
-  listActorPolitico,
-  listSexo,
-  listCards,
-  listFiltroCards,
   back,
   buttons,
+  info,
+  listFiltroCards,
+  list_Filtro_Candidatos,
 } = storeToRefs(cardsStore);
-const distritos_Id = ref(null);
+const {
+  tipos_Elecciones,
+  list_Distritos,
+  list_Partidos_Politicos,
+  list_Municipios,
+  list_Demarcaciones,
+  list_Edades,
+  list_Sexo,
+} = storeToRefs(configuracionStore);
+const distrito_Id = ref(null);
 const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
 const sexo_Id = ref(null);
 const numeraliaSelected = ref(true);
 const candidatosSelected = ref(false);
-const selected = ref(null);
-//---------------------------------------------------------------------------------
-
-const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
-const { listMunicipios } = storeToRefs(presidenciaSindicaturiaStore);
 const municipio_Id = ref(null);
+const tabElecciones = ref("Diputaciones");
 
 //---------------------------------------------------------------------------------
 
-const regiduriasStore = useRegiduriasStore();
-const { listDemarcacion } = storeToRefs(regiduriasStore);
 const demarcacion_Id = ref(null);
 const selectedTab = ref("");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 //---------------------------------------------------------------------------------
 
-onBeforeMount(() => {
-  cardsStore.loadCards();
-  cardsStore.loadDistritos();
-  cardsStore.loadEdades();
-  cardsStore.loadActorPolitico();
-  cardsStore.loadSexo();
-  presidenciaSindicaturiaStore.loadMunicipios();
-  regiduriasStore.loadDemarcaciones();
+onBeforeMount(async () => {
   limpiarFiltros();
+  await cardsStore.loadCandidatos();
   selectedTab.value = localStorage.getItem("selectedTab");
+  //configuracionStore.loadTipoElecciones();
+  configuracionStore.loadDistritos();
+  configuracionStore.loadPartidosPoliticos();
+  configuracionStore.loadEdades();
+  configuracionStore.loadGenero();
+  configuracionStore.loadMunicipios();
+  let { latitude, longitude } = await getCurrentLocation();
+  let { brand, model, os } = getDataDevice();
+  info.value.latitud = latitude;
+  info.value.longitud = longitude;
+  info.value.marca = brand;
+  info.value.modelo = model;
+  info.value.sistema_Operativo = os;
+  //await cardsStore.infoDeviceConoceles(info.value);
+  const savedTab = localStorage.getItem("selectedTab");
+  cardsStore.filtrarCandidatos(savedTab);
 });
+
 //---------------------------------------------------------------------------------
+
+watch(tabElecciones, async (val) => {
+  if (val != null) {
+    cardsStore.filtrarCandidatos(val);
+  }
+});
 
 watch(
   () => window.innerWidth,
@@ -466,8 +492,10 @@ watch(back, (val) => {
   }
 });
 
-watch(listCards, (val) => {
-  listFiltroCards.value = val;
+watch(municipio_Id, (val) => {
+  if (val != null) {
+    configuracionStore.loadDemarcaciones(val.value);
+  }
 });
 
 //---------------------------------------------------------------------------------
@@ -484,13 +512,16 @@ const isTabSelected = (tab) => {
   }
   return route.name === tab;
 };
+
 const setTabSelected = (tab) => {
   selectedTab.value = tab;
   localStorage.setItem("selectedTab", tab);
+  //listFiltroCards.value = [];
   limpiarFiltros();
 };
 
 //---------------------------------------------------------------------------------
+
 const activaNumeralia = () => {
   cardsStore.actualizarButtonColor(false);
   limpiarFiltros();
@@ -502,7 +533,7 @@ const activaCandidatos = () => {
 };
 
 const limpiarFiltros = () => {
-  distritos_Id.value = { value: 0, label: "Todos" };
+  distrito_Id.value = { value: 0, label: "Todos" };
   rango_edad_Id.value = { value: 0, label: "Todos" };
   actor_politico_Id.value = { value: 0, label: "Todos" };
   sexo_Id.value = { value: 0, label: "Todos" };
@@ -511,54 +542,51 @@ const limpiarFiltros = () => {
 };
 
 //---------------------------------------------------------------------------------
-const filtrar = (listCards, filtro) => {
-  listFiltroCards.value = listCards.filter((item) => {
+
+const filtrar = (list_Filtro_Candidatos, filtro) => {
+  listFiltroCards.value = list_Filtro_Candidatos.filter((item) => {
     let cumple = true;
     if (filtro.distrito !== undefined) {
       if (filtro.distrito == "") {
-        cumple = cumple && item.distrito === item.distrito;
+        cumple = cumple && item.distrito_Id === item.distrito_Id;
       } else {
-        cumple = cumple && item.distrito === filtro.distrito;
+        cumple = cumple && item.distrito_Id === filtro.distrito;
       }
     }
     if (filtro.actor_politico !== undefined) {
       if (filtro.actor_politico == "") {
-        cumple = cumple && item.siglas === item.siglas;
+        cumple = cumple && item.partido_Id === item.partido_Id;
       } else {
-        cumple = cumple && item.siglas === filtro.actor_politico;
+        cumple = cumple && item.partido_Id === filtro.actor_politico;
       }
     }
-
-    if (filtro.edad !== undefined) {
-      if (filtro.edad == "Todos") {
-        cumple = cumple && item.edad_prop > 0;
-      } else {
-        const rango = filtro.edad.split("-").map(Number);
-        if (rango.length === 2) {
-          cumple =
-            cumple && item.edad_prop >= rango[0] && item.edad_prop <= rango[1];
-        } else if (rango.length === 1 && rango[0] === 60) {
-          cumple = cumple && item.edad_prop >= rango[0];
-        }
-      }
-    }
-
+    // if (filtro.edad !== undefined) {
+    //   if (filtro.edad == "Todos") {
+    //     cumple = cumple && item.edad_prop > 0;
+    //   } else {
+    //     const rango = filtro.edad.split("-").map(Number);
+    //     if (rango.length === 2) {
+    //       cumple =
+    //         cumple && item.edad_prop >= rango[0] && item.edad_prop <= rango[1];
+    //     } else if (rango.length === 1 && rango[0] === 60) {
+    //       cumple = cumple && item.edad_prop >= rango[0];
+    //     }
+    //   }
+    // }
     if (filtro.sexo !== undefined) {
       if (filtro.sexo == "Todos") {
-        cumple = cumple && item.sexo_prop === item.sexo_prop;
+        cumple = cumple && item.sexo_Propietario === item.sexo_Propietario;
       } else {
-        cumple = cumple && item.sexo_prop === filtro.sexo;
+        cumple = cumple && item.sexo_Propietario === filtro.sexo;
       }
     }
-
     if (filtro.municipio !== undefined) {
       if (filtro.municipio == "") {
-        cumple = cumple && item.municipio === item.municipio;
+        cumple = cumple && item.municipio_Id === item.municipio_Id;
       } else {
-        cumple = cumple && item.municipio === filtro.municipio;
+        cumple = cumple && item.municipio_Id === filtro.municipio;
       }
     }
-
     if (filtro.demarcacion !== undefined) {
       if (filtro.demarcacion == "") {
         cumple = cumple && item.demarcacion_Id === item.demarcacion_Id;
@@ -566,14 +594,13 @@ const filtrar = (listCards, filtro) => {
         cumple = cumple && item.demarcacion_Id === filtro.demarcacion;
       }
     }
-
     return cumple;
   });
 };
 
 watchEffect(() => {
   const filtro = {};
-  if (distritos_Id.value != null) filtro.distrito = distritos_Id.value.value;
+  if (distrito_Id.value != null) filtro.distrito = distrito_Id.value.value;
   if (actor_politico_Id.value != null)
     filtro.actor_politico = actor_politico_Id.value.value;
   if (rango_edad_Id.value != null) filtro.edad = rango_edad_Id.value.label;
@@ -581,7 +608,7 @@ watchEffect(() => {
   if (municipio_Id.value != null) filtro.municipio = municipio_Id.value.value;
   if (demarcacion_Id.value != null)
     filtro.demarcacion = demarcacion_Id.value.value;
-  filtrar(listCards.value, filtro);
+  filtrar(list_Filtro_Candidatos.value, filtro);
 });
 </script>
 <style lang="scss">

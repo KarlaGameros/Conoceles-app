@@ -17,10 +17,9 @@
 
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import ChartsRegidurias from "../components/chartsRegidurias.vue";
 import { useCardsStore } from "src/stores/cards-store";
 import filtros from "../../../components/filtrosComp.vue";
-
+import ChartsRegidurias from "../components/chartsRegidurias.vue";
 //---------------------------------------------------------------------------------
 
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
@@ -40,6 +39,7 @@ watch(
     isSmallScreen.value = width <= 768;
   }
 );
+
 //---------------------------------------------------------------------------------
 </script>
 

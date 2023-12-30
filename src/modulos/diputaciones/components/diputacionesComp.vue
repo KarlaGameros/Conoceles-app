@@ -184,6 +184,7 @@
 </template>
 
 <script setup>
+import { useCardsStore } from "src/stores/cards-store";
 import { onMounted, ref, watch } from "vue";
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
 import chartGradoAcademico from "../../../charts/chartGradoAcademico.vue";
@@ -197,7 +198,6 @@ import chartCandMigrantes from "../../../charts/chartMigrantes.vue";
 import chartCandJov from "../../../charts/chartCandJovenes.vue";
 import chartCandMayores from "../../../charts/chartCandMayores.vue";
 import banner from "../../../components/bannerComp.vue";
-import { useCardsStore } from "src/stores/cards-store";
 
 //---------------------------------------------------------------------------------
 
@@ -208,16 +208,18 @@ const useCards = useCardsStore();
 
 //---------------------------------------------------------------------------------
 
+onMounted(() => {
+  useCards.actualizarButtonColor(false);
+});
+
+//---------------------------------------------------------------------------------
+
 watch(
   () => window.innerWidth,
   (width) => {
     isSmallScreen.value = width <= 768;
   }
 );
-
-onMounted(() => {
-  useCards.actualizarButtonColor(false);
-});
 </script>
 
 <style scoped>

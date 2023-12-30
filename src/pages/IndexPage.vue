@@ -30,23 +30,17 @@
 
 <script setup>
 import { useCardsStore } from "src/stores/cards-store";
-import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
-import { useRegiduriasStore } from "src/stores/regidurias_store";
 import { onMounted, ref, watch } from "vue";
 
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
-const presidenciaStore = usePresidenciaSindicaturiaStore();
-const regiduriasStore = useRegiduriasStore();
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
   cardsStore.actualizarMenu(false);
-  presidenciaStore.actualizarMenu(false);
-  regiduriasStore.actualizarMenu(false);
 });
 
 //---------------------------------------------------------------------------------

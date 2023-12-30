@@ -6,76 +6,119 @@ export const useCardsStore = defineStore("cards", {
     isHomePage: false,
     buttons: false,
     selectedTab: null,
-    isCandidatosPage: false,
-    isDetallePage: false,
-    isChartPage: false,
+    list_Candidatos: [],
+    list_Filtro_Candidatos: [],
     listCards: [],
-    listDistritos: [],
     listFiltroCards: [],
-    listEdades: [],
-    listActorPolitico: [],
-    listSexo: [],
-    card: {
-      id: null,
+    candidato: {
       selection: null,
-      label: null,
-      prop: null,
-      siglas: null,
-      nombre_prop: null,
-      edad_prop: null,
-      sexo_prop: null,
-      cargo_prop: null,
-      estado_prop: null,
-      formula_prop: null,
-      sup: null,
-      nombre_sup: null,
-      edad_sup: null,
-      cargo_sup: null,
-      sexo_sup: null,
-      estado_sup: null,
-      formula_sup: null,
-      prop_sin: null,
-      nombre_prop_sin: null,
-      edad_prop_sin: null,
-      sexo_prop_sin: null,
-      cargo_prop_sin: null,
-      estado_prop_sin: null,
-      formula_prop_sin: null,
-      sup_sin: null,
-      nombre_sup_sin: null,
-      edad_sup_sin: null,
-      cargo_sup_sin: null,
-      sexo_sup_sin: null,
-      estado_sup_sin: null,
-      formula_sup_sin: null,
-      imgPartido1: null,
-      imgPartido2: null,
-      imgPartido3: null,
+      id: null,
+      tipo_Eleccion_Id: null,
+      tipo_Eleccion: null,
+      municipio_Id: null,
+      municipio: null,
+      distrito_Id: null,
+      distrito: null,
+      demarcacion_Id: null,
+      demarcacion: null,
+      coalicion_Id: null,
+      coalicion: null,
+      url_Logo_Coalicion: null,
+      estatus: null,
+      is_Coalicion: false,
+      activo: false,
+      tipo_Candidato: null,
+      orden: null,
+      validado: true,
+      fecha_Registro: null,
+      nombre_Completo_Propietario: null,
+      nombres_Propietario: null,
+      apellido_Paterno_Propietario: null,
+      apellido_Materno_Propietario: null,
+      mote_Propietario: null,
+      sexo_Propietario: null,
+      url_Foto_Propietario: null,
+      clave_Elector_Propietario: null,
+      rfC_Propietario: null,
+      curP_Propietario: null,
+      fecha_Nacimiento_Propietario: null,
+      ocupacion_Propietario: null,
+      telefono_Propietario: null,
+      correo_Propietario: null,
+      pertenece_Grupo_Vulnerable_Propietario: false,
+      grupo_Vulnerable_Propietario: null,
+      partido_Id: null,
+      partido: null,
+      url_Logo_Partido_Propietario: null,
+      nombre_Completo_Propietario_2: null,
+      nombres_Propietario_2: null,
+      apellido_Paterno_Propietario_2: null,
+      apellido_Materno_Propietario_2: null,
+      mote_Propietario_2: null,
+      sexo_Propietario_2: null,
+      url_Foto_Propietario_2: null,
+      clave_Elector_Propietario_2: null,
+      rfC_Propietario_2: null,
+      curP_Propietario_2: null,
+      fecha_Nacimiento_Propietario_2: null,
+      ocupacion_Propietario_2: null,
+      telefono_Propietario_2: null,
+      correo_Propietario_2: null,
+      pertenece_Grupo_Vulnerable_Propietario_2: false,
+      grupo_Vulnerable_Propietario_2: null,
+      partido_Propietario_2_Id: null,
+      partido_Propietario_2: null,
+      url_Logo_Partido_Propietario_2: null,
+      nombre_Completo_Suplente: null,
+      nombres_Suplente: null,
+      apellido_Paterno_Suplente: null,
+      apellido_Materno_Suplente: null,
+      mote_Suplente: null,
+      sexo_Suplente: null,
+      url_Foto_Suplente: null,
+      clave_Elector_Suplente: null,
+      rfC_Suplente: null,
+      curP_Suplente: null,
+      fecha_Nacimiento_Suplente: null,
+      ocupacion_Suplente: null,
+      telefono_Suplente: null,
+      correo_Suplente: null,
+      pertenece_Grupo_Vulnerable_Suplente: false,
+      grupo_Vulnerable_Suplente: null,
+      partido_Suplente_Id: null,
+      partido_Suplente: null,
+      url_Logo_Partido_Suplente: null,
+      nombre_Completo_Suplente_2: null,
+      nombres_Suplente_2: null,
+      apellido_Paterno_Suplente_2: null,
+      apellido_Materno_Suplente_2: null,
+      mote_Suplente_2: null,
+      sexo_Suplente_2: null,
+      url_Foto_Suplente_2: null,
+      clave_Elector_Suplente_2: null,
+      rfC_Suplente_2: null,
+      curP_Suplente_2: null,
+      fecha_Nacimiento_Suplente_2: null,
+      ocupacion_Suplente_2: null,
+      telefono_Suplente_2: null,
+      correo_Suplente_2: null,
+      pertenece_Grupo_Vulnerable_Suplente_2: false,
+      grupo_Vulnerable_Suplente_2: null,
+      partido_Suplente_2_Id: null,
+      partido_Suplente_2: null,
+      url_Logo_Partido_Suplente_2: null,
+    },
+    info: {
+      latitud: null,
+      longitud: null,
+      marca: null,
+      modelo: null,
+      sistema_Operativo: null,
     },
   }),
   actions: {
     actualizarMenu(valor) {
       this.isHomePage = valor;
-    },
-
-    actualizarCandidatos(valor) {
-      this.isCandidatosPage = valor;
-    },
-
-    actualizarDetalle(valor) {
-      this.isDetallePage = valor;
-    },
-
-    actualizarChart(valor) {
-      this.isChartPage = valor;
-    },
-
-    actualizarBack(valor) {
-      this.back = valor;
-    },
-
-    actualizarTab(valor) {
-      this.selectedTab = valor;
     },
 
     actualizarButtonColor(valor) {
@@ -84,732 +127,346 @@ export const useCardsStore = defineStore("cards", {
 
     //---------------------------------------------------------------------------------
 
-    async loadCards() {
-      this.listCards = [
-        {
-          id: 1,
-          visible: false,
-          selection: "prop",
-          label: "",
-          municipio: 1,
-          siglas: 1,
-          municipio_name: "Acaponeta",
-          demarcacion_Id: 1,
-          distrito: 1,
-          distrito_name: "Acaponeta",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_prop: "CARLOS ROBERTO 1",
-          edad_prop: 25,
-          sexo_prop: "Hombre",
-          cargo_prop: "Prop. Presidente",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup: "MARIA LOPEZ",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Sup. Presidente",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "ALEXIS LOPEZ",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Prop. Sindico",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "MARIA TORRES",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Sup. Sindico",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-        },
-        {
-          id: 2,
-          visible: false,
-          selection: "prop",
-          label: "",
-          siglas: 1,
-          distrito: 1,
-          distrito: "Acaponeta",
-          municipio: 2,
-          municipio_name: "Ahuacatlán",
-          demarcacion_Id: 1,
-          distrito: 3,
-          distrito_name: "Del Nayar",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop: "GILBERTO MARTINES 2",
-          edad_prop: 25,
-          sexo_prop: "Hombre",
-          cargo_prop: "Diputado",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup: "TANIA LOPEZ",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Diputada",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "JUAN LOPEZ",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Diputado",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "KENIA TORRES",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Diputada",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-        },
-        {
-          id: 3,
-          visible: false,
-          selection: "prop",
-          label: "",
-          siglas: 2,
-          municipio: 17,
-          municipio_name: "Tepic",
-          demarcacion_Id: 2,
-          distrito: 2,
-          distrito_name: "Tecuala",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_prop: "LUIS TAPIA 3",
-          edad_prop: 25,
-          sexo_prop: "Hombre",
-          cargo_prop: "Diputado",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup: "BEATRIZ LOPEZ",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Diputada",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "RAMON LOPEZ",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Diputado",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "GUADALUPE TORRES",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Diputada",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido1:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-        },
-        {
-          id: 4,
-          visible: false,
-          selection: "prop",
-          label: "",
-          siglas: 2,
-          municipio: 2,
-          municipio_name: "Ahuacatlán",
-          demarcacion_Id: 2,
-          distrito: 2,
-          distrito_name: "Tecuala",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop: "FERNANDO PEREZ 4",
-          edad_prop: 25,
-          sexo_prop: "Hombre",
-          cargo_prop: "Prop. Presidente",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup: "MIRIAM SMITH",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Sup. Presidente",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "EMILIO GAMEROS",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Prop. Sindico",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "ALEJANDRA GOMEZ",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Sup. Sindico",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido1:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-        },
-        {
-          id: 5,
-          visible: false,
-          selection: "prop",
-          label: "",
-          municipio: 1,
-          siglas: 1,
-          municipio_name: "Acaponeta",
-          demarcacion_Id: 1,
-          distrito: 1,
-          distrito_name: "Acaponeta",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_prop: "MARIA VALDEZ 5",
-          edad_prop: 25,
-          sexo_prop: "Mujer",
-          cargo_prop: "Prop. Presidente",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_sup: "LUZ ESQUEDA",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Sup. Presidente",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "ANGEL CASTRO",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Prop. Sindico",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "KAREN ORTEGA",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Sup. Sindico",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MC.png",
-        },
-        {
-          id: 6,
-          visible: false,
-          selection: "prop",
-          label: "",
-          municipio: 1,
-          siglas: 1,
-          municipio_name: "Acaponeta",
-          demarcacion_Id: 1,
-          distrito: 1,
-          distrito_name: "Acaponeta",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_prop: "GRECIA VALDEZ 6",
-          edad_prop: 25,
-          sexo_prop: "Mujer",
-          cargo_prop: "Prop. Presidente",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup: "MARY ORTEGA",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Sup. Presidente",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "JONAH MONTES",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Prop. Sindico",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_sup_sin: "OMAR GAMEROS",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Hombre",
-          cargo_sup_sin: "Sup. Sindico",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MC.png",
-        },
-        {
-          id: 7,
-          visible: false,
-          selection: "prop",
-          label: "",
-          municipio: 1,
-          siglas: 1,
-          municipio_name: "Acaponeta",
-          demarcacion_Id: 1,
-          distrito: 1,
-          distrito_name: "Acaponeta",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop: "MARTIN DE LA ROSA 7",
-          edad_prop: 25,
-          sexo_prop: "Hombre",
-          cargo_prop: "Prop. Presidente",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup: "LUZ MARIA LOPEZ",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Sup. Presidente",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "MIGUEL LOPEZ",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Prop. Sindico",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "MARGARITA TORRES",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Sup. Sindico",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/RSP.png",
-        },
-        {
-          id: 8,
-          visible: false,
-          selection: "prop",
-          label: "",
-          municipio: 1,
-          siglas: 1,
-          municipio_name: "Acaponeta",
-          demarcacion_Id: 1,
-          distrito: 1,
-          distrito_name: "Acaponeta",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_prop: "CARLOS ROBERTO 8",
-          edad_prop: 25,
-          sexo_prop: "Hombre",
-          cargo_prop: "Prop. Presidente",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup: "MARIA LOPEZ",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Sup. Presidente",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "ALEXIS LOPEZ",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Prop. Sindico",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "MARIA TORRES",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Sup. Sindico",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-        },
-        {
-          id: 9,
-          visible: false,
-          selection: "prop",
-          label: "",
-          siglas: 1,
-          distrito: 1,
-          distrito: "Acaponeta",
-          municipio: 2,
-          municipio_name: "Ahuacatlán",
-          demarcacion_Id: 1,
-          distrito: 3,
-          distrito_name: "Del Nayar",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop: "GILBERTO MARTINES 9",
-          edad_prop: 25,
-          sexo_prop: "Hombre",
-          cargo_prop: "Diputado",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup: "TANIA LOPEZ",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Diputada",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "JUAN LOPEZ",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Diputado",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "KENIA TORRES",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Diputada",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PAN.png",
-        },
-        {
-          id: 10,
-          visible: false,
-          selection: "prop",
-          label: "",
-          siglas: 2,
-          municipio: 17,
-          municipio_name: "Tepic",
-          demarcacion_Id: 2,
-          distrito: 2,
-          distrito_name: "Tecuala",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_prop: "LUIS TAPIA 10",
-          edad_prop: 25,
-          sexo_prop: "Hombre",
-          cargo_prop: "Diputado",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup: "BEATRIZ LOPEZ",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Diputada",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "RAMON LOPEZ",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Diputado",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "GUADALUPE TORRES",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Diputada",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido1:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-        },
-        {
-          id: 11,
-          visible: false,
-          selection: "prop",
-          label: "",
-          siglas: 2,
-          municipio: 2,
-          municipio_name: "Ahuacatlán",
-          demarcacion_Id: 2,
-          distrito: 2,
-          distrito_name: "Tecuala",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop: "FERNANDO PEREZ 11",
-          edad_prop: 25,
-          sexo_prop: "Hombre",
-          cargo_prop: "Prop. Presidente",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup: "MIRIAM SMITH",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Sup. Presidente",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "EMILIO GAMEROS",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Prop. Sindico",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "ALEJANDRA GOMEZ",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Sup. Sindico",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido1:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/PRI.png",
-        },
-        {
-          id: 12,
-          visible: false,
-          selection: "prop",
-          label: "",
-          municipio: 1,
-          siglas: 1,
-          municipio_name: "Acaponeta",
-          demarcacion_Id: 1,
-          distrito: 1,
-          distrito_name: "Acaponeta",
-          prop: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_prop: "MARIA VALDEZ 12",
-          edad_prop: 25,
-          sexo_prop: "Mujer",
-          cargo_prop: "Prop. Presidente",
-          estado_prop: "Nayarit",
-          formula_prop: "12456",
-          sup: "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_sup: "LUZ ESQUEDA",
-          edad_sup: 30,
-          sexo_sup: "Mujer",
-          cargo_sup: "Sup. Presidente",
-          estado_sup: "Nayarit",
-          formula_sup: "789456",
-          prop_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png",
-          nombre_prop_sin: "ANGEL CASTRO",
-          edad_prop_sin: 35,
-          sexo_prop_sin: "Hombre",
-          cargo_prop_sin: "Prop. Sindico",
-          estado_prop_sin: "Nayarit",
-          formula_prop_sin: "42456",
-          sup_sin:
-            "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359554_960_720.png",
-          nombre_sup_sin: "KAREN ORTEGA",
-          edad_sup_sin: 45,
-          sexo_sup_sin: "Mujer",
-          cargo_sup_sin: "Sup. Sindico",
-          estado_sup_sin: "Nayarit",
-          formula_sup_sin: "785456",
-          imgPartido3:
-            "https://www.prepnayarit2021.com/storage/actas_digitales/midaec/logos_partidos/MC.png",
-        },
-      ];
-    },
-
-    //---------------------------------------------------------------------------------
-
-    async loadDistritos() {
-      const data = [
-        { id: 0, nombre: "Todos" },
-        { id: 1, nombre: "Acaponeta" },
-        { id: 2, nombre: "Tecuala" },
-        { id: 3, nombre: "Del Nayar" },
-        { id: 4, nombre: "Santiago Ixcuintla" },
-        { id: 5, nombre: "San Blas" },
-        { id: 6, nombre: "Tepic" },
-        { id: 7, nombre: "Tepic" },
-        { id: 8, nombre: "Tepic" },
-        { id: 9, nombre: "Tepic" },
-        { id: 10, nombre: "Tepic" },
-        { id: 11, nombre: "Tepic" },
-        { id: 12, nombre: "Santa María del Oro" },
-        { id: 13, nombre: "Ixtlán del Río" },
-        { id: 14, nombre: "Xalisco" },
-        { id: 15, nombre: "Compostela" },
-        { id: 16, nombre: "Bucerias, Bahía de Banderas" },
-        { id: 17, nombre: "San vicente, Bahía de Banderas" },
-        { id: 18, nombre: "San José del Valle, Bahía de Banderas" },
-        { id: "", nombre: "Representación proporcinal" },
-      ];
-      this.listDistritos = data.map((distrito) => {
+    async infoDeviceConoceles(device) {
+      try {
+        const resp = null;
+        resp = await api.post("/Candidatos", device);
+        if (resp.status == 200) {
+          const { success, data } = resp.data;
+          if (success === true) {
+            return { success, data };
+          } else {
+            return { success, data };
+          }
+        } else {
+          return {
+            success: false,
+            data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+          };
+        }
+      } catch (error) {
         return {
-          label:
-            distrito.id == 0
-              ? distrito.nombre
-              : `${distrito.id} - ${distrito.nombre}`,
-          value: distrito.id,
+          success: false,
+          data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
         };
-      });
-    },
-
-    //---------------------------------------------------------------------------------
-
-    async loadEdades() {
-      const data = [
-        { id: 1, edades: "Todos" },
-        { id: 2, edades: "18-24" },
-        { id: 3, edades: "25-29" },
-        { id: 4, edades: "30-39" },
-        { id: 5, edades: "40-49" },
-        { id: 6, edades: "50-59" },
-        { id: 7, edades: "60 o más" },
-      ];
-      this.listEdades = data.map((edad) => {
-        return {
-          label: edad.edades,
-          value: edad.id,
-        };
-      });
-    },
-
-    async loadSexo() {
-      const data = [
-        { id: "", sexo: "Todos" },
-        { id: 1, sexo: "Mujer" },
-        { id: 2, sexo: "Hombre" },
-        { id: 3, sexo: "No binario" },
-      ];
-      this.listSexo = data.map((sexo) => {
-        return {
-          label: sexo.sexo,
-          value: sexo.id,
-        };
-      });
-    },
-    //---------------------------------------------------------------------------------
-
-    async loadActorPolitico() {
-      const data = [
-        { id: 0, siglas: "TODOS", nombre: "TODOS" },
-        { id: 1, siglas: "PAN", nombre: "Partido Acción Nacional" },
-        {
-          id: 2,
-          siglas: "PRI",
-          nombre: "Partido Revolucionario Institucional",
-        },
-        {
-          id: 3,
-          siglas: "PRD",
-          nombre: "Partido de la Revolución Democrática",
-        },
-        { id: 4, siglas: "PT", nombre: "Partido del Trabajo" },
-        {
-          id: 5,
-          siglas: "PVEM",
-          nombre: "Partido Verde Ecologista de México",
-        },
-        { id: 6, siglas: "MC", nombre: "Partido Movimiento Ciudadano" },
-        { id: 7, siglas: "MORENA", nombre: "Partido Morena" },
-        { id: 8, siglas: "NAN", nombre: "Partido Nueva Alianza Nayarit" },
-        {
-          id: 9,
-          siglas: "MLN",
-          nombre: "Partido Movimiento Levántate para Nayarit",
-        },
-        {
-          id: 10,
-          siglas: "FXMN",
-          nombre: "Partido Fuerza por México Nayarit",
-        },
-        {
-          id: 11,
-          siglas: "RSPN",
-          nombre: "Partido Redes Sociales Progresistas Nayarit",
-        },
-      ];
-      this.listActorPolitico = data.map((actorPolitico) => {
-        return {
-          label:
-            actorPolitico.id == 0
-              ? actorPolitico.nombre
-              : `${actorPolitico.siglas}-${actorPolitico.nombre}`,
-          value: actorPolitico.id,
-        };
-      });
-    },
-
-    //---------------------------------------------------------------------------------
-
-    async loadCard(id, selection) {
-      const card = this.listCards.find((card) => card.id == id);
-      let option;
-      if (selection == "prop") {
-        option = "PROPIETARIO PRESIDENTE";
-      } else if (selection == "sup") {
-        option = "SUPLENTE PRESIDENTE";
-      } else if (selection == "propSin") {
-        option = "PROPIETARIO SINDICO";
-      } else {
-        option = "SUPLENTE SINDICO";
       }
-      if (card) {
-        this.card.id = card.id;
-        this.card.label = option;
-        this.card.prop = card.prop;
-        this.card.selection = selection;
-        this.card.nombre_prop = card.nombre_prop;
-        this.card.demarcacion_Id = card.demarcacion_Id;
-        this.card.siglas = card.siglas;
-        this.card.distrito = card.distrito;
-        this.card.distrito_name = card.distrito_name;
-        this.card.municipio = card.municipio;
-        this.card.municipio_name = card.municipio_name;
-        this.card.edad_prop = card.edad_prop;
-        this.card.sexo_prop = card.sexo_prop;
-        this.card.cargo_prop = card.cargo_prop;
-        this.card.estado_prop = card.estado_prop;
-        this.card.formula_prop = card.formula_prop;
-        this.card.nombre_sup = card.nombre_sup;
-        this.card.sup = card.sup;
-        this.card.cargo_sup = card.cargo_sup;
-        this.card.edad_sup = card.edad_sup;
-        this.card.sexo_sup = card.sexo_sup;
-        this.card.estado_sup = card.estado_sup;
-        this.card.formula_sup = card.formula_sup;
-        this.card.prop_sin = card.prop_sin;
-        this.card.nombre_prop_sin = card.nombre_prop_sin;
-        this.card.edad_prop_sin = card.edad_prop_sin;
-        this.card.sexo_prop_sin = card.sexo_prop_sin;
-        this.card.cargo_prop_sin = card.cargo_prop_sin;
-        this.card.estado_prop_sin = card.estado_prop_sin;
-        this.card.formula_prop_sin = card.formula_prop_sin;
-        this.card.sup_sin = card.sup_sin;
-        this.card.nombre_sup_sin = card.nombre_sup_sin;
-        this.card.cargo_sup_sin = card.cargo_sup_sin;
-        this.card.edad_sup_sin = card.edad_sup_sin;
-        this.card.sexo_sup_sin = card.sexo_sup_sin;
-        this.card.estado_sup_sin = card.estado_sup_sin;
-        this.card.formula_sup_sin = card.formula_sup_sin;
-        this.card.imgPartido1 = card.imgPartido1;
-        this.card.imgPartido2 = card.imgPartido2;
-        this.card.imgPartido3 = card.imgPartido3;
-      }
-      console.log("this card", this.card);
     },
 
     //---------------------------------------------------------------------------------
 
-    async filterDistrito(distrito) {
-      const filteredCards = this.listCards.filter(
-        (card) => card.distrito === distrito
-      );
-      this.listCards = filteredCards;
+    async filtrarCandidatos(tipo) {
+      try {
+        this.list_Filtro_Candidatos = this.list_Candidatos.filter(
+          (x) => x.tipo_Eleccion == tipo
+        );
+      } catch (error) {
+        return {
+          data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+        };
+      }
     },
+
+    //---------------------------------------------------------------------------------
+
+    async loadCandidatos() {
+      try {
+        let resp = await api.get("/Candidatos/Aprobados");
+        let { data } = resp.data;
+        let listCandidatos = data.map((candidato) => {
+          return {
+            selection: "prop",
+            id: candidato.id,
+            tipo_Eleccion_Id: candidato.tipo_Eleccion_Id,
+            tipo_Eleccion: candidato.tipo_Eleccion,
+            municipio_Id: candidato.municipio_Id,
+            municipio: candidato.municipio,
+            distrito_Id: candidato.distrito_Id,
+            distrito: candidato.distrito,
+            demarcacion_Id: candidato.demarcacion_Id,
+            demarcacion: candidato.demarcacion,
+            coalicion_Id: candidato.coalicion_Id,
+            coalicion: candidato.coalicion,
+            url_Logo_Coalicion: candidato.url_Logo_Coalicion,
+            estatus: candidato.estatus,
+            usuario_Id: candidato.usuario_Id,
+            is_Coalicion: candidato.is_Coalicion,
+            activo: candidato.activo,
+            tipo_Candidato: candidato.tipo_Candidato,
+            orden: candidato.orden,
+            validado: candidato.validado,
+            fecha_Registro: candidato.fecha_Registro,
+            nombres_Propietario: candidato.nombres_Propietario,
+            apellido_Paterno_Propietario:
+              candidato.apellido_Paterno_Propietario,
+            apellido_Materno_Propietario:
+              candidato.apellido_Materno_Propietario,
+            nombre_Completo_Propietario: `${candidato.nombres_Propietario} ${candidato.apellido_Paterno_Propietario} ${candidato.apellido_Materno_Propietario}`,
+            mote_Propietario: candidato.mote_Propietario,
+            sexo_Propietario: candidato.sexo_Propietario,
+            url_Foto_Propietario: candidato.url_Foto_Propietario,
+            clave_Elector_Propietario: candidato.clave_Elector_Propietario,
+            rfC_Propietario: candidato.rfC_Propietario,
+            curP_Propietario: candidato.curP_Propietario,
+            fecha_Nacimiento_Propietario:
+              candidato.fecha_Nacimiento_Propietario,
+            ocupacion_Propietario: candidato.ocupacion_Propietario,
+            telefono_Propietario: candidato.telefono_Propietario,
+            correo_Propietario: candidato.correo_Propietario,
+            pertenece_Grupo_Vulnerable_Propietario:
+              candidato.pertenece_Grupo_Vulnerable_Propietario,
+            grupo_Vulnerable_Propietario:
+              candidato.grupo_Vulnerable_Propietario,
+            partido_Id: candidato.partido_Id,
+            partido: candidato.partido,
+            url_Logo_Partido_Propietario:
+              candidato.url_Logo_Partido_Propietario,
+            nombre_Completo_Propietario_2: `${candidato.nombres_Propietario_2} ${candidato.apellido_Paterno_Propietario_2} ${candidato.apellido_Materno_Propietario_2}`,
+            nombres_Propietario_2: candidato.nombres_Propietario_2,
+            apellido_Paterno_Propietario_2:
+              candidato.apellido_Paterno_Propietario_2,
+            apellido_Materno_Propietario_2:
+              candidato.apellido_Materno_Propietario_2,
+            mote_Propietario_2: candidato.mote_Propietario_2,
+            sexo_Propietario_2: candidato.sexo_Propietario_2,
+            url_Foto_Propietario_2: candidato.url_Foto_Propietario_2,
+            clave_Elector_Propietario_2: candidato.clave_Elector_Propietario_2,
+            rfC_Propietario_2: candidato.rfC_Propietario_2,
+            curP_Propietario_2: candidato.curP_Propietario_2,
+            fecha_Nacimiento_Propietario_2:
+              candidato.fecha_Nacimiento_Propietario_2,
+            ocupacion_Propietario_2: candidato.ocupacion_Propietario_2,
+            telefono_Propietario_2: candidato.telefono_Propietario_2,
+            correo_Propietario_2: candidato.correo_Propietario_2,
+            pertenece_Grupo_Vulnerable_Propietario_2:
+              candidato.pertenece_Grupo_Vulnerable_Propietario_2,
+            grupo_Vulnerable_Propietario_2:
+              candidato.grupo_Vulnerable_Propietario_2,
+            partido_Propietario_2_Id: candidato.partido_Propietario_2_Id,
+            partido_Propietario_2: candidato.partido_Propietario_2,
+            url_Logo_Partido_Propietario_2:
+              candidato.url_Logo_Partido_Propietario_2,
+            nombre_Completo_Suplente: `${candidato.nombres_Suplente} ${candidato.apellido_Paterno_Suplente} ${candidato.apellido_Materno_Suplente}`,
+            nombres_Suplente: candidato.nombres_Suplente,
+            apellido_Paterno_Suplente: candidato.apellido_Materno_Suplente,
+            apellido_Materno_Suplente: candidato.apellido_Materno_Suplente,
+            mote_Suplente: candidato.mote_Suplente,
+            sexo_Suplente: candidato.sexo_Suplente,
+            url_Foto_Suplente: candidato.url_Foto_Suplente,
+            clave_Elector_Suplente: candidato.clave_Elector_Suplente,
+            rfC_Suplente: candidato.rfC_Suplente,
+            curP_Suplente: candidato.curP_Suplente,
+            fecha_Nacimiento_Suplente: candidato.fecha_Nacimiento_Suplente,
+            ocupacion_Suplente: candidato.ocupacion_Suplente,
+            telefono_Suplente: candidato.telefono_Suplente,
+            correo_Suplente: candidato.correo_Suplente,
+            pertenece_Grupo_Vulnerable_Suplente:
+              candidato.pertenece_Grupo_Vulnerable_Suplente,
+            grupo_Vulnerable_Suplente: candidato.grupo_Vulnerable_Suplente,
+            partido_Suplente_Id: candidato.partido_Suplente_Id,
+            partido_Suplente: candidato.partido_Suplente,
+            url_Logo_Partido_Suplente: candidato.url_Logo_Partido_Suplente,
+            nombre_Completo_Suplente_2: `${candidato.nombres_Suplente_2} ${candidato.apellido_Paterno_Suplente_2} ${candidato.apellido_Materno_Suplente_2}`,
+            nombres_Suplente_2: candidato.nombres_Suplente_2,
+            apellido_Paterno_Suplente_2: candidato.apellido_Paterno_Suplente_2,
+            apellido_Materno_Suplente_2: candidato.apellido_Materno_Suplente_2,
+            mote_Suplente_2: candidato.mote_Suplente_2,
+            sexo_Suplente_2: candidato.sexo_Suplente_2,
+            url_Foto_Suplente_2: candidato.url_Foto_Suplente_2,
+            clave_Elector_Suplente_2: candidato.clave_Elector_Suplente_2,
+            rfC_Suplente_2: candidato.rfC_Suplente_2,
+            curP_Suplente_2: candidato.curP_Suplente_2,
+            fecha_Nacimiento_Suplente_2: candidato.fecha_Nacimiento_Suplente_2,
+            ocupacion_Suplente_2: candidato.ocupacion_Suplente_2,
+            telefono_Suplente_2: candidato.telefono_Suplente_2,
+            correo_Suplente_2: candidato.correo_Suplente_2,
+            pertenece_Grupo_Vulnerable_Suplente_2:
+              candidato.pertenece_Grupo_Vulnerable_Suplente_2,
+            grupo_Vulnerable_Suplente_2: candidato.grupo_Vulnerable_Suplente_2,
+            partido_Suplente_2_Id: candidato.partido_Suplente_2_Id,
+            partido_Suplente_2: candidato.partido_Suplente_2,
+            url_Logo_Partido_Suplente_2: candidato.url_Logo_Partido_Suplente_2,
+          };
+        });
+        console.log(listCandidatos);
+        this.list_Candidatos = listCandidatos;
+      } catch (error) {
+        return {
+          success: false,
+          data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+        };
+      }
+    },
+
+    async calcularEdad(val) {
+      if (val != null) {
+        var fechaNace = new Date(val);
+        var fechaActual = new Date();
+
+        var mes = fechaActual.getMonth();
+        var dia = fechaActual.getDate();
+        var año = fechaActual.getFullYear();
+
+        fechaActual.setDate(dia);
+        fechaActual.setMonth(mes);
+        fechaActual.setFullYear(año);
+
+        suplente_1.value.edad = Math.floor(
+          (fechaActual - fechaNace) / (1000 * 60 * 60 * 24) / 365
+        );
+
+        return edad;
+      }
+    },
+
+    //---------------------------------------------------------------------------------
+
+    async loadCandidatoById(id) {
+      try {
+        let resp = null;
+        resp = await api.get(`/Candidatos/${id}`);
+        if (resp.status == 200) {
+          const { success, data } = resp.data;
+          if (success == true) {
+            this.candidato.selection = "prop";
+            this.candidato.activo = data.activo;
+            this.candidato.id = data.id;
+            this.candidato.tipo_Eleccion_Id = data.tipo_Eleccion_Id;
+            this.candidato.tipo_Eleccion = data.tipo_Eleccion;
+            this.candidato.municipio_Id = data.municipio_Id;
+            this.candidato.municipio = data.municipio;
+            this.candidato.distrito_Id = data.distrito_Id;
+            this.candidato.distrito = data.distrito;
+            this.candidato.demarcacion_Id = data.demarcacion_Id;
+            this.candidato.demarcacion = data.demarcacion;
+            this.candidato.coalicion_Id = data.coalicion_Id;
+            this.candidato.is_Coalicion = data.is_Coalicion;
+            this.candidato.coalicion = data.coalicion;
+            this.candidato.tipo_Candidato = data.tipo_Candidato;
+            this.candidato.orden = data.orden;
+            this.candidato.partido_Id = data.partido_Id;
+            this.candidato.url_Logo_Coalicion = data.url_Logo_Coalicion;
+            this.candidato.validado = data.validado;
+            this.candidato.fecha_Registro = data.fecha_Registro;
+
+            this.candidato.nombre_Completo_Propietario = `${data.nombres_Propietario} ${data.apellido_Paterno_Propietario} ${data.apellido_Materno_Propietario}`;
+            this.candidato.nombres_Propietario = data.nombres_Propietario;
+            this.candidato.apellido_Paterno_Propietario =
+              data.apellido_Paterno_Propietario;
+            this.candidato.apellido_Materno_Propietario =
+              data.apellido_Materno_Propietario;
+            this.candidato.mote_Propietario = data.mote_Propietario;
+            this.candidato.sexo_Propietario = data.sexo_Propietario;
+            this.candidato.url_Foto_Propietario = data.url_Foto_Propietario;
+            this.candidato.clave_Elector_Propietario =
+              data.clave_Elector_Propietario;
+            this.candidato.rfC_Propietario = data.rfC_Propietario;
+            this.candidato.curP_Propietario = data.curP_Propietario;
+            this.candidato.fecha_Nacimiento_Propietario =
+              data.fecha_Nacimiento_Propietario;
+            this.candidato.ocupacion_Propietario = data.ocupacion_Propietario;
+            this.candidato.telefono_Propietario = data.telefono_Propietario;
+            this.candidato.correo_Propietario = data.correo_Propietario;
+            this.candidato.pertenece_Grupo_Vulnerable_Propietario =
+              data.pertenece_Grupo_Vulnerable_Propietario;
+            this.candidato.grupo_Vulnerable_Propietario =
+              data.grupo_Vulnerable_Propietario;
+            this.candidato.partido_Id = data.partido_Id;
+            this.candidato.partido = data.partido;
+            this.candidato.url_Logo_Partido_Propietario =
+              data.url_Logo_Partido_Propietario;
+
+            this.candidato.nombre_Completo_Propietario_2 = `${data.nombres_Propietario_2} ${data.apellido_Paterno_Propietario_2} ${data.apellido_Materno_Propietario_2}`;
+            this.candidato.nombres_Propietario_2 = data.nombres_Propietario_2;
+            this.candidato.apellido_Paterno_Propietario_2 =
+              data.apellido_Paterno_Propietario_2;
+            this.candidato.apellido_Materno_Propietario_2 =
+              data.apellido_Materno_Propietario_2;
+            this.candidato.mote_Propietario_2 = data.mote_Propietario_2;
+            this.candidato.sexo_Propietario_2 = data.sexo_Propietario_2;
+            this.candidato.url_Foto_Propietario_2 = data.url_Foto_Propietario_2;
+            this.candidato.clave_Elector_Propietario_2 =
+              data.clave_Elector_Propietario_2;
+            this.candidato.rfC_Propietario_2 = data.rfC_Propietario_2;
+            this.candidato.curP_Propietario_2 = data.curP_Propietario_2;
+            this.candidato.fecha_Nacimiento_Propietario_2 =
+              data.fecha_Nacimiento_Propietario_2;
+            this.candidato.ocupacion_Propietario_2 =
+              data.ocupacion_Propietario_2;
+            this.candidato.telefono_Propietario_2 = data.telefono_Propietario_;
+            this.candidato.correo_Propietario_2 = data.correo_Propietario_2;
+            this.candidato.pertenece_Grupo_Vulnerable_Propietario_2 =
+              data.pertenece_Grupo_Vulnerable_Propietario_2;
+            this.candidato.grupo_Vulnerable_Propietario_2 =
+              data.grupo_Vulnerable_Propietario_2;
+            this.candidato.partido_Propietario_2_Id =
+              data.partido_Propietario_2_Id;
+            this.candidato.partido_Propietario_2 = data.partido_Propietario_2;
+            this.candidato.url_Logo_Partido_Propietario_2 =
+              data.url_Logo_Partido_Propietario_2;
+
+            this.candidato.nombre_Completo_Suplente = `${data.nombres_Suplente} ${data.apellido_Paterno_Suplente} ${data.apellido_Materno_Suplente}`;
+            this.candidato.nombres_Suplente = data.nombres_Suplente;
+            this.candidato.apellido_Paterno_Suplente =
+              data.apellido_Paterno_Suplente;
+            this.candidato.apellido_Materno_Suplente =
+              data.apellido_Materno_Suplente;
+            this.candidato.mote_Suplente = data.mote_Suplente;
+            this.candidato.sexo_Suplente = data.sexo_Suplente;
+            this.candidato.url_Foto_Suplente = data.url_Foto_Suplente;
+            this.candidato.clave_Elector_Suplente = data.clave_Elector_Suplente;
+            this.candidato.rfC_Suplente = data.rfC_Suplente;
+            this.candidato.curP_Suplente = data.curP_Suplente;
+            this.candidato.fecha_Nacimiento_Suplente =
+              data.fecha_Nacimiento_Suplente;
+            this.candidato.ocupacion_Suplente = data.ocupacion_Suplente;
+            this.candidato.telefono_Suplente = data.telefono_Suplente;
+            this.candidato.correo_Suplente = data.correo_Suplente;
+            this.candidato.pertenece_Grupo_Vulnerable_Suplente =
+              data.pertenece_Grupo_Vulnerable_Suplente;
+            this.candidato.grupo_Vulnerable_Suplente =
+              data.grupo_Vulnerable_Suplente;
+            this.candidato.partido_Suplente_Id = data.partido_Suplente_Id;
+            this.candidato.partido_Suplente = data.partido_Suplente;
+            this.candidato.url_Logo_Partido_Suplente =
+              data.url_Logo_Partido_Suplente;
+
+            this.candidato.nombre_Completo_Suplente_2 = `${data.nombres_Suplente_2} ${data.apellido_Paterno_Suplente_2} ${data.apellido_Materno_Suplente_2}`;
+            this.candidato.nombres_Suplente_2 = data.nombres_Suplente_2;
+            this.candidato.apellido_Paterno_Suplente_2 =
+              data.apellido_Paterno_Suplente_2;
+            this.candidato.apellido_Materno_Suplente_2 =
+              data.apellido_Materno_Suplente_2;
+            this.candidato.mote_Suplente_2 = data.mote_Suplente_2;
+            this.candidato.sexo_Suplente_2 = data.sexo_Suplente_2;
+            this.candidato.url_Foto_Suplente_2 = data.url_Foto_Suplente_2;
+            this.candidato.clave_Elector_Suplente_2 =
+              data.clave_Elector_Suplente_2;
+            this.candidato.rfC_Suplente_2 = data.rfC_Suplente_2;
+            this.candidato.curP_Suplente_2 = data.curP_Suplente_2;
+            this.candidato.fecha_Nacimiento_Suplente_2 =
+              data.fecha_Nacimiento_Suplente_2;
+            this.candidato.ocupacion_Suplente_2 = data.ocupacion_Suplente_2;
+            this.candidato.telefono_Suplente_2 = data.telefono_Suplente_2;
+            this.candidato.correo_Suplente_2 = data.correo_Suplente_2;
+            this.candidato.pertenece_Grupo_Vulnerable_Suplente_2 =
+              data.pertenece_Grupo_Vulnerable_Suplente_2;
+            this.candidato.grupo_Vulnerable_Suplente_2 =
+              data.grupo_Vulnerable_Suplente_2;
+            this.candidato.partido_Suplente_2_Id = data.partido_Suplente_2_Id;
+            this.candidato.partido_Suplente_2 = data.partido_Suplente_2;
+            this.candidato.url_Logo_Partido_Suplente_2 =
+              data.url_Logo_Partido_Suplente_2;
+          }
+        }
+      } catch (error) {
+        return {
+          success: false,
+          data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+        };
+      }
+    },
+
+    //---------------------------------------------------------------------------------
 
     async filterEdad(rango_edad) {
       if (rango_edad === "Todos") {
@@ -828,20 +485,6 @@ export const useCardsStore = defineStore("cards", {
 
       this.listCards = filteredList;
       return filteredList;
-    },
-
-    async filterActorPolitico(actor_politico) {
-      const filterActorPolitico = this.listCards.filter(
-        (actor) => actor.siglas === actor_politico
-      );
-      this.listCards = filterActorPolitico;
-    },
-
-    async filterSexo(sexo) {
-      const filterSexo = this.listCards.filter(
-        (filter) => filter.sexo_prop === sexo
-      );
-      this.listCards = filterSexo;
     },
   },
 });

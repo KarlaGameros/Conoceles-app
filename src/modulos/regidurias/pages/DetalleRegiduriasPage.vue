@@ -23,17 +23,26 @@
 </template>
 
 <script setup>
-import DetalleCandidatosRegidurias from "../components/detalleCandidatosRegidurias.vue";
-import filtros from "../../../components/filtrosComp.vue";
 import { useCardsStore } from "src/stores/cards-store";
 import { onMounted, ref, watch } from "vue";
+import DetalleCandidatosRegidurias from "../components/detalleCandidatosRegidurias.vue";
+import filtros from "../../../components/filtrosComp.vue";
+
+//---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
 const props = defineProps({
   id: { type: Number, required: true },
-  selection: { type: String },
 });
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
+
+//---------------------------------------------------------------------------------
+
+onMounted(() => {
+  cardsStore.actualizarMenu(true);
+  cardsStore.loadCandidatoById(props.id);
+});
+
 //---------------------------------------------------------------------------------
 
 watch(
@@ -42,10 +51,6 @@ watch(
     isSmallScreen.value = width <= 768;
   }
 );
-onMounted(async () => {
-  cardsStore.actualizarMenu(true);
-  await cardsStore.loadCard(props.id, props.selection);
-});
 </script>
 
 <style></style>

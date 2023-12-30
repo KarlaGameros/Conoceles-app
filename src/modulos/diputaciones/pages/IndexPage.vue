@@ -20,6 +20,7 @@ import { onMounted, ref, watch } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
 import DiputacionesComp from "../components/diputacionesComp.vue";
 import filtros from "../../../components/filtrosComp.vue";
+
 //---------------------------------------------------------------------------------
 
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);

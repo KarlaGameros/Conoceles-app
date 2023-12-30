@@ -40,7 +40,7 @@
   <div class="q-pa-md row items-start q-gutter-md flex flex-center">
     <q-card
       v-for="item in listCardsFiltro"
-      :key="item.id"
+      :key="item"
       class="col-lg-2 col-md-2 col-sm-3 col-xs-12"
       flat
       bordered
@@ -49,13 +49,23 @@
       <div class="q-pt-md" style="text-align: center">
         <div class="q-pa-md q-gutter-sm">
           <q-avatar size="150px">
-            <q-img :src="item.selection == 'prop' ? item.prop : item.sup" />
+            <q-img
+              :src="
+                item.selection == 'prop'
+                  ? item.url_Foto_Propietario
+                  : item.url_Foto_Suplente
+              "
+            />
           </q-avatar>
         </div>
       </div>
       <q-card-section class="q-pt-none">
         <div class="text-subtitle1 text-center">
-          {{ item.selection == "prop" ? item.nombre_prop : item.nombre_sup }}
+          {{
+            item.selection == "prop"
+              ? item.nombre_Completo_Propietario
+              : item.nombre_Completo_Suplente
+          }}
         </div>
         <div class="row text-center">
           <div class="text-caption text-grey col-6">
@@ -64,7 +74,11 @@
           </div>
           <div class="text-caption text-grey col-6">
             SEXO:
-            {{ item.selection == "prop" ? item.sexo_prop : item.sexo_sup }}
+            {{
+              item.selection == "prop"
+                ? item.sexo_Propietario
+                : item.sexo_Suplente
+            }}
           </div>
         </div>
       </q-card-section>
@@ -73,18 +87,23 @@
         <div class="row no-wrap items-center">
           <div class="col text-h6 ellipsis">Distrito {{ item.distrito }}</div>
 
-          <q-avatar square size="24px" v-if="item.imgPartido1 != null">
-            <img :src="item.imgPartido1" alt="" />
-          </q-avatar>
-          <q-avatar square size="24px" v-if="item.imgPartido2 != null">
-            <img :src="item.imgPartido2" alt="" />
-          </q-avatar>
-          <q-avatar square size="24px" v-if="item.imgPartido3 != null">
-            <img :src="item.imgPartido3" alt="" />
+          <q-avatar
+            square
+            size="24px"
+            v-if="item.url_Logo_Partido_Propietario != null"
+          >
+            <img
+              :src="
+                item.selection == 'prop'
+                  ? item.url_Logo_Partido_Propietario
+                  : item.url_Logo_Partido_Partido_Suplente
+              "
+              alt=""
+            />
           </q-avatar>
         </div>
         <div class="row text-subtitle2 ellipsis">
-          {{ item.distrito_name }}
+          {{ item.distrito }}
         </div>
       </q-card-section>
       <q-card-section>
@@ -110,7 +129,7 @@
             :to="{ name: 'diputacionesDetalle' }"
             flat
             class="text-purple-ieen-1"
-            @click="verMas(item.id, item.selection)"
+            @click="verMas(item.id)"
           >
             VER MÁS
           </q-btn>
@@ -153,6 +172,7 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
@@ -162,11 +182,12 @@ import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
 
+const $q = useQuasar();
 const cardsStore = useCardsStore();
 const router = useRouter();
-const { listFiltroCards } = storeToRefs(cardsStore);
+const { list_Filtro_Candidatos, listFiltroCards } = storeToRefs(cardsStore);
 const filtro = ref("");
-const listCardsFiltro = ref(listFiltroCards.value);
+const listCardsFiltro = ref();
 const shape = ref("prop");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 let pageActual = ref("");
@@ -179,23 +200,25 @@ onMounted(() => {
   cardsStore.actualizarMenu(true);
   cardsStore.actualizarButtonColor(true);
   pageActual.value = 1;
+  cardsStore.filtrarCandidatos("Diputaciones");
 });
 
 //---------------------------------------------------------------------------------
+
 watch(listFiltroCards, (val) => {
   listCardsFiltro.value = val;
 });
+
 watch(filtro, (val) => {
   if (val.length == 0) {
     mostrarElementosPage(pageActual.value);
-    //listCardsFiltro.value = listFiltroCards.value;
   } else if (val.length >= 3 && shape.value == "prop") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
-      x.nombre_prop.toLowerCase().includes(val.toLowerCase())
+      x.nombre_Completo_Propietario.toLowerCase().includes(val.toLowerCase())
     );
   } else if (val.length >= 3 && shape.value == "sup") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
-      x.nombre_sup.toLowerCase().includes(val.toLowerCase())
+      x.nombre_Completo_Suplente.toLowerCase().includes(val.toLowerCase())
     );
   } else {
     return;
@@ -212,9 +235,11 @@ watch(
     isSmallScreen.value = width <= 768;
   }
 );
+
 //---------------------------------------------------------------------------------
 //PAGINATION
-const elementosPorPage = 8;
+
+const elementosPorPage = 3;
 watch(pageActual, (val) => {
   const pag = listFiltroCards.value.length / elementosPorPage;
   if (pag % 1 !== 0) {
@@ -227,17 +252,20 @@ watch(pageActual, (val) => {
 const mostrarElementosPage = (pagina) => {
   const inicio = (pagina - 1) * elementosPorPage;
   const fin = inicio + elementosPorPage;
-  const elementos = listFiltroCards.value.slice(inicio, fin);
+  const elementos = list_Filtro_Candidatos.value.slice(inicio, fin);
   listCardsFiltro.value = elementos;
 };
+
 //---------------------------------------------------------------------------------
 
-const verMas = async (id, selection) => {
-  cardsStore.loadCard(id);
+const verMas = async (id) => {
+  $q.loading.show();
+  await cardsStore.loadCandidatoById(id);
   router.push({
     name: "diputacionesDetalle",
-    params: { id: id, selection: selection },
+    params: { id: id },
   });
+  $q.loading.hide();
 };
 
 const pdf = async () => {

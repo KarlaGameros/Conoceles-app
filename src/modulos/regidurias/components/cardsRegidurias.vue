@@ -48,14 +48,24 @@
       <div class="q-pt-md" style="text-align: center">
         <div class="q-pa-md q-gutter-sm">
           <q-avatar size="150px">
-            <q-img :src="item.selection == 'prop' ? item.prop : item.sup" />
+            <q-img
+              :src="
+                item.selection == 'prop'
+                  ? item.url_Foto_Propietario
+                  : item.url_Foto_Suplente
+              "
+            />
           </q-avatar>
         </div>
       </div>
 
       <q-card-section class="q-pt-none">
         <div class="text-subtitle1 text-center">
-          {{ item.selection == "prop" ? item.nombre_prop : item.nombre_sup }}
+          {{
+            item.selection == "prop"
+              ? item.nombre_Completo_Propietario
+              : item.nombre_Completo_Suplente
+          }}
         </div>
         <div class="row text-center">
           <div class="text-caption text-grey col-6">
@@ -64,27 +74,36 @@
           </div>
           <div class="text-caption text-grey col-6">
             SEXO:
-            {{ item.selection == "prop" ? item.sexo_prop : item.sexo_sup }}
+            {{
+              item.selection == "prop"
+                ? item.sexo_Propietario
+                : item.sexo_Suplente
+            }}
           </div>
         </div>
       </q-card-section>
 
       <q-card-section>
         <div class="row text-overline flex-center">
-          Municipio de {{ item.municipio_name }}
+          Municipio de {{ item.municipio }}
         </div>
         <div class="row text-overline flex-center">
-          Demarcación {{ item.demarcacion_Id }}
+          Demarcación {{ item.demarcacion }}
         </div>
         <div class="row no-wrap items-center flex-center">
-          <q-avatar square size="24px" v-if="item.imgPartido1 != null">
-            <img :src="item.imgPartido1" alt="" />
-          </q-avatar>
-          <q-avatar square size="24px" v-if="item.imgPartido2 != null">
-            <img :src="item.imgPartido2" alt="" />
-          </q-avatar>
-          <q-avatar square size="24px" v-if="item.imgPartido3 != null">
-            <img :src="item.imgPartido3" alt="" />
+          <q-avatar
+            square
+            size="24px"
+            v-if="item.url_Logo_Partido_Propietario != null"
+          >
+            <img
+              :src="
+                item.selection == 'prop'
+                  ? item.url_Logo_Partido_Propietario
+                  : item.url_Logo_Partido_Partido_Suplente
+              "
+              alt=""
+            />
           </q-avatar>
         </div>
       </q-card-section>
@@ -111,7 +130,7 @@
             :to="{ name: 'detalleRegidurias' }"
             flat
             class="text-purple-ieen-1"
-            @click="verMas(item.id, item.selection)"
+            @click="verMas(item.id)"
           >
             VER MÁS
           </q-btn>
@@ -154,17 +173,20 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { onMounted, ref, watch } from "vue";
+import { onBeforeMount, onMounted, ref, watch } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
 //---------------------------------------------------------------------------------
+const $q = useQuasar();
 const router = useRouter();
 const candidatosStore = useCardsStore();
-const { listFiltroCards } = storeToRefs(candidatosStore);
+const { list_Filtro_Candidatos, listFiltroCards } =
+  storeToRefs(candidatosStore);
 const filtro = ref("");
-const listCardsFiltro = ref(listFiltroCards.value);
+const listCardsFiltro = ref();
 const shape = ref("prop");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 let pageActual = ref("");
@@ -176,9 +198,14 @@ onMounted(() => {
   candidatosStore.actualizarMenu(true);
   candidatosStore.actualizarButtonColor(true);
   pageActual.value = 1;
+  candidatosStore.filtrarCandidatos("Regidurías");
 });
 
 //---------------------------------------------------------------------------------
+
+watch(listFiltroCards, (val) => {
+  listCardsFiltro.value = val;
+});
 
 watch(
   () => window.innerWidth,
@@ -186,19 +213,17 @@ watch(
     isSmallScreen.value = width <= 768;
   }
 );
-watch(listFiltroCards, (val) => {
-  listCardsFiltro.value = val;
-});
+
 watch(filtro, (val) => {
   if (val.length == 0) {
     mostrarElementosPage(pageActual.value);
   } else if (val.length >= 3 && shape.value == "prop") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
-      x.nombre_prop.toLowerCase().includes(val.toLowerCase())
+      x.nombre_Completo_Propietario.toLowerCase().includes(val.toLowerCase())
     );
   } else if (val.length >= 3 && shape.value == "sup") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
-      x.nombre_sup.toLowerCase().includes(val.toLowerCase())
+      x.nombre_Completo_Suplente.toLowerCase().includes(val.toLowerCase())
     );
   } else {
     return;
@@ -229,11 +254,11 @@ const mostrarElementosPage = (pagina) => {
 };
 //---------------------------------------------------------------------------------
 
-const verMas = async (id, selection) => {
-  candidatosStore.loadCard(id);
+const verMas = async (id) => {
+  candidatosStore.loadCandidatoById(id);
   router.push({
     name: "detalleRegidurias",
-    params: { id: id, selection: selection },
+    params: { id: id },
   });
 };
 

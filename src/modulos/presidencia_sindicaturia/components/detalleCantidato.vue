@@ -20,7 +20,7 @@
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
       >
-      Municipio de {{ card.municipio_name }}
+      Municipio de {{ candidato.municipio }}
     </div>
     <q-btn
       @click="pdf()"
@@ -40,13 +40,13 @@
             <q-avatar size="600%">
               <q-img
                 :src="
-                  card.selection == 'prop'
-                    ? card.prop
-                    : card.selection == 'sup'
-                    ? card.sup
-                    : card.selection === 'propSin'
-                    ? card.prop_sin
-                    : card.sup_sin
+                  candidato.selection == 'prop'
+                    ? candidato.url_Foto_Propietario
+                    : candidato.selection == 'sup'
+                    ? candidato.url_Foto_Suplente
+                    : candidato.selection === 'propSin'
+                    ? candidato.url_Foto_Propietario_2
+                    : candidato.url_Foto_Suplente_2
                 "
               />
             </q-avatar>
@@ -54,36 +54,42 @@
           <div class="col-12 q-pb-md" align="center">
             <div class="text-h6">
               {{
-                card.selection == "prop"
-                  ? card.nombre_prop
-                  : card.selection == "sup"
-                  ? card.nombre_sup
-                  : card.selection === "propSin"
-                  ? card.nombre_prop_sin
-                  : card.nombre_sup_sin
+                candidato.selection == "prop"
+                  ? candidato.nombre_Completo_Propietario
+                  : candidato.selection == "sup"
+                  ? candidato.nombre_Completo_Suplente
+                  : candidato.selection === "propSin"
+                  ? candidato.nombre_Completo_Propietario_2
+                  : candidato.nombre_Completo_Suplente_2
               }}
             </div>
 
-            <q-avatar square size="24px" v-if="card.imgPartido1 != null">
-              <img :src="card.imgPartido1" alt="" />
+            <q-avatar square size="24px">
+              <img
+                :src="
+                  candidato.selection == 'prop'
+                    ? candidato.url_Logo_Partido_Propietario
+                    : candidato.selection == 'sup'
+                    ? candidato.url_Logo_Partido_Suplente
+                    : candidato.selection == 'propSin'
+                    ? candidato.url_Logo_Partido_Propietario_2
+                    : candidato.url_Logo_Partido_Suplente_2
+                "
+                alt=""
+              />
             </q-avatar>
-            <q-avatar square size="24px" v-if="card.imgPartido2 != null">
-              <img :src="card.imgPartido2" alt="" />
-            </q-avatar>
-            <q-avatar square size="24px" v-if="card.imgPartido3 != null">
-              <img :src="card.imgPartido3" alt="" />
-            </q-avatar>
+
             <div class="q-pa-md" style="text-align: center">
               <q-btn-dropdown
                 color="purple"
-                :label="card.label || dropdownOptions[0].label"
+                :label="candidato.label || dropdownOptions[0].label"
               >
                 <q-list>
                   <q-item
                     v-for="option in dropdownOptions"
                     :key="option.value"
                     clickable
-                    @click="selectOption(card, option)"
+                    @click="selectOption(candidato, option)"
                     v-close-popup
                   >
                     <q-item-section>
@@ -190,36 +196,29 @@
                     <q-avatar size="200px">
                       <q-img
                         :src="
-                          card.selection == 'prop'
-                            ? card.prop
-                            : card.selection == 'sup'
-                            ? card.sup
-                            : card.selection === 'propSin'
-                            ? card.prop_sin
-                            : card.sup_sin
+                          candidato.selection == 'prop'
+                            ? candidato.url_Foto_Propietario
+                            : candidato.selection == 'sup'
+                            ? candidato.url_Foto_Suplente
+                            : candidato.selection === 'propSin'
+                            ? candidato.url_Foto_Propietario_2
+                            : candidato.url_Foto_Suplente_2
                         "
                       /> </q-avatar
                     ><br /><br />
-                    <q-avatar
-                      square
-                      size="50px"
-                      v-if="card.imgPartido1 != null"
-                    >
-                      <img :src="card.imgPartido1" alt="" />
-                    </q-avatar>
-                    <q-avatar
-                      square
-                      size="50px"
-                      v-if="card.imgPartido2 != null"
-                    >
-                      <img :src="card.imgPartido2" alt="" />
-                    </q-avatar>
-                    <q-avatar
-                      square
-                      size="50px"
-                      v-if="card.imgPartido3 != null"
-                    >
-                      <img :src="card.imgPartido3" alt="" />
+                    <q-avatar square size="50px">
+                      <img
+                        :src="
+                          candidato.selection == 'prop'
+                            ? candidato.url_Logo_Partido_Propietario
+                            : candidato.selection == 'sup'
+                            ? candidato.url_Logo_Partido_Suplente
+                            : candidato.selection === 'propSin'
+                            ? candidato.url_Logo_Partido_Suplente_2
+                            : candidato.url_Foto_Suplente_2
+                        "
+                        alt=""
+                      />
                     </q-avatar>
                   </div>
                   <div
@@ -232,37 +231,27 @@
                     <div class="text-h6">Nombre (propietaria/o):</div>
                     <div class="text-subtitle1">
                       {{
-                        card.selection == "prop"
-                          ? card.nombre_prop
-                          : card.selection == "sup"
-                          ? card.nombre_sup
-                          : card.selection === "propSin"
-                          ? card.nombre_prop_sin
-                          : card.nombre_sup_sin
+                        candidato.selection == "prop"
+                          ? candidato.nombre_Completo_Propietario
+                          : candidato.selection == "sup"
+                          ? candidato.nombre_Completo_Suplente
+                          : candidato.selection === "propSin"
+                          ? candidato.nombre_Completo_Propietario_2
+                          : candidato.nombre_Completo_Suplente_2
                       }}
                     </div>
                     <div class="text-h6">Edad:</div>
-                    <div class="text-subtitle1">
-                      {{
-                        card.selection == "prop"
-                          ? card.edad_prop
-                          : card.selection == "sup"
-                          ? card.edad_sup
-                          : card.selection === "propSin"
-                          ? card.edad_prop_sin
-                          : card.edad_sup_sin
-                      }}
-                    </div>
+                    <div class="text-subtitle1"></div>
                     <div class="text-h6">Sexo:</div>
                     <div class="text-subtitle1">
                       {{
-                        card.selection == "prop"
-                          ? card.sexo_prop
-                          : card.selection == "sup"
-                          ? card.sexo_sup
-                          : card.selection === "propSin"
-                          ? card.sexo_prop_sin
-                          : card.sexo_sup_sin
+                        candidato.selection == "prop"
+                          ? candidato.sexo_Propietario
+                          : candidato.selection == "sup"
+                          ? candidato.sexo_Suplente
+                          : candidato.selection === "propSin"
+                          ? candidato.sexo_Propietario_2
+                          : candidato.sexo_Suplente_2
                       }}
                     </div>
                   </div>
@@ -275,42 +264,14 @@
                   >
                     <div class="text-h6">Cargo:</div>
                     <div class="text-subtitle1">
-                      {{
-                        card.selection == "prop"
-                          ? card.cargo_prop
-                          : card.selection == "sup"
-                          ? card.cargo_sup
-                          : card.selection === "propSin"
-                          ? card.cargo_prop_sin
-                          : card.cargo_sup_sin
-                      }}
+                      {{ candidato.tipo_Candidato }}
                     </div>
                     <div class="text-h6">Estado:</div>
-                    <div class="text-subtitle1">
-                      {{
-                        card.selection == "prop"
-                          ? card.estado_prop
-                          : card.selection == "sup"
-                          ? card.estado_sup
-                          : card.selection === "propSin"
-                          ? card.estado_prop_sin
-                          : card.estado_sup_sin
-                      }}
-                    </div>
+                    <div class="text-subtitle1">Nayarit</div>
                     <div class="text-h6">Número de fórmula:</div>
-                    <div class="text-subtitle1">
-                      {{
-                        card.selection == "prop"
-                          ? card.formula_prop
-                          : card.selection == "sup"
-                          ? card.formula_sup
-                          : card.selection === "propSin"
-                          ? card.formula_prop_sin
-                          : card.formula_sup_sin
-                      }}
-                    </div>
+                    <div class="text-subtitle1"></div>
                     <br />
-                    <div>
+                    <!-- <div>
                       <q-icon name="location_on" /> Via Alfredo del Mazo s/n,
                       Toluca de Lerdo, México, C.P. 50010
                       <br />
@@ -344,33 +305,13 @@
                           style="color: #673e84"
                         ></i>
                       </q-btn>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </q-tab-panel>
 
               <q-tab-panel name="HISTORIA PROFESIONAL Y/O LABORAL">
-                <div class="text-subtitle1 text-justify">
-                  Estudié la primaria en el Colegio Americano de Acuña.
-                  Secundaria 2 años en la Secundaria numero 1 en ciudad Acuña,
-                  Coahuila. Preparatoria en el CBTIS 54 y Instituto Piedras
-                  Negras Don Bosco de la ciudad de Piedras Negras, Coahuila.
-                  Licenciatura en la Facultad de Ciencias de la Administración
-                  de la Universidad Autónoma de Coahuila campus Saltillo. Al
-                  graduarme me fui a la ciudad de Dallas, Texas a hacer un curso
-                  intensivo de Inglés para posteriormente ingresar a trabajar al
-                  Consulado de México en Del Río, Texas a través de la
-                  Secretaría de Relaciones Exteriores, lugar donde laboré por 8
-                  años. En el 2009 ingreso como Delegado de la Secretaría de
-                  Fomento Agropecuario del Gobierno del Estado de Coahuila de
-                  Zaragoza. En el 2014 me tomo protesta como regidor por
-                  representación proporcional en el ayuntamiento 2014 - 2017. En
-                  el año 2018 ingreso como responsable de programas sociales del
-                  Gobierno del Estado en Acuña, Coahuila y en el año de 2022
-                  como Secretario del Ayuntamiento hasta marzo de 2023.
-                </div>
-                <br />
-                <div
+                <!-- <div
                   class="col-12 bg-purple-ieen-1"
                   style="border-radius: 10px; color: white"
                 >
@@ -397,60 +338,18 @@
                     <q-icon name="import_contacts" /> CURSOS
                   </div>
                 </div>
-                <div class="q-pa-sm text-subtitle1 text-justify">
-                  Cursos Tomados por la Secretaría de Relaciones Exteriores en
-                  el año de 2002 sobre ingreso de datos al sistema de Protección
-                  Consular de igual manera cursos por la misma Secretaría de
-                  Relaciones Exteriores en el manejo de la Partida
-                  Presupuestaria 7502. En el año 2003 en la forma privada
-                  diversos cursos para el manejo y administración de ranchos
-                  ganaderos curso para el manejo del programa de Activos
-                  Productivos de la Secretaría de Fomento Agropecuario al igual
-                  que el manejo del programa de Fondo de Fomento Agropecuario
-                  del Estado de Coahuila en el año 2010 cursos para una buena
-                  administración y desempeño publico en el año de 2014 curso
-                  para el mejor desempeño como servidor publico en el año de
-                  2015. Curso de un Cabildo Exitoso en el a 2017
-                </div>
+                <div class="q-pa-sm text-subtitle1 text-justify"></div> -->
               </q-tab-panel>
 
               <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?">
-                <div class="text-subtitle1 text-justify">
-                  Aspiro ser la Primera Gobernadora del Estado de México, porque
-                  quiero que los mexiquenses tengan una mejor calidad de vida y
-                  solo unidos podemos dar resultados; no se trata de una
-                  posición, de un cargo o de tener poder, sino de la oportunidad
-                  de hacer una diferencia en la vida de las familias mexiquenses
-                  y en la historia de nuestro Estado. Siempre he creído que, si
-                  tenemos la oportunidad tenemos también la responsabilidad de
-                  contribuir a mejorar nuestro entorno, de dejar el mundo mejor
-                  de cómo lo encontramos, de aportar a los demás y no sólo ver
-                  por nuestros propios intereses. Yo he encontrado el sentido de
-                  mi vida en el servicio público y ahora, como madre, mi
-                  compromiso es mayor por el Estado de México. Y creo que el
-                  gobierno es la vía más fácil, la mejor carretera, para lograr
-                  un mayor impacto, que permite alcanzar a un gran número de
-                  personas de manera permanente. Los cambios que se logran desde
-                  el gobierno, si se hacen bien, con la participación de la
-                  sociedad podemos transformar la realidad de las familias
-                  mexiquenses, para toda la vida. En este momento, es urgente
-                  construir un gobierno de reconciliación, porque hay una
-                  corriente que busca separar y poner a los mexiquenses unos
-                  contra otros, quieren lucrar con el enojo y el cansancio de la
-                  sociedad para beneficiarse políticamente, pero sin ofrecer
-                  rutas para resolver los problemas de fondo, quieren dividirnos
-                  entre trabajadores y empleadores o en viejas categorías de
-                  clase que poco ayudan, yo estoy convencida que los mexiquenses
-                  no logramos más confrontándonos y divididos, al contrario,
-                  somos mejores si trabajamos unidos y en equipo.
-                </div>
+                <div class="text-subtitle1 text-justify"></div>
               </q-tab-panel>
 
               <q-tab-panel name="PROPUESTAS">
-                <div class="text-subtitle1 text-center text-bold q-pb-md">
+                <!-- <div class="text-subtitle1 text-center text-bold q-pb-md">
                   PRINCIPALES PROPUESTAS
-                </div>
-                <div
+                </div> -->
+                <!-- <div
                   class="col-12 bg-purple-ieen-2"
                   style="border-radius: 10px; color: white"
                 >
@@ -458,15 +357,7 @@
                     <q-icon name="import_contacts" /> PROPUESTA 1
                   </div>
                 </div>
-                <div class="q-pa-sm text-subtitle1 text-justify">
-                  El seguir fomentando el Comercio Local de mi Ciudad Acuña,
-                  impulsar los ejes carreteros que traerán prosperidad no
-                  únicamente para Acuña si no también para Jiménez y Zaragoza.
-                  Trabajar de la mano con los Alcaldes de los tres municipios
-                  que integran el Distrito 01, impulsar la contsrucción de un
-                  carril de carga y sentri en el puente internacional Acuña -
-                  Del Río.
-                </div>
+                <div class="q-pa-sm text-subtitle1 text-justify"></div>
                 <div
                   class="col-12 bg-purple-ieen-3"
                   style="border-radius: 10px; color: white"
@@ -475,18 +366,11 @@
                     <q-icon name="import_contacts" /> PROPUESTA 2
                   </div>
                 </div>
-                <div class="q-pa-sm text-subtitle1 text-justify">
-                  Para el mejoramiento al campo mayor recurso, que los recursos
-                  al campo lleguen en tiempo y forma cuando se necesiten, mayor
-                  recurso para la seguridad, educación, salud y deportes de
-                  nuestro Distrito. Mayores espacios deportivos, más recurso
-                  para los sistemas DIF del Distrito, pláticas en las colonias a
-                  través de Psicólogos, etc.
-                </div>
+                <div class="q-pa-sm text-subtitle1 text-justify"></div> -->
               </q-tab-panel>
 
               <q-tab-panel name="PROPUESTA EN MATERIA DE GÉNERO">
-                <div
+                <!-- <div
                   class="col-12 bg-purple-ieen-3"
                   style="border-radius: 10px; color: white"
                 >
@@ -495,35 +379,8 @@
                     GÉNERO O, EN SU CASO, DEL GRUPO EN SITUACIÓN DE
                     DISCRIMINACIÓN QUE REPRESENTO
                   </div>
-                </div>
-                <div class="q-pa-sm text-subtitle1 text-justify">
-                  Las mujeres hemos sido la voz de la justicia, la igualdad y la
-                  inclusión, hemos logrado grandes avances y aún hay mucho por
-                  hacer. Como Gobernadora del Estado de México, me comprometo a
-                  impulsar la igualdad de género en todos los ámbitos de nuestra
-                  sociedad: a. Impulsaré la participación económica y educativa
-                  de las mujeres: Incrementaremos las oportunidades laborales y
-                  educativas, promoviendo la corresponsabilidad en el cuidado de
-                  la primera infancia mediante permisos de paternidad extendidos
-                  y becas para estudiantes universitarias talentosas. b.
-                  Combatiré la brecha salarial de género: Exigiremos a las
-                  empresas realizar auditorías para analizar la brecha salarial
-                  y elaboraremos planes de acción junto a los sindicatos para
-                  erradicar prácticas retributivas injustas, asegurando un
-                  salario igual para un trabajo igual. c. Reduciré la
-                  informalidad laboral: Implementaremos medidas de mejora
-                  regulatoria para disminuir la diferencia en la tasa de
-                  informalidad entre mujeres y hombres, especialmente en
-                  unidades económicas con establecimiento fijo. d. Crearé un
-                  Sistema Integral de Cuidados: Reconoceremos y valoraremos el
-                  trabajo doméstico y de cuidado no remunerado de las mujeres,
-                  mediante servicios públicos, infraestructura y políticas de
-                  protección social, sensibilizando a empleadores sobre la
-                  incorporación de trabajadoras del hogar al IMSS. e.
-                  Erradicaremos la violencia obstétrica: Implementaremos un
-                  nuevo modelo de atención a mujeres durante el embarazo, parto
-                  y puerperio con perspectiva de género y derechos humanos..
-                </div>
+                </div> -->
+                <div class="q-pa-sm text-subtitle1 text-justify"></div>
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -541,9 +398,10 @@ import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
+
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const candidatosStore = useCardsStore();
-const { card } = storeToRefs(candidatosStore);
+const { candidato } = storeToRefs(candidatosStore);
 const tab = ref("DATOS GENERALES");
 const dropdownOptions = [
   { label: "Propietario Presidente", value: "prop" },
@@ -553,7 +411,9 @@ const dropdownOptions = [
 ];
 const open_tab = ref(false);
 const activar_pdf = ref(false);
+
 //---------------------------------------------------------------------------------
+
 onMounted(() => {
   candidatosStore.actualizarButtonColor(true);
 });
@@ -564,11 +424,12 @@ watch(
     isSmallScreen.value = width <= 768;
   }
 );
+
 //---------------------------------------------------------------------------------
 
-const selectOption = (card, option) => {
-  card.selection = option.value;
-  card.label = option.label;
+const selectOption = (candidato, option) => {
+  candidato.selection = option.value;
+  candidato.label = option.label;
 };
 const pdf = async () => {
   pdfCandidato();

@@ -60,7 +60,7 @@
                   outlined
                   bg-color="grey-3"
                   v-model="distritos_Id"
-                  :options="listDistritos"
+                  :options="list_Distritos"
                 />
               </q-item-section>
             </q-item>
@@ -82,7 +82,7 @@
                   rounded
                   bg-color="grey-3"
                   v-model="municipio_Id"
-                  :options="listMunicipios"
+                  :options="list_Municipios"
                 />
               </q-item-section>
             </q-item>
@@ -102,7 +102,7 @@
                   bg-color="grey-3"
                   rounded
                   v-model="demarcacion_Id"
-                  :options="listDemarcacion"
+                  :options="list_Demarcaciones"
                 />
               </q-item-section>
             </q-item>
@@ -118,7 +118,7 @@
                   outlined
                   bg-color="grey-3"
                   v-model="actor_politico_Id"
-                  :options="listActorPolitico"
+                  :options="list_Partidos_Politicos"
                 />
               </q-item-section>
             </q-item>
@@ -134,7 +134,7 @@
                   outlined
                   bg-color="grey-3"
                   v-model="rango_edad_Id"
-                  :options="listEdades"
+                  :options="list_Edades"
                 />
               </q-item-section>
             </q-item>
@@ -148,7 +148,7 @@
                   outlined
                   bg-color="grey-3"
                   v-model="sexo_Id"
-                  :options="listSexo"
+                  :options="list_Sexo"
                 />
               </q-item-section>
             </q-item>
@@ -163,8 +163,8 @@
 import { storeToRefs } from "pinia";
 import { useQuasar } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
-import { usePresidenciaSindicaturiaStore } from "src/stores/presidencia_sindicaturia_store";
-import { useRegiduriasStore } from "src/stores/regidurias_store";
+import { useConfiguracionStore } from "src/stores/configuracion-store";
+
 import { onBeforeMount, onMounted, ref, watch, watchEffect } from "vue";
 
 //---------------------------------------------------------------------------------
@@ -172,6 +172,7 @@ import { onBeforeMount, onMounted, ref, watch, watchEffect } from "vue";
 const $q = useQuasar();
 
 const cardsStore = useCardsStore();
+const configuracionStore = useConfiguracionStore();
 const {
   isHomePage,
   isDetallePage,
@@ -184,7 +185,15 @@ const {
   buttons,
   selectedTab,
 } = storeToRefs(cardsStore);
-
+const {
+  tipos_Elecciones,
+  list_Distritos,
+  list_Partidos_Politicos,
+  list_Municipios,
+  list_Demarcaciones,
+  list_Edades,
+  list_Sexo,
+} = storeToRefs(configuracionStore);
 const distritos_Id = ref(null);
 const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
@@ -194,27 +203,16 @@ const numeraliaSelected = ref(true);
 const candidatosSelected = ref(false);
 //---------------------------------------------------------------------------------
 
-const presidenciaSindicaturiaStore = usePresidenciaSindicaturiaStore();
-const { listMunicipios } = storeToRefs(presidenciaSindicaturiaStore);
 const municipio_Id = ref(null);
 
 //---------------------------------------------------------------------------------
 
-const regiduriasStore = useRegiduriasStore();
-const { listDemarcacion } = storeToRefs(regiduriasStore);
 const demarcacion_Id = ref(null);
 
 //---------------------------------------------------------------------------------
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 onBeforeMount(() => {
-  cardsStore.loadCards();
-  cardsStore.loadDistritos();
-  cardsStore.loadEdades();
-  cardsStore.loadActorPolitico();
-  cardsStore.loadSexo();
-  presidenciaSindicaturiaStore.loadMunicipios();
-  regiduriasStore.loadDemarcaciones();
   limpiarFiltros();
 });
 

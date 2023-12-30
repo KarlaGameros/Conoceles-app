@@ -24,17 +24,24 @@
 
 <script setup>
 import { ref, watch, defineProps, onMounted } from "vue";
+import { useCardsStore } from "src/stores/cards-store";
 import DetalleCantidato from "../components/detalleCantidato.vue";
 import filtros from "../../../components/filtrosComp.vue";
-import { useCardsStore } from "src/stores/cards-store";
 
 //---------------------------------------------------------------------------------
+
 const cardsStore = useCardsStore();
 const props = defineProps({
   id: { type: Number, required: true },
-  selection: { type: String },
 });
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
+
+//---------------------------------------------------------------------------------
+
+onMounted(async () => {
+  cardsStore.actualizarMenu(true);
+  await cardsStore.loadCandidatoById(props.id);
+});
 
 //---------------------------------------------------------------------------------
 
@@ -44,10 +51,6 @@ watch(
     isSmallScreen.value = width <= 768;
   }
 );
-onMounted(async () => {
-  cardsStore.actualizarMenu(true);
-  await cardsStore.loadCard(props.id, props.selection);
-});
 </script>
 
 <style></style>

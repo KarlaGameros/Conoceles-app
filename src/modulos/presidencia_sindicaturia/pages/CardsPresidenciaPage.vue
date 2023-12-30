@@ -19,13 +19,17 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
+import { ref, watch, onBeforeMount } from "vue";
+import { useCardsStore } from "src/stores/cards-store";
 import CardsPresidenciaSindicauria from "../components/cardsPresidenciaSindicaturia.vue";
 import filtros from "../../../components/filtrosComp.vue";
-import { ref, watch } from "vue";
 
 //---------------------------------------------------------------------------------
 
+const $q = useQuasar();
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
+const cardsStore = useCardsStore();
 
 //---------------------------------------------------------------------------------
 
