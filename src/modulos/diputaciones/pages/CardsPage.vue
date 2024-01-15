@@ -13,28 +13,14 @@
         </div>
       </div>
     </div>
-    <filtros v-show="isSmallScreen" class="q-mb-md" />
+    <filtros class="q-mb-md" />
     <CardsDiputaciones />
   </q-page>
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
 import CardsDiputaciones from "../components/cardsDiputaciones.vue";
 import filtros from "../../../components/filtrosComp.vue";
 
 //---------------------------------------------------------------------------------
-
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
-
-//---------------------------------------------------------------------------------
-
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 </script>
-
-<style></style>

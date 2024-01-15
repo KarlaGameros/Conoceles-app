@@ -291,7 +291,7 @@ watch(filtro, (val) => {
 
 //---------------------------------------------------------------------------------
 //PAGINATION
-const elementosPorPage = 8;
+const elementosPorPage = 3;
 watch(pageActual, (val) => {
   const pag = list_Filtro_Candidatos.value.length / elementosPorPage;
   if (pag % 1 !== 0) {

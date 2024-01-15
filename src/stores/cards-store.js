@@ -156,6 +156,7 @@ export const useCardsStore = defineStore("cards", {
 
     async filtrarCandidatos(tipo) {
       try {
+        this.list_Filtro_Candidatos = [];
         this.list_Filtro_Candidatos = this.list_Candidatos.filter(
           (x) => x.tipo_Eleccion == tipo
         );
@@ -287,34 +288,13 @@ export const useCardsStore = defineStore("cards", {
             url_Logo_Partido_Suplente_2: candidato.url_Logo_Partido_Suplente_2,
           };
         });
-        console.log(listCandidatos);
+        console.log("listCandidatos", listCandidatos);
         this.list_Candidatos = listCandidatos;
       } catch (error) {
         return {
           success: false,
           data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
         };
-      }
-    },
-
-    async calcularEdad(val) {
-      if (val != null) {
-        var fechaNace = new Date(val);
-        var fechaActual = new Date();
-
-        var mes = fechaActual.getMonth();
-        var dia = fechaActual.getDate();
-        var año = fechaActual.getFullYear();
-
-        fechaActual.setDate(dia);
-        fechaActual.setMonth(mes);
-        fechaActual.setFullYear(año);
-
-        suplente_1.value.edad = Math.floor(
-          (fechaActual - fechaNace) / (1000 * 60 * 60 * 24) / 365
-        );
-
-        return edad;
       }
     },
 

@@ -17,13 +17,13 @@
         </div>
       </div>
     </div>
-    <filtros v-show="isSmallScreen" class="q-mb-md" />
+    <filtros v-show="$q.screen.xs" class="q-mb-md" />
     <DetalleCantidato />
   </q-page>
 </template>
 
 <script setup>
-import { defineProps, onMounted, ref, watch } from "vue";
+import { defineProps, onMounted } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
 import DetalleCantidato from "../components/detalleCantidato.vue";
 import filtros from "../../../components/filtrosComp.vue";
@@ -34,7 +34,6 @@ const cardsStore = useCardsStore();
 const props = defineProps({
   id: { type: String, required: true },
 });
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 //---------------------------------------------------------------------------------
 
@@ -44,13 +43,6 @@ onMounted(() => {
 });
 
 //---------------------------------------------------------------------------------
-
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 </script>
 
 <style></style>

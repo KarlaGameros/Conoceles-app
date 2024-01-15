@@ -451,14 +451,10 @@ const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 onBeforeMount(async () => {
   limpiarFiltros();
-  await cardsStore.loadCandidatos();
+  cargarData();
   selectedTab.value = localStorage.getItem("selectedTab");
   //configuracionStore.loadTipoElecciones();
-  configuracionStore.loadDistritos();
-  configuracionStore.loadPartidosPoliticos();
-  configuracionStore.loadEdades();
-  configuracionStore.loadGenero();
-  configuracionStore.loadMunicipios();
+
   let { latitude, longitude } = await getCurrentLocation();
   let { brand, model, os } = getDataDevice();
   info.value.latitud = latitude;
@@ -467,17 +463,24 @@ onBeforeMount(async () => {
   info.value.modelo = model;
   info.value.sistema_Operativo = os;
   //await cardsStore.infoDeviceConoceles(info.value);
-  const savedTab = localStorage.getItem("selectedTab");
-  cardsStore.filtrarCandidatos(savedTab);
 });
 
+const cargarData = async () => {
+  await configuracionStore.loadDistritos();
+  await configuracionStore.loadPartidosPoliticos();
+  await configuracionStore.loadEdades();
+  await configuracionStore.loadGenero();
+  await configuracionStore.loadMunicipios();
+  const savedTab = localStorage.getItem("selectedTab");
+  await cardsStore.filtrarCandidatos(savedTab);
+};
 //---------------------------------------------------------------------------------
 
-watch(tabElecciones, async (val) => {
-  if (val != null) {
-    cardsStore.filtrarCandidatos(val);
-  }
-});
+// watch(tabElecciones, async (val) => {
+//   if (val != null) {
+//     cardsStore.filtrarCandidatos(val);
+//   }
+// });
 
 watch(
   () => window.innerWidth,

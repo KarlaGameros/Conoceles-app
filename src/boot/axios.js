@@ -8,7 +8,8 @@ import axios from "axios";
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({
-  baseURL: "http://sistema.ieenayarit.org:9378/api",
+  //baseURL: "http://sistema.ieenayarit.org:9378/api",
+  baseURL: "http://192.168.2.112:9378/api",
 });
 
 api.interceptors.request.use((config) => {

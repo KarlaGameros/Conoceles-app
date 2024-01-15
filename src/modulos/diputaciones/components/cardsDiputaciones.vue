@@ -112,7 +112,7 @@
             v-model="item.selection"
             push
             glossy
-            toggle-color="purple"
+            toggle-color="purple-4"
             :options="[
               { label: 'Propietario', value: 'prop' },
               { label: 'Suplente', value: 'sup' },
@@ -140,7 +140,7 @@
             @click="pdf()"
             flat
             icon="picture_as_pdf"
-            class="text-purple-ieen-1"
+            color="purple-4"
           >
             <q-tooltip>PDF de ambos candidatos</q-tooltip>
           </q-btn>
@@ -151,7 +151,7 @@
             @click="pdf()"
             flat
             icon="picture_as_pdf"
-            class="text-purple-ieen-1"
+            color="purple-4"
           >
             <q-tooltip>PDF del candidado seleccionado</q-tooltip>
           </q-btn>
@@ -173,7 +173,7 @@
 
 <script setup>
 import { useQuasar } from "quasar";
-import { onMounted, ref, watch } from "vue";
+import { onBeforeMount, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useCardsStore } from "src/stores/cards-store";
@@ -189,7 +189,6 @@ const { list_Filtro_Candidatos, listFiltroCards } = storeToRefs(cardsStore);
 const filtro = ref("");
 const listCardsFiltro = ref();
 const shape = ref("prop");
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 let pageActual = ref("");
 let paginas = ref("");
 const activar_pdf = ref(false);
@@ -198,7 +197,6 @@ const activar_pdf = ref(false);
 
 onMounted(() => {
   cardsStore.actualizarMenu(true);
-  cardsStore.actualizarButtonColor(true);
   pageActual.value = 1;
   cardsStore.filtrarCandidatos("Diputaciones");
 });
@@ -229,19 +227,13 @@ watch(shape, (val) => {
     item.selection = val;
   });
 });
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 
 //---------------------------------------------------------------------------------
 //PAGINATION
 
 const elementosPorPage = 3;
 watch(pageActual, (val) => {
-  const pag = listFiltroCards.value.length / elementosPorPage;
+  const pag = list_Filtro_Candidatos.value.length / elementosPorPage;
   if (pag % 1 !== 0) {
     paginas.value = pag + 1;
   } else {
@@ -249,6 +241,7 @@ watch(pageActual, (val) => {
   }
   mostrarElementosPage(val);
 });
+
 const mostrarElementosPage = (pagina) => {
   const inicio = (pagina - 1) * elementosPorPage;
   const fin = inicio + elementosPorPage;

@@ -88,13 +88,7 @@
       </div>
     </div>
     <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-      <q-list
-        v-if="isSmallScreen"
-        dark
-        padding
-        bordered
-        class="rounded-borders"
-      >
+      <q-list v-if="$q.screen.xs" dark padding bordered class="rounded-borders">
         <q-expansion-item
           icon="manage_search"
           class="bg-grey-3 text-justify"
@@ -112,30 +106,12 @@
             active-color="white"
           >
             <q-tab
-              name="DATOS GENERALES"
-              label="DATOS GENERALES"
+              v-for="tab in tabs"
+              :key="tab"
+              :name="tab"
+              :label="tab"
               @click="open_tab = !open_tab"
             />
-            <q-tab
-              name="HISTORIA PROFESIONAL Y/O LABORAL"
-              label="HISTORIA PROFESIONAL Y/O LABORAL"
-              @click="open_tab = !open_tab"
-            />
-            <q-tab
-              name="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
-              label="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
-              @click="open_tab = !open_tab"
-            />
-            <q-tab
-              name="PROPUESTAS"
-              label="PROPUESTAS"
-              @click="open_tab = !open_tab"
-            />
-            <q-tab
-              name="PROPUESTA EN MATERIA DE GÉNERO"
-              label="PROPUESTA EN MATERIA DE GÉNERO"
-              @click="open_tab = !open_tab"
-            ></q-tab>
           </q-tabs>
         </q-expansion-item>
       </q-list>
@@ -143,7 +119,7 @@
         <div class="q-gutter-y-md">
           <q-card>
             <q-tabs
-              v-if="!isSmallScreen"
+              v-if="!$q.screen.xs"
               v-model="tab"
               dense
               class="text-grey"
@@ -152,24 +128,15 @@
               align="justify"
               narrow-indicator
             >
-              <q-tab name="DATOS GENERALES" label="DATOS GENERALES" />
               <q-tab
-                name="HISTORIA PROFESIONAL Y/O LABORAL"
-                label="HISTORIA PROFESIONAL Y/O LABORAL"
+                v-for="tab in tabs"
+                :key="tab"
+                :name="tab"
+                :label="tab"
+                @click="open_tab = !open_tab"
               />
-              <q-tab
-                name="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
-                label="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
-              />
-              <q-tab name="PROPUESTAS" label="PROPUESTAS" />
-              <q-tab
-                name="PROPUESTA EN MATERIA DE GÉNERO"
-                label="PROPUESTA EN MATERIA DE GÉNERO"
-              ></q-tab>
             </q-tabs>
-
             <q-separator />
-
             <q-tab-panels v-model="tab" animated>
               <q-tab-panel name="DATOS GENERALES">
                 <div class="row">
@@ -199,7 +166,7 @@
                   </div>
                   <div
                     :class="
-                      isSmallScreen
+                      $q.screen.xs
                         ? 'text-center col-lg-4 col-md-6 col-sm-12 col-xs-12'
                         : 'col-lg-4 col-md-6 col-sm-12 col-xs-12'
                     "
@@ -225,7 +192,7 @@
                   </div>
                   <div
                     :class="
-                      isSmallScreen
+                      $q.screen.xs
                         ? 'text-center col-lg-4 col-md-6 col-sm-12 col-xs-12'
                         : 'col-lg-4 col-md-6 col-sm-12 col-xs-12'
                     "
@@ -361,7 +328,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 
@@ -370,21 +337,21 @@ import banner from "../../../components/bannerComp.vue";
 const cardsStore = useCardsStore();
 const { candidato } = storeToRefs(cardsStore);
 const tab = ref("DATOS GENERALES");
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const open_tab = ref(false);
 const activar_pdf = ref(false);
+const tabs = ref([
+  "DATOS GENERALES",
+  "HISTORIA PROFESIONAL Y/O LABORAL",
+  "¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?",
+  "PROPUESTAS",
+  "PROPUESTA EN MATERIA DE GÉNERO",
+]);
 
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
   cardsStore.actualizarButtonColor(true);
 });
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 
 //---------------------------------------------------------------------------------
 
