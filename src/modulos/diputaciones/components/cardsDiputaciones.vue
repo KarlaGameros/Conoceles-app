@@ -37,7 +37,11 @@
     </div>
   </div>
   <!---------------------------CARDS--------------------------->
-  <div class="q-pa-md row items-start q-gutter-md flex flex-center">
+  <div v-if="list_Filtro_Candidatos.length == 0">
+    <div class="text-h4 text-center text-grey-7">Seleccione filtros</div>
+    <q-img src="../../../assets/Imagen2.jpg" />
+  </div>
+  <div v-else class="q-pa-md row items-start q-gutter-md flex flex-center">
     <q-card
       v-for="item in listCardsFiltro"
       :key="item"
@@ -96,7 +100,7 @@
               :src="
                 item.selection == 'prop'
                   ? item.url_Logo_Partido_Propietario
-                  : item.url_Logo_Partido_Partido_Suplente
+                  : item.url_Logo_Partido_Suplente
               "
               alt=""
             />
@@ -173,7 +177,7 @@
 
 <script setup>
 import { useQuasar } from "quasar";
-import { onBeforeMount, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useCardsStore } from "src/stores/cards-store";
@@ -200,7 +204,7 @@ onMounted(() => {
   pageActual.value = 1;
   cardsStore.filtrarCandidatos("Diputaciones");
 });
-
+console.log("entrooooooooo");
 //---------------------------------------------------------------------------------
 
 watch(listFiltroCards, (val) => {

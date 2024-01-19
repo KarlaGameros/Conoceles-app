@@ -7,6 +7,7 @@ export const useCardsStore = defineStore("cards", {
     buttons: false,
     selectedTab: null,
     list_Candidatos: [],
+    list_Candidatos_By_Eleccion: [],
     list_Filtro_Candidatos: [],
     listCards: [],
     listFiltroCards: [],
@@ -169,9 +170,137 @@ export const useCardsStore = defineStore("cards", {
 
     //---------------------------------------------------------------------------------
 
-    async loadCandidatos() {
+    // async loadCandidatos() {
+    //   try {
+    //     let resp = await api.get("/Candidatos/Aprobados");
+    //     let { data } = resp.data;
+    //     let listCandidatos = data.map((candidato) => {
+    //       return {
+    //         selection: "prop",
+    //         id: candidato.id,
+    //         tipo_Eleccion_Id: candidato.tipo_Eleccion_Id,
+    //         tipo_Eleccion: candidato.tipo_Eleccion,
+    //         municipio_Id: candidato.municipio_Id,
+    //         municipio: candidato.municipio,
+    //         distrito_Id: candidato.distrito_Id,
+    //         distrito: candidato.distrito,
+    //         demarcacion_Id: candidato.demarcacion_Id,
+    //         demarcacion: candidato.demarcacion,
+    //         coalicion_Id: candidato.coalicion_Id,
+    //         coalicion: candidato.coalicion,
+    //         url_Logo_Coalicion: candidato.url_Logo_Coalicion,
+    //         estatus: candidato.estatus,
+    //         usuario_Id: candidato.usuario_Id,
+    //         is_Coalicion: candidato.is_Coalicion,
+    //         activo: candidato.activo,
+    //         tipo_Candidato: candidato.tipo_Candidato,
+    //         orden: candidato.orden,
+    //         validado: candidato.validado,
+    //         fecha_Registro: candidato.fecha_Registro,
+    //         nombres_Propietario: candidato.nombres_Propietario,
+    //         apellido_Paterno_Propietario:
+    //           candidato.apellido_Paterno_Propietario,
+    //         apellido_Materno_Propietario:
+    //           candidato.apellido_Materno_Propietario,
+    //         nombre_Completo_Propietario: `${candidato.nombres_Propietario} ${candidato.apellido_Paterno_Propietario} ${candidato.apellido_Materno_Propietario}`,
+    //         mote_Propietario: candidato.mote_Propietario,
+    //         sexo_Propietario: candidato.sexo_Propietario,
+    //         url_Foto_Propietario: candidato.url_Foto_Propietario,
+    //         clave_Elector_Propietario: candidato.clave_Elector_Propietario,
+    //         rfC_Propietario: candidato.rfC_Propietario,
+    //         curP_Propietario: candidato.curP_Propietario,
+    //         fecha_Nacimiento_Propietario:
+    //           candidato.fecha_Nacimiento_Propietario,
+    //         ocupacion_Propietario: candidato.ocupacion_Propietario,
+    //         telefono_Propietario: candidato.telefono_Propietario,
+    //         correo_Propietario: candidato.correo_Propietario,
+    //         pertenece_Grupo_Vulnerable_Propietario:
+    //           candidato.pertenece_Grupo_Vulnerable_Propietario,
+    //         grupo_Vulnerable_Propietario:
+    //           candidato.grupo_Vulnerable_Propietario,
+    //         partido_Id: candidato.partido_Id,
+    //         partido: candidato.partido,
+    //         url_Logo_Partido_Propietario:
+    //           candidato.url_Logo_Partido_Propietario,
+    //         nombre_Completo_Propietario_2: `${candidato.nombres_Propietario_2} ${candidato.apellido_Paterno_Propietario_2} ${candidato.apellido_Materno_Propietario_2}`,
+    //         nombres_Propietario_2: candidato.nombres_Propietario_2,
+    //         apellido_Paterno_Propietario_2:
+    //           candidato.apellido_Paterno_Propietario_2,
+    //         apellido_Materno_Propietario_2:
+    //           candidato.apellido_Materno_Propietario_2,
+    //         mote_Propietario_2: candidato.mote_Propietario_2,
+    //         sexo_Propietario_2: candidato.sexo_Propietario_2,
+    //         url_Foto_Propietario_2: candidato.url_Foto_Propietario_2,
+    //         clave_Elector_Propietario_2: candidato.clave_Elector_Propietario_2,
+    //         rfC_Propietario_2: candidato.rfC_Propietario_2,
+    //         curP_Propietario_2: candidato.curP_Propietario_2,
+    //         fecha_Nacimiento_Propietario_2:
+    //           candidato.fecha_Nacimiento_Propietario_2,
+    //         ocupacion_Propietario_2: candidato.ocupacion_Propietario_2,
+    //         telefono_Propietario_2: candidato.telefono_Propietario_2,
+    //         correo_Propietario_2: candidato.correo_Propietario_2,
+    //         pertenece_Grupo_Vulnerable_Propietario_2:
+    //           candidato.pertenece_Grupo_Vulnerable_Propietario_2,
+    //         grupo_Vulnerable_Propietario_2:
+    //           candidato.grupo_Vulnerable_Propietario_2,
+    //         partido_Propietario_2_Id: candidato.partido_Propietario_2_Id,
+    //         partido_Propietario_2: candidato.partido_Propietario_2,
+    //         url_Logo_Partido_Propietario_2:
+    //           candidato.url_Logo_Partido_Propietario_2,
+    //         nombre_Completo_Suplente: `${candidato.nombres_Suplente} ${candidato.apellido_Paterno_Suplente} ${candidato.apellido_Materno_Suplente}`,
+    //         nombres_Suplente: candidato.nombres_Suplente,
+    //         apellido_Paterno_Suplente: candidato.apellido_Materno_Suplente,
+    //         apellido_Materno_Suplente: candidato.apellido_Materno_Suplente,
+    //         mote_Suplente: candidato.mote_Suplente,
+    //         sexo_Suplente: candidato.sexo_Suplente,
+    //         url_Foto_Suplente: candidato.url_Foto_Suplente,
+    //         clave_Elector_Suplente: candidato.clave_Elector_Suplente,
+    //         rfC_Suplente: candidato.rfC_Suplente,
+    //         curP_Suplente: candidato.curP_Suplente,
+    //         fecha_Nacimiento_Suplente: candidato.fecha_Nacimiento_Suplente,
+    //         ocupacion_Suplente: candidato.ocupacion_Suplente,
+    //         telefono_Suplente: candidato.telefono_Suplente,
+    //         correo_Suplente: candidato.correo_Suplente,
+    //         pertenece_Grupo_Vulnerable_Suplente:
+    //           candidato.pertenece_Grupo_Vulnerable_Suplente,
+    //         grupo_Vulnerable_Suplente: candidato.grupo_Vulnerable_Suplente,
+    //         partido_Suplente_Id: candidato.partido_Suplente_Id,
+    //         partido_Suplente: candidato.partido_Suplente,
+    //         url_Logo_Partido_Suplente: candidato.url_Logo_Partido_Suplente,
+    //         nombre_Completo_Suplente_2: `${candidato.nombres_Suplente_2} ${candidato.apellido_Paterno_Suplente_2} ${candidato.apellido_Materno_Suplente_2}`,
+    //         nombres_Suplente_2: candidato.nombres_Suplente_2,
+    //         apellido_Paterno_Suplente_2: candidato.apellido_Paterno_Suplente_2,
+    //         apellido_Materno_Suplente_2: candidato.apellido_Materno_Suplente_2,
+    //         mote_Suplente_2: candidato.mote_Suplente_2,
+    //         sexo_Suplente_2: candidato.sexo_Suplente_2,
+    //         url_Foto_Suplente_2: candidato.url_Foto_Suplente_2,
+    //         clave_Elector_Suplente_2: candidato.clave_Elector_Suplente_2,
+    //         rfC_Suplente_2: candidato.rfC_Suplente_2,
+    //         curP_Suplente_2: candidato.curP_Suplente_2,
+    //         fecha_Nacimiento_Suplente_2: candidato.fecha_Nacimiento_Suplente_2,
+    //         ocupacion_Suplente_2: candidato.ocupacion_Suplente_2,
+    //         telefono_Suplente_2: candidato.telefono_Suplente_2,
+    //         correo_Suplente_2: candidato.correo_Suplente_2,
+    //         pertenece_Grupo_Vulnerable_Suplente_2:
+    //           candidato.pertenece_Grupo_Vulnerable_Suplente_2,
+    //         grupo_Vulnerable_Suplente_2: candidato.grupo_Vulnerable_Suplente_2,
+    //         partido_Suplente_2_Id: candidato.partido_Suplente_2_Id,
+    //         partido_Suplente_2: candidato.partido_Suplente_2,
+    //         url_Logo_Partido_Suplente_2: candidato.url_Logo_Partido_Suplente_2,
+    //       };
+    //     });
+    //     this.list_Candidatos = listCandidatos;
+    //   } catch (error) {
+    //     return {
+    //       success: false,
+    //       data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+    //     };
+    //   }
+    // },
+
+    async loadCandidatosByEleccion(id) {
       try {
-        let resp = await api.get("/Candidatos/Aprobados");
+        let resp = await api.get(`/Candidatos/ByTipoEleccion/${id}`);
         let { data } = resp.data;
         let listCandidatos = data.map((candidato) => {
           return {
@@ -288,8 +417,11 @@ export const useCardsStore = defineStore("cards", {
             url_Logo_Partido_Suplente_2: candidato.url_Logo_Partido_Suplente_2,
           };
         });
-        console.log("listCandidatos", listCandidatos);
-        this.list_Candidatos = listCandidatos;
+        this.list_Candidatos_By_Eleccion = listCandidatos;
+        console.log(
+          "list_Candidatos_By_Eleccion",
+          this.list_Candidatos_By_Eleccion
+        );
       } catch (error) {
         return {
           success: false,

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isSmallScreen" class="bg-grey-2" style="border-radius: 20px">
+  <div v-if="$q.screen.xs" class="bg-grey-2" style="border-radius: 20px">
     <div class="text-h6 q-pl-md text-bold" style="color: grey">CONSULTA:</div>
     <div class="subtitule-2 q-pl-md" style="color: grey">
       Selecciona el reporte que deseas consultar:
@@ -173,20 +173,9 @@ const $q = useQuasar();
 
 const cardsStore = useCardsStore();
 const configuracionStore = useConfiguracionStore();
+const { isDetallePage, listCards, listFiltroCards, buttons, selectedTab } =
+  storeToRefs(cardsStore);
 const {
-  isHomePage,
-  isDetallePage,
-  listDistritos,
-  listEdades,
-  listActorPolitico,
-  listSexo,
-  listCards,
-  listFiltroCards,
-  buttons,
-  selectedTab,
-} = storeToRefs(cardsStore);
-const {
-  tipos_Elecciones,
   list_Distritos,
   list_Partidos_Politicos,
   list_Municipios,
@@ -198,19 +187,10 @@ const distritos_Id = ref(null);
 const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
 const sexo_Id = ref(null);
-
-const numeraliaSelected = ref(true);
-const candidatosSelected = ref(false);
-//---------------------------------------------------------------------------------
-
 const municipio_Id = ref(null);
-
-//---------------------------------------------------------------------------------
-
 const demarcacion_Id = ref(null);
 
 //---------------------------------------------------------------------------------
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 onBeforeMount(() => {
   limpiarFiltros();
@@ -219,12 +199,7 @@ onBeforeMount(() => {
 watch(listCards, (val) => {
   listFiltroCards.value = val;
 });
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
+
 onMounted(() => {
   if (selectedTab.value == "") {
     selectedTab.value = "inicio";

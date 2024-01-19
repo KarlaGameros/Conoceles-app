@@ -125,7 +125,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { useQuasar } from "quasar";
+import { onBeforeMount, onMounted, ref } from "vue";
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
 import chartGradoAcademico from "../../../charts/chartGradoAcademico.vue";
 import chartSexo from "../../../charts/chartSexo.vue";
@@ -141,6 +142,7 @@ import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
 
+const $q = useQuasar();
 const tab = ref("Grado académico");
 const open_tab = ref(false);
 const tabs = ref([
@@ -157,6 +159,7 @@ const tabs = ref([
 
 //---------------------------------------------------------------------------------
 
+const cargarData = () => {};
 //---------------------------------------------------------------------------------
 </script>
 

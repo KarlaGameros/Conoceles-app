@@ -7,7 +7,7 @@ const routes = [
       { path: "/inicio", component: () => import("pages/IndexPage.vue") },
       {
         path: "/diputaciones",
-        name: "diputaciones",
+        name: "DIP",
         component: () => import("../modulos/diputaciones/pages/IndexPage"),
       },
       {
@@ -24,7 +24,7 @@ const routes = [
       },
       {
         path: "/presidenciaSindicatura",
-        name: "presidenciaSindicatura",
+        name: "PYS",
         component: () =>
           import("../modulos/presidencia_sindicaturia/pages/IndexPage"),
       },
@@ -48,7 +48,7 @@ const routes = [
       },
       {
         path: "/regidurias",
-        name: "regidurias",
+        name: "REG",
         component: () => import("../modulos/regidurias/pages/IndexPage"),
       },
       {

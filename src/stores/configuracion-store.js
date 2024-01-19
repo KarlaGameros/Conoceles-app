@@ -3,7 +3,7 @@ import { api } from "src/boot/axios";
 
 export const useConfiguracionStore = defineStore("configuracion", {
   state: () => ({
-    tipos_Elecciones: [],
+    list_Tipos_Elecciones: [],
     list_Distritos: [],
     list_Partidos_Politicos: [],
     list_Municipios: [],
@@ -37,7 +37,7 @@ export const useConfiguracionStore = defineStore("configuracion", {
           };
         });
 
-        this.tipo_Elecciones = listTipoElecciones;
+        this.list_Tipos_Elecciones = listTipoElecciones;
       } catch (error) {
         return {
           success: false,

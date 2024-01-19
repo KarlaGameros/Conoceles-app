@@ -1,13 +1,13 @@
 <template>
-  <q-layout :view="isSmallScreen ? 'hHh lpR lff' : 'hHh lpR fFf'">
+  <q-layout :view="$q.screen.xs ? 'hHh lpR lff' : 'hHh lpR fFf'">
     <q-header elevated class="bg-pink-ieen" height-hint="98">
       <div class="row bg-grey-3">
         <div class="col-lg-1 col-md-2 col-sm-3 col-xs-3 q-pl-xl q-pt-md">
-          <q-img v-if="!isSmallScreen" src="../assets/IEEN300.png"></q-img>
+          <q-img v-if="!$q.screen.xs" src="../assets/IEEN300.png"></q-img>
         </div>
         <div
           :class="
-            !isSmallScreen
+            !$q.screen.xs
               ? 'col-lg-9 col-md-8 col-sm-6 col-xs-6 q-pr-xl q-pt-md'
               : 'col-12'
           "
@@ -22,7 +22,7 @@
           </div>
         </div>
         <div
-          v-if="!isSmallScreen"
+          v-if="!$q.screen.xs"
           class="col-lg-2 col-md-2 col-sm-3 col-xs-3 q-pr-xl"
         >
           <q-img src="../assets/Conoceles2@300x.png"></q-img>
@@ -31,7 +31,7 @@
       <q-toolbar>
         <div class="row">
           <q-btn
-            v-if="isHomePage || isSmallScreen"
+            v-if="isHomePage || $q.screen.xs"
             dense
             class="absolute-left"
             flat
@@ -41,7 +41,7 @@
           />
           <!---------------------------HEADER TABS--------------------------->
           <div
-            v-if="!isSmallScreen"
+            v-if="!$q.screen.xs"
             class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9"
           >
             <q-tabs v-model="tabElecciones">
@@ -52,12 +52,14 @@
                 @click="setTabSelected('inicio')"
               />
               <q-route-tab
-                name="Diputaciones"
-                :to="{ name: 'diputaciones' }"
-                label="Diputaciones"
-                @click="setTabSelected('Diputaciones')"
+                v-for="eleccion in list_Tipos_Elecciones"
+                :key="eleccion"
+                :name="eleccion"
+                :to="{ name: `${eleccion.siglas}` }"
+                :label="eleccion.nombre"
+                @click="setTabSelected(eleccion.siglas)"
               />
-              <q-route-tab
+              <!-- <q-route-tab
                 name="Presidencias y Sindicaturas"
                 :to="{ name: 'presidenciaSindicatura' }"
                 label="Presidencias y Sindicaturas"
@@ -68,7 +70,7 @@
                 :to="{ name: 'regidurias' }"
                 label="Regidurías"
                 @click="setTabSelected('Regidurías')"
-              />
+              /> -->
             </q-tabs>
           </div>
           <!---------------------------HEADER ISSMALLSREEN--------------------------->
@@ -83,7 +85,7 @@
                 : "INICIO"
             }}</strong>
           </div>
-          <div v-if="isSmallScreen" class="absolute-right q-pa-xs">
+          <div v-if="$q.screen.xs" class="absolute-right q-pa-xs">
             <q-btn flat>
               <i class="fa-solid fa-database fa-2xl" style="color: #ffffff"></i>
               <q-tooltip>Exportar base de datos</q-tooltip>
@@ -102,13 +104,13 @@
     </q-header>
 
     <q-drawer
-      v-if="isHomePage || isSmallScreen"
+      v-if="isHomePage || $q.screen.xs"
       show-if-above
       v-model="leftDrawerOpen"
       side="left"
       bordered
       :class="{
-        'bg-grey-3': isSmallScreen,
+        'bg-grey-3': $q.screen.xs,
       }"
     >
       <q-scroll-area
@@ -119,7 +121,7 @@
         "
       >
         <!---------------------------DRAWER NORMAL--------------------------->
-        <q-list v-if="!isSmallScreen">
+        <q-list v-if="!$q.screen.xs">
           <q-item>
             <q-item-section class="bg-grey-3" style="border-radius: 10px">
               <q-item-label
@@ -148,12 +150,7 @@
               <q-btn
                 rounded
                 :to="{
-                  name:
-                    selectedTab == 'Diputaciones'
-                      ? 'diputacionesCards'
-                      : selectedTab == 'Presidencias y Sindicaturas'
-                      ? 'cardsPresidenciaSindicatura'
-                      : 'cardsRegidurias',
+                  name: selectedTab,
                 }"
                 label="Candidatas y candidatos"
                 :class="buttons ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
@@ -353,7 +350,7 @@
           <div class="row">
             <div
               :class="
-                isSmallScreen
+                $q.screen.xs
                   ? 'col-12 text-subtitle2 text-center'
                   : 'col-lg-4 col-md-4 col-sm-12 col-xs-12 text-subtitle1'
               "
@@ -374,7 +371,7 @@
               (311) - 210 - 3235 /36 /47
             </div>
 
-            <div v-if="!isSmallScreen" class="absolute-right q-pa-xs">
+            <div v-if="!$q.screen.xs" class="absolute-right q-pa-xs">
               <q-btn flat round dense>
                 <i
                   class="fa-brands fa-square-facebook fa-2xl"
@@ -409,7 +406,7 @@ import { getCurrentLocation, getDataDevice } from "../helpers/CurrentLocation";
 
 const $q = useQuasar();
 const configuracionStore = useConfiguracionStore();
-const route = useRouter();
+const router = useRouter();
 const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -424,7 +421,7 @@ const {
   list_Filtro_Candidatos,
 } = storeToRefs(cardsStore);
 const {
-  tipos_Elecciones,
+  list_Tipos_Elecciones,
   list_Distritos,
   list_Partidos_Politicos,
   list_Municipios,
@@ -445,7 +442,6 @@ const tabElecciones = ref("Diputaciones");
 
 const demarcacion_Id = ref(null);
 const selectedTab = ref("");
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 //---------------------------------------------------------------------------------
 
@@ -466,6 +462,7 @@ onBeforeMount(async () => {
 });
 
 const cargarData = async () => {
+  await configuracionStore.loadTipoElecciones();
   await configuracionStore.loadDistritos();
   await configuracionStore.loadPartidosPoliticos();
   await configuracionStore.loadEdades();
@@ -482,12 +479,6 @@ const cargarData = async () => {
 //   }
 // });
 
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 watch(back, (val) => {
   if (val == true) {
     numeraliaSelected.value = true;
@@ -502,7 +493,15 @@ watch(municipio_Id, (val) => {
 });
 
 //---------------------------------------------------------------------------------
-//TODOS
+
+const sendRouter = (apartado) => {
+  router.push({
+    name: apartado,
+    params: {
+      apartado: apartado,
+    },
+  });
+};
 
 const isTabSelected = (tab) => {
   if (selectedTab.value == "") {
@@ -512,8 +511,9 @@ const isTabSelected = (tab) => {
     if (savedTab) {
       selectedTab.value = savedTab;
     }
+    console.log("savetab", savedTab);
   }
-  return route.name === tab;
+  //return router.name === tab;
 };
 
 const setTabSelected = (tab) => {
