@@ -8,15 +8,13 @@ import axios from "axios";
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({
-  //baseURL: "http://sistema.ieenayarit.org:9378/api",
-  baseURL: "http://192.168.2.112:9378/api",
+  baseURL: "http://sistema.ieenayarit.org:9378/api",
+  //baseURL: "http://192.168.2.112:9378/api",
 });
 
-api.interceptors.request.use((config) => {
-  config.headers = {
-    Authorization: `Bearer ${localStorage.getItem("key")}`,
-  };
-  return config;
+const apiBD = axios.create({
+  baseURL: "http://sistema.ieenayarit.org:9370/api",
+  //baseURL: "http://192.168.2.112:9378/api",
 });
 
 export default boot(({ app }) => {
@@ -29,6 +27,12 @@ export default boot(({ app }) => {
   app.config.globalProperties.$api = api;
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
+
+  app.config.globalProperties.$axios = axios;
+  // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
+  //       so you won't necessarily have to import axios in each vue file
+
+  app.config.globalProperties.$apiBD = apiBD;
 });
 
-export { api };
+export { api, apiBD };

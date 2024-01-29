@@ -12,7 +12,7 @@ const PdfCandidato = async () => {
     doc.setFontSize(10);
     doc.setFont("helvetica", "bold");
     doc.text(
-      "INSTITULO ESTATAL ELECTORAL DEL ESTADO DE NAYARIT \n",
+      "INSTITUTO ESTATAL ELECTORAL DEL ESTADO DE NAYARIT \n",
       110,
       15,
       null,

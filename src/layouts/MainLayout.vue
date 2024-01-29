@@ -44,57 +44,51 @@
             v-if="!$q.screen.xs"
             class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9"
           >
-            <q-tabs v-model="tabElecciones">
-              <q-route-tab
+            <q-tabs v-model="tab">
+              <q-tab
+                @click="isTabSelected('inicio')"
                 name="inicio"
                 icon="home"
-                to="/inicio"
-                @click="setTabSelected('inicio')"
               />
-              <q-route-tab
+              <q-tab
+                v-model="tab"
                 v-for="eleccion in list_Tipos_Elecciones"
-                :key="eleccion"
-                :name="eleccion"
+                :key="eleccion.siglas"
+                :name="eleccion.siglas"
                 :to="{ name: `${eleccion.siglas}` }"
                 :label="eleccion.nombre"
-                @click="setTabSelected(eleccion.siglas)"
+                @click="isTabSelected(eleccion.siglas)"
               />
-              <!-- <q-route-tab
-                name="Presidencias y Sindicaturas"
-                :to="{ name: 'presidenciaSindicatura' }"
-                label="Presidencias y Sindicaturas"
-                @click="setTabSelected('Presidencias y Sindicaturas')"
-              />
-              <q-route-tab
-                name="Regidurías"
-                :to="{ name: 'regidurias' }"
-                label="Regidurías"
-                @click="setTabSelected('Regidurías')"
-              /> -->
             </q-tabs>
           </div>
           <!---------------------------HEADER ISSMALLSREEN--------------------------->
           <div class="absolute-center" v-else>
             <strong>{{
-              selectedTab == "Diputaciones"
+              tab == "DIP"
                 ? "DIPUTACIONES"
-                : selectedTab == "Presidencias y Sindicaturas"
+                : tab == "PYS"
                 ? "PRESIDENCIA Y SINDICATURA"
-                : selectedTab == "Regidurías"
+                : tab == "REG"
                 ? "REGIDURIAS"
                 : "INICIO"
             }}</strong>
           </div>
-          <div v-if="$q.screen.xs" class="absolute-right q-pa-xs">
-            <q-btn flat>
+          <div
+            v-if="$q.screen.xs || $q.screen.sm"
+            class="absolute-right q-pa-xs"
+          >
+            <q-btn flat @click="exportarBD()">
               <i class="fa-solid fa-database fa-2xl" style="color: #ffffff"></i>
               <q-tooltip>Exportar base de datos</q-tooltip>
             </q-btn>
           </div>
-          <div v-else class="absolute-right q-pa-xs">
+          <div
+            v-if="!$q.screen.xs && tab != 'INICIO'"
+            class="absolute-right q-pa-xs"
+          >
             Exportar base de datos
 
-            <q-btn flat>
+            <q-btn @click="exportarBD()" flat>
               <i class="fa-solid fa-database fa-2xl" style="color: #ffffff"></i>
               <q-tooltip>Exportar base de datos</q-tooltip>
             </q-btn>
@@ -136,12 +130,7 @@
                 rounded
                 @click="activaNumeralia"
                 :to="{
-                  name:
-                    selectedTab == 'Diputaciones'
-                      ? 'diputaciones'
-                      : selectedTab == 'Presidencias y Sindicaturas'
-                      ? 'presidenciaSindicatura'
-                      : 'regidurias',
+                  name: `${tab}`,
                 }"
                 label="Numeralia"
                 :class="buttons == false ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
@@ -150,7 +139,7 @@
               <q-btn
                 rounded
                 :to="{
-                  name: selectedTab,
+                  name: `${tab}cards`,
                 }"
                 label="Candidatas y candidatos"
                 :class="buttons ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
@@ -160,7 +149,7 @@
           </q-item>
           <!---------------FILTERS--------------->
           <q-item
-            v-if="selectedTab === 'Diputaciones'"
+            v-if="tab === 'DIP'"
             :content-inset-level="2"
             :header-inset-level="2"
           >
@@ -178,12 +167,8 @@
               />
             </q-item-section>
           </q-item>
-
           <q-item
-            v-if="
-              selectedTab === 'Presidencias y Sindicaturas' ||
-              selectedTab === 'Regidurías'
-            "
+            v-if="tab === 'PYS' || tab === 'REG'"
             :content-inset-level="2"
             :header-inset-level="2"
           >
@@ -201,9 +186,8 @@
               />
             </q-item-section>
           </q-item>
-
           <q-item
-            v-if="selectedTab === 'Regidurías'"
+            v-if="tab === 'REG'"
             :content-inset-level="2"
             :header-inset-level="2"
           >
@@ -221,11 +205,10 @@
               />
             </q-item-section>
           </q-item>
-
           <q-item :content-inset-level="2" :header-inset-level="2">
             <q-item-section>
               <q-item-label class="text-purple-ieen label-title text-bold"
-                >Actor político</q-item-label
+                >Partido político o Coalición</q-item-label
               >
               <q-select
                 color="purple"
@@ -237,7 +220,6 @@
               />
             </q-item-section>
           </q-item>
-
           <q-item :content-inset-level="2" :header-inset-level="2">
             <q-item-section>
               <q-item-label class="text-purple-ieen label-title text-bold"
@@ -253,11 +235,10 @@
               />
             </q-item-section>
           </q-item>
-
           <q-item :content-inset-level="2" :header-inset-level="2">
             <q-item-section>
               <q-item-label class="text-purple-ieen label-title text-bold"
-                >Sexo</q-item-label
+                >Género</q-item-label
               >
               <q-select
                 color="purple"
@@ -277,62 +258,29 @@
           </div>
           <q-item clickable v-ripple>
             <q-btn
-              :active="isTabSelected('inicio')"
-              @click="setTabSelected('inicio')"
+              @click="isTabSelected('INICIO')"
+              rounded
+              name="inicio"
               icon="home"
-              label="Inicio"
-              rounded
-              style="width: 260px"
               to="/inicio"
-              :class="{
-                'bg-pink-ieen': selectedTab === 'inicio',
-                'bg-pink-ieen-3': selectedTab !== 'inicio',
-              }"
+              label="Inicio"
+              class="bg-pink-ieen-3"
             />
           </q-item>
-
-          <q-item clickable v-ripple>
+          <q-item
+            v-for="eleccion in list_Tipos_Elecciones"
+            :key="eleccion"
+            clickable
+            v-ripple
+          >
             <q-btn
-              :active="isTabSelected('Diputaciones')"
-              @click="setTabSelected('Diputaciones')"
-              label="Diputaciones"
+              @click="isTabSelected(eleccion.siglas)"
               rounded
-              style="width: 260px"
-              :to="{ name: 'diputaciones' }"
-              :class="{
-                'bg-pink-ieen': selectedTab === 'Diputaciones',
-                'bg-pink-ieen-3': selectedTab !== 'Diputaciones',
+              :to="{
+                name: eleccion.siglas,
               }"
-            />
-          </q-item>
-
-          <q-item clickable v-ripple>
-            <q-btn
-              :active="isTabSelected('presidencia')"
-              @click="setTabSelected('presidencia')"
-              label="Presidencia y Sindicatura"
-              rounded
-              style="width: 260px"
-              :to="{ name: 'presidenciaSindicatura' }"
-              :class="{
-                'bg-pink-ieen': selectedTab === 'presidencia',
-                'bg-pink-ieen-3': selectedTab !== 'presidencia',
-              }"
-            />
-          </q-item>
-
-          <q-item clickable v-ripple>
-            <q-btn
-              :active="isTabSelected('regidurias')"
-              @click="setTabSelected('regidurias')"
-              label="Regidurias"
-              rounded
-              style="width: 260px"
-              :to="{ name: 'regidurias' }"
-              :class="{
-                'bg-pink-ieen': selectedTab === 'regidurias',
-                'bg-pink-ieen-3': selectedTab !== 'regidurias',
-              }"
+              :label="eleccion.label"
+              class="bg-pink-ieen-3"
             />
           </q-item>
         </q-list>
@@ -357,7 +305,6 @@
             >
               &#169; 2024 Instituto Estatal Electoral de Nayarit
             </div>
-
             <div
               class="col-lg-4 col-md-4 col-sm-6 col-xs-12 text-center text-caption"
             >
@@ -370,15 +317,26 @@
               <div><q-icon name="phone" color="white" />Teléfono</div>
               (311) - 210 - 3235 /36 /47
             </div>
-
             <div v-if="!$q.screen.xs" class="absolute-right q-pa-xs">
-              <q-btn flat round dense>
+              <q-btn
+                flat
+                round
+                dense
+                href="https://www.facebook.com/IEENayarit?mibextid=sCpJLy"
+                target="_blank"
+              >
                 <i
                   class="fa-brands fa-square-facebook fa-2xl"
                   style="color: #ffffff"
                 ></i>
               </q-btn>
-              <q-btn flat round dense>
+              <q-btn
+                flat
+                round
+                dense
+                href="https://www.youtube.com/@IEENayarit"
+                target="_blank"
+              >
                 <i
                   class="fa-brands fa-youtube fa-2xl"
                   style="color: #ffffff"
@@ -386,7 +344,6 @@
               </q-btn>
             </div>
           </div>
-          <div class="row"></div>
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
@@ -401,11 +358,13 @@ import { onBeforeMount, ref, watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 import { useConfiguracionStore } from "src/stores/configuracion-store";
 import { getCurrentLocation, getDataDevice } from "../helpers/CurrentLocation";
+import { useGraficasStore } from "src/stores/graficas-store";
 
 //---------------------------------------------------------------------------------
 
 const $q = useQuasar();
 const configuracionStore = useConfiguracionStore();
+const graficasStore = useGraficasStore();
 const router = useRouter();
 const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => {
@@ -418,7 +377,7 @@ const {
   buttons,
   info,
   listFiltroCards,
-  list_Filtro_Candidatos,
+  list_Candidatos_By_Eleccion,
 } = storeToRefs(cardsStore);
 const {
   list_Tipos_Elecciones,
@@ -429,6 +388,8 @@ const {
   list_Edades,
   list_Sexo,
 } = storeToRefs(configuracionStore);
+const { list_Graficas_By_Eleccion, list_Graficas_Filtrado } =
+  storeToRefs(graficasStore);
 const distrito_Id = ref(null);
 const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
@@ -436,28 +397,28 @@ const sexo_Id = ref(null);
 const numeraliaSelected = ref(true);
 const candidatosSelected = ref(false);
 const municipio_Id = ref(null);
-const tabElecciones = ref("Diputaciones");
-
-//---------------------------------------------------------------------------------
-
 const demarcacion_Id = ref(null);
-const selectedTab = ref("");
+const tab = ref("");
 
 //---------------------------------------------------------------------------------
 
 onBeforeMount(async () => {
+  const savedTab = localStorage.getItem("selectedTab");
+
+  if (savedTab) {
+    tab.value = savedTab;
+  }
   limpiarFiltros();
   cargarData();
-  selectedTab.value = localStorage.getItem("selectedTab");
   //configuracionStore.loadTipoElecciones();
 
-  let { latitude, longitude } = await getCurrentLocation();
-  let { brand, model, os } = getDataDevice();
-  info.value.latitud = latitude;
-  info.value.longitud = longitude;
-  info.value.marca = brand;
-  info.value.modelo = model;
-  info.value.sistema_Operativo = os;
+  // let { latitude, longitude } = await getCurrentLocation();
+  // let { brand, model, os } = getDataDevice();
+  // info.value.latitud = latitude;
+  // info.value.longitud = longitude;
+  // info.value.marca = brand;
+  // info.value.modelo = model;
+  // info.value.sistema_Operativo = os;
   //await cardsStore.infoDeviceConoceles(info.value);
 });
 
@@ -468,16 +429,20 @@ const cargarData = async () => {
   await configuracionStore.loadEdades();
   await configuracionStore.loadGenero();
   await configuracionStore.loadMunicipios();
-  const savedTab = localStorage.getItem("selectedTab");
-  await cardsStore.filtrarCandidatos(savedTab);
 };
 //---------------------------------------------------------------------------------
 
-// watch(tabElecciones, async (val) => {
-//   if (val != null) {
-//     cardsStore.filtrarCandidatos(val);
-//   }
-// });
+watch(list_Distritos, (val) => {
+  if (val != null) {
+    list_Distritos.value.push({ label: "RP" });
+  }
+});
+
+watch(list_Demarcaciones, (val) => {
+  if (val != null) {
+    list_Demarcaciones.value.push({ label: "RP" });
+  }
+});
 
 watch(back, (val) => {
   if (val == true) {
@@ -492,36 +457,35 @@ watch(municipio_Id, (val) => {
   }
 });
 
+watch(tab, (val) => {
+  if (val != null) {
+    cargarGrafica(val);
+  }
+});
+
 //---------------------------------------------------------------------------------
 
-const sendRouter = (apartado) => {
+const cargarGrafica = async (val) => {
+  await graficasStore.loadGraficasByEleccion(
+    val == "DIP" ? 2 : val == "PYS" ? 3 : val == "REG" ? 4 : 1
+  );
+};
+
+const isTabSelected = (nombre) => {
+  localStorage.setItem("selectedTab", nombre);
+  tab.value = nombre;
   router.push({
-    name: apartado,
-    params: {
-      apartado: apartado,
-    },
+    name: nombre,
   });
-};
-
-const isTabSelected = (tab) => {
-  if (selectedTab.value == "") {
-    selectedTab.value = "inicio";
-  } else {
-    const savedTab = localStorage.getItem("selectedTab");
-    if (savedTab) {
-      selectedTab.value = savedTab;
-    }
-    console.log("savetab", savedTab);
-  }
-  //return router.name === tab;
-};
-
-const setTabSelected = (tab) => {
-  selectedTab.value = tab;
-  localStorage.setItem("selectedTab", tab);
-  //listFiltroCards.value = [];
   limpiarFiltros();
 };
+
+// const setTabSelected = (tab) => {
+//   selectedTab.value = tab;
+//   localStorage.setItem("selectedTab", tab);
+//   //listFiltroCards.value = [];
+//   limpiarFiltros();
+// };
 
 //---------------------------------------------------------------------------------
 
@@ -546,7 +510,68 @@ const limpiarFiltros = () => {
 
 //---------------------------------------------------------------------------------
 
+const obtenerNombre = (tipo) => {
+  var fechaHora = new Date();
+
+  var anio = fechaHora.getFullYear();
+  var mes = fechaHora.getMonth() + 1;
+  var dia = fechaHora.getDate();
+  var horas = fechaHora.getHours();
+  var minutos = fechaHora.getMinutes();
+  var segundos = fechaHora.getSeconds();
+
+  return `${
+    tipo == "DIP"
+      ? "Diputaciones"
+      : tipo == "PYS"
+      ? "PresidensiasYSindicaturas"
+      : tipo == "REG"
+      ? "Regidurías"
+      : "Gubernatura"
+  }${anio}${mes}${dia}${horas}${minutos}${segundos}`;
+};
+
+const exportarBD = async () => {
+  $q.loading.show();
+  await cardsStore.loadExcel(
+    tab.value == "DIP" ? 2 : tab.value == "PYS" ? 3 : tab.value == "REG" ? 4 : 1
+  );
+  const link = document.createElement("a");
+  link.href = cardsStore.documentoExcel;
+  link.setAttribute("download", obtenerNombre(tab.value));
+  document.body.appendChild(link);
+  link.click();
+  $q.loading.hide();
+};
+
 const filtrar = (list_Filtro_Candidatos, filtro) => {
+  list_Graficas_Filtrado.value = list_Graficas_By_Eleccion.value.filter(
+    (item) => {
+      let cumple = true;
+      if (filtro.sexo != undefined) {
+        if (filtro.sexo == "Todos") {
+          cumple = cumple && item.sexo === item.sexo;
+        } else {
+          cumple = cumple && item.sexo === filtro.sexo;
+        }
+      }
+      if (filtro.edad != undefined) {
+        if (filtro.edad == "Todos") {
+          cumple = cumple && item.edad > 0;
+        } else {
+          const rango = filtro.edad.split("-").map(Number);
+          if (rango.length === 2) {
+            cumple = cumple && item.edad >= rango[0] && item.edad <= rango[1];
+          } else if (rango.length === 1 && rango[0] === 60) {
+            cumple = cumple && item.edad >= rango[0];
+          }
+        }
+      }
+
+      return cumple;
+    }
+  );
+
   listFiltroCards.value = list_Filtro_Candidatos.filter((item) => {
     let cumple = true;
     if (filtro.distrito !== undefined) {
@@ -563,19 +588,21 @@ const filtrar = (list_Filtro_Candidatos, filtro) => {
         cumple = cumple && item.partido_Id === filtro.actor_politico;
       }
     }
-    // if (filtro.edad !== undefined) {
-    //   if (filtro.edad == "Todos") {
-    //     cumple = cumple && item.edad_prop > 0;
-    //   } else {
-    //     const rango = filtro.edad.split("-").map(Number);
-    //     if (rango.length === 2) {
-    //       cumple =
-    //         cumple && item.edad_prop >= rango[0] && item.edad_prop <= rango[1];
-    //     } else if (rango.length === 1 && rango[0] === 60) {
-    //       cumple = cumple && item.edad_prop >= rango[0];
-    //     }
-    //   }
-    // }
+    if (filtro.edad !== undefined) {
+      if (filtro.edad == "Todos") {
+        cumple = cumple && item.edad_Propietario > 0;
+      } else {
+        const rango = filtro.edad.split("-").map(Number);
+        if (rango.length === 2) {
+          cumple =
+            cumple &&
+            item.edad_Propietario >= rango[0] &&
+            item.edad_Propietario <= rango[1];
+        } else if (rango.length === 1 && rango[0] === 60) {
+          cumple = cumple && item.edad_Propietario >= rango[0];
+        }
+      }
+    }
     if (filtro.sexo !== undefined) {
       if (filtro.sexo == "Todos") {
         cumple = cumple && item.sexo_Propietario === item.sexo_Propietario;
@@ -611,10 +638,18 @@ watchEffect(() => {
   if (municipio_Id.value != null) filtro.municipio = municipio_Id.value.value;
   if (demarcacion_Id.value != null)
     filtro.demarcacion = demarcacion_Id.value.value;
-  filtrar(list_Filtro_Candidatos.value, filtro);
+  if (list_Graficas_By_Eleccion.value.length > 0) {
+    filtrar(list_Candidatos_By_Eleccion.value, filtro);
+  }
 });
 </script>
 <style lang="scss">
+.text-purple-pink {
+  color: #af7ead;
+}
+.bg-purple-pink {
+  background-color: #af7ead;
+}
 .flex-center {
   display: flex;
   justify-content: center;

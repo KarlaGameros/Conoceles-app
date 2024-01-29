@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-const series = [3, 20];
+const series = [3, 20, 5];
 const chartOptions = {
   chart: {
     width: 380,
@@ -38,7 +38,7 @@ const chartOptions = {
       },
     },
   },
-  labels: ["Si", "No"],
+  labels: ["Si", "No", "Prefiero no contestar"],
   dataLabels: {
     dropShadow: {
       blur: 3,
@@ -67,6 +67,7 @@ const chartOptions = {
   theme: {
     palette: "palette2",
   },
+  colors: ["#af7ead", "#b988b8", "#dcbadb"],
   responsive: [
     {
       breakpoint: 480,

@@ -8,20 +8,40 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { useGraficasStore } from "src/stores/graficas-store";
+import { onMounted, ref, watch } from "vue";
 
-const colors = [
-  "#f3cfc6",
-  "#77dd77",
-  "#c89ed3",
-  "#fdfd96",
-  "#f4c2c2",
-  "#74bbfb",
-  "#fbb474",
-  "#89cff0",
-  "#c8f3cds",
-];
-const series = [44, 55, 5];
+const graficasStore = useGraficasStore();
+const { list_Graficas_Filtrado } = storeToRefs(graficasStore);
+const series = ref([]);
+
+onMounted(() => {
+  rellenar_grafica();
+});
+
+watch(list_Graficas_Filtrado, (val) => {
+  series.value = [];
+  if (val != null) {
+    rellenar_grafica();
+  }
+});
+
+const rellenar_grafica = () => {
+  const mujeres = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.sexo === "Mujer"
+  );
+  const hombres = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.sexo === "Hombre"
+  );
+  const noBinario = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.sexo === "No binario"
+  );
+  series.value.push(mujeres.length, hombres.length, noBinario.length);
+};
+
+const colors = ["#af7ead", "#dcbadb", "#f3e0f4"];
+
 const chartOptions = {
   chart: {
     width: 380,

@@ -13,120 +13,144 @@
   </banner>
   <br />
   <!---------------------------CHARTS--------------------------->
-  <div class="q-pa-md example-row-equal-width">
-    <div class="row">
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="text-h6 q-mb-md">Rango de edades</div>
-        <chartRangoEdad />
-      </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="text-h6 q-mb-md">Sexo</div>
-        <chartSexo class="flex flex-center" />
+  <template v-if="list_Graficas_By_Eleccion.length == 0">
+    <div>Cargando...</div>
+  </template>
+  <template v-else>
+    <div class="q-pa-md example-row-equal-width">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="text-h6 q-mb-md">Rango de edades</div>
+          <chartRangoEdad />
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+          <div class="text-h6 q-mb-md">Género</div>
+          <chartSexo class="flex flex-center" />
+        </div>
       </div>
     </div>
-  </div>
-  <br />
-  <banner v-if="!$q.screen.xs">
-    <template v-slot:icono>
-      <q-icon name="manage_search" color="purple-ieen" />
-    </template>
-    <template v-slot:contenido> Consulta más gráficas a continuación </template>
-  </banner>
-  <br />
-  <q-list v-if="$q.screen.xs" dark padding bordered class="rounded-borders">
-    <q-expansion-item
-      icon="manage_search"
-      class="bg-grey-3 text-justify"
-      style="border-radius: 20px"
-      label="Consulta más gráficas a continuación "
-      header-class="text-purple"
-      expand-icon-class="text-purple"
-      v-model="open_tab"
-    >
-      <q-tabs
-        v-model="tab"
-        vertical
-        class="text-purple"
-        active-bg-color="purple-3"
-        active-color="white"
+    <br />
+    <banner v-if="!$q.screen.xs">
+      <template v-slot:icono>
+        <q-icon name="manage_search" color="purple-ieen" />
+      </template>
+      <template v-slot:contenido>
+        Consulta más gráficas a continuación
+      </template>
+    </banner>
+    <br />
+    <q-list v-if="$q.screen.xs" dark padding bordered class="rounded-borders">
+      <q-expansion-item
+        icon="manage_search"
+        class="bg-grey-3 text-justify"
+        style="border-radius: 20px"
+        label="Consulta más gráficas a continuación "
+        header-class="text-purple"
+        expand-icon-class="text-purple"
+        v-model="open_tab"
       >
-        <q-tab
-          v-for="tab in tabs"
-          :key="tab"
-          :name="tab"
-          :label="tab"
-          @click="open_tab = !open_tab"
-        />
-      </q-tabs>
-    </q-expansion-item>
-  </q-list>
-  <q-splitter style="height: 500px">
-    <template v-if="!$q.screen.xs" v-slot:before>
-      <q-tabs
-        v-model="tab"
-        vertical
-        class="text-purple"
-        active-bg-color="purple-3"
-        active-color="white"
-      >
-        <q-tab v-for="tab in tabs" :key="tab" :name="tab" :label="tab" />
-      </q-tabs>
-    </template>
-    <template v-slot:after>
-      <q-tab-panels
-        v-model="tab"
-        animated
-        vertical
-        transition-prev="jump-up"
-        transition-next="jump-up"
-      >
-        <q-tab-panel
-          name="Grado académico"
-          class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
+        <q-tabs
+          v-model="tab"
+          vertical
+          class="text-purple"
+          active-bg-color="purple-3"
+          active-color="white"
         >
-          <div class="text-h6 q-mb-md">{{ tab }}</div>
-          <chartGradoAcademico class="flex flex-center" />
-        </q-tab-panel>
-        <q-tab-panel name="Nivel de ingresos">
-          <div class="text-h6 q-mb-md">{{ tab }}</div>
-          <chartNivelIngresos class="flex flex-center" />
-        </q-tab-panel>
-        <q-tab-panel name="Candidaturas indígenas">
-          <div class="text-h6 q-mb-md">{{ tab }}</div>
-          <chartCandIndigenas class="flex flex-center" />
-        </q-tab-panel>
-        <q-tab-panel name="Candidaturas con discapacidad">
-          <div class="text-h6 q-mb-md">{{ tab }}</div>
-          <chartCandDiscapacidad class="flex flex-center" />
-        </q-tab-panel>
-        <q-tab-panel name="Candidaturas afromexicanas">
-          <div class="text-h6 q-mb-md">{{ tab }}</div>
-          <chartCandAfromexicanas class="flex flex-center" />
-        </q-tab-panel>
-        <q-tab-panel name="Candidaturas de la diversidad sexual">
-          <div class="text-h6 q-mb-md">{{ tab }}</div>
-          <chartCandDivSexual class="flex flex-center" />
-        </q-tab-panel>
-        <q-tab-panel name="Candidaturas migrantes">
-          <div class="text-h6 q-mb-md">{{ tab }}</div>
-          <chartCandMigrantes class="flex flex-center" />
-        </q-tab-panel>
-        <q-tab-panel name="Candidaturas de personas jóvenes">
-          <div class="text-h6 q-mb-md">{{ tab }}</div>
-          <chartCandJov class="flex flex-center" />
-        </q-tab-panel>
-        <q-tab-panel name="Candidaturas de personas mayores">
-          <div class="text-h6 q-mb-md">{{ tab }}</div>
-          <chartCandMayores class="flex flex-center" />
-        </q-tab-panel>
-      </q-tab-panels>
-    </template>
-  </q-splitter>
+          <q-tab
+            v-for="tab in tabs"
+            :key="tab"
+            :name="tab"
+            :label="tab"
+            @click="open_tab = !open_tab"
+          />
+        </q-tabs>
+      </q-expansion-item>
+    </q-list>
+    <q-splitter style="height: 500px">
+      <template v-if="!$q.screen.xs" v-slot:before>
+        <q-tabs
+          v-model="tab"
+          vertical
+          class="text-purple"
+          active-bg-color="purple-3"
+          active-color="white"
+        >
+          <q-tab v-for="tab in tabs" :key="tab" :name="tab" :label="tab" />
+        </q-tabs>
+      </template>
+      <template v-slot:after>
+        <q-tab-panels
+          v-model="tab"
+          animated
+          vertical
+          transition-prev="jump-up"
+          transition-next="jump-up"
+        >
+          <q-tab-panel
+            name="Grado académico"
+            class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
+          >
+            <div class="text-h6 q-mb-md">
+              {{ tab }}
+            </div>
+            <chartGradoAcademico class="flex flex-center" />
+          </q-tab-panel>
+          <q-tab-panel name="Nivel de ingresos">
+            <div class="text-h6 q-mb-md">{{ tab }}</div>
+            <chartNivelIngresos class="flex flex-center" />
+          </q-tab-panel>
+          <q-tab-panel name="Candidaturas indígenas">
+            <div class="text-h6 q-mb-md">{{ tab }}</div>
+            <chartCandIndigenas class="flex flex-center" />
+          </q-tab-panel>
+          <q-tab-panel name="Candidaturas con discapacidad">
+            <div class="text-h6 q-mb-md">{{ tab }}</div>
+            <chartCandDiscapacidad class="flex flex-center" />
+          </q-tab-panel>
+          <q-tab-panel name="Candidaturas afromexicanas">
+            <div class="text-h6 q-mb-md">{{ tab }}</div>
+            <chartCandAfromexicanas class="flex flex-center" />
+          </q-tab-panel>
+          <q-tab-panel name="Candidaturas de la diversidad sexual">
+            <div class="text-h6 q-mb-md">{{ tab }}</div>
+            <chartCandDivSexual class="flex flex-center" />
+          </q-tab-panel>
+          <q-tab-panel name="Candidaturas migrantes">
+            <div class="text-h6 q-mb-md">{{ tab }}</div>
+            <chartCandMigrantes class="flex flex-center" />
+          </q-tab-panel>
+          <q-tab-panel name="Candidaturas de personas jóvenes">
+            <div class="text-h6 q-mb-md">{{ tab }}</div>
+            <chartCandJov class="flex flex-center" />
+          </q-tab-panel>
+          <q-tab-panel name="Candidaturas de personas mayores">
+            <div class="text-h6 q-mb-md">{{ tab }}</div>
+            <chartCandMayores class="flex flex-center" />
+          </q-tab-panel>
+        </q-tab-panels>
+      </template>
+    </q-splitter>
+    <banner>
+      <template v-slot:icono>
+        <q-icon name="error" color="purple-ieen" />
+      </template>
+      <template v-slot:contenido>
+        Los datos aquí presentados corresponden al número de personas candidatas
+        (propietarias y suplentes) que respondieron el "Cuestionario de
+        Identidad", este contiene preguntas en ocho dimensiones relativas a la
+        autoidentificación con algún grupo en situación de discriminación; lo
+        que implica necesariamente que hayan sido registradas en el marco de una
+        acción afirmativa.
+      </template>
+    </banner>
+  </template>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
-import { onBeforeMount, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useGraficasStore } from "src/stores/graficas-store";
+import { storeToRefs } from "pinia";
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
 import chartGradoAcademico from "../../../charts/chartGradoAcademico.vue";
 import chartSexo from "../../../charts/chartSexo.vue";
@@ -143,6 +167,8 @@ import banner from "../../../components/bannerComp.vue";
 //---------------------------------------------------------------------------------
 
 const $q = useQuasar();
+const graficasStore = useGraficasStore();
+const { list_Graficas_By_Eleccion } = storeToRefs(graficasStore);
 const tab = ref("Grado académico");
 const open_tab = ref(false);
 const tabs = ref([
@@ -157,9 +183,14 @@ const tabs = ref([
   "Candidaturas de personas mayores",
 ]);
 
-//---------------------------------------------------------------------------------
+onMounted(() => {
+  cargarData();
+});
 
-const cargarData = () => {};
+//---------------------------------------------------------------------------------
+const cargarData = async () => {
+  await graficasStore.loadGraficasByEleccion(2);
+};
 //---------------------------------------------------------------------------------
 </script>
 

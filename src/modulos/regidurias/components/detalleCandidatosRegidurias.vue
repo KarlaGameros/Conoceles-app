@@ -2,7 +2,7 @@
   <!---------------------------BANNER--------------------------->
   <banner>
     <template v-slot:icono>
-      <q-icon name="error" color="purple-ieen" />
+      <q-icon name="error" color="purple-4" />
     </template>
     <template v-slot:contenido>
       La información es proporcionada por las personas candidatas a las
@@ -15,8 +15,8 @@
   <!---------------------------BUTTON BACK AND PDF--------------------------->
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
-      <q-avatar class="bg-purple-ieen-1" text-color="white"
-        ><q-btn :to="{ name: 'cardsRegidurias' }" flat icon="reply">
+      <q-avatar class="bg-purple-4" text-color="white"
+        ><q-btn :to="{ name: 'REGcards' }" flat icon="reply">
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
       >
@@ -28,7 +28,7 @@
       @click="pdf()"
       flat
       icon="picture_as_pdf"
-      class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-ieen-1"
+      class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-4"
       >Descargar</q-btn
     >
   </div>
@@ -57,7 +57,7 @@
               }}
             </div>
 
-            <q-avatar square size="24px">
+            <q-avatar square size="40px">
               <img
                 :src="
                   candidato.selection == 'prop'
@@ -73,7 +73,7 @@
                 v-model="candidato.selection"
                 push
                 glossy
-                toggle-color="purple"
+                toggle-color="purple-4"
                 :options="[
                   { label: 'Propietario', value: 'prop' },
                   { label: 'Suplente', value: 'sup' },
@@ -119,8 +119,8 @@
               @click="open_tab = !open_tab"
             />
             <q-tab
-              name="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
-              label="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
+              name="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?"
+              label="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?"
               @click="open_tab = !open_tab"
             />
             <q-tab
@@ -144,8 +144,8 @@
               v-model="tab"
               dense
               class="text-grey"
-              active-color="pink"
-              indicator-color="pink"
+              active-color="purple-4"
+              indicator-color="purple-4"
               align="justify"
               narrow-indicator
             >
@@ -155,8 +155,8 @@
                 label="HISTORIA PROFESIONAL Y/O LABORAL"
               />
               <q-tab
-                name="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
-                label="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?"
+                name="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?"
+                label="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?"
               />
               <q-tab name="PROPUESTAS" label="PROPUESTAS" />
               <q-tab
@@ -183,7 +183,7 @@
                         "
                       /> </q-avatar
                     ><br /><br />
-                    <q-avatar square size="50px">
+                    <q-avatar square size="55px">
                       <img
                         :src="
                           candidato.selection == 'prop'
@@ -234,7 +234,7 @@
                     <div class="text-h6">Estado:</div>
                     <div class="text-subtitle1">Nayarit</div>
                     <div class="text-h6">Número de fórmula:</div>
-                    <div class="text-subtitle1"></div>
+                    <div class="text-subtitle1">{{ candidato.id }}</div>
                     <br />
                     <!-- <div>
                       <q-icon name="location_on" /> Via Alfredo del Mazo s/n,
@@ -276,8 +276,8 @@
               </q-tab-panel>
 
               <q-tab-panel name="HISTORIA PROFESIONAL Y/O LABORAL">
-                <!-- <div
-                  class="col-12 bg-purple-ieen-1"
+                <div
+                  class="col-12 bg-blue-grey-4"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -287,55 +287,83 @@
                 <div class="row q-pa-sm">
                   <div class="col">
                     <div class="text-h6">Grado maximo de estudios:</div>
-                    <div class="text-subtitle1">Licenciatura</div>
+                    <div class="text-subtitle1">
+                      {{ datos_Generales.grado_Maximo_Estudios }}
+                    </div>
                   </div>
                   <div class="col">
                     <div class="text-h6">Estatus:</div>
-                    <div class="text-subtitle1">Cedula</div>
+                    <div class="text-subtitle1">
+                      {{ datos_Generales.estatus_Grado_Estudios }}
+                    </div>
                   </div>
                 </div>
                 <br />
                 <div
-                  class="col-12 bg-purple-ieen-3"
+                  class="col-12 bg-blue-grey-2"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
                     <q-icon name="import_contacts" /> CURSOS
                   </div>
-                </div> -->
-                <div class="q-pa-sm text-subtitle1 text-justify"></div>
+                </div>
+                <div class="q-pa-sm text-subtitle1 text-justify">
+                  {{
+                    formacion.formacion == null
+                      ? "En este apartado se mostrará la información academica que el candidato registro en el cuestionario curricular"
+                      : formacion.formacion
+                  }}
+                </div>
               </q-tab-panel>
 
-              <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?">
-                <div class="text-subtitle1 text-justify"></div>
+              <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?">
+                <div class="text-subtitle1 text-justify">
+                  {{
+                    datos_Generales.motivo_Cargo_Publico == null
+                      ? "En este apartado se mostrará los motivos de ocupar un cargo público que el candidato registro en el cuestionario curricular"
+                      : datos_Generales.motivo_Cargo_Publico
+                  }}
+                </div>
               </q-tab-panel>
 
               <q-tab-panel name="PROPUESTAS">
-                <!-- <div class="text-subtitle1 text-center text-bold q-pb-md">
+                <div class="text-subtitle1 text-center text-bold q-pb-md">
                   PRINCIPALES PROPUESTAS
                 </div>
                 <div
-                  class="col-12 bg-purple-ieen-2"
+                  class="col-12 bg-blue-grey-2"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
                     <q-icon name="import_contacts" /> PROPUESTA 1
                   </div>
                 </div>
-                <div class="q-pa-sm text-subtitle1 text-justify"></div>
+                <div class="q-pa-sm text-subtitle1 text-justify">
+                  {{
+                    list_Propuestas.length != 0
+                      ? list_Propuestas[0].propuesta
+                      : "En este apartado se mostrará la propuesta 1 registrada por el candidato en el cuestionario curricular"
+                  }}
+                </div>
                 <div
-                  class="col-12 bg-purple-ieen-3"
+                  class="col-12 bg-blue-grey-4"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
                     <q-icon name="import_contacts" /> PROPUESTA 2
                   </div>
-                </div> -->
-                <div class="q-pa-sm text-subtitle1 text-justify"></div>
+                </div>
+                <div class="q-pa-sm text-subtitle1 text-justify">
+                  {{
+                    list_Propuestas.length != 0
+                      ? list_Propuestas[1].propuesta
+                      : "En este apartado se mostrará la propuesta 2 registrada por el candidato en el cuestionario curricular"
+                  }}
+                </div>
               </q-tab-panel>
 
               <q-tab-panel name="PROPUESTA EN MATERIA DE GÉNERO">
-                <!-- <div
+                <div
                   class="col-12 bg-purple-ieen-3"
                   style="border-radius: 10px; color: white"
                 >
@@ -344,8 +372,14 @@
                     GÉNERO O, EN SU CASO, DEL GRUPO EN SITUACIÓN DE
                     DISCRIMINACIÓN QUE REPRESENTO
                   </div>
-                </div> -->
-                <div class="q-pa-sm text-subtitle1 text-justify"></div>
+                </div>
+                <div class="q-pa-sm text-subtitle1 text-justify">
+                  {{
+                    datos_Generales.propuesta_Genero == null
+                      ? "En este apartado se mostrará la propuesta en materia de género que el candidato registro en el cuestionario curricular"
+                      : datos_Generales.propuesta_Genero
+                  }}
+                </div>
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -365,7 +399,8 @@ import banner from "../../../components/bannerComp.vue";
 //---------------------------------------------------------------------------------
 
 const candidatosStore = useCardsStore();
-const { candidato } = storeToRefs(candidatosStore);
+const { candidato, formacion, datos_Generales, list_Propuestas } =
+  storeToRefs(candidatosStore);
 const tab = ref("DATOS GENERALES");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const open_tab = ref(false);

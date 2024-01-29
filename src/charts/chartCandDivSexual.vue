@@ -8,13 +8,14 @@
 </template>
 
 <script setup>
-const series = [10, 3];
+const series = [10, 3, 2];
 const chartOptions = {
   chart: {
     width: 380,
     type: "pie",
   },
-  labels: ["No", "Si"],
+  colors: ["#af7ead", "#e4c0ed", "#dcbadb"],
+  labels: ["No", "Si", "Prefiero no contestar"],
   responsive: [
     {
       breakpoint: 480,

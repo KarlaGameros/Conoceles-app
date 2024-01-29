@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onBeforeMount, onMounted } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
 import DiputacionesComp from "../components/diputacionesComp.vue";
 import filtros from "../../../components/filtrosComp.vue";
@@ -29,12 +29,8 @@ const cardsStore = useCardsStore();
 
 onMounted(() => {
   cardsStore.actualizarMenu(true);
-  cargarData();
 });
 
-const cargarData = async () => {
-  await cardsStore.loadCandidatos();
-};
 //---------------------------------------------------------------------------------
 </script>
 

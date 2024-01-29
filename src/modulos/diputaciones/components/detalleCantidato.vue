@@ -2,7 +2,7 @@
   <!---------------------------BANNER--------------------------->
   <banner>
     <template v-slot:icono>
-      <q-icon name="error" color="purple-ieen" />
+      <q-icon name="error" color="purple-4" />
     </template>
     <template v-slot:contenido>
       La información es proporcionada por las personas candidatas a las
@@ -15,8 +15,8 @@
   <!---------------------------BUTTON BACK AND PDF--------------------------->
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
-      <q-avatar class="bg-purple-ieen-1" text-color="white"
-        ><q-btn :to="{ name: 'diputacionesCards' }" flat icon="reply">
+      <q-avatar class="bg-purple-4" text-color="white"
+        ><q-btn :to="{ name: 'DIPcards' }" flat icon="reply">
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
       >
@@ -27,7 +27,7 @@
       @click="pdf()"
       flat
       icon="picture_as_pdf"
-      class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-ieen-1"
+      class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-4"
       >Descargar</q-btn
     >
   </div>
@@ -37,7 +37,7 @@
       <div class="shadow-7" style="border-radius: 20px">
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
-            <q-avatar size="600%">
+            <q-avatar size="700%">
               <q-img
                 :src="
                   candidato.selection == 'prop'
@@ -58,7 +58,7 @@
 
             <q-avatar
               square
-              size="24px"
+              size="45px"
               v-if="candidato.url_Logo_Partido_Propietario != null"
             >
               <img
@@ -73,10 +73,11 @@
 
             <div class="q-pt-md">
               <q-btn-toggle
+                @click="cambiar(candidato.selection)"
                 v-model="candidato.selection"
                 push
                 glossy
-                toggle-color="purple"
+                toggle-color="purple-4"
                 :options="[
                   { label: 'Propietario', value: 'prop' },
                   { label: 'Suplente', value: 'sup' },
@@ -123,8 +124,8 @@
               v-model="tab"
               dense
               class="text-grey"
-              active-color="pink"
-              indicator-color="pink"
+              active-color="purple-4"
+              indicator-color="purple-4"
               align="justify"
               narrow-indicator
             >
@@ -139,7 +140,10 @@
             <q-separator />
             <q-tab-panels v-model="tab" animated>
               <q-tab-panel name="DATOS GENERALES">
-                <div class="row">
+                <div
+                  class="row"
+                  v-if="candidato.estatus == 'Registro aprobado'"
+                >
                   <div
                     class="col-lg-3 col-md-12 col-sm-12 col-xs-12 q-pb-md"
                     align="center"
@@ -180,7 +184,13 @@
                       }}
                     </div>
                     <div class="text-h6">Edad:</div>
-                    <div class="text-subtitle1"></div>
+                    <div class="text-subtitle1">
+                      {{
+                        candidato.selection == "prop"
+                          ? candidato.edad_Propietario
+                          : candidato.edad_Suplente
+                      }}
+                    </div>
                     <div class="text-h6">Sexo:</div>
                     <div class="text-subtitle1">
                       {{
@@ -197,25 +207,34 @@
                         : 'col-lg-4 col-md-6 col-sm-12 col-xs-12'
                     "
                   >
+                    <div class="text-h6">Tipo de elección:</div>
+                    <div class="text-subtitle1">
+                      {{ candidato.tipo_Eleccion }} -
+                      {{ candidato.tipo_Candidato }}
+                    </div>
                     <div class="text-h6">Cargo:</div>
                     <div class="text-subtitle1">
-                      {{ candidato.tipo_Candidato }}
+                      {{
+                        candidato.selection == "prop"
+                          ? "Propietario"
+                          : "Suplente"
+                      }}
                     </div>
                     <div class="text-h6">Estado:</div>
                     <div class="text-subtitle1">Nayarit</div>
                     <div class="text-h6">Número de fórmula:</div>
                     <div class="text-subtitle1">{{ candidato.id }}</div>
-                    <!-- <br />
-                    <div>
+                    <br />
+                    <!-- <div>
                       <q-icon name="location_on" /> Via Alfredo del Mazo s/n,
                       Toluca de Lerdo, México, C.P. 50010
                       <br />
                       <q-icon name="call" /> +52 323-120-9103
                       <br />
                       <q-icon name="email" /> 12345@gmail.com
-                    </div>
+                    </div> -->
                     <br />
-                    <div>
+                    <!-- <div>
                       <q-btn flat round dense>
                         <i
                           class="fa-brands fa-facebook fa-2xl"
@@ -246,10 +265,9 @@
               </q-tab-panel>
 
               <q-tab-panel name="HISTORIA PROFESIONAL Y/O LABORAL">
-                <div class="text-subtitle1 text-justify"></div>
                 <br />
-                <!-- <div
-                  class="col-12 bg-purple-ieen-1"
+                <div
+                  class="col-12 bg-blue-grey-4"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -259,54 +277,84 @@
                 <div class="row q-pa-sm">
                   <div class="col">
                     <div class="text-h6">Grado maximo de estudios:</div>
+                    <div class="text-subtitle1">
+                      {{ datos_Generales.grado_Maximo_Estudios }}
+                    </div>
                   </div>
                   <div class="col">
                     <div class="text-h6">Estatus:</div>
+                    <div class="text-subtitle1">
+                      {{ datos_Generales.estatus_Grado_Estudios }}
+                    </div>
                   </div>
                 </div>
                 <br />
                 <div
-                  class="col-12 bg-purple-ieen-3"
+                  class="col-12 bg-blue-grey-2"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
                     <q-icon name="import_contacts" /> CURSOS
                   </div>
                 </div>
-                <div class="q-pa-sm text-subtitle1 text-justify"></div> -->
+                <div class="q-pa-sm text-subtitle1 text-justify">
+                  {{
+                    formacion.formacion == null
+                      ? "En este apartado se mostrará la información academica que el candidato registro en el cuestionario curricular"
+                      : formacion.formacion
+                  }}
+                </div>
               </q-tab-panel>
 
-              <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?">
-                <div class="text-subtitle1 text-justify"></div>
+              <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?">
+                <div class="text-subtitle1 text-justify">
+                  {{
+                    datos_Generales.motivo_Cargo_Publico == null
+                      ? "En este apartado se mostrará los motivos de ocupar un cargo público que el candidato registro en el cuestionario curricular"
+                      : datos_Generales.motivo_Cargo_Publico
+                  }}
+                </div>
               </q-tab-panel>
 
               <q-tab-panel name="PROPUESTAS">
-                <!-- <div class="text-subtitle1 text-center text-bold q-pb-md">
+                <div class="text-subtitle1 text-center text-bold q-pb-md">
                   PRINCIPALES PROPUESTAS
                 </div>
                 <div
-                  class="col-12 bg-purple-ieen-2"
+                  class="col-12 bg-blue-grey-2"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
                     <q-icon name="import_contacts" /> PROPUESTA 1
                   </div>
                 </div>
-                <div class="q-pa-sm text-subtitle1 text-justify"></div>
+                <div class="q-pa-sm text-subtitle1 text-justify">
+                  {{
+                    list_Propuestas.length != 0
+                      ? list_Propuestas[0].propuesta
+                      : "En este apartado se mostrará la propuesta 1 registrada por el candidato en el cuestionario curricular"
+                  }}
+                </div>
                 <div
-                  class="col-12 bg-purple-ieen-3"
+                  class="col-12 bg-blue-grey-4"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
                     <q-icon name="import_contacts" /> PROPUESTA 2
                   </div>
                 </div>
-                <div class="q-pa-sm text-subtitle1 text-justify"></div> -->
+                <div class="q-pa-sm text-subtitle1 text-justify">
+                  {{
+                    list_Propuestas.length != 0
+                      ? list_Propuestas[1].propuesta
+                      : "En este apartado se mostrará la propuesta 2 registrada por el candidato en el cuestionario curricular"
+                  }}
+                </div>
               </q-tab-panel>
 
               <q-tab-panel name="PROPUESTA EN MATERIA DE GÉNERO">
-                <!-- <div
-                  class="col-12 bg-purple-ieen-3"
+                <div
+                  class="col-12 bg-blue-grey-4"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -315,7 +363,13 @@
                     DISCRIMINACIÓN QUE REPRESENTO
                   </div>
                 </div>
-                <div class="q-pa-sm text-subtitle1 text-justify"></div> -->
+                <div class="q-pa-sm text-subtitle1 text-justify">
+                  {{
+                    datos_Generales.propuesta_Genero == null
+                      ? "En este apartado se mostrará la propuesta en materia de género que el candidato registro en el cuestionario curricular"
+                      : datos_Generales.propuesta_Genero
+                  }}
+                </div>
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -328,24 +382,28 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, defineProps } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
-const { candidato } = storeToRefs(cardsStore);
+const { candidato, formacion, datos_Generales, list_Propuestas } =
+  storeToRefs(cardsStore);
 const tab = ref("DATOS GENERALES");
 const open_tab = ref(false);
 const activar_pdf = ref(false);
 const tabs = ref([
   "DATOS GENERALES",
   "HISTORIA PROFESIONAL Y/O LABORAL",
-  "¿POR QUÉ QUIERO OCUPAR UN CARGO PUBLICO?",
+  "¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?",
   "PROPUESTAS",
   "PROPUESTA EN MATERIA DE GÉNERO",
 ]);
+const props = defineProps({
+  id: { type: String, required: true },
+});
 
 //---------------------------------------------------------------------------------
 
@@ -361,6 +419,13 @@ const pdf = async () => {
   setTimeout(() => {
     activar_pdf.value = false;
   }, 5000);
+};
+
+const cambiar = async (val) => {
+  cardsStore.initDatosGenerales();
+  await cardsStore.loadFormacionAcademicaById(props.id, val == "prop" ? 0 : 1);
+  await cardsStore.loadDatosGeneralesById(props.id, val == "prop" ? 0 : 1);
+  await cardsStore.loadPropuestasByCandidato(props.id, val == "prop" ? 0 : 1);
 };
 </script>
 <style></style>

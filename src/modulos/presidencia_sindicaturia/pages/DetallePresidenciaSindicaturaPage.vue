@@ -5,10 +5,7 @@
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
             <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el
-              icon="recent_actors"
-              :to="{ name: 'cardsPresidenciaSindicatura' }"
-            />
+            <q-breadcrumbs-el icon="recent_actors" :to="{ name: 'PYScards' }" />
             <q-breadcrumbs-el
               label="Detalle del candidato o candidata"
               icon="library_books"
@@ -32,7 +29,8 @@ import filtros from "../../../components/filtrosComp.vue";
 
 const cardsStore = useCardsStore();
 const props = defineProps({
-  id: { type: Number, required: true },
+  id: { type: String, required: true },
+  puesto: { type: String, required: true },
 });
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
@@ -41,6 +39,9 @@ const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 onMounted(async () => {
   cardsStore.actualizarMenu(true);
   await cardsStore.loadCandidatoById(props.id);
+  await cardsStore.loadFormacionAcademicaById(props.id, props.puesto);
+  await cardsStore.loadDatosGeneralesById(props.id, props.puesto);
+  await cardsStore.loadPropuestasByCandidato(props.id, props.puesto);
 });
 
 //---------------------------------------------------------------------------------

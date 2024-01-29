@@ -5,10 +5,7 @@
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
             <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el
-              icon="recent_actors"
-              :to="{ name: 'diputacionesCards' }"
-            />
+            <q-breadcrumbs-el icon="recent_actors" :to="{ name: 'DIPcards' }" />
             <q-breadcrumbs-el
               label="Detalle del candidato o candidata"
               icon="library_books"
@@ -18,12 +15,12 @@
       </div>
     </div>
     <filtros v-show="$q.screen.xs" class="q-mb-md" />
-    <DetalleCantidato />
+    <DetalleCantidato :id="props.id" />
   </q-page>
 </template>
 
 <script setup>
-import { defineProps, onMounted } from "vue";
+import { onMounted, defineProps } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
 import DetalleCantidato from "../components/detalleCantidato.vue";
 import filtros from "../../../components/filtrosComp.vue";
@@ -33,15 +30,21 @@ import filtros from "../../../components/filtrosComp.vue";
 const cardsStore = useCardsStore();
 const props = defineProps({
   id: { type: String, required: true },
+  puesto: { type: String, required: true },
 });
-
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
-  cardsStore.actualizarMenu(true);
-  cardsStore.loadCandidatoById(props.id);
+  cargarData();
 });
 
+const cargarData = async () => {
+  cardsStore.actualizarMenu(true);
+  await cardsStore.loadCandidatoById(props.id);
+  await cardsStore.loadFormacionAcademicaById(props.id, props.puesto);
+  await cardsStore.loadDatosGeneralesById(props.id, props.puesto);
+  await cardsStore.loadPropuestasByCandidato(props.id, props.puesto);
+};
 //---------------------------------------------------------------------------------
 </script>
 

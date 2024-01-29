@@ -8,18 +8,13 @@
 </template>
 
 <script setup>
-const series = [25, 5];
+const series = [25, 5, 2];
 const chartOptions = {
   chart: {
     width: "100%",
     type: "pie",
   },
-  labels: ["Si", "No"],
-  theme: {
-    monochrome: {
-      enabled: true,
-    },
-  },
+  labels: ["Si", "No", "Prefiero no contestar"],
   plotOptions: {
     pie: {
       dataLabels: {
@@ -27,6 +22,7 @@ const chartOptions = {
       },
     },
   },
+  colors: ["#af7ead", "#e4c0ed", "#f1d9f6"],
   dataLabels: {
     formatter(val, opts) {
       const name = opts.w.globals.labels[opts.seriesIndex];

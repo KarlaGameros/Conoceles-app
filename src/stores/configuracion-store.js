@@ -63,6 +63,7 @@ export const useConfiguracionStore = defineStore("configuracion", {
             label: `${distrito.no_Distrito} - ${distrito.nombre}`,
           };
         });
+
         listDistritos.splice(0, 0, {
           value: 0,
           label: "Todos",

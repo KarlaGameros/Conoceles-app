@@ -8,18 +8,14 @@
 </template>
 
 <script setup>
-const series = [25, 0];
+const series = [20, 5, 5];
 const chartOptions = {
   chart: {
     width: "100%",
     type: "pie",
   },
-  labels: ["No", "Si"],
-  theme: {
-    monochrome: {
-      enabled: true,
-    },
-  },
+  labels: ["No", "Si", "Prefiero no contestar"],
+  colors: ["#af7ead", "#e4c0ed", "#dcbadb"],
   plotOptions: {
     pie: {
       dataLabels: {

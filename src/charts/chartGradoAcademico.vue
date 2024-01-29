@@ -9,17 +9,17 @@
 
 <script setup>
 const colors = [
-  "#f3cfc6",
-  "#77dd77",
-  "#c89ed3",
-  "#fdfd96",
-  "#f4c2c2",
-  "#74bbfb",
-  "#fbb474",
-  "#89cff0",
-  "#c8f3cds",
+  "#af7ead",
+  "#d1b3ef",
+  "#dcbadb",
+  "#f3e0f4",
+  "#e7c7e9",
+  "#dbaede",
+  "#e8a9d4",
+  "#e8ccf7",
+  "#fbc9fb",
 ];
-const series = [44, 55, 13, 43, 22, 10, 0, 0];
+const series = [2, 10, 10, 10, 20, 20, 30, 15];
 const chartOptions = {
   chart: {
     width: 380,
@@ -27,15 +27,15 @@ const chartOptions = {
   },
   colors: colors,
   labels: [
-    "Licenciatura",
-    "Postdoctorado",
-    "Maestria",
-    "Preparatoria",
-    "Tecnica",
-    "Doctorado",
     "Primaria",
-    "Especialidad",
     "Secundaria",
+    "Preparatoria",
+    "Técnica",
+    "Licenciatura",
+    "Maestría",
+    "Doctorado",
+    "Especialidad",
+    "Postdoctorado",
   ],
   plotOptions: {
     bar: {

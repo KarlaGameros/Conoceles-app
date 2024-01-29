@@ -4,7 +4,11 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       { path: "", component: () => import("pages/IndexPage.vue") },
-      { path: "/inicio", component: () => import("pages/IndexPage.vue") },
+      {
+        path: "/inicio",
+        name: "inicio",
+        component: () => import("pages/IndexPage.vue"),
+      },
       {
         path: "/diputaciones",
         name: "DIP",
@@ -12,11 +16,11 @@ const routes = [
       },
       {
         path: "/diputacionesCards",
-        name: "diputacionesCards",
+        name: "DIPcards",
         component: () => import("../modulos/diputaciones/pages/CardsPage"),
       },
       {
-        path: "/diputacionesDetalle/:id",
+        path: "/diputacionesDetalle/:id/:puesto",
         name: "diputacionesDetalle",
         props: true,
         component: () =>
@@ -30,15 +34,14 @@ const routes = [
       },
       {
         path: "/cardsPresidenciaSindicatura",
-        name: "cardsPresidenciaSindicatura",
-
+        name: "PYScards",
         component: () =>
           import(
             "../modulos/presidencia_sindicaturia/pages/CardsPresidenciaPage"
           ),
       },
       {
-        path: "/detallePresidenciaSindicatura/:id",
+        path: "/detallePresidenciaSindicatura/:id/:puesto",
         name: "detallePresidenciaSindicatura",
         props: true,
         component: () =>
@@ -53,12 +56,12 @@ const routes = [
       },
       {
         path: "/cardsRegidurias",
-        name: "cardsRegidurias",
+        name: "REGcards",
         component: () =>
           import("../modulos/regidurias/pages/CardsRegiduriasPage"),
       },
       {
-        path: "/detalleRegidurias/:id",
+        path: "/detalleRegidurias/:id/:puesto",
         name: "detalleRegidurias",
         props: true,
         component: () =>

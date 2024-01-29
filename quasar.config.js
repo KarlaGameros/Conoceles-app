@@ -144,8 +144,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Quasar App`,
-        short_name: `Quasar App`,
+        name: `Conoceles`,
+        short_name: `Conoceles`,
         description: `A Quasar Project`,
         display: "standalone",
         orientation: "portrait",

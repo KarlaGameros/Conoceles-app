@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-const series = [20, 0];
+const series = [20, 5, 2];
 const chartOptions = {
   chart: {
     type: "donut",
@@ -20,12 +20,13 @@ const chartOptions = {
       offsetY: 10,
     },
   },
-  labels: ["No", "Si"],
+  labels: ["No", "Si", "Prefiero no contestar"],
   grid: {
     padding: {
       bottom: -80,
     },
   },
+  colors: ["#af7ead", "#e4c0ed", "#dcbadb"],
   responsive: [
     {
       breakpoint: 480,
