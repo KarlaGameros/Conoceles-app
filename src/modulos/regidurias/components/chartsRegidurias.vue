@@ -265,7 +265,7 @@ watch(
 );
 
 const cargarData = async () => {
-  await graficasStore.loadGraficasByEleccion(4);
+  //await graficasStore.loadGraficasByEleccion(4);
 };
 </script>
 

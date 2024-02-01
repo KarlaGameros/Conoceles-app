@@ -249,7 +249,7 @@ onMounted(() => {
 });
 
 const cargarData = async () => {
-  await graficasStore.loadGraficasByEleccion(3);
+  // await graficasStore.loadGraficasByEleccion(3);
 };
 </script>
 

@@ -18,7 +18,7 @@
     <div
       class="col-lg-9 col-md-9 col-sm-9 col-xs-12 text-subtitle2 text-right q-pr-md"
     >
-      Buscar por:
+      Buscar por candidatura:
       <q-btn-dropdown
         :label="options || dropdownOptions[0].label"
         color="purple-4"
@@ -63,8 +63,8 @@
     <div class="q-pa-md row items-start q-gutter-md flex flex-center">
       <q-card
         v-for="item in listCardsFiltro"
-        :key="item.id"
-        class="my-card col-lg-2 col-md-2 col-sm-3 col-xs-12"
+        :key="item"
+        class="col-lg-2 col-md-2 col-sm-3 col-xs-12"
         flat
         bordered
         style="width: 255px"
@@ -78,7 +78,7 @@
                     ? item.url_Foto_Propietario
                     : item.selection == 'sup'
                     ? item.url_Foto_Suplente
-                    : item.selection === 'propSin'
+                    : item.selection == 'propSin'
                     ? item.url_Foto_Propietario_2
                     : item.url_Foto_Suplente_2
                 "
@@ -93,26 +93,20 @@
                 ? item.nombre_Completo_Propietario
                 : item.selection == "sup"
                 ? item.nombre_Completo_Suplente
-                : item.selection === "propSin"
+                : item.selection == "propSin"
                 ? item.nombre_Completo_Propietario_2
                 : item.nombre_Completo_Suplente_2
             }}
           </div>
-          <div class="text-subtitle2 text-center">
+          <div class="text-subtitle2 text-center text-grey-7">
             {{
               item.selection == "prop"
-                ? item.mote_Propietario == null
-                  ? ""
-                  : `"${item.mote_Propietario}"`
+                ? item.mote_Propietario
                 : item.selection == "sup"
-                ? item.mote_Suplente == null
-                  ? ""
-                  : `"${item.mote_Suplente}"`
+                ? item.mote_Suplente
                 : item.selection == "propSin"
-                ? item.mote_Propietario_2 == null
-                  ? ""
-                  : `"${item.mote_Propietario_2}"`
-                : `"${item.mote_Suplente_2}"`
+                ? item.mote_Propietario_2
+                : item.mote_Suplente_2
             }}
           </div>
           <div class="row text-center">
@@ -121,23 +115,28 @@
               {{
                 item.selection == "prop"
                   ? item.edad_Propietario
-                  : item.edad_Suplente
+                  : item.selection == "sup"
+                  ? item.edad_Suplente
+                  : item.selection == "propSin"
+                  ? item.edad_Propietario
+                  : item.edad_Suplente_2
               }}
             </div>
             <div class="text-caption text-grey col-6">
-              SEXO:
+              Género:
               {{
                 item.selection == "prop"
                   ? item.sexo_Propietario
                   : item.selection == "sup"
                   ? item.sexo_Suplente
-                  : item.selection === "propSin"
+                  : item.selection == "propSin"
                   ? item.sexo_Propietario_2
                   : item.sexo_Suplente_2
               }}
             </div>
           </div>
         </q-card-section>
+
         <q-card-section>
           <div class="col text-overline flex-center">
             Municipio de {{ item.municipio }}
@@ -152,19 +151,29 @@
                     ? item.url_Logo_Partido_Suplente
                     : item.selection == 'propSin'
                     ? item.url_Logo_Partido_Propietario_2
-                    : item.url_Logo_Partido_Suplente_2
+                    : item.selection == 'supSin'
+                    ? item.url_Logo_Partido_Suplente_2
+                    : ''
                 "
                 alt=""
               />
             </q-avatar>
           </div>
-          <div class="row text-center"></div>
         </q-card-section>
         <q-card-section class="q-pa-xs">
+          <div class="text-subtitle2 text-center">CANDIDATURA</div>
           <div class="q-mb-md" style="text-align: center">
             <q-btn-dropdown
               color="purple-4"
-              :label="item.label || dropdownOptions[0].label"
+              :label="
+                item.selection == 'prop'
+                  ? 'Presidencia propietaria'
+                  : item.selection == 'sup'
+                  ? 'Presidencia suplente'
+                  : item.selection == 'propSin'
+                  ? 'Sindicatura propietaria'
+                  : 'Sindicatura suplente' || dropdownOptions[0].label
+              "
             >
               <q-list>
                 <q-item
@@ -216,8 +225,8 @@
                     : item.selection == 'sup'
                     ? 1
                     : item.selection == 'propSin'
-                    ? 3
-                    : 4
+                    ? 2
+                    : 3
                 )
               "
               flat
@@ -287,11 +296,15 @@ onMounted(() => {
 
 const cargarData = async () => {
   await candidatosStore.loadCandidatosByEleccion(3);
-  pageActual.value = 1;
 };
 
 watch(listFiltroCards, (val) => {
-  listCardsFiltro.value = val;
+  if (val != null) {
+    listCardsFiltro.value = val;
+    if (val.length > 0) {
+      pageActual.value = 1;
+    }
+  }
 });
 
 watch(
@@ -304,20 +317,20 @@ watch(
 watch(filtro, (val) => {
   if (val.length == 0) {
     mostrarElementosPage(pageActual.value);
-  } else if (val.length >= 3 && options.value == "Propietario Presidente") {
-    listCardsFiltro.value = list_Candidatos_By_Eleccion.value.filter((x) =>
+  } else if (val.length >= 3 && options.value == "Presidencia propietaria") {
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Propietario.toLowerCase().includes(val.toLowerCase())
     );
-  } else if (val.length >= 3 && options.value == "Suplente Presidente") {
-    listCardsFiltro.value = list_Candidatos_By_Eleccion.value.filter((x) =>
+  } else if (val.length >= 3 && options.value == "Presidencia suplente") {
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Suplente.toLowerCase().includes(val.toLowerCase())
     );
-  } else if (val.length >= 3 && options.value == "Propietario Sindico") {
-    listCardsFiltro.value = list_Candidatos_By_Eleccion.value.filter((x) =>
+  } else if (val.length >= 3 && options.value == "Sindicatura propietaria") {
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Propietario_2.toLowerCase().includes(val.toLowerCase())
     );
-  } else if (val.length >= 3 && options.value == "Suplente Sindico") {
-    listCardsFiltro.value = list_Candidatos_By_Eleccion.value.filter((x) =>
+  } else if (val.length >= 3 && options.value == "Sindicatura suplente") {
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Suplente_2.toLowerCase().includes(val.toLowerCase())
     );
   } else {
@@ -329,7 +342,7 @@ watch(filtro, (val) => {
 //PAGINATION
 const elementosPorPage = 5;
 watch(pageActual, (val) => {
-  const pag = list_Candidatos_By_Eleccion.value.length / elementosPorPage;
+  const pag = listFiltroCards.value.length / elementosPorPage;
   if (pag % 1 !== 0) {
     paginas.value = pag + 1;
   } else {
@@ -340,7 +353,8 @@ watch(pageActual, (val) => {
 const mostrarElementosPage = (pagina) => {
   const inicio = (pagina - 1) * elementosPorPage;
   const fin = inicio + elementosPorPage;
-  const elementos = list_Candidatos_By_Eleccion.value.slice(inicio, fin);
+  const elementos = listFiltroCards.value.slice(inicio, fin);
+
   listCardsFiltro.value = elementos;
 };
 

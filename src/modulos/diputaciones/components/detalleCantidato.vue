@@ -24,7 +24,7 @@
     </div>
     <q-btn
       :disable="activar_pdf == true"
-      @click="pdf()"
+      @click="pdf(props.id, candidato.selection == 'prop' ? 0 : 1)"
       flat
       icon="picture_as_pdf"
       class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-4"
@@ -72,6 +72,7 @@
             </q-avatar>
 
             <div class="q-pt-md">
+              <div class="text-subtitle2 text-center">CANDIDATURA</div>
               <q-btn-toggle
                 @click="cambiar(candidato.selection)"
                 v-model="candidato.selection"
@@ -79,7 +80,7 @@
                 glossy
                 toggle-color="purple-4"
                 :options="[
-                  { label: 'Propietario', value: 'prop' },
+                  { label: 'Propietaria', value: 'prop' },
                   { label: 'Suplente', value: 'sup' },
                 ]"
               />
@@ -385,7 +386,7 @@ import { useCardsStore } from "src/stores/cards-store";
 import { onMounted, ref, defineProps } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
-
+import ReporteConoceles01 from "src/helpers/Conoceles-01";
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
@@ -403,6 +404,7 @@ const tabs = ref([
 ]);
 const props = defineProps({
   id: { type: String, required: true },
+  puesto: { type: String, required: true },
 });
 
 //---------------------------------------------------------------------------------
@@ -413,8 +415,8 @@ onMounted(() => {
 
 //---------------------------------------------------------------------------------
 
-const pdf = async () => {
-  pdfCandidato();
+const pdf = async (id, puesto) => {
+  ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {
     activar_pdf.value = false;

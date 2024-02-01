@@ -23,7 +23,18 @@
       Municipio de {{ candidato.municipio }}
     </div>
     <q-btn
-      @click="pdf()"
+      @click="
+        pdf(
+          props.id,
+          candidato.selection == 'prop'
+            ? 0
+            : candidato.selection == 'sup'
+            ? 1
+            : candidato.selection == 'propSin'
+            ? 2
+            : 3
+        )
+      "
       :disable="activar_pdf == true"
       flat
       icon="picture_as_pdf"
@@ -80,6 +91,7 @@
             </q-avatar>
 
             <div class="q-pa-md" style="text-align: center">
+              <div class="text-subtitle2 text-center">CANDIDATURA</div>
               <q-btn-dropdown
                 color="purple-4"
                 :label="candidato.label || dropdownOptions[0].label"
@@ -453,6 +465,7 @@ import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
+import ReporteConoceles01 from "src/helpers/Conoceles-01";
 
 //---------------------------------------------------------------------------------
 
@@ -469,6 +482,9 @@ const dropdownOptions = [
 ];
 const open_tab = ref(false);
 const activar_pdf = ref(false);
+const props = defineProps({
+  id: { type: String, required: true },
+});
 
 //---------------------------------------------------------------------------------
 
@@ -489,8 +505,8 @@ const selectOption = (candidato, option) => {
   candidato.selection = option.value;
   candidato.label = option.label;
 };
-const pdf = async () => {
-  pdfCandidato();
+const pdf = async (id, puesto) => {
+  ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {
     activar_pdf.value = false;

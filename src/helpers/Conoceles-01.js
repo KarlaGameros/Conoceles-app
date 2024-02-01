@@ -7,7 +7,6 @@ import { useVerificacionVacante } from "../stores/verificacion_store";
 const verificacionVacanteStore = useVerificacionVacante();
 
 const ReporteConoceles01 = async (id, puesto) => {
-  console.log({ id, puesto });
   let candidato = await verificacionVacanteStore.loadCandidato(id, puesto);
   let datosGenerales =
     await verificacionVacanteStore.loadCandidatoDatosGenerales(id, puesto);

@@ -18,12 +18,12 @@
     <div
       class="text-right col-lg-9 col-md-9 col-sm-9 col-xs-12 text-subtitle2 q-pr-md"
     >
-      Buscar por:
+      Buscar por candidatura:
       <q-radio
         v-model="shape"
         color="blue-grey-14"
         val="prop"
-        label="Propietario"
+        label="Propietaria"
       />
       <q-radio
         v-model="shape"
@@ -51,6 +51,7 @@
     <div class="text-h4 text-center text-grey-7">Seleccione filtros</div>
     <q-img src="../../../assets/Imagen2.jpg" />
   </div> -->
+
   <template v-if="listFiltroCards.length == 0"
     ><div class="absolute-center text-h6 text-grey-8">
       No hay información con los filtros seleccionados...
@@ -87,46 +88,33 @@
                 : item.nombre_Completo_Suplente
             }}
           </div>
-          <div class="text-subtitle2 text-center">
+        </q-card-section>
+        <div class="row text-center">
+          <div class="text-caption text-grey col-6">
+            EDAD:
             {{
               item.selection == "prop"
-                ? item.mote_Propietario == null
-                  ? ""
-                  : `"${item.mote_Propietario}"`
-                : item.mote_Suplente == null
-                ? ""
-                : `"${item.mote_Suplente}"`
+                ? item.edad_Propietario
+                : item.edad_Suplente
             }}
           </div>
-          <div class="row text-center">
-            <div class="text-caption text-grey col-6">
-              EDAD:
-              {{
-                item.selection == "prop"
-                  ? item.edad_Propietario
-                  : item.edad_Suplente
-              }}
-            </div>
-            <div class="text-caption text-grey col-6">
-              SEXO:
-              {{
-                item.selection == "prop"
-                  ? item.sexo_Propietario
-                  : item.sexo_Suplente
-              }}
-            </div>
+          <div class="text-caption text-grey col-6">
+            Género:
+            {{
+              item.selection == "prop"
+                ? item.sexo_Propietario
+                : item.sexo_Suplente
+            }}
           </div>
-        </q-card-section>
+        </div>
+
         <q-card-section>
           <div class="row">
             <div class="col text-subtitle2 ellipsis">
-              Distrito {{ item.no_Distrito }}
+              Distrito
+              {{ item.no_Distrito }}
             </div>
-            <q-avatar
-              square
-              size="35px"
-              v-if="item.url_Logo_Partido_Propietario != null"
-            >
+            <q-avatar square size="35px">
               <img
                 :src="
                   item.selection == 'prop'
@@ -145,13 +133,14 @@
         </q-card-section>
         <q-card-section>
           <div>
+            <div class="text-subtitle2 text-center">CANDIDATURA</div>
             <q-btn-toggle
               v-model="item.selection"
               push
               glossy
               toggle-color="purple-4"
               :options="[
-                { label: 'Propietario', value: 'prop' },
+                { label: 'Propietaria', value: 'prop' },
                 { label: 'Suplente', value: 'sup' },
               ]"
             />
@@ -204,37 +193,39 @@ import { useRouter } from "vue-router";
 import { useCardsStore } from "src/stores/cards-store";
 import banner from "../../../components/bannerComp.vue";
 import ReporteConoceles01 from "src/helpers/Conoceles-01";
+
 //---------------------------------------------------------------------------------
 
 const $q = useQuasar();
 const cardsStore = useCardsStore();
 const router = useRouter();
-const { listFiltroCards, list_Candidatos_By_Eleccion } =
+const { listFiltroCards, list_Candidatos_By_Eleccion, list_Group } =
   storeToRefs(cardsStore);
 const filtro = ref("");
 const listCardsFiltro = ref();
 const shape = ref("prop");
-let pageActual = ref(0);
+let pageActual = ref("");
 let paginas = ref("");
 const activar_pdf = ref(false);
-const elementosPorPage = ref(5);
 
 //---------------------------------------------------------------------------------
 
-onBeforeMount(() => {
+onMounted(() => {
   cargarData();
 });
 
 const cargarData = async () => {
   cardsStore.actualizarMenu(true);
   await cardsStore.loadCandidatosByEleccion(2);
-  pageActual.value = 1;
 };
 //---------------------------------------------------------------------------------
 
 watch(listFiltroCards, (val) => {
   if (val != null) {
     listCardsFiltro.value = val;
+    if (val.length > 0) {
+      pageActual.value = 1;
+    }
   }
 });
 
@@ -242,11 +233,11 @@ watch(filtro, (val) => {
   if (val.length == 0) {
     mostrarElementosPage(pageActual.value);
   } else if (val.length >= 3 && shape.value == "prop") {
-    listCardsFiltro.value = list_Candidatos_By_Eleccion.value.filter((x) =>
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Propietario.toLowerCase().includes(val.toLowerCase())
     );
   } else if (val.length >= 3 && shape.value == "sup") {
-    listCardsFiltro.value = list_Candidatos_By_Eleccion.value.filter((x) =>
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Suplente.toLowerCase().includes(val.toLowerCase())
     );
   } else {
@@ -255,28 +246,33 @@ watch(filtro, (val) => {
 });
 
 watch(shape, (val) => {
-  listCardsFiltro.value.forEach((item) => {
-    item.selection = val;
-  });
+  if (val != null) {
+    listFiltroCards.value.forEach((item) => {
+      item.selection = val;
+    });
+  }
 });
 
 //---------------------------------------------------------------------------------
 //PAGINATION
-
+const elementosPorPage = 5;
 watch(pageActual, (val) => {
-  const pag = list_Candidatos_By_Eleccion.value.length / elementosPorPage.value;
-  if (pag % 1 !== 0) {
-    paginas.value = pag + 1;
-  } else {
-    paginas.value = pag;
+  if (val != null) {
+    const pag = listFiltroCards.value.length / elementosPorPage;
+
+    if (pag % 1 !== 0) {
+      paginas.value = pag + 1;
+    } else {
+      paginas.value = pag;
+    }
+    mostrarElementosPage(val);
   }
-  mostrarElementosPage(val);
 });
 
 const mostrarElementosPage = (pagina) => {
-  const inicio = (pagina - 1) * elementosPorPage.value;
-  const fin = inicio + elementosPorPage.value;
-  const elementos = list_Candidatos_By_Eleccion.value.slice(inicio, fin);
+  const inicio = (pagina - 1) * elementosPorPage;
+  const fin = inicio + elementosPorPage;
+  const elementos = listFiltroCards.value.slice(inicio, fin);
   listCardsFiltro.value = elementos;
 };
 

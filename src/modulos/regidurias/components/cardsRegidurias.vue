@@ -17,12 +17,12 @@
     <div
       class="text-right col-lg-9 col-md-9 col-sm-9 col-xs-12 text-subtitle2 q-pr-md"
     >
-      Buscar por:
+      Buscar por candidatura:
       <q-radio
         v-model="shape"
         color="blue-grey-14"
         val="prop"
-        label="Propietario"
+        label="Propietaria"
       />
       <q-radio
         v-model="shape"
@@ -53,7 +53,7 @@
   </template>
   <template v-else>
     <div class="row items-start q-gutter-md flex flex-center">
-      <q-card
+      <!-- <q-card
         v-for="item in listCardsFiltro"
         :key="item.id"
         class="col-lg-2 col-md-2 col-sm-3 col-xs-12"
@@ -178,6 +178,122 @@
             </q-btn>
           </div>
         </q-card-actions>
+      </q-card> -->
+      <q-card
+        v-for="item in listCardsFiltro"
+        :key="item"
+        class="col-lg-2 col-md-2 col-sm-3 col-xs-12"
+        flat
+        bordered
+        style="width: 255px"
+      >
+        <div class="q-pt-md" style="text-align: center">
+          <div class="q-pa-md q-gutter-sm">
+            <q-avatar size="100px">
+              <q-img
+                :src="
+                  item.selection == 'prop'
+                    ? item.url_Foto_Propietario
+                    : item.url_Foto_Suplente
+                "
+              />
+            </q-avatar>
+          </div>
+        </div>
+        <q-card-section class="q-pt-none">
+          <div class="text-subtitle2 text-center">
+            {{
+              item.selection == "prop"
+                ? item.nombre_Completo_Propietario
+                : item.nombre_Completo_Suplente
+            }}
+          </div>
+          <!-- <div class="text-subtitle2 text-center text-grey-7">
+            {{ item.selection == "prop" ? item.prop.mote : item.sup.mote }}
+          </div> -->
+          <div class="row text-center">
+            <div class="text-caption text-grey col-6">
+              EDAD:
+              {{
+                item.selection == "prop"
+                  ? item.edad_Propietario
+                  : item.edad_Suplente
+              }}
+            </div>
+            <div class="text-caption text-grey col-6">
+              Género:
+              {{
+                item.selection == "prop"
+                  ? item.sexo_Propietario
+                  : item.sexo_Suplente
+              }}
+            </div>
+          </div>
+        </q-card-section>
+
+        <q-card-section>
+          <div class="row text-overline flex-center">
+            Municipio de {{ item.municipio }}
+          </div>
+          <div class="row text-overline flex-center">
+            {{ item.demarcacion }}
+          </div>
+          <div class="row no-wrap items-center flex-center">
+            <q-avatar
+              square
+              size="35px"
+              v-if="item.url_Logo_Partido_Propietario != null"
+            >
+              <img
+                :src="
+                  item.selection == 'prop'
+                    ? item.url_Logo_Partido_Propietario
+                    : item.url_Logo_Partido_Suplente
+                "
+                alt=""
+              />
+            </q-avatar>
+          </div>
+        </q-card-section>
+        <q-card-section>
+          <div>
+            <div class="text-subtitle2 text-center">CANDIDATURA</div>
+            <q-btn-toggle
+              v-model="item.selection"
+              push
+              glossy
+              toggle-color="purple-4"
+              :options="[
+                { label: 'Propietaria', value: 'prop' },
+                { label: 'Suplente', value: 'sup' },
+              ]"
+            />
+          </div>
+        </q-card-section>
+        <q-separator />
+        <q-card-actions>
+          <div class="col-10">
+            <q-btn
+              :to="{ name: 'detalleRegidurias' }"
+              flat
+              class="text-purple-4"
+              @click="verMas(item.id, item.selection == 'prop' ? 0 : 1)"
+            >
+              VER MÁS
+            </q-btn>
+          </div>
+          <div class="col-2">
+            <q-btn
+              :disable="activar_pdf == true"
+              @click="pdf(item.id, item.selection == 'prop' ? 0 : 1)"
+              flat
+              icon="picture_as_pdf"
+              color="purple-4"
+            >
+              <q-tooltip>PDF</q-tooltip>
+            </q-btn>
+          </div>
+        </q-card-actions>
       </q-card>
     </div>
     <!---------------------------PAGINACION--------------------------->
@@ -219,20 +335,24 @@ const activar_pdf = ref(false);
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
-  candidatosStore.actualizarMenu(true);
-  candidatosStore.actualizarButtonColor(true);
   cargarData();
 });
 
 const cargarData = async () => {
+  candidatosStore.actualizarMenu(true);
+  candidatosStore.actualizarButtonColor(true);
   await candidatosStore.loadCandidatosByEleccion(4);
-  pageActual.value = 1;
 };
 
 //---------------------------------------------------------------------------------
 
 watch(listFiltroCards, (val) => {
-  listCardsFiltro.value = val;
+  if (val != null) {
+    listCardsFiltro.value = val;
+    if (val.length > 0) {
+      pageActual.value = 1;
+    }
+  }
 });
 
 watch(
@@ -246,11 +366,11 @@ watch(filtro, (val) => {
   if (val.length == 0) {
     mostrarElementosPage(pageActual.value);
   } else if (val.length >= 3 && shape.value == "prop") {
-    listCardsFiltro.value = list_Candidatos_By_Eleccion.value.filter((x) =>
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Propietario.toLowerCase().includes(val.toLowerCase())
     );
   } else if (val.length >= 3 && shape.value == "sup") {
-    listCardsFiltro.value = list_Candidatos_By_Eleccion.value.filter((x) =>
+    listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Suplente.toLowerCase().includes(val.toLowerCase())
     );
   } else {
@@ -258,26 +378,30 @@ watch(filtro, (val) => {
   }
 });
 watch(shape, (val) => {
-  listCardsFiltro.value.forEach((item) => {
-    item.selection = val;
-  });
+  if (val != null) {
+    listFiltroCards.value.forEach((item) => {
+      item.selection = val;
+    });
+  }
 });
 //---------------------------------------------------------------------------------
 //PAGINATION
 const elementosPorPage = 5;
 watch(pageActual, (val) => {
-  const pag = list_Candidatos_By_Eleccion.value.length / elementosPorPage;
-  if (pag % 1 !== 0) {
-    paginas.value = pag + 1;
-  } else {
-    paginas.value = pag;
+  if (val != null) {
+    const pag = listFiltroCards.value.length / elementosPorPage;
+    if (pag % 1 !== 0) {
+      paginas.value = pag + 1;
+    } else {
+      paginas.value = pag;
+    }
+    mostrarElementosPage(val);
   }
-  mostrarElementosPage(val);
 });
 const mostrarElementosPage = (pagina) => {
   const inicio = (pagina - 1) * elementosPorPage;
   const fin = inicio + elementosPorPage;
-  const elementos = list_Candidatos_By_Eleccion.value.slice(inicio, fin);
+  const elementos = listFiltroCards.value.slice(inicio, fin);
   listCardsFiltro.value = elementos;
 };
 //---------------------------------------------------------------------------------
@@ -293,7 +417,6 @@ const verMas = async (id, puesto) => {
   });
 };
 const pdf = async (id, puesto) => {
-  console.log("mando", id, puesto);
   ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {

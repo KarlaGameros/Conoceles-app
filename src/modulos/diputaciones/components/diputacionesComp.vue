@@ -189,7 +189,7 @@ onMounted(() => {
 
 //---------------------------------------------------------------------------------
 const cargarData = async () => {
-  await graficasStore.loadGraficasByEleccion(2);
+  //await graficasStore.loadGraficasByEleccion(2);
 };
 //---------------------------------------------------------------------------------
 </script>

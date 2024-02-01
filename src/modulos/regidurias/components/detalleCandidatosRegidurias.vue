@@ -25,7 +25,7 @@
     </div>
     <q-btn
       :disable="activar_pdf"
-      @click="pdf()"
+      @click="pdf(props.id, candidato.selection == 'prop' ? 0 : 1)"
       flat
       icon="picture_as_pdf"
       class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-4"
@@ -69,13 +69,14 @@
             </q-avatar>
 
             <div class="q-pt-md">
+              <div class="text-subtitle2 text-center">CANDIDATURA</div>
               <q-btn-toggle
                 v-model="candidato.selection"
                 push
                 glossy
                 toggle-color="purple-4"
                 :options="[
-                  { label: 'Propietario', value: 'prop' },
+                  { label: 'Propietaria', value: 'prop' },
                   { label: 'Suplente', value: 'sup' },
                 ]"
               />
@@ -395,6 +396,7 @@ import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
+import ReporteConoceles01 from "src/helpers/Conoceles-01";
 
 //---------------------------------------------------------------------------------
 
@@ -405,6 +407,9 @@ const tab = ref("DATOS GENERALES");
 const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const open_tab = ref(false);
 const activar_pdf = ref(false);
+const props = defineProps({
+  id: { type: String, required: true },
+});
 
 //---------------------------------------------------------------------------------
 onMounted(() => {
@@ -417,15 +422,13 @@ watch(
     isSmallScreen.value = width <= 768;
   }
 );
-
-const pdf = async () => {
-  pdfCandidato();
+const pdf = async (id, puesto) => {
+  ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {
     activar_pdf.value = false;
   }, 5000);
 };
-
 //---------------------------------------------------------------------------------
 </script>
 <style></style>

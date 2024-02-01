@@ -12,6 +12,13 @@ export const useCardsStore = defineStore("cards", {
     listCards: [],
     listFiltroCards: [],
     list_Propuestas: [],
+    list_Group: [],
+    distrito_Id_movil: null,
+    actor_politico_Id_movil: null,
+    rango_edad_Id_movil: null,
+    sexo_Id_movil: null,
+    municipio_Id_movil: null,
+    demarcacion_Id_movil: null,
     candidato: {
       selection: null,
       id: null,
@@ -181,16 +188,16 @@ export const useCardsStore = defineStore("cards", {
 
     //---------------------------------------------------------------------------------
 
-    async loadExcel(id) {
+    async loadExcel() {
       try {
         try {
           this.documentoExcel = "";
-          const resp = await apiBD.get(`/Conoceles/Excel/${id}`, {
+          const resp = await apiBD.get("/Conoceles/ZIP", {
             responseType: "blob",
           });
           if (resp.status == 200) {
             let blob = new window.Blob([resp.data], {
-              type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,",
+              type: "application/zip",
             });
             this.documentoExcel = window.URL.createObjectURL(blob);
             return { success: true };
@@ -376,56 +383,67 @@ export const useCardsStore = defineStore("cards", {
     },
 
     //---------------------------------------------------------------------------------
-    async loadCandidatosByEleccion(id) {
-      try {
-        let resp = await api.get(`/Candidatos/ByTipoEleccionCandidato/${id}`);
-        let { data } = resp.data;
-        let listCandidatos = data.map((candidato) => {
-          return {
-            id: candidato.id,
-            puesto: candidato.puesto,
-            estatus: candidato.estatus,
-            municipio: candidato.municipio,
-            distrito: candidato.distrito,
-            demarcacion: candidato.demarcacion,
-            tipo_Candidato: candidato.tipo_Candidato,
-            orden: candidato.orden,
-            aprobado: candidato.aprobado,
-            validado: candidato.validado,
-            validado_IEEN: candidato.validado_IEEN,
-            nombres: candidato.nombre,
-            apellido_Paterno: candidato.apellido_Paterno,
-            apellido_Materno: candidato.apellido_Materno,
-            mote: candidato.mote,
-            sexo: candidato.sexo,
-            url_Foto: candidato.url_Foto,
-            clave_Elector: candidato.clave_Elector,
-            rfc: candidato.rfc,
-            curp: candidato.curp,
-            fecha_Nacimiento: candidato.fecha_Nacimiento,
-            ocupacion: candidato.ocupacion,
-            telefono: candidato.telefono,
-            correo: candidato.correo,
-            pertenece_Grupo_Vulnerable_Propietario:
-              candidato.pertenece_Grupo_Vulnerable_Propietario,
-            grupo_Vulnerable_Propietario:
-              candidato.grupo_Vulnerable_Propietario,
-            consentimiento_URL: candidato.consentimiento_URL,
-            logo_Partido: candidato.logo_Partido,
-            partido_Id: candidato.partido_Id,
-            edad: candidato.edad,
-            tipo_Eleccion_Id: candidato.tipo_Eleccion_Id,
-            tipo_Eleccion: candidato.tipo_Eleccion,
-          };
-        });
-        this.list_Candidatos_By_Eleccion = listCandidatos;
-      } catch (error) {
-        return {
-          success: false,
-          data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
-        };
-      }
-    },
+    // async loadCandidatosByEleccionGroup(id) {
+    //   try {
+    //     this.list_Candidatos_By_Eleccion = [];
+    //     let resp = await api.get(`/Candidatos/ByTipoEleccionCandidato/${id}`);
+
+    //     let { data } = resp.data;
+    //     let listCandidatos = data.map((candidato) => {
+    //       return {
+    //         id: candidato.id,
+    //         puesto: candidato.puesto,
+    //         estatus: candidato.estatus,
+    //         municipio_Id: candidato.municipio_Id,
+    //         municipio: candidato.municipio,
+    //         distrito: candidato.distrito,
+    //         distrito_Id: candidato.distrito_Id,
+    //         no_Distrito: candidato.no_Distrito,
+    //         demarcacion_Id: candidato.demarcacion_Id,
+    //         demarcacion: candidato.demarcacion,
+    //         tipo_Candidato: candidato.tipo_Candidato,
+    //         orden: candidato.orden,
+    //         aprobado: candidato.aprobado,
+    //         validado: candidato.validado,
+    //         validado_IEEN: candidato.validado_IEEN,
+    //         nombres: candidato.nombres,
+    //         apellido_Paterno: candidato.apellido_Paterno,
+    //         apellido_Materno: candidato.apellido_Materno,
+    //         nombre_Completo: `${candidato.nombres} ${candidato.apellido_Paterno} ${candidato.apellido_Materno}`,
+    //         mote: candidato.mote,
+    //         sexo: candidato.sexo,
+    //         url_Foto: candidato.url_Foto,
+    //         clave_Elector: candidato.clave_Elector,
+    //         rfc: candidato.rfc,
+    //         curp: candidato.curp,
+    //         fecha_Nacimiento: candidato.fecha_Nacimiento,
+    //         ocupacion: candidato.ocupacion,
+    //         telefono: candidato.telefono,
+    //         correo: candidato.correo,
+    //         pertenece_Grupo_Vulnerable_Propietario:
+    //           candidato.pertenece_Grupo_Vulnerable_Propietario,
+    //         grupo_Vulnerable_Propietario:
+    //           candidato.grupo_Vulnerable_Propietario,
+    //         consentimiento_URL: candidato.consentimiento_URL,
+    //         logo_Partido: candidato.logo_Partido,
+    //         partido_Id: candidato.partido_Id,
+    //         edad: candidato.edad,
+    //         tipo_Eleccion_Id: candidato.tipo_Eleccion_Id,
+    //         tipo_Eleccion: candidato.tipo_Eleccion,
+    //       };
+    //     });
+
+    //     this.list_Candidatos_By_Eleccion = Object.groupBy(
+    //       listCandidatos,
+    //       ({ id }) => id
+    //     );
+    //   } catch (error) {
+    //     return {
+    //       success: false,
+    //       data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+    //     };
+    //   }
+    // },
 
     //---------------------------------------------------------------------------------
     async loadPropuestasByCandidato(candidato_Id, puesto) {
@@ -450,6 +468,7 @@ export const useCardsStore = defineStore("cards", {
       }
     },
 
+    //---------------------------------------------------------------------------------
     async loadFormacionAcademicaById(candidato_Id, puesto) {
       try {
         let resp = null;
@@ -473,6 +492,7 @@ export const useCardsStore = defineStore("cards", {
       }
     },
 
+    //---------------------------------------------------------------------------------
     async loadDatosGeneralesById(candidato_Id, puesto) {
       try {
         let resp = null;
@@ -664,26 +684,6 @@ export const useCardsStore = defineStore("cards", {
           data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
         };
       }
-    },
-
-    //---------------------------------------------------------------------------------
-    async filterEdad(rango_edad) {
-      if (rango_edad === "Todos") {
-        return this.listCards;
-      }
-      const rango = rango_edad.split("-").map(Number);
-      const filteredList = this.listCards.filter((card) => {
-        const edad_prop = card.edad_prop;
-        if (rango.length === 2) {
-          return edad_prop >= rango[0] && edad_prop <= rango[1];
-        } else if (rango.length === 1 && rango[0] === 60) {
-          return edad_prop >= rango[0];
-        }
-        return false;
-      });
-
-      this.listCards = filteredList;
-      return filteredList;
     },
   },
 });

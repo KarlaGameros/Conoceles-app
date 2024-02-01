@@ -47,7 +47,6 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
           `/Candidatos_Informacion/Formacion_Academica_Candidato?CandidatoId=${id}&PuestoCandidato=${puesto}`
         );
         let { data } = resp.data;
-        console.log(data);
         let formacionAcademica = null;
         if (data != null) {
           formacionAcademica = {
@@ -164,7 +163,6 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
             edad: data.edad_Suplente,
           };
         }
-        console.log("--datosCandidato", datosCandidato);
         return datosCandidato;
       } catch (error) {
         console.error(error);

@@ -10,19 +10,18 @@
         </div>
       </div>
     </div>
-    <filtros v-show="isSmallScreen" class="q-mb-md" />
+    <filtros v-if="$q.screen.xs" class="q-mb-md" />
     <ChartsRegidurias />
   </q-page>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
 import filtros from "../../../components/filtrosComp.vue";
 import ChartsRegidurias from "../components/chartsRegidurias.vue";
 //---------------------------------------------------------------------------------
 
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const cardsStore = useCardsStore();
 
 //---------------------------------------------------------------------------------
@@ -32,13 +31,6 @@ onMounted(() => {
 });
 
 //---------------------------------------------------------------------------------
-
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 
 //---------------------------------------------------------------------------------
 </script>

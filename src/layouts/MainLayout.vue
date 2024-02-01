@@ -17,8 +17,8 @@
             <b class="text-pink-conoceles">Conóceles</b>
           </div>
           <div class="text-h6 text-center text-grey-8 text-bold">
-            Elecciones Estatales de
-            <b class="text-pink-conoceles">Nayarit</b>
+            Proceso Electoral Local Ordinario
+            <b class="text-pink-conoceles">2024</b>
           </div>
         </div>
         <div
@@ -45,17 +45,13 @@
             class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9"
           >
             <q-tabs v-model="tab">
-              <q-tab
-                @click="isTabSelected('inicio')"
-                name="inicio"
-                icon="home"
-              />
+              <q-route-tab :to="{ name: 'inicio' }" name="inicio" icon="home" />
+
               <q-tab
                 v-model="tab"
                 v-for="eleccion in list_Tipos_Elecciones"
                 :key="eleccion.siglas"
                 :name="eleccion.siglas"
-                :to="{ name: `${eleccion.siglas}` }"
                 :label="eleccion.nombre"
                 @click="isTabSelected(eleccion.siglas)"
               />
@@ -121,8 +117,8 @@
               <q-item-label
                 class="text-h5 label-title text-bold q-pa-xs"
                 style="color: gray"
-                >Consulta</q-item-label
-              >
+                >Consulta
+              </q-item-label>
               <div class="text-h6 q-pa-xs" style="color: grey">
                 Selecciona el reporte que deseas consultar:
               </div>
@@ -359,7 +355,7 @@ import { useRouter } from "vue-router";
 import { useConfiguracionStore } from "src/stores/configuracion-store";
 import { getCurrentLocation, getDataDevice } from "../helpers/CurrentLocation";
 import { useGraficasStore } from "src/stores/graficas-store";
-
+import Filtrar from "src/helpers/Filtrar";
 //---------------------------------------------------------------------------------
 
 const $q = useQuasar();
@@ -378,6 +374,7 @@ const {
   info,
   listFiltroCards,
   list_Candidatos_By_Eleccion,
+  list_Group,
 } = storeToRefs(cardsStore);
 const {
   list_Tipos_Elecciones,
@@ -402,7 +399,7 @@ const tab = ref("");
 
 //---------------------------------------------------------------------------------
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
   const savedTab = localStorage.getItem("selectedTab");
 
   if (savedTab) {
@@ -410,6 +407,7 @@ onBeforeMount(async () => {
   }
   limpiarFiltros();
   cargarData();
+  cargar(tab.value);
   //configuracionStore.loadTipoElecciones();
 
   // let { latitude, longitude } = await getCurrentLocation();
@@ -459,33 +457,29 @@ watch(municipio_Id, (val) => {
 
 watch(tab, (val) => {
   if (val != null) {
-    cargarGrafica(val);
+    graficasStore.loadGraficasByEleccion(
+      val == "DIP" ? 2 : val == "PYS" ? 3 : val == "REG" ? 4 : 1
+    );
   }
 });
-
 //---------------------------------------------------------------------------------
 
-const cargarGrafica = async (val) => {
-  await graficasStore.loadGraficasByEleccion(
-    val == "DIP" ? 2 : val == "PYS" ? 3 : val == "REG" ? 4 : 1
-  );
+const cargar = async (val) => {
+  // await graficasStore.loadGraficasByEleccion(
+  //   val == "DIP" ? 2 : val == "PYS" ? 3 : val == "REG" ? 4 : 1
+  // );
 };
 
-const isTabSelected = (nombre) => {
+const isTabSelected = async (nombre) => {
   localStorage.setItem("selectedTab", nombre);
   tab.value = nombre;
+
   router.push({
     name: nombre,
   });
+  // listFiltroCards.value = [];
   limpiarFiltros();
 };
-
-// const setTabSelected = (tab) => {
-//   selectedTab.value = tab;
-//   localStorage.setItem("selectedTab", tab);
-//   //listFiltroCards.value = [];
-//   limpiarFiltros();
-// };
 
 //---------------------------------------------------------------------------------
 
@@ -494,7 +488,7 @@ const activaNumeralia = () => {
   limpiarFiltros();
 };
 
-const activaCandidatos = () => {
+const activaCandidatos = async () => {
   cardsStore.actualizarButtonColor(true);
   limpiarFiltros();
 };
@@ -510,7 +504,7 @@ const limpiarFiltros = () => {
 
 //---------------------------------------------------------------------------------
 
-const obtenerNombre = (tipo) => {
+const obtenerNombre = () => {
   var fechaHora = new Date();
 
   var anio = fechaHora.getFullYear();
@@ -520,126 +514,200 @@ const obtenerNombre = (tipo) => {
   var minutos = fechaHora.getMinutes();
   var segundos = fechaHora.getSeconds();
 
-  return `${
-    tipo == "DIP"
-      ? "Diputaciones"
-      : tipo == "PYS"
-      ? "PresidensiasYSindicaturas"
-      : tipo == "REG"
-      ? "Regidurías"
-      : "Gubernatura"
-  }${anio}${mes}${dia}${horas}${minutos}${segundos}`;
+  return `Conoceles${anio}${mes}${dia}${horas}${minutos}${segundos}`;
 };
 
 const exportarBD = async () => {
   $q.loading.show();
-  await cardsStore.loadExcel(
-    tab.value == "DIP" ? 2 : tab.value == "PYS" ? 3 : tab.value == "REG" ? 4 : 1
-  );
+  await cardsStore.loadExcel();
   const link = document.createElement("a");
   link.href = cardsStore.documentoExcel;
-  link.setAttribute("download", obtenerNombre(tab.value));
+  link.setAttribute("download", obtenerNombre());
   document.body.appendChild(link);
   link.click();
   $q.loading.hide();
 };
 
-const filtrar = (list_Filtro_Candidatos, filtro) => {
-  list_Graficas_Filtrado.value = list_Graficas_By_Eleccion.value.filter(
-    (item) => {
-      let cumple = true;
-      if (filtro.sexo != undefined) {
-        if (filtro.sexo == "Todos") {
-          cumple = cumple && item.sexo === item.sexo;
-        } else {
-          cumple = cumple && item.sexo === filtro.sexo;
-        }
+const filtrarGrafica = (
+  list_Candidatos_By_Eleccion,
+  list_Graficas_By_Eleccion,
+  filtro,
+  tab
+) => {
+  list_Graficas_Filtrado.value = list_Graficas_By_Eleccion.filter((item) => {
+    let cumple = true;
+    if (filtro.sexo != undefined) {
+      if (filtro.sexo == "Todos") {
+        cumple = cumple && item.sexo === item.sexo;
+      } else {
+        cumple = cumple && item.sexo === filtro.sexo;
       }
-      if (filtro.edad != undefined) {
-        if (filtro.edad == "Todos") {
-          cumple = cumple && item.edad > 0;
-        } else {
-          const rango = filtro.edad.split("-").map(Number);
-          if (rango.length === 2) {
-            cumple = cumple && item.edad >= rango[0] && item.edad <= rango[1];
-          } else if (rango.length === 1 && rango[0] === 60) {
-            cumple = cumple && item.edad >= rango[0];
-          }
-        }
-      }
-
-      return cumple;
     }
-  );
-
-  listFiltroCards.value = list_Filtro_Candidatos.filter((item) => {
+    if (filtro.edad != undefined) {
+      if (filtro.edad == "Todos") {
+        cumple = cumple && item.edad > 0;
+      } else {
+        const rango = filtro.edad.split("-").map(Number);
+        if (rango.length === 2) {
+          cumple = cumple && item.edad >= rango[0] && item.edad <= rango[1];
+        } else if (rango.length === 1 && rango[0] === 60) {
+          cumple = cumple && item.edad >= rango[0];
+        }
+      }
+    }
+    return cumple;
+  });
+  listFiltroCards.value = list_Candidatos_By_Eleccion.filter((item) => {
     let cumple = true;
     if (filtro.distrito !== undefined) {
-      if (filtro.distrito == "") {
+      if (filtro.distrito == 0) {
         cumple = cumple && item.distrito_Id === item.distrito_Id;
       } else {
-        cumple = cumple && item.distrito_Id === filtro.distrito;
+        if (item.distrito_Id === filtro.distrito) {
+          item.selection = "prop";
+        } else {
+          cumple = false;
+        }
       }
     }
+
+    if (filtro.municipio !== undefined) {
+      if (filtro.municipio == 0) {
+        cumple = cumple && item.municipio_Id === item.municipio_Id;
+      } else {
+        if (item.municipio_Id === filtro.municipio) {
+          item.selection = "prop";
+        } else {
+          cumple = false;
+        }
+      }
+    }
+
+    if (filtro.demarcacion !== undefined) {
+      if (filtro.demarcacion == "") {
+        cumple = cumple && item.demarcacion_Id === item.demarcacion_Id;
+      } else {
+        if (item.demarcacion_Id === filtro.demarcacion) {
+          item.selection = "prop";
+        } else {
+          cumple = false;
+        }
+      }
+    }
+
     if (filtro.actor_politico !== undefined) {
-      if (filtro.actor_politico == "") {
+      if (filtro.actor_politico == 0) {
         cumple = cumple && item.partido_Id === item.partido_Id;
       } else {
-        cumple = cumple && item.partido_Id === filtro.actor_politico;
+        const partidos = [
+          { id: item.partido_Id, selection: "prop" },
+          { id: item.partido_Suplente_Id, selection: "sup" },
+          { id: item.partido_Propietario_2_Id, selection: "propSin" },
+          { id: item.partido_Suplente_2_Id, selection: "supSin" },
+        ];
+
+        const partidoSeleccionado = partidos.find(
+          (partido) => partido.id === filtro.actor_politico
+        );
+
+        if (partidoSeleccionado) {
+          item.selection = partidoSeleccionado.selection;
+        } else {
+          cumple = false;
+        }
       }
     }
+
     if (filtro.edad !== undefined) {
       if (filtro.edad == "Todos") {
         cumple = cumple && item.edad_Propietario > 0;
       } else {
         const rango = filtro.edad.split("-").map(Number);
         if (rango.length === 2) {
-          cumple =
-            cumple &&
+          if (
             item.edad_Propietario >= rango[0] &&
-            item.edad_Propietario <= rango[1];
-        } else if (rango.length === 1 && rango[0] === 60) {
-          cumple = cumple && item.edad_Propietario >= rango[0];
+            item.edad_Propietario <= rango[1]
+          ) {
+            item.selection = "prop";
+          } else if (
+            item.edad_Suplente >= rango[0] &&
+            item.edad_Suplente <= rango[1]
+          ) {
+            item.selection = "sup";
+          } else if (
+            item.edad_Propietario_2 >= rango[0] &&
+            item.edad_Propietario_2 <= rango[1]
+          ) {
+            item.selection = "propSin";
+          } else if (
+            item.edad_Suplente_2 >= rango[0] &&
+            item.edad_Suplente_2 <= rango[1]
+          ) {
+            item.selection = "supSin";
+          } else {
+            cumple = false;
+          }
+        } else if (rango.length === 1) {
+          if (item.edad_Propietario >= 60) {
+            item.selection = "prop";
+          } else if (item.edad_Suplente >= 60) {
+            item.selection = "sup";
+          } else if (item.edad_Propietario_2 >= 60) {
+            item.selection = "propSin";
+          } else if (item.edad_Suplente_2 >= 60) {
+            item.selection = "supSin";
+          } else {
+            cumple = false;
+          }
         }
       }
     }
+
     if (filtro.sexo !== undefined) {
-      if (filtro.sexo == "Todos") {
-        cumple = cumple && item.sexo_Propietario === item.sexo_Propietario;
-      } else {
-        cumple = cumple && item.sexo_Propietario === filtro.sexo;
+      if (filtro.sexo !== "Todos") {
+        const sexos = [
+          { actual: item.sexo_Propietario, selection: "prop" },
+          { actual: item.sexo_Suplente, selection: "sup" },
+          { actual: item.sexo_Propietario_2, selection: "propSin" },
+          { actual: item.sexo_Suplente_2, selection: "supSin" },
+        ];
+
+        const sexoSeleccionado = sexos.find(
+          (sexo) => sexo.actual === filtro.sexo
+        );
+
+        if (sexoSeleccionado) {
+          item.selection = sexoSeleccionado.selection;
+        } else {
+          cumple = false;
+        }
       }
     }
-    if (filtro.municipio !== undefined) {
-      if (filtro.municipio == "") {
-        cumple = cumple && item.municipio_Id === item.municipio_Id;
-      } else {
-        cumple = cumple && item.municipio_Id === filtro.municipio;
-      }
-    }
-    if (filtro.demarcacion !== undefined) {
-      if (filtro.demarcacion == "") {
-        cumple = cumple && item.demarcacion_Id === item.demarcacion_Id;
-      } else {
-        cumple = cumple && item.demarcacion_Id === filtro.demarcacion;
-      }
-    }
+
     return cumple;
   });
 };
 
 watchEffect(() => {
-  const filtro = {};
-  if (distrito_Id.value != null) filtro.distrito = distrito_Id.value.value;
-  if (actor_politico_Id.value != null)
-    filtro.actor_politico = actor_politico_Id.value.value;
-  if (rango_edad_Id.value != null) filtro.edad = rango_edad_Id.value.label;
-  if (sexo_Id.value != null) filtro.sexo = sexo_Id.value.label;
-  if (municipio_Id.value != null) filtro.municipio = municipio_Id.value.value;
-  if (demarcacion_Id.value != null)
-    filtro.demarcacion = demarcacion_Id.value.value;
-  if (list_Graficas_By_Eleccion.value.length > 0) {
-    filtrar(list_Candidatos_By_Eleccion.value, filtro);
+  if (!$q.screen.xs) {
+    const filtro = {};
+    if (distrito_Id.value != null) filtro.distrito = distrito_Id.value.value;
+    if (actor_politico_Id.value != null)
+      filtro.actor_politico = actor_politico_Id.value.value;
+    if (rango_edad_Id.value != null) filtro.edad = rango_edad_Id.value.label;
+    if (sexo_Id.value != null) filtro.sexo = sexo_Id.value.label;
+    if (municipio_Id.value != null) filtro.municipio = municipio_Id.value.value;
+    if (demarcacion_Id.value != null)
+      filtro.demarcacion = demarcacion_Id.value.value;
+
+    if (list_Graficas_By_Eleccion.value.length > 0) {
+      filtrarGrafica(
+        list_Candidatos_By_Eleccion.value,
+        list_Graficas_By_Eleccion.value,
+        filtro,
+        tab.value
+      );
+    }
   }
 });
 </script>

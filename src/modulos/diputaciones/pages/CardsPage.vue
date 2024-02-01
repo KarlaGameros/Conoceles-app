@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <filtros class="q-mb-md" />
+    <filtros v-if="$q.screen.xs" class="q-mb-md" />
     <CardsDiputaciones />
   </q-page>
 </template>

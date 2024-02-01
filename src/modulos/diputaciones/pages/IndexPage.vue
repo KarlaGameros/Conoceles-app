@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <filtros v-show="$q.screen.xs" class="q-mb-md" />
+    <filtros v-if="$q.screen.xs" class="q-mb-md" />
     <DiputacionesComp />
   </q-page>
 </template>

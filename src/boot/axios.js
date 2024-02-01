@@ -8,13 +8,15 @@ import axios from "axios";
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({
-  baseURL: "http://sistema.ieenayarit.org:9378/api",
-  //baseURL: "http://192.168.2.112:9378/api",
+  //baseURL: "http://sistema.ieenayarit.org:9378/api",
+  //prueba
+  baseURL: "https://universo.ieenayarit.org:9383/api",
 });
 
 const apiBD = axios.create({
-  baseURL: "http://sistema.ieenayarit.org:9370/api",
-  //baseURL: "http://192.168.2.112:9378/api",
+  //baseURL: "http://sistema.ieenayarit.org:9370/api",
+  //prueba
+  baseURL: "https://universo.ieenayarit.org:9384/api",
 });
 
 export default boot(({ app }) => {

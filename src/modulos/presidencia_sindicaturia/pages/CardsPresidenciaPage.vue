@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <filtros v-show="isSmallScreen" class="q-mb-md" />
+    <filtros v-if="$q.screen.xs" class="q-mb-md" />
     <CardsPresidenciaSindicauria />
   </q-page>
 </template>

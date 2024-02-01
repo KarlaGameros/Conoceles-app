@@ -14,8 +14,8 @@
         </div>
       </div>
     </div>
-    <filtros v-show="isSmallScreen" class="q-mb-md" />
-    <DetalleCantidato />
+    <filtros v-if="$q.screen.xs" class="q-mb-md" />
+    <DetalleCantidato :id="props.id" />
   </q-page>
 </template>
 
