@@ -2,7 +2,7 @@
   <!---------------------------BANNER--------------------------->
   <banner>
     <template v-slot:icono>
-      <q-icon name="error" color="purple-4" />
+      <q-icon name="error" color="purple-ieen" />
     </template>
     <template v-slot:contenido>
       La información es proporcionada por las personas candidatas a las
@@ -15,8 +15,12 @@
   <!---------------------------BUTTON BACK AND PDF--------------------------->
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
-      <q-avatar class="bg-purple-4" text-color="white"
-        ><q-btn :to="{ name: 'DIPcards' }" flat icon="reply">
+      <q-avatar class="bg-purple-ieen" text-color="white"
+        ><q-btn
+          :to="{ name: 'DIPcards', params: { eleccion_Id: props.eleccion_Id } }"
+          flat
+          icon="reply"
+        >
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
       >
@@ -27,7 +31,7 @@
       @click="pdf(props.id, candidato.selection == 'prop' ? 0 : 1)"
       flat
       icon="picture_as_pdf"
-      class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-4"
+      class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-ieen"
       >Descargar</q-btn
     >
   </div>
@@ -37,7 +41,7 @@
       <div class="shadow-7" style="border-radius: 20px">
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
-            <q-avatar size="700%">
+            <q-avatar size="600%">
               <q-img
                 :src="
                   candidato.selection == 'prop'
@@ -48,7 +52,7 @@
             </q-avatar>
           </div>
           <div class="col-12 q-pb-md" align="center">
-            <div class="text-h6">
+            <div class="text-h6 text-grey-9">
               {{
                 candidato.selection == "prop"
                   ? candidato.nombre_Completo_Propietario
@@ -56,14 +60,12 @@
               }}
             </div>
 
-            <q-avatar
-              square
-              size="45px"
-              v-if="candidato.url_Logo_Partido_Propietario != null"
-            >
+            <q-avatar style="width: auto; height: 35px" square size="40px">
               <img
                 :src="
-                  candidato.selection == 'prop'
+                  candidato.is_Coalicion == true
+                    ? candidato.url_Logo_Coalicion
+                    : candidato.selection == 'prop'
                     ? candidato.url_Logo_Partido_Propietario
                     : candidato.url_Logo_Partido_Suplente
                 "
@@ -71,14 +73,17 @@
               />
             </q-avatar>
 
-            <div class="q-pt-md">
-              <div class="text-subtitle2 text-center">CANDIDATURA</div>
+            <div class="q-pt-lg">
+              <div class="text-subtitle2 text-center text-grey-9">
+                CANDIDATURA - {{ candidato.tipo_Candidato }}
+              </div>
               <q-btn-toggle
                 @click="cambiar(candidato.selection)"
                 v-model="candidato.selection"
                 push
                 glossy
-                toggle-color="purple-4"
+                class="text-grey-9"
+                toggle-color="purple-ieen"
                 :options="[
                   { label: 'Propietaria', value: 'prop' },
                   { label: 'Suplente', value: 'sup' },
@@ -125,8 +130,8 @@
               v-model="tab"
               dense
               class="text-grey"
-              active-color="purple-4"
-              indicator-color="purple-4"
+              active-color="purple-ieen"
+              indicator-color="purple-ieen"
               align="justify"
               narrow-indicator
             >
@@ -141,10 +146,7 @@
             <q-separator />
             <q-tab-panels v-model="tab" animated>
               <q-tab-panel name="DATOS GENERALES">
-                <div
-                  class="row"
-                  v-if="candidato.estatus == 'Registro aprobado'"
-                >
+                <div class="row">
                   <div
                     class="col-lg-3 col-md-12 col-sm-12 col-xs-12 q-pb-md"
                     align="center"
@@ -158,10 +160,12 @@
                         "
                       /> </q-avatar
                     ><br /><br />
-                    <q-avatar square size="50px">
+                    <q-avatar style="width: auto; height: 35px" square>
                       <img
                         :src="
-                          candidato.selection == 'prop'
+                          candidato.is_Coalicion == true
+                            ? candidato.url_Logo_Coalicion
+                            : candidato.selection == 'prop'
                             ? candidato.url_Logo_Partido_Propietario
                             : candidato.url_Logo_Partido_Suplente
                         "
@@ -176,7 +180,7 @@
                         : 'col-lg-4 col-md-6 col-sm-12 col-xs-12'
                     "
                   >
-                    <div class="text-h6">Nombre :</div>
+                    <div class="text-h6 text-grey-9">Nombre :</div>
                     <div class="text-subtitle1">
                       {{
                         candidato.selection == "prop"
@@ -184,7 +188,7 @@
                           : candidato.nombre_Completo_Suplente
                       }}
                     </div>
-                    <div class="text-h6">Edad:</div>
+                    <div class="text-h6 text-grey-9">Edad:</div>
                     <div class="text-subtitle1">
                       {{
                         candidato.selection == "prop"
@@ -192,7 +196,7 @@
                           : candidato.edad_Suplente
                       }}
                     </div>
-                    <div class="text-h6">Sexo:</div>
+                    <div class="text-h6 text-grey-9">Sexo:</div>
                     <div class="text-subtitle1">
                       {{
                         candidato.selection == "prop"
@@ -208,12 +212,12 @@
                         : 'col-lg-4 col-md-6 col-sm-12 col-xs-12'
                     "
                   >
-                    <div class="text-h6">Tipo de elección:</div>
+                    <div class="text-h6 text-grey-9">Tipo de elección:</div>
                     <div class="text-subtitle1">
                       {{ candidato.tipo_Eleccion }} -
                       {{ candidato.tipo_Candidato }}
                     </div>
-                    <div class="text-h6">Cargo:</div>
+                    <div class="text-h6 text-grey-9">Cargo:</div>
                     <div class="text-subtitle1">
                       {{
                         candidato.selection == "prop"
@@ -221,46 +225,57 @@
                           : "Suplente"
                       }}
                     </div>
-                    <div class="text-h6">Estado:</div>
-                    <div class="text-subtitle1">Nayarit</div>
-                    <div class="text-h6">Número de fórmula:</div>
+                    <div class="text-h6 text-grey-9">Estado:</div>
+                    <div class="text-subtitle1 text-grey-9">Nayarit</div>
+                    <div class="text-h6 text-grey-9">Número de fórmula:</div>
                     <div class="text-subtitle1">{{ candidato.id }}</div>
                     <br />
-                    <!-- <div>
-                      <q-icon name="location_on" /> Via Alfredo del Mazo s/n,
-                      Toluca de Lerdo, México, C.P. 50010
+                    <div class="text-grey-9">
+                      <q-icon name="location_on" />{{
+                        datos_Generales.domicilio
+                      }}
                       <br />
-                      <q-icon name="call" /> +52 323-120-9103
+                      <q-icon name="call" /> {{ datos_Generales.telefono }}
                       <br />
-                      <q-icon name="email" /> 12345@gmail.com
-                    </div> -->
+                      <q-icon name="email" /> {{ datos_Generales.email }}
+                    </div>
                     <br />
-                    <!-- <div>
+                    <div>
                       <q-btn flat round dense>
                         <i
                           class="fa-brands fa-facebook fa-2xl"
                           style="color: #673e84"
-                        ></i>
+                        >
+                          <q-tooltip>{{ datos_Generales.facebook }}</q-tooltip>
+                        </i>
                       </q-btn>
                       <q-btn flat round dense>
                         <i
                           class="fa-brands fa-instagram fa-2xl"
                           style="color: #673e84"
-                        ></i>
+                        >
+                          <q-tooltip>{{
+                            datos_Generales.instagram
+                          }}</q-tooltip></i
+                        >
                       </q-btn>
                       <q-btn flat round dense>
                         <i
                           class="fa-brands fa-twitter fa-2xl"
                           style="color: #673e84"
-                        ></i>
+                        >
+                          <q-tooltip>{{ datos_Generales.twitter }}</q-tooltip>
+                        </i>
                       </q-btn>
                       <q-btn flat round dense>
                         <i
                           class="fa-brands fa-tiktok fa-2xl"
                           style="color: #673e84"
-                        ></i>
+                        >
+                          <q-tooltip>{{ datos_Generales.tik_Tok }}</q-tooltip>
+                        </i>
                       </q-btn>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
               </q-tab-panel>
@@ -268,7 +283,7 @@
               <q-tab-panel name="HISTORIA PROFESIONAL Y/O LABORAL">
                 <br />
                 <div
-                  class="col-12 bg-blue-grey-4"
+                  class="col-12 bg-purple-ieen"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -291,7 +306,7 @@
                 </div>
                 <br />
                 <div
-                  class="col-12 bg-blue-grey-2"
+                  class="col-12 bg-purple-3"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -322,7 +337,7 @@
                   PRINCIPALES PROPUESTAS
                 </div>
                 <div
-                  class="col-12 bg-blue-grey-2"
+                  class="col-12 bg-purple-ieen"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -337,7 +352,7 @@
                   }}
                 </div>
                 <div
-                  class="col-12 bg-blue-grey-4"
+                  class="col-12 bg-purple-3"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -355,7 +370,7 @@
 
               <q-tab-panel name="PROPUESTA EN MATERIA DE GÉNERO">
                 <div
-                  class="col-12 bg-blue-grey-4"
+                  class="col-12 bg-purple-ieen"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -381,14 +396,17 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import { onMounted, ref, defineProps } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 import ReporteConoceles01 from "src/helpers/Conoceles-01";
+
 //---------------------------------------------------------------------------------
 
+const $q = useQuasar();
 const cardsStore = useCardsStore();
 const { candidato, formacion, datos_Generales, list_Propuestas } =
   storeToRefs(cardsStore);
@@ -405,6 +423,7 @@ const tabs = ref([
 const props = defineProps({
   id: { type: String, required: true },
   puesto: { type: String, required: true },
+  eleccion_Id: { type: String, required: true },
 });
 
 //---------------------------------------------------------------------------------
@@ -416,18 +435,22 @@ onMounted(() => {
 //---------------------------------------------------------------------------------
 
 const pdf = async (id, puesto) => {
+  $q.loading.show();
   ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {
     activar_pdf.value = false;
   }, 5000);
+  $q.loading.hide();
 };
 
 const cambiar = async (val) => {
+  $q.loading.show();
   cardsStore.initDatosGenerales();
   await cardsStore.loadFormacionAcademicaById(props.id, val == "prop" ? 0 : 1);
   await cardsStore.loadDatosGeneralesById(props.id, val == "prop" ? 0 : 1);
   await cardsStore.loadPropuestasByCandidato(props.id, val == "prop" ? 0 : 1);
+  $q.loading.hide();
 };
 </script>
 <style></style>

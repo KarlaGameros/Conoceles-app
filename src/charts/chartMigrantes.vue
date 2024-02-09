@@ -8,7 +8,39 @@
 </template>
 
 <script setup>
-const series = [20, 5, 1];
+import { storeToRefs } from "pinia";
+import { useGraficasStore } from "src/stores/graficas-store";
+import { onMounted, ref, watch } from "vue";
+
+const graficasStore = useGraficasStore();
+const { list_Graficas_Filtrado } = storeToRefs(graficasStore);
+const series = ref([]);
+
+onMounted(() => {
+  rellenarGrafica();
+});
+
+watch(list_Graficas_Filtrado, (val) => {
+  series.value = [];
+  if (val != null) {
+    rellenarGrafica();
+  }
+});
+
+const rellenarGrafica = () => {
+  let si = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.migrante == "Sí"
+  );
+  let no = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.migrante == "No"
+  );
+  let prefiero_No_Contestar = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.migrante == "Prefiero no contestar"
+  );
+
+  series.value.push(si.length, no.length, prefiero_No_Contestar.length);
+};
+
 const chartOptions = {
   chart: {
     type: "donut",
@@ -20,7 +52,7 @@ const chartOptions = {
       offsetY: 10,
     },
   },
-  labels: ["No", "Si", "Prefiero no contestar"],
+  labels: ["Sí", "No", "Prefiero no contestar"],
   grid: {
     padding: {
       bottom: -80,

@@ -14,31 +14,20 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <CardsRegidurias />
+    <CardsRegidurias :eleccion_Id="props.eleccion_Id" />
   </q-page>
 </template>
 
 <script setup>
-import { ref, watch, onBeforeMount } from "vue";
-import { useCardsStore } from "src/stores/cards-store";
+import { defineProps } from "vue";
 import CardsRegidurias from "../components/cardsRegidurias.vue";
 import filtros from "../../../components/filtrosComp.vue";
-import { useQuasar } from "quasar";
 
 //---------------------------------------------------------------------------------
 
-const $q = useQuasar();
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
-const cardsStore = useCardsStore();
-
-//---------------------------------------------------------------------------------
-
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
+const props = defineProps({
+  eleccion_Id: { type: String, required: true },
+});
 </script>
 
 <style></style>

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { api, apiBD } from "src/boot/axios";
+import { api } from "src/boot/axios";
 
 export const useCardsStore = defineStore("cards", {
   state: () => ({
@@ -190,33 +190,26 @@ export const useCardsStore = defineStore("cards", {
 
     async loadExcel() {
       try {
-        try {
-          this.documentoExcel = "";
-          const resp = await apiBD.get("/Conoceles/ZIP", {
-            responseType: "blob",
+        this.documentoExcel = "";
+        const resp = await api.get("/Candidatos/Zip", {
+          responseType: "blob",
+        });
+        if (resp.status == 200) {
+          let blob = new window.Blob([resp.data], {
+            type: "application/zip",
           });
-          if (resp.status == 200) {
-            let blob = new window.Blob([resp.data], {
-              type: "application/zip",
-            });
-            this.documentoExcel = window.URL.createObjectURL(blob);
-            return { success: true };
-          } else {
-            return {
-              success: false,
-              data: "Error al descargar archivo, intentelo de nuevo",
-            };
-          }
-        } catch (error) {
+          this.documentoExcel = window.URL.createObjectURL(blob);
+          return { success: true };
+        } else {
           return {
             success: false,
-            data: "Ocurrio un error, intentelo de nuevo. Si el error persiste contacte a soporte",
+            data: "Error al descargar archivo, intentelo de nuevo",
           };
         }
       } catch (error) {
         return {
           success: false,
-          data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+          data: "Ocurrio un error, intentelo de nuevo. Si el error persiste contacte a soporte",
         };
       }
     },
@@ -226,7 +219,7 @@ export const useCardsStore = defineStore("cards", {
     async infoDeviceConoceles(device) {
       try {
         const resp = null;
-        resp = await api.post("/Candidatos", device);
+        resp = await api.post("/Tipos_Elecciones/RegistroPeticiones", device);
         if (resp.status == 200) {
           const { success, data } = resp.data;
           if (success === true) {
@@ -249,6 +242,7 @@ export const useCardsStore = defineStore("cards", {
     },
 
     //---------------------------------------------------------------------------------
+
     async loadCandidatosByEleccion(id) {
       try {
         let resp = await api.get(`/Candidatos/ByTipoEleccion/${id}`);
@@ -383,69 +377,7 @@ export const useCardsStore = defineStore("cards", {
     },
 
     //---------------------------------------------------------------------------------
-    // async loadCandidatosByEleccionGroup(id) {
-    //   try {
-    //     this.list_Candidatos_By_Eleccion = [];
-    //     let resp = await api.get(`/Candidatos/ByTipoEleccionCandidato/${id}`);
 
-    //     let { data } = resp.data;
-    //     let listCandidatos = data.map((candidato) => {
-    //       return {
-    //         id: candidato.id,
-    //         puesto: candidato.puesto,
-    //         estatus: candidato.estatus,
-    //         municipio_Id: candidato.municipio_Id,
-    //         municipio: candidato.municipio,
-    //         distrito: candidato.distrito,
-    //         distrito_Id: candidato.distrito_Id,
-    //         no_Distrito: candidato.no_Distrito,
-    //         demarcacion_Id: candidato.demarcacion_Id,
-    //         demarcacion: candidato.demarcacion,
-    //         tipo_Candidato: candidato.tipo_Candidato,
-    //         orden: candidato.orden,
-    //         aprobado: candidato.aprobado,
-    //         validado: candidato.validado,
-    //         validado_IEEN: candidato.validado_IEEN,
-    //         nombres: candidato.nombres,
-    //         apellido_Paterno: candidato.apellido_Paterno,
-    //         apellido_Materno: candidato.apellido_Materno,
-    //         nombre_Completo: `${candidato.nombres} ${candidato.apellido_Paterno} ${candidato.apellido_Materno}`,
-    //         mote: candidato.mote,
-    //         sexo: candidato.sexo,
-    //         url_Foto: candidato.url_Foto,
-    //         clave_Elector: candidato.clave_Elector,
-    //         rfc: candidato.rfc,
-    //         curp: candidato.curp,
-    //         fecha_Nacimiento: candidato.fecha_Nacimiento,
-    //         ocupacion: candidato.ocupacion,
-    //         telefono: candidato.telefono,
-    //         correo: candidato.correo,
-    //         pertenece_Grupo_Vulnerable_Propietario:
-    //           candidato.pertenece_Grupo_Vulnerable_Propietario,
-    //         grupo_Vulnerable_Propietario:
-    //           candidato.grupo_Vulnerable_Propietario,
-    //         consentimiento_URL: candidato.consentimiento_URL,
-    //         logo_Partido: candidato.logo_Partido,
-    //         partido_Id: candidato.partido_Id,
-    //         edad: candidato.edad,
-    //         tipo_Eleccion_Id: candidato.tipo_Eleccion_Id,
-    //         tipo_Eleccion: candidato.tipo_Eleccion,
-    //       };
-    //     });
-
-    //     this.list_Candidatos_By_Eleccion = Object.groupBy(
-    //       listCandidatos,
-    //       ({ id }) => id
-    //     );
-    //   } catch (error) {
-    //     return {
-    //       success: false,
-    //       data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
-    //     };
-    //   }
-    // },
-
-    //---------------------------------------------------------------------------------
     async loadPropuestasByCandidato(candidato_Id, puesto) {
       try {
         let resp = await api.get(
@@ -469,6 +401,7 @@ export const useCardsStore = defineStore("cards", {
     },
 
     //---------------------------------------------------------------------------------
+
     async loadFormacionAcademicaById(candidato_Id, puesto) {
       try {
         let resp = null;
@@ -493,6 +426,7 @@ export const useCardsStore = defineStore("cards", {
     },
 
     //---------------------------------------------------------------------------------
+
     async loadDatosGeneralesById(candidato_Id, puesto) {
       try {
         let resp = null;
@@ -534,14 +468,22 @@ export const useCardsStore = defineStore("cards", {
     },
 
     //---------------------------------------------------------------------------------
-    async loadCandidatoById(id) {
+
+    async loadCandidatoById(id, puesto) {
       try {
         let resp = null;
         resp = await api.get(`/Candidatos/${id}`);
         if (resp.status == 200) {
           const { success, data } = resp.data;
           if (success == true) {
-            this.candidato.selection = "prop";
+            this.candidato.selection =
+              puesto == 0
+                ? "prop"
+                : puesto == 1
+                ? "sup"
+                : puesto == 2
+                ? "propSin"
+                : "supSin";
             this.candidato.activo = data.activo;
             this.candidato.id = data.id;
             this.candidato.estatus = data.estatus;
@@ -685,5 +627,7 @@ export const useCardsStore = defineStore("cards", {
         };
       }
     },
+
+    //---------------------------------------------------------------------------------
   },
 });

@@ -33,7 +33,6 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
 
         return datosGenerales;
       } catch (error) {
-        console.error(error);
         return {
           success: false,
           data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
@@ -66,7 +65,6 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
 
         return formacionAcademica;
       } catch (error) {
-        console.error(error);
         return {
           success: false,
           data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
@@ -90,7 +88,6 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
         });
         return propuestas;
       } catch (error) {
-        console.error(error);
         return {
           success: false,
           data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
@@ -100,72 +97,30 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
 
     async loadCandidato(id, puesto) {
       try {
-        let resp = await api.get(`/Candidatos/${id}`);
+        let resp = await api.get(`/Candidatos/${id}/${puesto}`);
         let { data } = resp.data;
+
         let datosCandidato = null;
-        // let respPartido = await api.get(`/Partidos_Politicos`);
-        // let partido = respPartido.data.data;
-        // let filtroPartido = partido.find((x) => x.id == data.partido_Id);
-        // let datosCandidato = {
-        //   id: data.id,
-        //   foto: data.url_Foto,
-        //   nombre:
-        //     data.nombres +
-        //     " " +
-        //     data.apellido_Paterno +
-        //     " " +
-        //     data.apellido_Materno,
-        //   candidatura: data.tipo_Eleccion,
-        //   cargo: data.tipo_Candidato,
-        //   partido: filtroPartido.nombre,
-        //   logo_Partido: data.logo_Partido,
-        //   sexo: data.sexo,
-        //   telefono: data.telefono,
-        //   correo: data.correo,
-        //   edad: data.edad,
-        // };
-        if (puesto == 0) {
-          datosCandidato = {
-            id: data.id,
-            foto: data.url_Foto_Propietario,
-            nombre:
-              data.nombres_Propietario +
-              " " +
-              data.apellido_Paterno_Propietario +
-              " " +
-              data.apellido_Materno_Propietario,
-            candidatura: data.tipo_Eleccion,
-            cargo: data.tipo_Candidato,
-            partido: data.partido,
-            logo_Partido: data.url_Logo_Partido_Propietario,
-            sexo: data.sexo_Propietario,
-            telefono: data.telefono_Propietario,
-            correo: data.correo_Propietario,
-            edad: data.edad_Propietario,
-          };
-        } else if (puesto == 1) {
-          datosCandidato = {
-            id: data.id,
-            foto: data.url_Foto_Suplente,
-            nombre:
-              data.nombres_Suplente +
-              " " +
-              data.apellido_Paterno_Suplente +
-              " " +
-              data.apellido_Materno_Suplente,
-            candidatura: data.tipo_Eleccion,
-            cargo: data.tipo_Candidato,
-            partido: data.partido,
-            logo_Partido: data.url_Logo_Partido_Suplente,
-            sexo: data.sexo_Suplente,
-            telefono: data.telefono_Suplente,
-            correo: data.correo_Suplente,
-            edad: data.edad_Suplente,
-          };
-        }
+        datosCandidato = {
+          id: data.id,
+          foto: data.url_Foto,
+          nombre:
+            data.nombres +
+            " " +
+            data.apellido_Paterno +
+            " " +
+            data.apellido_Materno,
+          candidatura: data.tipo_Eleccion,
+          cargo: data.tipo_Candidato,
+          partido: "partido",
+          logo_Partido: data.logo_Partido,
+          sexo: data.sexo,
+          telefono: data.telefono,
+          correo: data.correo,
+          edad: data.edad,
+        };
         return datosCandidato;
       } catch (error) {
-        console.error(error);
         return {
           success: false,
           data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",

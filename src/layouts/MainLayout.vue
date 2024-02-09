@@ -1,5 +1,5 @@
 <template>
-  <q-layout :view="$q.screen.xs ? 'hHh lpR lff' : 'hHh lpR fFf'">
+  <q-layout :view="$q.screen.xs ? 'hHh lpR lff' : 'hHh LpR fFf'">
     <q-header elevated class="bg-pink-ieen" height-hint="98">
       <div class="row bg-grey-3">
         <div class="col-lg-1 col-md-2 col-sm-3 col-xs-3 q-pl-xl q-pt-md">
@@ -53,7 +53,7 @@
                 :key="eleccion.siglas"
                 :name="eleccion.siglas"
                 :label="eleccion.nombre"
-                @click="isTabSelected(eleccion.siglas)"
+                @click="isTabSelected(eleccion.siglas, eleccion.id)"
               />
             </q-tabs>
           </div>
@@ -79,7 +79,7 @@
             </q-btn>
           </div>
           <div
-            v-if="!$q.screen.xs && tab != 'INICIO'"
+            v-if="!$q.screen.xs && !$q.screen.sm"
             class="absolute-right q-pa-xs"
           >
             Exportar base de datos
@@ -92,13 +92,13 @@
         </div>
       </q-toolbar>
     </q-header>
-
     <q-drawer
       v-if="isHomePage || $q.screen.xs"
       show-if-above
       v-model="leftDrawerOpen"
       side="left"
       bordered
+      :breakpoint="700"
       :class="{
         'bg-grey-3': $q.screen.xs,
       }"
@@ -127,6 +127,7 @@
                 @click="activaNumeralia"
                 :to="{
                   name: `${tab}`,
+                  params: { eleccion_Id: tab_Id },
                 }"
                 label="Numeralia"
                 :class="buttons == false ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
@@ -136,6 +137,7 @@
                 rounded
                 :to="{
                   name: `${tab}cards`,
+                  params: { eleccion_Id: tab_Id },
                 }"
                 label="Candidatas y candidatos"
                 :class="buttons ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
@@ -154,6 +156,7 @@
                 >Distrito</q-item-label
               >
               <q-select
+                dense
                 color="purple"
                 rounded
                 outlined
@@ -173,6 +176,7 @@
                 >Municipio</q-item-label
               >
               <q-select
+                dense
                 color="purple"
                 outlined
                 rounded
@@ -192,6 +196,7 @@
                 >Demarcación</q-item-label
               >
               <q-select
+                dense
                 color="purple"
                 outlined
                 bg-color="grey-3"
@@ -207,13 +212,18 @@
                 >Partido político o Coalición</q-item-label
               >
               <q-select
+                dense
                 color="purple"
                 rounded
                 outlined
                 bg-color="grey-3"
                 v-model="actor_politico_Id"
                 :options="list_Partidos_Politicos"
-              />
+              >
+                <q-tooltip>{{
+                  tab == "DIP" ? "Seleccione distrito" : "Seleccione municipio"
+                }}</q-tooltip>
+              </q-select>
             </q-item-section>
           </q-item>
           <q-item :content-inset-level="2" :header-inset-level="2">
@@ -222,6 +232,7 @@
                 >Rango de edad</q-item-label
               >
               <q-select
+                dense
                 color="purple"
                 rounded
                 outlined
@@ -237,6 +248,7 @@
                 >Género</q-item-label
               >
               <q-select
+                dense
                 color="purple"
                 rounded
                 outlined
@@ -270,7 +282,8 @@
             v-ripple
           >
             <q-btn
-              @click="isTabSelected(eleccion.siglas)"
+              v-model="tab"
+              @click="isTabSelected(eleccion.siglas, eleccion.id)"
               rounded
               :to="{
                 name: eleccion.siglas,
@@ -348,14 +361,15 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { useQuasar } from "quasar";
+import { useQuasar, QSpinnerCube } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
 import { onBeforeMount, ref, watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
 import { useConfiguracionStore } from "src/stores/configuracion-store";
-import { getCurrentLocation, getDataDevice } from "../helpers/CurrentLocation";
 import { useGraficasStore } from "src/stores/graficas-store";
+import { getCurrentLocation, getDataDevice } from "../helpers/CurrentLocation";
 import Filtrar from "src/helpers/Filtrar";
+
 //---------------------------------------------------------------------------------
 
 const $q = useQuasar();
@@ -371,10 +385,9 @@ const {
   isHomePage,
   back,
   buttons,
-  info,
   listFiltroCards,
   list_Candidatos_By_Eleccion,
-  list_Group,
+  info,
 } = storeToRefs(cardsStore);
 const {
   list_Tipos_Elecciones,
@@ -385,8 +398,12 @@ const {
   list_Edades,
   list_Sexo,
 } = storeToRefs(configuracionStore);
-const { list_Graficas_By_Eleccion, list_Graficas_Filtrado } =
-  storeToRefs(graficasStore);
+const {
+  list_Graficas_By_Eleccion,
+  list_Graficas_Filtrado,
+  list_Graficas_Genero_Edad,
+  list_Graficas_Genero_Edad_Filtrado,
+} = storeToRefs(graficasStore);
 const distrito_Id = ref(null);
 const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
@@ -396,51 +413,29 @@ const candidatosSelected = ref(false);
 const municipio_Id = ref(null);
 const demarcacion_Id = ref(null);
 const tab = ref("");
+const tab_Id = ref(null);
 
 //---------------------------------------------------------------------------------
 
 onBeforeMount(() => {
-  const savedTab = localStorage.getItem("selectedTab");
+  if (tab.value == "") {
+    tab.value = "inicio";
+    router.push({
+      name: "inicio",
+    });
+  } else {
+    const savedTab = localStorage.getItem("selectedTab");
 
-  if (savedTab) {
-    tab.value = savedTab;
+    if (savedTab) {
+      tab.value = savedTab;
+    }
   }
   limpiarFiltros();
   cargarData();
-  cargar(tab.value);
   //configuracionStore.loadTipoElecciones();
-
-  // let { latitude, longitude } = await getCurrentLocation();
-  // let { brand, model, os } = getDataDevice();
-  // info.value.latitud = latitude;
-  // info.value.longitud = longitude;
-  // info.value.marca = brand;
-  // info.value.modelo = model;
-  // info.value.sistema_Operativo = os;
-  //await cardsStore.infoDeviceConoceles(info.value);
 });
 
-const cargarData = async () => {
-  await configuracionStore.loadTipoElecciones();
-  await configuracionStore.loadDistritos();
-  await configuracionStore.loadPartidosPoliticos();
-  await configuracionStore.loadEdades();
-  await configuracionStore.loadGenero();
-  await configuracionStore.loadMunicipios();
-};
 //---------------------------------------------------------------------------------
-
-watch(list_Distritos, (val) => {
-  if (val != null) {
-    list_Distritos.value.push({ label: "RP" });
-  }
-});
-
-watch(list_Demarcaciones, (val) => {
-  if (val != null) {
-    list_Demarcaciones.value.push({ label: "RP" });
-  }
-});
 
 watch(back, (val) => {
   if (val == true) {
@@ -449,39 +444,99 @@ watch(back, (val) => {
   }
 });
 
-watch(municipio_Id, (val) => {
-  if (val != null) {
-    configuracionStore.loadDemarcaciones(val.value);
+watch(distrito_Id, (val) => {
+  if (tab.value == "DIP") {
+    list_Partidos_Politicos.value = [];
+    if (val.value == 0) {
+      configuracionStore.loadPartidosPoliticos("GeneralDistritos", 0, 0, 0);
+    } else if (val.value != 0 && val.label != "RP") {
+      configuracionStore.loadPartidosPoliticos("Distritos", 0, val.value, 0);
+    } else if (val.value == 99) {
+      configuracionStore.loadPartidosPoliticosDistritosRP();
+    }
   }
 });
 
-watch(tab, (val) => {
-  if (val != null) {
-    graficasStore.loadGraficasByEleccion(
-      val == "DIP" ? 2 : val == "PYS" ? 3 : val == "REG" ? 4 : 1
-    );
+watch(municipio_Id, (val) => {
+  if (tab.value == "PYS" || tab.value == "REG") {
+    demarcacion_Id.value = { value: 0, label: "Todos" };
+    if (val.value == 0 && tab.value == "PYS") {
+      configuracionStore.loadPartidosPoliticos("GeneralMunicipios", 0, 0, 0);
+    } else if (val.value != 0) {
+      configuracionStore.loadPartidosPoliticos("Municipios", val.value, 0, 0);
+      configuracionStore.loadDemarcaciones(val.value);
+    }
   }
 });
+
+watch(demarcacion_Id, (val) => {
+  if (tab.value == "REG") {
+    if (val.value == 0) {
+      configuracionStore.loadPartidosPoliticos("GeneralDemarcacion", 0, 0, 0);
+    } else if (val.value != 0 && val.label != "RP") {
+      configuracionStore.loadPartidosPoliticos(
+        "MunicipioDemarcacion",
+        municipio_Id.value.value,
+        0,
+        val.value
+      );
+    } else if (val.label == "RP") {
+      configuracionStore.loadPartidosPoliticosDemarcacionesRP(
+        municipio_Id.value.value
+      );
+    }
+  }
+});
+
 //---------------------------------------------------------------------------------
 
-const cargar = async (val) => {
-  // await graficasStore.loadGraficasByEleccion(
-  //   val == "DIP" ? 2 : val == "PYS" ? 3 : val == "REG" ? 4 : 1
-  // );
+const cargarData = async () => {
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
+  await configuracionStore.loadTipoElecciones();
+  await configuracionStore.loadDistritos();
+  await configuracionStore.loadEdades();
+  await configuracionStore.loadGenero();
+  await configuracionStore.loadMunicipios();
+  $q.loading.hide();
 };
 
-const isTabSelected = async (nombre) => {
+const cargar = async (val, tab) => {
+  graficasStore.loadGraficasGeneroEdad(val);
+  list_Graficas_By_Eleccion.value = [];
+  list_Partidos_Politicos.value = [];
+
+  if (tab != "inicio") {
+    graficasStore.loadGraficasByEleccion(val);
+  }
+
+  // let { latitude, longitude } = await getCurrentLocation();
+  // let { brand, model, os } = getDataDevice();
+  // info.value.latitud = latitude;
+  // info.value.longitud = longitude;
+  // info.value.marca = brand;
+  // info.value.modelo = model;
+  // info.value.sistema_Operativo = os;
+  // await cardsStore.infoDeviceConoceles(info.value);
+};
+
+const isTabSelected = async (nombre, id) => {
   localStorage.setItem("selectedTab", nombre);
   tab.value = nombre;
-
+  tab_Id.value = id;
+  await cargar(id, tab.value);
   router.push({
     name: nombre,
+    params: { eleccion_Id: id },
   });
-  // listFiltroCards.value = [];
   limpiarFiltros();
 };
-
-//---------------------------------------------------------------------------------
 
 const activaNumeralia = () => {
   cardsStore.actualizarButtonColor(false);
@@ -500,9 +555,8 @@ const limpiarFiltros = () => {
   sexo_Id.value = { value: 0, label: "Todos" };
   municipio_Id.value = { value: 0, label: "Todos" };
   demarcacion_Id.value = { value: 0, label: "Todos" };
+  list_Partidos_Politicos.value = [];
 };
-
-//---------------------------------------------------------------------------------
 
 const obtenerNombre = () => {
   var fechaHora = new Date();
@@ -528,14 +582,136 @@ const exportarBD = async () => {
   $q.loading.hide();
 };
 
-const filtrarGrafica = (
+const filtrarGeneroEdad = async (list_Grafica, filtro) => {
+  let resp = await graficasStore.limpiarLista();
+  if (resp.success == true) {
+    list_Graficas_Genero_Edad_Filtrado.value = list_Grafica.filter((item) => {
+      let cumple = true;
+      if (filtro.distrito !== undefined) {
+        if (filtro.distrito == 0) {
+          cumple = cumple && item.distrito_Id === item.distrito_Id;
+        } else if (filtro.distrito == 99) {
+          if (item.tipo_Candidato === "RP") {
+            cumple = true;
+          } else {
+            cumple = false;
+          }
+        } else {
+          cumple = cumple && item.distrito_Id === filtro.distrito;
+        }
+      }
+
+      if (filtro.municipio !== undefined) {
+        if (filtro.municipio == 0) {
+          cumple = cumple && item.municipio_Id === item.municipio_Id;
+        } else {
+          cumple = cumple && item.municipio_Id === filtro.municipio;
+        }
+      }
+
+      if (filtro.demarcacion !== undefined) {
+        if (filtro.demarcacion == 0) {
+          cumple = cumple && item.demarcacion_Id === item.demarcacion_Id;
+        } else if (filtro.demarcacion == 99) {
+          if (item.tipo_Candidato === "RP") {
+            cumple = true;
+          } else {
+            cumple = false;
+          }
+        } else {
+          if (item.demarcacion_Id === filtro.demarcacion) {
+            cumple = true;
+          } else {
+            cumple = false;
+          }
+        }
+      }
+
+      if (filtro.sexo != undefined) {
+        if (filtro.sexo == "Todos") {
+          cumple = cumple && item.sexo === item.sexo;
+        } else {
+          cumple = cumple && item.sexo === filtro.sexo;
+        }
+      }
+
+      if (filtro.edad != undefined) {
+        if (filtro.edad == "Todos") {
+          cumple = cumple && item.edad > 0;
+        } else {
+          const rango = filtro.edad.split("-").map(Number);
+
+          if (rango.length === 2) {
+            cumple = cumple && item.edad >= rango[0] && item.edad <= rango[1];
+          } else if (filtro.edad == "60 o más") {
+            cumple = cumple && item.edad >= 60;
+          }
+        }
+      }
+
+      if (filtro.actor_politico !== undefined) {
+        if (filtro.actor_politico == 0) {
+          cumple = cumple && item.partido_Id === item.partido_Id;
+        } else {
+          if (filtro.coalicion == true) {
+            cumple = cumple && item.coalicion_Id === filtro.actor_politico;
+          } else {
+            cumple = cumple && item.partido_Id === filtro.actor_politico;
+          }
+        }
+      }
+
+      return cumple;
+    });
+  }
+};
+
+const filtrar = (
   list_Candidatos_By_Eleccion,
   list_Graficas_By_Eleccion,
-  filtro,
-  tab
+  filtro
 ) => {
   list_Graficas_Filtrado.value = list_Graficas_By_Eleccion.filter((item) => {
     let cumple = true;
+    if (filtro.distrito !== undefined) {
+      if (filtro.distrito == 0) {
+        cumple = cumple && item.distrito_Id === item.distrito_Id;
+      } else if (filtro.distrito == 99) {
+        if (item.tipo_Candidato === "RP") {
+          cumple = true;
+        } else {
+          cumple = false;
+        }
+      } else {
+        cumple = cumple && item.distrito_Id === filtro.distrito;
+      }
+    }
+
+    if (filtro.municipio !== undefined) {
+      if (filtro.municipio == 0) {
+        cumple = cumple && item.municipio_Id === item.municipio_Id;
+      } else {
+        cumple = cumple && item.municipio_Id === filtro.municipio;
+      }
+    }
+
+    if (filtro.demarcacion !== undefined) {
+      if (filtro.demarcacion == 0) {
+        cumple = cumple && item.demarcacion_Id === item.demarcacion_Id;
+      } else if (filtro.demarcacion == 99) {
+        if (item.tipo_Candidato === "RP") {
+          cumple = true;
+        } else {
+          cumple = false;
+        }
+      } else {
+        if (item.demarcacion_Id === filtro.demarcacion) {
+          cumple = true;
+        } else {
+          cumple = false;
+        }
+      }
+    }
     if (filtro.sexo != undefined) {
       if (filtro.sexo == "Todos") {
         cumple = cumple && item.sexo === item.sexo;
@@ -543,25 +719,48 @@ const filtrarGrafica = (
         cumple = cumple && item.sexo === filtro.sexo;
       }
     }
+
     if (filtro.edad != undefined) {
       if (filtro.edad == "Todos") {
         cumple = cumple && item.edad > 0;
       } else {
         const rango = filtro.edad.split("-").map(Number);
+
         if (rango.length === 2) {
           cumple = cumple && item.edad >= rango[0] && item.edad <= rango[1];
-        } else if (rango.length === 1 && rango[0] === 60) {
-          cumple = cumple && item.edad >= rango[0];
+        } else if (filtro.edad == "60 o más") {
+          cumple = cumple && item.edad >= 60;
         }
       }
     }
+
+    if (filtro.actor_politico !== undefined) {
+      if (filtro.actor_politico == 0) {
+        cumple = cumple && item.partido_Id === item.partido_Id;
+      } else {
+        if (filtro.coalicion == true) {
+          cumple = cumple && item.coalicion_Id === filtro.actor_politico;
+        } else {
+          cumple = cumple && item.partido_Id === filtro.actor_politico;
+        }
+      }
+    }
+
     return cumple;
   });
+
   listFiltroCards.value = list_Candidatos_By_Eleccion.filter((item) => {
     let cumple = true;
+
     if (filtro.distrito !== undefined) {
       if (filtro.distrito == 0) {
         cumple = cumple && item.distrito_Id === item.distrito_Id;
+      } else if (filtro.distrito == 99) {
+        if (item.tipo_Candidato === "RP") {
+          item.selection = "prop";
+        } else {
+          cumple = false;
+        }
       } else {
         if (item.distrito_Id === filtro.distrito) {
           item.selection = "prop";
@@ -586,6 +785,12 @@ const filtrarGrafica = (
     if (filtro.demarcacion !== undefined) {
       if (filtro.demarcacion == "") {
         cumple = cumple && item.demarcacion_Id === item.demarcacion_Id;
+      } else if (filtro.demarcacion == 99) {
+        if (item.tipo_Candidato === "RP") {
+          item.selection = "prop";
+        } else {
+          cumple = false;
+        }
       } else {
         if (item.demarcacion_Id === filtro.demarcacion) {
           item.selection = "prop";
@@ -599,19 +804,46 @@ const filtrarGrafica = (
       if (filtro.actor_politico == 0) {
         cumple = cumple && item.partido_Id === item.partido_Id;
       } else {
-        const partidos = [
-          { id: item.partido_Id, selection: "prop" },
-          { id: item.partido_Suplente_Id, selection: "sup" },
-          { id: item.partido_Propietario_2_Id, selection: "propSin" },
-          { id: item.partido_Suplente_2_Id, selection: "supSin" },
-        ];
+        if (filtro.coalicion == true) {
+          if (item.coalicion_Id === filtro.actor_politico) {
+            item.selection = "prop";
+          } else {
+            cumple = false;
+          }
+        } else {
+          if (item.is_Coalicion == false) {
+            if (item.partido_Id === filtro.actor_politico) {
+              item.selection = "prop";
+            } else if (item.partido_Suplente_Id === filtro.actor_politico) {
+              item.selection = "sup";
+            } else if (
+              item.partido_Propietario_2_Id === filtro.actor_politico
+            ) {
+              item.selection = "propSin";
+            } else if (item.partido_Suplente_2_Id === filtro.actor_politico) {
+              item.selection = "supSin";
+            } else {
+              cumple = false;
+            }
+          } else {
+            cumple = false;
+          }
+        }
+      }
+    }
 
-        const partidoSeleccionado = partidos.find(
-          (partido) => partido.id === filtro.actor_politico
-        );
-
-        if (partidoSeleccionado) {
-          item.selection = partidoSeleccionado.selection;
+    if (filtro.sexo !== undefined) {
+      if (filtro.sexo == "Todos") {
+        cumple = cumple && item.sexo_Propietario === item.sexo_Propietario;
+      } else {
+        if (item.sexo_Propietario == filtro.sexo) {
+          item.selection = "prop";
+        } else if (item.sexo_Suplente == filtro.sexo) {
+          item.selection = "sup";
+        } else if (item.sexo_Propietario_2 == filtro.sexo) {
+          item.selection = "propSin";
+        } else if (item.sexo_Suplente_2 == filtro.sexo) {
+          item.selection = "supSin";
         } else {
           cumple = false;
         }
@@ -624,28 +856,58 @@ const filtrarGrafica = (
       } else {
         const rango = filtro.edad.split("-").map(Number);
         if (rango.length === 2) {
-          if (
-            item.edad_Propietario >= rango[0] &&
-            item.edad_Propietario <= rango[1]
-          ) {
-            item.selection = "prop";
-          } else if (
-            item.edad_Suplente >= rango[0] &&
-            item.edad_Suplente <= rango[1]
-          ) {
-            item.selection = "sup";
-          } else if (
-            item.edad_Propietario_2 >= rango[0] &&
-            item.edad_Propietario_2 <= rango[1]
-          ) {
-            item.selection = "propSin";
-          } else if (
-            item.edad_Suplente_2 >= rango[0] &&
-            item.edad_Suplente_2 <= rango[1]
-          ) {
-            item.selection = "supSin";
+          if (filtro.sexo != "Todos") {
+            if (
+              item.edad_Propietario >= rango[0] &&
+              item.edad_Propietario <= rango[1] &&
+              item.sexo_Propietario == filtro.sexo
+            ) {
+              item.selection = "prop";
+            } else if (
+              item.edad_Suplente >= rango[0] &&
+              item.edad_Suplente <= rango[1] &&
+              item.sexo_Suplente == filtro.sexo
+            ) {
+              item.selection = "sup";
+            } else if (
+              item.edad_Propietario_2 >= rango[0] &&
+              item.edad_Propietario_2 <= rango[1] &&
+              item.sexo_Propietario_2 == filtro.sexo
+            ) {
+              item.selection = "propSin";
+            } else if (
+              item.edad_Suplente_2 >= rango[0] &&
+              item.edad_Suplente_2 <= rango[1] &&
+              item.sexo_Suplente_2 == filtro.sexo
+            ) {
+              item.selection = "supSin";
+            } else {
+              cumple = false;
+            }
           } else {
-            cumple = false;
+            if (
+              item.edad_Propietario >= rango[0] &&
+              item.edad_Propietario <= rango[1]
+            ) {
+              item.selection = "prop";
+            } else if (
+              item.edad_Suplente >= rango[0] &&
+              item.edad_Suplente <= rango[1]
+            ) {
+              item.selection = "sup";
+            } else if (
+              item.edad_Propietario_2 >= rango[0] &&
+              item.edad_Propietario_2 <= rango[1]
+            ) {
+              item.selection = "propSin";
+            } else if (
+              item.edad_Suplente_2 >= rango[0] &&
+              item.edad_Suplente_2 <= rango[1]
+            ) {
+              item.selection = "supSin";
+            } else {
+              cumple = false;
+            }
           }
         } else if (rango.length === 1) {
           if (item.edad_Propietario >= 60) {
@@ -663,49 +925,39 @@ const filtrarGrafica = (
       }
     }
 
-    if (filtro.sexo !== undefined) {
-      if (filtro.sexo !== "Todos") {
-        const sexos = [
-          { actual: item.sexo_Propietario, selection: "prop" },
-          { actual: item.sexo_Suplente, selection: "sup" },
-          { actual: item.sexo_Propietario_2, selection: "propSin" },
-          { actual: item.sexo_Suplente_2, selection: "supSin" },
-        ];
-
-        const sexoSeleccionado = sexos.find(
-          (sexo) => sexo.actual === filtro.sexo
-        );
-
-        if (sexoSeleccionado) {
-          item.selection = sexoSeleccionado.selection;
-        } else {
-          cumple = false;
-        }
-      }
-    }
-
     return cumple;
   });
 };
+
+//---------------------------------------------------------------------------------
 
 watchEffect(() => {
   if (!$q.screen.xs) {
     const filtro = {};
     if (distrito_Id.value != null) filtro.distrito = distrito_Id.value.value;
-    if (actor_politico_Id.value != null)
-      filtro.actor_politico = actor_politico_Id.value.value;
+    if (actor_politico_Id.value != null) {
+      if (actor_politico_Id.value.is_Coalicion == true) {
+        filtro.actor_politico = actor_politico_Id.value.coalicion_Id;
+        filtro.coalicion = true;
+      } else {
+        filtro.actor_politico = actor_politico_Id.value.value;
+        filtro.coalicion = false;
+      }
+    }
     if (rango_edad_Id.value != null) filtro.edad = rango_edad_Id.value.label;
     if (sexo_Id.value != null) filtro.sexo = sexo_Id.value.label;
     if (municipio_Id.value != null) filtro.municipio = municipio_Id.value.value;
     if (demarcacion_Id.value != null)
       filtro.demarcacion = demarcacion_Id.value.value;
 
+    if (list_Graficas_Genero_Edad.value.length > 0) {
+      filtrarGeneroEdad(list_Graficas_Genero_Edad.value, filtro);
+    }
     if (list_Graficas_By_Eleccion.value.length > 0) {
-      filtrarGrafica(
+      filtrar(
         list_Candidatos_By_Eleccion.value,
         list_Graficas_By_Eleccion.value,
-        filtro,
-        tab.value
+        filtro
       );
     }
   }
@@ -725,6 +977,9 @@ watchEffect(() => {
 }
 .text-purple-ieen {
   color: #673e84 !important;
+}
+.bg-purple-ieen {
+  background-color: #673e84 !important;
 }
 .bg-pink-ieen {
   color: white;
@@ -793,5 +1048,9 @@ watchEffect(() => {
 }
 .text-pink-conoceles {
   color: #d1308a !important;
+}
+
+.sticky {
+  position: sticky;
 }
 </style>

@@ -2,7 +2,7 @@
   <!---------------------------BANNER--------------------------->
   <banner>
     <template v-slot:icono>
-      <q-icon name="error" color="purple-4" />
+      <q-icon name="error" color="purple-ieen" />
     </template>
     <template v-slot:contenido>
       La información es proporcionada por las personas candidatas a las
@@ -15,8 +15,12 @@
   <!---------------------------BUTTON BACK AND PDF--------------------------->
   <div class="row">
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
-      <q-avatar class="bg-purple-4" text-color="white"
-        ><q-btn :to="{ name: 'PYScards' }" flat icon="reply">
+      <q-avatar class="bg-purple-ieen" text-color="white"
+        ><q-btn
+          :to="{ name: 'PYScards', params: { eleccion_Id: props.eleccion_Id } }"
+          flat
+          icon="reply"
+        >
           <q-tooltip>Regresar</q-tooltip>
         </q-btn></q-avatar
       >
@@ -38,7 +42,7 @@
       :disable="activar_pdf == true"
       flat
       icon="picture_as_pdf"
-      class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-4"
+      class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-ieen"
       >Descargar</q-btn
     >
   </div>
@@ -63,7 +67,7 @@
             </q-avatar>
           </div>
           <div class="col-12 q-pb-md" align="center">
-            <div class="text-h6">
+            <div class="text-h6 text-grey-9">
               {{
                 candidato.selection == "prop"
                   ? candidato.nombre_Completo_Propietario
@@ -75,10 +79,12 @@
               }}
             </div>
 
-            <q-avatar square size="40px">
+            <q-avatar style="width: auto; height: 35px" square>
               <img
                 :src="
-                  candidato.selection == 'prop'
+                  candidato.is_Coalicion == true
+                    ? candidato.url_Logo_Coalicion
+                    : candidato.selection == 'prop'
                     ? candidato.url_Logo_Partido_Propietario
                     : candidato.selection == 'sup'
                     ? candidato.url_Logo_Partido_Suplente
@@ -90,18 +96,30 @@
               />
             </q-avatar>
 
-            <div class="q-pa-md" style="text-align: center">
-              <div class="text-subtitle2 text-center">CANDIDATURA</div>
+            <div class="q-pa-lg">
+              <div class="text-subtitle2 text-center text-grey-9">
+                CANDIDATURA
+              </div>
               <q-btn-dropdown
-                color="purple-4"
-                :label="candidato.label || dropdownOptions[0].label"
+                color="purple-ieen"
+                :label="
+                  candidato.selection == 'prop'
+                    ? 'Presidencia propietaria'
+                    : candidato.selection == 'sup'
+                    ? 'Presidencia suplente'
+                    : candidato.selection == 'propSin'
+                    ? 'Sindicatura propietaria'
+                    : 'Sindicatura suplente' || dropdownOptions[0].label
+                "
               >
                 <q-list>
                   <q-item
                     v-for="option in dropdownOptions"
                     :key="option.value"
                     clickable
-                    @click="selectOption(candidato, option)"
+                    @click="
+                      selectOption(candidato, option, candidato.selection)
+                    "
                     v-close-popup
                   >
                     <q-item-section>
@@ -116,13 +134,7 @@
       </div>
     </div>
     <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-      <q-list
-        v-if="isSmallScreen"
-        dark
-        padding
-        bordered
-        class="rounded-borders"
-      >
+      <q-list v-if="$q.screen.xs" dark padding bordered class="rounded-borders">
         <q-expansion-item
           icon="manage_search"
           class="bg-grey-3 text-justify"
@@ -135,8 +147,8 @@
           <q-tabs
             v-model="tab"
             vertical
-            class="text-purple"
-            active-bg-color="purple-3"
+            class="text-purple-ieen"
+            active-bg-color="purple-ieen"
             active-color="white"
           >
             <q-tab
@@ -171,12 +183,12 @@
         <div class="q-gutter-y-md">
           <q-card>
             <q-tabs
-              v-if="!isSmallScreen"
+              v-if="!$q.screen.xs"
               v-model="tab"
               dense
               class="text-grey"
-              active-color="purple-4"
-              indicator-color="purple-4"
+              active-color="purple-ieen"
+              indicator-color="purple-ieen"
               align="justify"
               narrow-indicator
             >
@@ -195,9 +207,7 @@
                 label="PROPUESTA EN MATERIA DE GÉNERO"
               ></q-tab>
             </q-tabs>
-
             <q-separator />
-
             <q-tab-panels v-model="tab" animated>
               <q-tab-panel name="DATOS GENERALES">
                 <div class="row">
@@ -205,7 +215,7 @@
                     class="col-lg-3 col-md-12 col-sm-12 col-xs-12 q-pb-md"
                     align="center"
                   >
-                    <q-avatar size="200px">
+                    <q-avatar size="180px">
                       <q-img
                         :src="
                           candidato.selection == 'prop'
@@ -218,15 +228,17 @@
                         "
                       /> </q-avatar
                     ><br /><br />
-                    <q-avatar square size="55px">
+                    <q-avatar square style="width: auto; height: 35px">
                       <img
                         :src="
-                          candidato.selection == 'prop'
+                          candidato.is_Coalicion == true
+                            ? candidato.url_Logo_Coalicion
+                            : candidato.selection == 'prop'
                             ? candidato.url_Logo_Partido_Propietario
                             : candidato.selection == 'sup'
                             ? candidato.url_Logo_Partido_Suplente
-                            : candidato.selection === 'propSin'
-                            ? candidato.url_Logo_Partido_Suplente_2
+                            : candidato.selection == 'propSin'
+                            ? candidato.url_Logo_Partido_Propietario_2
                             : candidato.url_Logo_Partido_Suplente_2
                         "
                         alt=""
@@ -235,12 +247,14 @@
                   </div>
                   <div
                     :class="
-                      isSmallScreen
+                      $q.screen.xs
                         ? 'text-center col-lg-4 col-md-6 col-sm-12 col-xs-12'
                         : 'col-lg-4 col-md-6 col-sm-12 col-xs-12'
                     "
                   >
-                    <div class="text-h6">Nombre (propietaria/o):</div>
+                    <div class="text-h6 text-grey-9">
+                      Nombre (propietaria/o):
+                    </div>
                     <div class="text-subtitle1">
                       {{
                         candidato.selection == "prop"
@@ -252,7 +266,7 @@
                           : candidato.nombre_Completo_Suplente_2
                       }}
                     </div>
-                    <div class="text-h6">Edad:</div>
+                    <div class="text-h6 text-grey-9">Edad:</div>
                     <div class="text-subtitle1">
                       {{
                         candidato.selection == "prop"
@@ -264,7 +278,7 @@
                           : candidato.edad_Suplente_2
                       }}
                     </div>
-                    <div class="text-h6">Sexo:</div>
+                    <div class="text-h6 text-grey-9">Sexo:</div>
                     <div class="text-subtitle1">
                       {{
                         candidato.selection == "prop"
@@ -279,17 +293,17 @@
                   </div>
                   <div
                     :class="
-                      isSmallScreen
+                      $q.screen.xs
                         ? 'text-center col-lg-4 col-md-6 col-sm-12 col-xs-12'
                         : 'col-lg-4 col-md-6 col-sm-12 col-xs-12'
                     "
                   >
-                    <div class="text-h6">Tipo de elección:</div>
+                    <div class="text-h6 text-grey-9">Tipo de elección:</div>
                     <div class="text-subtitle1">
                       {{ candidato.tipo_Eleccion }} -
                       {{ candidato.tipo_Candidato }}
                     </div>
-                    <div class="text-h6">Cargo:</div>
+                    <div class="text-h6 text-grey-9">Cargo:</div>
                     <div class="text-subtitle1">
                       {{
                         candidato.selection == "prop"
@@ -301,18 +315,19 @@
                           : "Suplente sindico"
                       }}
                     </div>
-                    <div class="text-h6">Estado:</div>
-                    <div class="text-subtitle1">Nayarit</div>
-                    <div class="text-h6">Número de fórmula:</div>
+                    <div class="text-h6 text-grey-9">Estado:</div>
+                    <div class="text-subtitle1 text-grey-9">Nayarit</div>
+                    <div class="text-h6 text-grey-9">Número de fórmula:</div>
                     <div class="text-subtitle1">{{ candidato.id }}</div>
                     <br />
-                    <!-- <div>
-                      <q-icon name="location_on" /> Via Alfredo del Mazo s/n,
-                      Toluca de Lerdo, México, C.P. 50010
+                    <div class="text-grey-9">
+                      <q-icon name="location_on" />{{
+                        datos_Generales.domicilio
+                      }}
                       <br />
-                      <q-icon name="call" /> +52 323-120-9103
+                      <q-icon name="call" /> {{ datos_Generales.telefono }}
                       <br />
-                      <q-icon name="email" /> 12345@gmail.com
+                      <q-icon name="email" /> {{ datos_Generales.email }}
                     </div>
                     <br />
                     <div>
@@ -320,34 +335,43 @@
                         <i
                           class="fa-brands fa-facebook fa-2xl"
                           style="color: #673e84"
-                        ></i>
+                        >
+                          <q-tooltip>{{ datos_Generales.facebook }}</q-tooltip>
+                        </i>
                       </q-btn>
                       <q-btn flat round dense>
                         <i
                           class="fa-brands fa-instagram fa-2xl"
                           style="color: #673e84"
-                        ></i>
+                        >
+                          <q-tooltip>{{
+                            datos_Generales.instagram
+                          }}</q-tooltip></i
+                        >
                       </q-btn>
                       <q-btn flat round dense>
                         <i
                           class="fa-brands fa-twitter fa-2xl"
                           style="color: #673e84"
-                        ></i>
+                        >
+                          <q-tooltip>{{ datos_Generales.twitter }}</q-tooltip>
+                        </i>
                       </q-btn>
                       <q-btn flat round dense>
                         <i
                           class="fa-brands fa-tiktok fa-2xl"
                           style="color: #673e84"
-                        ></i>
+                        >
+                          <q-tooltip>{{ datos_Generales.tik_Tok }}</q-tooltip>
+                        </i>
                       </q-btn>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
               </q-tab-panel>
-
               <q-tab-panel name="HISTORIA PROFESIONAL Y/O LABORAL">
                 <div
-                  class="col-12 bg-blue-grey-4"
+                  class="col-12 bg-purple-ieen"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -370,7 +394,7 @@
                 </div>
                 <br />
                 <div
-                  class="col-12 bg-purple-ieen-3"
+                  class="col-12 bg-purple-3"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -385,7 +409,6 @@
                   }}
                 </div>
               </q-tab-panel>
-
               <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?">
                 <div class="text-subtitle1 text-justify">
                   {{
@@ -395,13 +418,12 @@
                   }}
                 </div>
               </q-tab-panel>
-
               <q-tab-panel name="PROPUESTAS">
                 <div class="text-subtitle1 text-center text-bold q-pb-md">
                   PRINCIPALES PROPUESTAS
                 </div>
                 <div
-                  class="col-12 bg-blue-grey-2"
+                  class="col-12 bg-purple-ieen"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -416,7 +438,7 @@
                   }}
                 </div>
                 <div
-                  class="col-12 bg-blue-grey-4"
+                  class="col-12 bg-purple-3"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -431,10 +453,9 @@
                   }}
                 </div>
               </q-tab-panel>
-
               <q-tab-panel name="PROPUESTA EN MATERIA DE GÉNERO">
                 <div
-                  class="col-12 bg-purple-ieen-3"
+                  class="col-12 bg-purple-ieen"
                   style="border-radius: 10px; color: white"
                 >
                   <div class="text-subtitle2" align="center">
@@ -460,6 +481,7 @@
 </template>
 
 <script setup>
+import { useQuasar } from "quasar";
 import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
@@ -469,7 +491,7 @@ import ReporteConoceles01 from "src/helpers/Conoceles-01";
 
 //---------------------------------------------------------------------------------
 
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
+const $q = useQuasar();
 const candidatosStore = useCardsStore();
 const { candidato, formacion, datos_Generales, list_Propuestas } =
   storeToRefs(candidatosStore);
@@ -484,6 +506,8 @@ const open_tab = ref(false);
 const activar_pdf = ref(false);
 const props = defineProps({
   id: { type: String, required: true },
+  puesto: { type: String, required: true },
+  eleccion_Id: { type: String, required: true },
 });
 
 //---------------------------------------------------------------------------------
@@ -492,25 +516,33 @@ onMounted(() => {
   candidatosStore.actualizarButtonColor(true);
 });
 
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
-
 //---------------------------------------------------------------------------------
 
-const selectOption = (candidato, option) => {
+const selectOption = async (candidato, option, val) => {
+  $q.loading.show();
   candidato.selection = option.value;
   candidato.label = option.label;
+  candidatosStore.initDatosGenerales();
+  await candidatosStore.loadFormacionAcademicaById(
+    props.id,
+    val == "prop" ? 0 : 1
+  );
+  await candidatosStore.loadDatosGeneralesById(props.id, val == "prop" ? 0 : 1);
+  await candidatosStore.loadPropuestasByCandidato(
+    props.id,
+    val == "prop" ? 0 : 1
+  );
+  $q.loading.hide();
 };
+
 const pdf = async (id, puesto) => {
+  $q.loading.show();
   ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {
     activar_pdf.value = false;
   }, 5000);
+  $q.loading.hide();
 };
 
 //---------------------------------------------------------------------------------

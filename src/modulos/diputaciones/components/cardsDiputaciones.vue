@@ -21,21 +21,16 @@
       Buscar por candidatura:
       <q-radio
         v-model="shape"
-        color="blue-grey-14"
+        color="purple-ieen"
         val="prop"
         label="Propietaria"
       />
-      <q-radio
-        v-model="shape"
-        color="blue-grey-14"
-        val="sup"
-        label="Suplente"
-      />
+      <q-radio v-model="shape" color="purple-ieen" val="sup" label="Suplente" />
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
       <q-input
         v-model="filtro"
-        color="purple"
+        color="purple-ieen"
         dense
         debounce="300"
         placeholder="Ingrese un nombre"
@@ -53,10 +48,10 @@
   </div> -->
 
   <template v-if="listFiltroCards.length == 0"
-    ><div class="absolute-center text-h6 text-grey-8">
+    ><div class="absolute-bottom-center text-h6 text-grey-8">
       No hay información con los filtros seleccionados...
-    </div></template
-  >
+    </div>
+  </template>
   <template v-else>
     <div class="q-pa-md row items-start q-gutter-md flex flex-center">
       <q-card
@@ -81,43 +76,55 @@
           </div>
         </div>
         <q-card-section class="q-pt-none">
-          <div class="text-subtitle2 text-center">
+          <div class="text-subtitle2 text-center text-grey-9">
             {{
               item.selection == "prop"
                 ? item.nombre_Completo_Propietario
                 : item.nombre_Completo_Suplente
             }}
           </div>
+          <div class="text-subtitle2 text-center text-grey-8">
+            {{
+              item.selection == "prop"
+                ? item.mote_Propietario
+                : item.mote_Suplente
+            }}
+          </div>
+          <div class="row text-center">
+            <div class="text-caption text-grey-8 col-6">
+              EDAD:
+              {{
+                item.selection == "prop"
+                  ? item.edad_Propietario
+                  : item.edad_Suplente
+              }}
+            </div>
+            <div class="text-caption text-grey-8 col-6">
+              Género:
+              {{
+                item.selection == "prop"
+                  ? item.sexo_Propietario
+                  : item.sexo_Suplente
+              }}
+            </div>
+          </div>
         </q-card-section>
-        <div class="row text-center">
-          <div class="text-caption text-grey col-6">
-            EDAD:
-            {{
-              item.selection == "prop"
-                ? item.edad_Propietario
-                : item.edad_Suplente
-            }}
-          </div>
-          <div class="text-caption text-grey col-6">
-            Género:
-            {{
-              item.selection == "prop"
-                ? item.sexo_Propietario
-                : item.sexo_Suplente
-            }}
-          </div>
-        </div>
 
         <q-card-section>
-          <div class="row">
-            <div class="col text-subtitle2 ellipsis">
-              Distrito
-              {{ item.no_Distrito }}
-            </div>
-            <q-avatar square size="35px">
+          <div class="row text-subtitle2 flex-center text-grey-9">
+            Distrito
+            {{ item.no_Distrito }}
+          </div>
+          <div class="row text-subtitle2 flex-center text-grey-8">
+            {{ item.distrito }}
+          </div>
+          <div class="row no-wrap items-center flex-center">
+            <q-avatar style="width: auto; height: 28px" square>
               <img
                 :src="
-                  item.selection == 'prop'
+                  item.is_Coalicion == true
+                    ? item.url_Logo_Coalicion
+                    : item.selection == 'prop'
                     ? item.url_Logo_Partido_Propietario
                     : item.url_Logo_Partido_Suplente
                 "
@@ -125,26 +132,20 @@
               />
             </q-avatar>
           </div>
-          <div class="row">
-            <div class="text-subtitle2 ellipsis">
-              {{ item.distrito }}
-            </div>
+          <div class="text-subtitle2 text-center q-pt-lg text-grey-9">
+            CANDIDATURA {{ item.tipo_Candidato }}
           </div>
-        </q-card-section>
-        <q-card-section>
-          <div>
-            <div class="text-subtitle2 text-center">CANDIDATURA</div>
-            <q-btn-toggle
-              v-model="item.selection"
-              push
-              glossy
-              toggle-color="purple-4"
-              :options="[
-                { label: 'Propietaria', value: 'prop' },
-                { label: 'Suplente', value: 'sup' },
-              ]"
-            />
-          </div>
+          <q-btn-toggle
+            v-model="item.selection"
+            push
+            glossy
+            toggle-color="purple-ieen"
+            class="text-grey-9"
+            :options="[
+              { label: 'Propietaria', value: 'prop' },
+              { label: 'Suplente', value: 'sup' },
+            ]"
+          />
         </q-card-section>
         <q-separator />
         <q-card-actions>
@@ -152,7 +153,7 @@
             <q-btn
               :to="{ name: 'diputacionesDetalle' }"
               flat
-              class="text-purple-4"
+              class="text-purple-ieen"
               @click="verMas(item.id, item.selection == 'prop' ? 0 : 1)"
             >
               VER MÁS
@@ -164,7 +165,7 @@
               @click="pdf(item.id, item.selection == 'prop' ? 0 : 1)"
               flat
               icon="picture_as_pdf"
-              color="purple-4"
+              color="purple-ieen"
             >
               <q-tooltip>PDF</q-tooltip>
             </q-btn>
@@ -181,13 +182,20 @@
         input
         input-class="text-purple"
       />
+      <q-select
+        color="purple"
+        outlined
+        dense
+        v-model="elementosPorPage"
+        :options="num_Paginas"
+      ></q-select>
     </div>
   </template>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
-import { onBeforeMount, onMounted, ref, watch } from "vue";
+import { onBeforeMount, onMounted, ref, watch, defineProps } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useCardsStore } from "src/stores/cards-store";
@@ -204,9 +212,14 @@ const { listFiltroCards, list_Candidatos_By_Eleccion, list_Group } =
 const filtro = ref("");
 const listCardsFiltro = ref();
 const shape = ref("prop");
-let pageActual = ref("");
-let paginas = ref("");
+const pageActual = ref("");
+const paginas = ref("");
 const activar_pdf = ref(false);
+const elementosPorPage = ref(5);
+const num_Paginas = ref([5, 10, 15, 25, 50]);
+const props = defineProps({
+  eleccion_Id: { type: String, required: true },
+});
 
 //---------------------------------------------------------------------------------
 
@@ -215,16 +228,19 @@ onMounted(() => {
 });
 
 const cargarData = async () => {
+  $q.loading.show();
   cardsStore.actualizarMenu(true);
-  await cardsStore.loadCandidatosByEleccion(2);
+  cardsStore.actualizarButtonColor(true);
+  await cardsStore.loadCandidatosByEleccion(props.eleccion_Id);
+  $q.loading.hide();
 };
 //---------------------------------------------------------------------------------
 
 watch(listFiltroCards, (val) => {
   if (val != null) {
-    listCardsFiltro.value = val;
     if (val.length > 0) {
       pageActual.value = 1;
+      cargarPaginas();
     }
   }
 });
@@ -255,23 +271,32 @@ watch(shape, (val) => {
 
 //---------------------------------------------------------------------------------
 //PAGINATION
-const elementosPorPage = 5;
-watch(pageActual, (val) => {
-  if (val != null) {
-    const pag = listFiltroCards.value.length / elementosPorPage;
 
-    if (pag % 1 !== 0) {
-      paginas.value = pag + 1;
-    } else {
-      paginas.value = pag;
-    }
-    mostrarElementosPage(val);
+watch(elementosPorPage, (val) => {
+  if (val != null) {
+    cargarPaginas();
   }
 });
 
+watch(pageActual, (val) => {
+  if (val != null) {
+    cargarPaginas();
+  }
+});
+
+const cargarPaginas = () => {
+  let pag = listFiltroCards.value.length / elementosPorPage.value;
+  if (pag % 1 !== 0) {
+    paginas.value = pag + 1;
+  } else {
+    paginas.value = pag;
+  }
+  mostrarElementosPage(pageActual.value);
+};
+
 const mostrarElementosPage = (pagina) => {
-  const inicio = (pagina - 1) * elementosPorPage;
-  const fin = inicio + elementosPorPage;
+  const inicio = (pagina - 1) * elementosPorPage.value;
+  const fin = inicio + elementosPorPage.value;
   const elementos = listFiltroCards.value.slice(inicio, fin);
   listCardsFiltro.value = elementos;
 };
@@ -281,23 +306,25 @@ const mostrarElementosPage = (pagina) => {
 const verMas = async (id, puesto) => {
   $q.loading.show();
   cardsStore.initDatosGenerales();
-  await cardsStore.loadCandidatoById(id);
+  await cardsStore.loadCandidatoById(id, puesto);
   await cardsStore.loadFormacionAcademicaById(id, puesto);
   await cardsStore.loadDatosGeneralesById(id, puesto);
   await cardsStore.loadPropuestasByCandidato(id, puesto);
   router.push({
     name: "diputacionesDetalle",
-    params: { id: id, puesto: puesto },
+    params: { id: id, puesto: puesto, eleccion_Id: props.eleccion_Id },
   });
   $q.loading.hide();
 };
 
 const pdf = async (id, puesto) => {
-  ReporteConoceles01(id, puesto);
+  $q.loading.show();
+  await ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {
     activar_pdf.value = false;
-  }, 5000);
+  }, 3000);
+  $q.loading.hide();
 };
 </script>
 

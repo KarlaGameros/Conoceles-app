@@ -13,7 +13,7 @@
         alt="PREP logo"
         src="../assets/opcion2.png"
         :style="
-          isSmallScreen
+          $q.screen.xs
             ? 'width: 400px; height: 350px'
             : 'width: 650px; height: 550px'
         "
@@ -35,7 +35,6 @@ import { onMounted, ref, watch } from "vue";
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 //---------------------------------------------------------------------------------
 
@@ -44,13 +43,6 @@ onMounted(() => {
 });
 
 //---------------------------------------------------------------------------------
-
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 </script>
 <style scoped>
 @media screen and (max-width: 780px) {

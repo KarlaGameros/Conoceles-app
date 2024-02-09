@@ -13,14 +13,14 @@ import { useGraficasStore } from "src/stores/graficas-store";
 import { onMounted, ref, watch } from "vue";
 
 const graficasStore = useGraficasStore();
-const { list_Graficas_Filtrado } = storeToRefs(graficasStore);
+const { list_Graficas_Genero_Edad_Filtrado } = storeToRefs(graficasStore);
 const series = ref([]);
 
 onMounted(() => {
   rellenar_grafica();
 });
 
-watch(list_Graficas_Filtrado, (val) => {
+watch(list_Graficas_Genero_Edad_Filtrado, (val) => {
   series.value = [];
   if (val != null) {
     rellenar_grafica();
@@ -28,19 +28,20 @@ watch(list_Graficas_Filtrado, (val) => {
 });
 
 const rellenar_grafica = () => {
-  const mujeres = list_Graficas_Filtrado.value.filter(
+  const mujeres = list_Graficas_Genero_Edad_Filtrado.value.filter(
     (candidato) => candidato.sexo === "Mujer"
   );
-  const hombres = list_Graficas_Filtrado.value.filter(
+  const hombres = list_Graficas_Genero_Edad_Filtrado.value.filter(
     (candidato) => candidato.sexo === "Hombre"
   );
-  const noBinario = list_Graficas_Filtrado.value.filter(
+  const noBinario = list_Graficas_Genero_Edad_Filtrado.value.filter(
     (candidato) => candidato.sexo === "No binario"
   );
+
   series.value.push(mujeres.length, hombres.length, noBinario.length);
 };
 
-const colors = ["#af7ead", "#dcbadb", "#f3e0f4"];
+const colors = ["#dcbadb", "#af7ead", "#a46aba"];
 
 const chartOptions = {
   chart: {

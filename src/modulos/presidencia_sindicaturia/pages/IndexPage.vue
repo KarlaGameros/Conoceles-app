@@ -25,7 +25,6 @@ import filtros from "../../../components/filtrosComp.vue";
 
 //---------------------------------------------------------------------------------
 
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const cardsStore = useCardsStore();
 
 //---------------------------------------------------------------------------------
@@ -33,15 +32,6 @@ const cardsStore = useCardsStore();
 onMounted(() => {
   cardsStore.actualizarMenu(true);
 });
-
-//---------------------------------------------------------------------------------
-
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 
 //---------------------------------------------------------------------------------
 </script>

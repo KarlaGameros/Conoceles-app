@@ -10,38 +10,42 @@ const routes = [
         component: () => import("pages/IndexPage.vue"),
       },
       {
-        path: "/diputaciones",
+        path: "/diputaciones/:eleccion_Id",
         name: "DIP",
+        props: true,
         component: () => import("../modulos/diputaciones/pages/IndexPage"),
       },
       {
-        path: "/diputacionesCards",
+        path: "/diputacionesCards/:eleccion_Id",
         name: "DIPcards",
+        props: true,
         component: () => import("../modulos/diputaciones/pages/CardsPage"),
       },
       {
-        path: "/diputacionesDetalle/:id/:puesto",
+        path: "/diputacionesDetalle/:id/:puesto/:eleccion_Id",
         name: "diputacionesDetalle",
         props: true,
         component: () =>
           import("../modulos/diputaciones/pages/DetalleCandidatoPage"),
       },
       {
-        path: "/presidenciaSindicatura",
+        path: "/presidenciaSindicatura/:eleccion_Id",
         name: "PYS",
+        props: true,
         component: () =>
           import("../modulos/presidencia_sindicaturia/pages/IndexPage"),
       },
       {
-        path: "/cardsPresidenciaSindicatura",
+        path: "/cardsPresidenciaSindicatura/:eleccion_Id",
         name: "PYScards",
+        props: true,
         component: () =>
           import(
             "../modulos/presidencia_sindicaturia/pages/CardsPresidenciaPage"
           ),
       },
       {
-        path: "/detallePresidenciaSindicatura/:id/:puesto",
+        path: "/detallePresidenciaSindicatura/:id/:puesto/:eleccion_Id",
         name: "detallePresidenciaSindicatura",
         props: true,
         component: () =>
@@ -50,18 +54,20 @@ const routes = [
           ),
       },
       {
-        path: "/regidurias",
+        path: "/regidurias/:eleccion_Id",
         name: "REG",
+        props: true,
         component: () => import("../modulos/regidurias/pages/IndexPage"),
       },
       {
-        path: "/cardsRegidurias",
+        path: "/cardsRegidurias/:eleccion_Id",
         name: "REGcards",
+        props: true,
         component: () =>
           import("../modulos/regidurias/pages/CardsRegiduriasPage"),
       },
       {
-        path: "/detalleRegidurias/:id/:puesto",
+        path: "/detalleRegidurias/:id/:puesto/:eleccion_Id",
         name: "detalleRegidurias",
         props: true,
         component: () =>

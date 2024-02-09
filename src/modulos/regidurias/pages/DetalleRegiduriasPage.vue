@@ -15,7 +15,11 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <DetalleCandidatosRegidurias :id="props.id" />
+    <DetalleCandidatosRegidurias
+      :id="props.id"
+      :puesto="props.puesto"
+      :eleccion_Id="props.eleccion_Id"
+    />
   </q-page>
 </template>
 
@@ -31,8 +35,8 @@ const cardsStore = useCardsStore();
 const props = defineProps({
   id: { type: String, required: true },
   puesto: { type: String, required: true },
+  eleccion_Id: { type: String, required: true },
 });
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 
 //---------------------------------------------------------------------------------
 
@@ -42,19 +46,12 @@ onMounted(() => {
 
 const cargarData = async () => {
   cardsStore.actualizarMenu(true);
-  await cardsStore.loadCandidatoById(props.id);
+  await cardsStore.loadCandidatoById(props.id, props.puesto);
   await cardsStore.loadFormacionAcademicaById(props.id, props.puesto);
   await cardsStore.loadDatosGeneralesById(props.id, props.puesto);
   await cardsStore.loadPropuestasByCandidato(props.id, props.puesto);
 };
 //---------------------------------------------------------------------------------
-
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 </script>
 
 <style></style>

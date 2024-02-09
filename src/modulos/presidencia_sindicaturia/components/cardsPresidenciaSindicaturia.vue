@@ -21,7 +21,7 @@
       Buscar por candidatura:
       <q-btn-dropdown
         :label="options || dropdownOptions[0].label"
-        color="purple-4"
+        color="purple-ieen"
       >
         <q-list>
           <q-item
@@ -55,7 +55,7 @@
   </div>
   <!---------------------------CARDS--------------------------->
   <template v-if="listFiltroCards.length == 0"
-    ><div class="absolute-center text-h6 text-grey-8">
+    ><div class="absolute-bottom-center text-h6 text-grey-8">
       No hay información con los filtros seleccionados...
     </div>
   </template>
@@ -87,7 +87,7 @@
           </div>
         </div>
         <q-card-section class="q-pt-none">
-          <div class="text-subtitle2 text-center">
+          <div class="text-subtitle2 text-center text-grey-9">
             {{
               item.selection == "prop"
                 ? item.nombre_Completo_Propietario
@@ -98,7 +98,7 @@
                 : item.nombre_Completo_Suplente_2
             }}
           </div>
-          <div class="text-subtitle2 text-center text-grey-7">
+          <div class="text-subtitle2 text-center text-grey-8">
             {{
               item.selection == "prop"
                 ? item.mote_Propietario
@@ -138,22 +138,18 @@
         </q-card-section>
 
         <q-card-section>
-          <div class="col text-overline flex-center">
+          <div class="row text-subtitle2 flex-center text-grey-9">
             Municipio de {{ item.municipio }}
           </div>
           <div class="row no-wrap items-center flex-center">
-            <q-avatar square size="35px">
+            <q-avatar square style="width: auto; height: 28px">
               <img
                 :src="
-                  item.selection == 'prop'
+                  item.is_Coalicion == true
+                    ? item.url_Logo_Coalicion
+                    : item.selection == 'prop'
                     ? item.url_Logo_Partido_Propietario
-                    : item.selection == 'sup'
-                    ? item.url_Logo_Partido_Suplente
-                    : item.selection == 'propSin'
-                    ? item.url_Logo_Partido_Propietario_2
-                    : item.selection == 'supSin'
-                    ? item.url_Logo_Partido_Suplente_2
-                    : ''
+                    : item.url_Logo_Partido_Suplente
                 "
                 alt=""
               />
@@ -161,10 +157,12 @@
           </div>
         </q-card-section>
         <q-card-section class="q-pa-xs">
-          <div class="text-subtitle2 text-center">CANDIDATURA</div>
+          <div class="text-subtitle2 text-center q-pt-lg text-grey-9">
+            CANDIDATURA {{ item.tipo_Candidato }}
+          </div>
           <div class="q-mb-md" style="text-align: center">
             <q-btn-dropdown
-              color="purple-4"
+              color="purple-ieen"
               :label="
                 item.selection == 'prop'
                   ? 'Presidencia propietaria'
@@ -197,7 +195,7 @@
             <q-btn
               :to="{ name: 'detallePresidenciaSindicatura' }"
               flat
-              class="text-purple-4"
+              class="text-purple-ieen"
               @click="
                 verMas(
                   item.id,
@@ -231,7 +229,7 @@
               "
               flat
               icon="picture_as_pdf"
-              color="purple-4"
+              color="purple-ieen"
             >
               <q-tooltip>PDF</q-tooltip>
             </q-btn>
@@ -248,13 +246,20 @@
         input
         input-class="text-purple"
       />
+      <q-select
+        color="purple"
+        outlined
+        dense
+        v-model="elementosPorPage"
+        :options="num_Paginas"
+      ></q-select>
     </div>
   </template>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, defineProps } from "vue";
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import { useRouter } from "vue-router";
@@ -277,11 +282,15 @@ const dropdownOptions = [
 const options = ref("");
 const filtro = ref("");
 const listCardsFiltro = ref();
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const router = useRouter();
 let pageActual = ref("");
 let paginas = ref("");
 const activar_pdf = ref(false);
+const elementosPorPage = ref(5);
+const num_Paginas = ref([5, 10, 15, 25, 50]);
+const props = defineProps({
+  eleccion_Id: { type: String, required: true },
+});
 
 //---------------------------------------------------------------------------------
 
@@ -295,24 +304,20 @@ onMounted(() => {
 //---------------------------------------------------------------------------------
 
 const cargarData = async () => {
-  await candidatosStore.loadCandidatosByEleccion(3);
+  $q.loading.show();
+  await candidatosStore.loadCandidatosByEleccion(props.eleccion_Id);
+  $q.loading.hide();
 };
 
 watch(listFiltroCards, (val) => {
   if (val != null) {
-    listCardsFiltro.value = val;
+    //listCardsFiltro.value = val;
     if (val.length > 0) {
       pageActual.value = 1;
+      cargarPaginas();
     }
   }
 });
-
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 
 watch(filtro, (val) => {
   if (val.length == 0) {
@@ -340,35 +345,49 @@ watch(filtro, (val) => {
 
 //---------------------------------------------------------------------------------
 //PAGINATION
-const elementosPorPage = 5;
+
+watch(elementosPorPage, (val) => {
+  if (val != null) {
+    cargarPaginas();
+  }
+});
+
 watch(pageActual, (val) => {
-  const pag = listFiltroCards.value.length / elementosPorPage;
+  if (val != null) {
+    cargarPaginas();
+  }
+});
+
+const cargarPaginas = () => {
+  let pag = listFiltroCards.value.length / elementosPorPage.value;
   if (pag % 1 !== 0) {
     paginas.value = pag + 1;
   } else {
     paginas.value = pag;
   }
-  mostrarElementosPage(val);
-});
-const mostrarElementosPage = (pagina) => {
-  const inicio = (pagina - 1) * elementosPorPage;
-  const fin = inicio + elementosPorPage;
-  const elementos = listFiltroCards.value.slice(inicio, fin);
+  mostrarElementosPage(pageActual.value);
+};
 
+const mostrarElementosPage = (pagina) => {
+  const inicio = (pagina - 1) * elementosPorPage.value;
+  const fin = inicio + elementosPorPage.value;
+  const elementos = listFiltroCards.value.slice(inicio, fin);
   listCardsFiltro.value = elementos;
 };
 
 //---------------------------------------------------------------------------------
 
 const verMas = async (id, puesto) => {
-  await candidatosStore.loadCandidatoById(id);
+  $q.loading.show();
+  await candidatosStore.loadCandidatoById(id, puesto);
   await candidatosStore.loadFormacionAcademicaById(id, puesto);
   await candidatosStore.loadDatosGeneralesById(id, puesto);
   await candidatosStore.loadPropuestasByCandidato(id, puesto);
   router.push({
     name: "detallePresidenciaSindicatura",
-    params: { id: id, puesto: puesto },
+    params: { id: id, puesto: puesto, eleccion_Id: props.eleccion_Id },
   });
+  $q.loading.hide();
 };
 
 const selectOption = (item, option) => {
@@ -383,11 +402,13 @@ const selectOptionFiltro = (option) => {
   });
 };
 const pdf = async (id, puesto) => {
-  ReporteConoceles01(id, puesto);
+  $q.loading.show();
+  await ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {
     activar_pdf.value = false;
-  }, 5000);
+  }, 3000);
+  $q.loading.hide();
 };
 //---------------------------------------------------------------------------------
 </script>

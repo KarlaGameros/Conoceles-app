@@ -2,7 +2,7 @@
   <!---------------------------BANNER--------------------------->
   <banner>
     <template v-slot:icono>
-      <q-icon name="badge" color="purple-4" />
+      <q-icon name="badge" color="purple-ieen" />
     </template>
     <template v-slot:contenido>
       En este espacio tendrás la oportunidad de conocer a las personas
@@ -20,21 +20,16 @@
       Buscar por candidatura:
       <q-radio
         v-model="shape"
-        color="blue-grey-14"
+        color="purple-ieen"
         val="prop"
         label="Propietaria"
       />
-      <q-radio
-        v-model="shape"
-        color="blue-grey-14"
-        val="sup"
-        label="Suplente"
-      />
+      <q-radio v-model="shape" color="purple-ieen" val="sup" label="Suplente" />
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
       <q-input
         v-model="filtro"
-        color="purple"
+        color="purple-ieen"
         dense
         debounce="300"
         placeholder="Ingrese un nombre"
@@ -47,138 +42,12 @@
   </div>
   <!---------------------------CARDS--------------------------->
   <template v-if="listFiltroCards.length == 0"
-    ><div class="absolute-center text-h6 text-grey-8">
+    ><div class="absolute-bottom-center text-h6 text-grey-8">
       No hay información con los filtros seleccionados...
     </div>
   </template>
   <template v-else>
-    <div class="row items-start q-gutter-md flex flex-center">
-      <!-- <q-card
-        v-for="item in listCardsFiltro"
-        :key="item.id"
-        class="col-lg-2 col-md-2 col-sm-3 col-xs-12"
-        flat
-        bordered
-        style="width: 255px"
-      >
-        <div class="" style="text-align: center">
-          <div class="q-pt-md">
-            <q-avatar size="100px">
-              <q-img
-                :src="
-                  item.selection == 'prop'
-                    ? item.url_Foto_Propietario
-                    : item.url_Foto_Suplente
-                "
-              />
-            </q-avatar>
-          </div>
-        </div>
-
-        <q-card-section>
-          <div class="text-subtitle2 text-center">
-            {{
-              item.selection == "prop"
-                ? item.nombre_Completo_Propietario
-                : item.nombre_Completo_Suplente
-            }}
-          </div>
-          <div class="text-subtitle2 text-center">
-            {{
-              item.selection == "prop"
-                ? item.mote_Propietario == null
-                  ? ""
-                  : `"${item.mote_Propietario}"`
-                : item.mote_Suplente == null
-                ? ""
-                : `"${item.mote_Suplente}"`
-            }}
-          </div>
-          <div class="row text-center">
-            <div class="text-caption text-grey col-6">
-              EDAD:
-              {{
-                item.selection == "prop"
-                  ? item.edad_Propietario
-                  : item.edad_Suplente
-              }}
-            </div>
-            <div class="text-caption text-grey col-6">
-              SEXO:
-              {{
-                item.selection == "prop"
-                  ? item.sexo_Propietario
-                  : item.sexo_Suplente
-              }}
-            </div>
-          </div>
-        </q-card-section>
-
-        <q-card-section>
-          <div class="row text-overline flex-center">
-            Municipio de {{ item.municipio }}
-          </div>
-          <div class="row text-overline flex-center">
-            {{ item.demarcacion }}
-          </div>
-          <div class="row no-wrap items-center flex-center">
-            <q-avatar
-              square
-              size="35px"
-              v-if="item.url_Logo_Partido_Propietario != null"
-            >
-              <img
-                :src="
-                  item.selection == 'prop'
-                    ? item.url_Logo_Partido_Propietario
-                    : item.url_Logo_Partido_Suplente
-                "
-                alt=""
-              />
-            </q-avatar>
-          </div>
-        </q-card-section>
-        <q-card-section>
-          <div>
-            <q-btn-toggle
-              v-model="item.selection"
-              push
-              glossy
-              toggle-color="purple-4"
-              :options="[
-                { label: 'Propietario', value: 'prop' },
-                { label: 'Suplente', value: 'sup' },
-              ]"
-            />
-          </div>
-        </q-card-section>
-
-        <q-separator />
-
-        <q-card-actions>
-          <div class="col-10">
-            <q-btn
-              :to="{ name: 'detalleRegidurias' }"
-              flat
-              class="text-purple-4"
-              @click="verMas(item.id, item.selection == 'prop' ? 0 : 1)"
-            >
-              VER MÁS
-            </q-btn>
-          </div>
-          <div class="col-2">
-            <q-btn
-              :disable="activar_pdf == true"
-              @click="pdf(item.id, item.selection == 'prop' ? 0 : 1)"
-              flat
-              icon="picture_as_pdf"
-              color="purple-4"
-            >
-              <q-tooltip>PDF</q-tooltip>
-            </q-btn>
-          </div>
-        </q-card-actions>
-      </q-card> -->
+    <div class="q-pa-md row items-start q-gutter-md flex flex-center">
       <q-card
         v-for="item in listCardsFiltro"
         :key="item"
@@ -201,18 +70,22 @@
           </div>
         </div>
         <q-card-section class="q-pt-none">
-          <div class="text-subtitle2 text-center">
+          <div class="text-subtitle2 text-center text-grey-9">
             {{
               item.selection == "prop"
                 ? item.nombre_Completo_Propietario
                 : item.nombre_Completo_Suplente
             }}
           </div>
-          <!-- <div class="text-subtitle2 text-center text-grey-7">
-            {{ item.selection == "prop" ? item.prop.mote : item.sup.mote }}
-          </div> -->
+          <div class="text-subtitle2 text-center text-grey-8">
+            {{
+              item.selection == "prop"
+                ? item.mote_Propietario
+                : item.mote_Suplente
+            }}
+          </div>
           <div class="row text-center">
-            <div class="text-caption text-grey col-6">
+            <div class="text-caption text-grey-8 col-6">
               EDAD:
               {{
                 item.selection == "prop"
@@ -220,7 +93,7 @@
                   : item.edad_Suplente
               }}
             </div>
-            <div class="text-caption text-grey col-6">
+            <div class="text-caption text-grey-8 col-6">
               Género:
               {{
                 item.selection == "prop"
@@ -232,21 +105,19 @@
         </q-card-section>
 
         <q-card-section>
-          <div class="row text-overline flex-center">
+          <div class="row text-subtitle2 flex-center text-grey-9">
             Municipio de {{ item.municipio }}
           </div>
-          <div class="row text-overline flex-center">
+          <div class="row text-subtitle2 flex-center text-grey-8">
             {{ item.demarcacion }}
           </div>
           <div class="row no-wrap items-center flex-center">
-            <q-avatar
-              square
-              size="35px"
-              v-if="item.url_Logo_Partido_Propietario != null"
-            >
+            <q-avatar style="width: auto; height: 28px" square>
               <img
                 :src="
-                  item.selection == 'prop'
+                  item.is_Coalicion == true
+                    ? item.url_Logo_Coalicion
+                    : item.selection == 'prop'
                     ? item.url_Logo_Partido_Propietario
                     : item.url_Logo_Partido_Suplente
                 "
@@ -254,21 +125,20 @@
               />
             </q-avatar>
           </div>
-        </q-card-section>
-        <q-card-section>
-          <div>
-            <div class="text-subtitle2 text-center">CANDIDATURA</div>
-            <q-btn-toggle
-              v-model="item.selection"
-              push
-              glossy
-              toggle-color="purple-4"
-              :options="[
-                { label: 'Propietaria', value: 'prop' },
-                { label: 'Suplente', value: 'sup' },
-              ]"
-            />
+          <div class="text-subtitle2 text-center q-pt-lg text-grey-9">
+            CANDIDATURA {{ item.tipo_Candidato }}
           </div>
+          <q-btn-toggle
+            v-model="item.selection"
+            push
+            glossy
+            toggle-color="purple-ieen"
+            class="text-grey-9"
+            :options="[
+              { label: 'Propietaria', value: 'prop' },
+              { label: 'Suplente', value: 'sup' },
+            ]"
+          />
         </q-card-section>
         <q-separator />
         <q-card-actions>
@@ -276,7 +146,7 @@
             <q-btn
               :to="{ name: 'detalleRegidurias' }"
               flat
-              class="text-purple-4"
+              class="text-purple-ieen"
               @click="verMas(item.id, item.selection == 'prop' ? 0 : 1)"
             >
               VER MÁS
@@ -288,7 +158,7 @@
               @click="pdf(item.id, item.selection == 'prop' ? 0 : 1)"
               flat
               icon="picture_as_pdf"
-              color="purple-4"
+              color="purple-ieen"
             >
               <q-tooltip>PDF</q-tooltip>
             </q-btn>
@@ -305,6 +175,13 @@
         input
         input-class="text-purple"
       />
+      <q-select
+        color="purple"
+        outlined
+        dense
+        v-model="elementosPorPage"
+        :options="num_Paginas"
+      ></q-select>
     </div>
   </template>
 </template>
@@ -312,7 +189,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { onBeforeMount, onMounted, ref, watch } from "vue";
+import { onBeforeMount, onMounted, ref, watch, defineProps } from "vue";
 import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 import { useRouter } from "vue-router";
@@ -328,10 +205,14 @@ const { listFiltroCards, list_Candidatos_By_Eleccion } =
 const filtro = ref("");
 const listCardsFiltro = ref();
 const shape = ref("prop");
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 let pageActual = ref("");
 let paginas = ref("");
 const activar_pdf = ref(false);
+const elementosPorPage = ref(5);
+const num_Paginas = ref([5, 10, 15, 25, 50]);
+const props = defineProps({
+  eleccion_Id: { type: String, required: true },
+});
 //---------------------------------------------------------------------------------
 
 onMounted(() => {
@@ -339,9 +220,11 @@ onMounted(() => {
 });
 
 const cargarData = async () => {
+  $q.loading.show();
   candidatosStore.actualizarMenu(true);
   candidatosStore.actualizarButtonColor(true);
-  await candidatosStore.loadCandidatosByEleccion(4);
+  await candidatosStore.loadCandidatosByEleccion(props.eleccion_Id);
+  $q.loading.hide();
 };
 
 //---------------------------------------------------------------------------------
@@ -351,16 +234,10 @@ watch(listFiltroCards, (val) => {
     listCardsFiltro.value = val;
     if (val.length > 0) {
       pageActual.value = 1;
+      cargarPaginas();
     }
   }
 });
-
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 
 watch(filtro, (val) => {
   if (val.length == 0) {
@@ -386,42 +263,58 @@ watch(shape, (val) => {
 });
 //---------------------------------------------------------------------------------
 //PAGINATION
-const elementosPorPage = 5;
-watch(pageActual, (val) => {
+
+watch(elementosPorPage, (val) => {
   if (val != null) {
-    const pag = listFiltroCards.value.length / elementosPorPage;
-    if (pag % 1 !== 0) {
-      paginas.value = pag + 1;
-    } else {
-      paginas.value = pag;
-    }
-    mostrarElementosPage(val);
+    cargarPaginas();
   }
 });
+
+watch(pageActual, (val) => {
+  if (val != null) {
+    cargarPaginas();
+  }
+});
+
+const cargarPaginas = () => {
+  let pag = listFiltroCards.value.length / elementosPorPage.value;
+  if (pag % 1 !== 0) {
+    paginas.value = pag + 1;
+  } else {
+    paginas.value = pag;
+  }
+  mostrarElementosPage(pageActual.value);
+};
+
 const mostrarElementosPage = (pagina) => {
-  const inicio = (pagina - 1) * elementosPorPage;
-  const fin = inicio + elementosPorPage;
+  const inicio = (pagina - 1) * elementosPorPage.value;
+  const fin = inicio + elementosPorPage.value;
   const elementos = listFiltroCards.value.slice(inicio, fin);
   listCardsFiltro.value = elementos;
 };
 //---------------------------------------------------------------------------------
 
 const verMas = async (id, puesto) => {
-  await candidatosStore.loadCandidatoById(id);
+  $q.loading.show();
+  candidatosStore.initDatosGenerales();
+  await candidatosStore.loadCandidatoById(id, puesto);
   await candidatosStore.loadFormacionAcademicaById(id, puesto);
   await candidatosStore.loadDatosGeneralesById(id, puesto);
   await candidatosStore.loadPropuestasByCandidato(id, puesto);
   router.push({
     name: "detalleRegidurias",
-    params: { id: id, puesto: puesto },
+    params: { id: id, puesto: puesto, eleccion_Id: props.eleccion_Id },
   });
+  $q.loading.hide();
 };
 const pdf = async (id, puesto) => {
-  ReporteConoceles01(id, puesto);
+  $q.loading.show();
+  await ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {
     activar_pdf.value = false;
-  }, 5000);
+  }, 3000);
+  $q.loading.hide();
 };
 //---------------------------------------------------------------------------------
 </script>

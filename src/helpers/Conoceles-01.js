@@ -638,7 +638,6 @@ const ReporteConoceles01 = async (id, puesto) => {
     }
     doc.save(candidato.nombre + ".pdf");
   } catch (error) {
-    console.error(error);
     return {
       success: false,
       data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",

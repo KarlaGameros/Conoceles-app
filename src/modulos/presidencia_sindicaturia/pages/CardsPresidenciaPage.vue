@@ -14,13 +14,13 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <CardsPresidenciaSindicauria />
+    <CardsPresidenciaSindicauria :eleccion_Id="props.eleccion_Id" />
   </q-page>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
-import { ref, watch, onBeforeMount } from "vue";
+import { ref, watch, onBeforeMount, defineProps } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
 import CardsPresidenciaSindicauria from "../components/cardsPresidenciaSindicaturia.vue";
 import filtros from "../../../components/filtrosComp.vue";
@@ -28,17 +28,12 @@ import filtros from "../../../components/filtrosComp.vue";
 //---------------------------------------------------------------------------------
 
 const $q = useQuasar();
-const isSmallScreen = ref(window.matchMedia("(max-width: 768px)").matches);
 const cardsStore = useCardsStore();
+const props = defineProps({
+  eleccion_Id: { type: String, required: true },
+});
 
 //---------------------------------------------------------------------------------
-
-watch(
-  () => window.innerWidth,
-  (width) => {
-    isSmallScreen.value = width <= 768;
-  }
-);
 </script>
 
 <style></style>

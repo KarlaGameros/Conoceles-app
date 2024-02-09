@@ -8,6 +8,67 @@
 </template>
 
 <script setup>
+import { storeToRefs } from "pinia";
+import { useGraficasStore } from "src/stores/graficas-store";
+import { onMounted, ref, watch } from "vue";
+
+const graficasStore = useGraficasStore();
+const { list_Graficas_Filtrado } = storeToRefs(graficasStore);
+const series = ref([]);
+
+onMounted(() => {
+  rellenarGrafica();
+});
+
+watch(list_Graficas_Filtrado, (val) => {
+  series.value = [];
+  if (val != null) {
+    rellenarGrafica();
+  }
+});
+
+const rellenarGrafica = () => {
+  let primaria = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.grado_Maximo_Studio == "Primaria"
+  );
+  let secundaria = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.grado_Maximo_Studio == "Secundaria"
+  );
+  let preparatoria = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.grado_Maximo_Studio == "Preparatoria"
+  );
+  let tecnica = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.grado_Maximo_Studio == "Técnica"
+  );
+  let licenciatura = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.grado_Maximo_Studio == "Licenciatura"
+  );
+  let maestria = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.grado_Maximo_Studio == "Maestría"
+  );
+  let doctorado = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.grado_Maximo_Studio == "Doctorado"
+  );
+  let especialidad = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.grado_Maximo_Studio == "Especialidad"
+  );
+  let postdoctorado = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.grado_Maximo_Studio == "Postdoctorado"
+  );
+
+  series.value.push(
+    primaria.length,
+    secundaria.length,
+    preparatoria.length,
+    tecnica.length,
+    licenciatura.length,
+    maestria.length,
+    doctorado.length,
+    especialidad.length,
+    postdoctorado.length
+  );
+};
+
 const colors = [
   "#af7ead",
   "#d1b3ef",
@@ -19,7 +80,7 @@ const colors = [
   "#e8ccf7",
   "#fbc9fb",
 ];
-const series = [2, 10, 10, 10, 20, 20, 30, 15];
+
 const chartOptions = {
   chart: {
     width: 380,
