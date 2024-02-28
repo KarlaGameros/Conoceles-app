@@ -7,39 +7,28 @@
     <template v-slot:contenido>
       En este espacio tendrás la oportunidad de conocer a las personas
       candidatas, así como su trayectoria y sus principales propuestas de
-      campaña, entre otras cosas, en la Elección de Presidentes y Sindicos 2024
-      en el Estado de Nayarit lo que puede darte más información para ejercer tu
-      voto, para lo cual bastará que des un click en la opción que desees
-      consultar.
+      campaña, entre otras cosas, en la Elección de Presidencias y Sindicaturas
+      2024 en el Estado de Nayarit lo que puede darte más información para
+      ejercer tu voto, para lo cual bastará que des un click en la opción que
+      desees consultar.
     </template>
   </banner>
   <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row q-pt-md">
-    <div
-      class="col-lg-9 col-md-9 col-sm-9 col-xs-12 text-subtitle2 text-right q-pr-md"
-    >
+    <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 text-subtitle2">
       Buscar por candidatura:
-      <q-btn-dropdown
-        :label="options || dropdownOptions[0].label"
+      <q-radio
+        v-for="item in dropdownOptions"
+        :key="item"
+        checked-icon="task_alt"
+        unchecked-icon="panorama_fish_eye"
+        v-model="shape"
         color="purple-ieen"
-      >
-        <q-list>
-          <q-item
-            v-for="option in dropdownOptions"
-            :key="option.value"
-            v-model="options"
-            clickable
-            @click="selectOptionFiltro(option)"
-            v-close-popup
-          >
-            <q-item-section>
-              <q-item-label>{{ option.label }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-btn-dropdown>
+        :val="item.value"
+        :label="item.label"
+      />
     </div>
-    <div class="col-lg-3 col-md-2 col-sm-3 col-xs-12">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
       <q-input
         v-model="filtro"
         color="purple"
@@ -52,14 +41,56 @@
         </template>
       </q-input>
     </div>
+    <div
+      :class="
+        $q.screen.xs
+          ? 'col-lg-2 col-md-6 col-sm-6 col-xs-12 flex-center q-pt-md'
+          : 'col-lg-2 col-md-6 col-sm-6 col-xs-12 flex-center'
+      "
+    >
+      <q-btn-group push>
+        <q-btn
+          :disable="visualizarTable != true"
+          @click="visualizarTable = false"
+          :class="visualizarTable != true ? 'bg-grey-6' : ''"
+          icon="style"
+          glossy
+          :text-color="visualizarTable != true ? 'white' : 'purple-ieen'"
+          push
+          label="Tarjetas"
+        />
+        <q-btn
+          :disable="visualizarTable != false"
+          @click="visualizarTable = true"
+          :class="visualizarTable == true ? 'bg-grey-6' : ''"
+          icon="table_rows"
+          glossy
+          :text-color="visualizarTable == true ? 'white' : 'purple-ieen'"
+          push
+          label="Tabla"
+        />
+      </q-btn-group>
+    </div>
   </div>
   <!---------------------------CARDS--------------------------->
   <template v-if="listFiltroCards.length == 0"
-    ><div class="absolute-bottom-center text-h6 text-grey-8">
+    ><div
+      :class="
+        $q.screen.xs
+          ? 'flex-center text-h6 text-grey-8'
+          : 'absolute-center text-h6 text-grey-8'
+      "
+    >
       No hay información con los filtros seleccionados...
     </div>
   </template>
-  <template v-else>
+  <template
+    v-else-if="
+      listFiltroCards.length != 0 &&
+      listCardsFiltro.length != 0 &&
+      visualizarTable == false
+    "
+  >
     <div class="q-pa-md row items-start q-gutter-md flex flex-center">
       <q-card
         v-for="item in listCardsFiltro"
@@ -69,7 +100,7 @@
         bordered
         style="width: 255px"
       >
-        <div class="q-pt-md" style="text-align: center">
+        <!-- <div class="q-pt-md" style="text-align: center">
           <div class="q-pa-md q-gutter-sm">
             <q-avatar size="100px">
               <q-img
@@ -85,8 +116,8 @@
               />
             </q-avatar>
           </div>
-        </div>
-        <q-card-section class="q-pt-none">
+        </div> -->
+        <q-card-section class="q-pt-md">
           <div class="text-subtitle2 text-center text-grey-9">
             {{
               item.selection == "prop"
@@ -149,7 +180,11 @@
                     ? item.url_Logo_Coalicion
                     : item.selection == 'prop'
                     ? item.url_Logo_Partido_Propietario
-                    : item.url_Logo_Partido_Suplente
+                    : item.selection == 'sup'
+                    ? item.url_Logo_Partido_Suplente
+                    : item.selection == 'propSin'
+                    ? item.url_Logo_Partido_Propietario_2
+                    : url_Logo_Partido_Suplente_2
                 "
                 alt=""
               />
@@ -157,8 +192,20 @@
           </div>
         </q-card-section>
         <q-card-section class="q-pa-xs">
-          <div class="text-subtitle2 text-center q-pt-lg text-grey-9">
-            CANDIDATURA {{ item.tipo_Candidato }}
+          <div
+            class="row text-subtitle2 flex-center text-grey-8 text-center q-pb-lg"
+          >
+            {{
+              item.is_Coalicion == true
+                ? item.coalicion
+                : item.selection == "prop"
+                ? item.partido
+                : item.selection == "sup"
+                ? item.partido_Suplente
+                : item.selection == "propSin"
+                ? item.partido_Propietario_2
+                : item.partido_Suplente_2
+            }}
           </div>
           <div class="q-mb-md" style="text-align: center">
             <q-btn-dropdown
@@ -209,7 +256,7 @@
                 )
               "
             >
-              VER MÁS
+              ¡Consulta!
             </q-btn>
           </div>
           <div class="col-2">
@@ -255,15 +302,63 @@
       ></q-select>
     </div>
   </template>
+  <template v-else-if="listFiltroCards.length != 0 && visualizarTable == true">
+    <div class="q-pt-lg">
+      <q-table
+        flat
+        bordered
+        :rows="listCardsFiltro"
+        :columns="columns"
+        row-key="name"
+      >
+        <template v-slot:body="props">
+          <q-tr :props="props">
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              <div v-if="col.name === 'url_Logo_Partido_Propietario'">
+                <q-avatar square style="width: auto; height: 28px">
+                  <img
+                    :src="
+                      props.row.is_Coalicion == true
+                        ? props.row.url_Logo_Coalicion
+                        : col.value
+                    "
+                    alt=""
+                  />
+                </q-avatar>
+              </div>
+              <div v-else-if="col.name === 'no_Distrito'">
+                Distrito {{ col.value }}
+              </div>
+              <div v-else-if="col.name === 'id'">
+                <q-btn
+                  flat
+                  round
+                  color="pink-4"
+                  icon="search"
+                  :to="{ name: 'diputacionesDetalle' }"
+                  class="pink"
+                  @click="
+                    verMas(col.value, props.row.selection == 'prop' ? 0 : 1)
+                  "
+                >
+                  <q-tooltip>Consultar</q-tooltip>
+                </q-btn>
+              </div>
+              <label v-else>{{ col.value }}</label>
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
+    </div>
+  </template>
 </template>
 
 <script setup>
-import { useQuasar } from "quasar";
+import { useQuasar, QSpinnerCube } from "quasar";
 import { onMounted, ref, watch, defineProps } from "vue";
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import { useRouter } from "vue-router";
-import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 import ReporteConoceles01 from "src/helpers/Conoceles-01";
 
@@ -271,8 +366,7 @@ import ReporteConoceles01 from "src/helpers/Conoceles-01";
 
 const $q = useQuasar();
 const candidatosStore = useCardsStore();
-const { listFiltroCards, list_Candidatos_By_Eleccion } =
-  storeToRefs(candidatosStore);
+const { listFiltroCards } = storeToRefs(candidatosStore);
 const dropdownOptions = [
   { label: "Presidencia propietaria", value: "prop" },
   { label: "Presidencia suplente", value: "sup" },
@@ -281,7 +375,7 @@ const dropdownOptions = [
 ];
 const options = ref("");
 const filtro = ref("");
-const listCardsFiltro = ref();
+const listCardsFiltro = ref([...listFiltroCards.value]);
 const router = useRouter();
 let pageActual = ref("");
 let paginas = ref("");
@@ -291,6 +385,8 @@ const num_Paginas = ref([5, 10, 15, 25, 50]);
 const props = defineProps({
   eleccion_Id: { type: String, required: true },
 });
+const visualizarTable = ref(false);
+const shape = ref("prop");
 
 //---------------------------------------------------------------------------------
 
@@ -303,15 +399,67 @@ onMounted(() => {
 
 //---------------------------------------------------------------------------------
 
-const cargarData = async () => {
-  $q.loading.show();
-  await candidatosStore.loadCandidatosByEleccion(props.eleccion_Id);
-  $q.loading.hide();
-};
+const columns = [
+  {
+    name: "numero_formula",
+    align: "center",
+    label: "No. de Fórmula",
+    field: "numero_formula",
+    sortable: true,
+  },
+  {
+    name: "municipio",
+    align: "center",
+    label: "Municipio",
+    field: "municipio",
+    sortable: true,
+  },
+  {
+    name: "url_Logo_Partido_Propietario",
+    align: "center",
+    label: "Actor político",
+    field: "url_Logo_Partido_Propietario",
+    sortable: true,
+  },
+  {
+    name: "nombre_Completo_Propietario",
+    align: "center",
+    label: "Candidatura presidencia propietaria",
+    field: "nombre_Completo_Propietario",
+    sortable: true,
+  },
+  {
+    name: "nombre_Completo_Suplente",
+    align: "center",
+    label: "Candidatura presidencia suplente",
+    field: "nombre_Completo_Suplente",
+    sortable: true,
+  },
+  {
+    name: "nombre_Completo_Propietario_2",
+    align: "center",
+    label: "Candidatura sindicatura propietaria",
+    field: "nombre_Completo_Propietario_2",
+    sortable: true,
+  },
+  {
+    name: "nombre_Completo_Suplente_2",
+    align: "center",
+    label: "Candidatura sindicatura suplente",
+    field: "nombre_Completo_Suplente_2",
+    sortable: true,
+  },
+  {
+    name: "id",
+    align: "center",
+    label: "¡Consulta!",
+    field: "id",
+    sortable: true,
+  },
+];
 
 watch(listFiltroCards, (val) => {
   if (val != null) {
-    //listCardsFiltro.value = val;
     if (val.length > 0) {
       pageActual.value = 1;
       cargarPaginas();
@@ -320,21 +468,22 @@ watch(listFiltroCards, (val) => {
 });
 
 watch(filtro, (val) => {
+  console.log(options.value);
   if (val.length == 0) {
     mostrarElementosPage(pageActual.value);
-  } else if (val.length >= 3 && options.value == "Presidencia propietaria") {
+  } else if (val.length >= 3 && shape.value == "prop") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Propietario.toLowerCase().includes(val.toLowerCase())
     );
-  } else if (val.length >= 3 && options.value == "Presidencia suplente") {
+  } else if (val.length >= 3 && shape.value == "sup") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Suplente.toLowerCase().includes(val.toLowerCase())
     );
-  } else if (val.length >= 3 && options.value == "Sindicatura propietaria") {
+  } else if (val.length >= 3 && shape.value == "propSin") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Propietario_2.toLowerCase().includes(val.toLowerCase())
     );
-  } else if (val.length >= 3 && options.value == "Sindicatura suplente") {
+  } else if (val.length >= 3 && shape.value == "supSin") {
     listCardsFiltro.value = listFiltroCards.value.filter((x) =>
       x.nombre_Completo_Suplente_2.toLowerCase().includes(val.toLowerCase())
     );
@@ -377,8 +526,28 @@ const mostrarElementosPage = (pagina) => {
 
 //---------------------------------------------------------------------------------
 
+const cargarData = async () => {
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
+  await candidatosStore.loadCandidatosByEleccion(props.eleccion_Id);
+  $q.loading.hide();
+};
+
 const verMas = async (id, puesto) => {
-  $q.loading.show();
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
   await candidatosStore.loadCandidatoById(id, puesto);
   await candidatosStore.loadFormacionAcademicaById(id, puesto);
   await candidatosStore.loadDatosGeneralesById(id, puesto);
@@ -394,15 +563,25 @@ const selectOption = (item, option) => {
   item.selection = option.value;
   item.label = option.label;
 };
-const selectOptionFiltro = (option) => {
-  options.value = option.label;
-  listCardsFiltro.value.forEach((item) => {
-    item.selection = option.value;
-    item.label = option.label;
-  });
-};
+
+watch(shape, (val) => {
+  if (val != null) {
+    filtro.value = "";
+    listCardsFiltro.value.forEach((item) => {
+      item.selection = item.label = val;
+    });
+  }
+});
+
 const pdf = async (id, puesto) => {
-  $q.loading.show();
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
   await ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {

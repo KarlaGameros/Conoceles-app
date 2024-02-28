@@ -4,7 +4,7 @@
       <div class="col">
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
-            <q-breadcrumbs-el icon="home" to="/" />
+            <q-breadcrumbs-el label="Inicio" icon="home" to="/" />
             <q-breadcrumbs-el
               icon="recent_actors"
               label="Candidatas y candidatos"

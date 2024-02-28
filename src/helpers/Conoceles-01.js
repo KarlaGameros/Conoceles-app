@@ -1,13 +1,11 @@
-import { api } from "src/boot/axios";
 import { jsPDF } from "jspdf";
-import autoTable from "jspdf-autotable";
-import { storeToRefs } from "pinia";
 import { useVerificacionVacante } from "../stores/verificacion_store";
 
 const verificacionVacanteStore = useVerificacionVacante();
 
 const ReporteConoceles01 = async (id, puesto) => {
   let candidato = await verificacionVacanteStore.loadCandidato(id, puesto);
+
   let datosGenerales =
     await verificacionVacanteStore.loadCandidatoDatosGenerales(id, puesto);
   let formacionAcademica =
@@ -90,9 +88,14 @@ const ReporteConoceles01 = async (id, puesto) => {
     let usuario = new Image();
     usuario.src =
       `${candidato.foto}` + "?r=" + Math.floor(Math.random() * 100000);
+    let partido = new Image();
+    partido.src =
+      `${candidato.logo_Partido}` + "?r=" + Math.floor(Math.random() * 100000);
     let coalicion = new Image();
     coalicion.src =
-      `${candidato.logo_Partido}` + "?r=" + Math.floor(Math.random() * 100000);
+      `${candidato.logo_Coalicion}` +
+      "?r=" +
+      Math.floor(Math.random() * 100000);
     let pc = new Image();
     pc.src = require("../assets/pc.png");
     let correo = new Image();
@@ -487,16 +490,29 @@ const ReporteConoceles01 = async (id, puesto) => {
     });
     puntoLateralY = puntoLateralY + 4 + 4 * linesCandidato.length;
 
-    doc.addImage(coalicion, "jpg", 15, puntoLateralY, 30, 20);
-    textoLateral();
-    puntoLateralY = puntoLateralY + 24;
-    var linesCoalicion = doc.splitTextToSize(candidato.partido, 50);
-    doc.text(candidato.partido, 30, puntoLateralY, {
-      align: "center",
-      lineHeightFactor: 1,
-      maxWidth: 50,
-    });
-    puntoLateralY = puntoLateralY + 4 * linesCoalicion.length;
+    if (candidato.is_Coalicion == true) {
+      doc.addImage(coalicion, "jpg", 5, puntoLateralY, 50, 10);
+      textoLateral();
+      puntoLateralY = puntoLateralY + 24;
+      var linesCoalicion = doc.splitTextToSize(candidato.coalicion, 50);
+      doc.text(candidato.coalicion, 30, puntoLateralY, {
+        align: "center",
+        lineHeightFactor: 1,
+        maxWidth: 50,
+      });
+      puntoLateralY = puntoLateralY + 4 * linesCoalicion.length;
+    } else {
+      doc.addImage(partido, "jpg", 25, puntoLateralY, 10, 10);
+      textoLateral();
+      puntoLateralY = puntoLateralY + 24;
+      var linesCoalicion = doc.splitTextToSize(candidato.partido, 50);
+      doc.text(candidato.partido, 30, puntoLateralY, {
+        align: "center",
+        lineHeightFactor: 1,
+        maxWidth: 50,
+      });
+      puntoLateralY = puntoLateralY + 4 * linesCoalicion.length;
+    }
 
     lineaDivision(puntoLateralY);
     puntoLateralY = puntoLateralY + 8;

@@ -46,7 +46,13 @@ const chartOptions = {
     width: "100%",
     type: "pie",
   },
-  labels: ["Sí", "No", "Prefiero no contestar"],
+
+  dataLabels: {
+    dropShadow: {
+      blur: 3,
+      opacity: 0.8,
+    },
+  },
   plotOptions: {
     pie: {
       dataLabels: {
@@ -54,15 +60,15 @@ const chartOptions = {
       },
     },
   },
+  labels: ["Sí", "No", "Prefiero no contestar"],
   colors: ["#af7ead", "#e4c0ed", "#f1d9f6"],
-  dataLabels: {
-    formatter(val, opts) {
-      const name = opts.w.globals.labels[opts.seriesIndex];
-      return [name, val.toFixed(1) + "%"];
+  states: {
+    hover: {
+      filter: "none",
     },
   },
   legend: {
-    show: false,
+    show: true,
   },
 };
 </script>

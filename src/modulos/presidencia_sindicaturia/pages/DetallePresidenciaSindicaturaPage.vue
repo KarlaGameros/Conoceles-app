@@ -4,12 +4,13 @@
       <div class="col">
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
-            <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el icon="recent_actors" :to="{ name: 'PYScards' }" />
+            <q-breadcrumbs-el label="Inicio" icon="home" to="/" />
             <q-breadcrumbs-el
-              label="Detalle del candidato o candidata"
-              icon="library_books"
+              label="Candidatas y candidatos"
+              icon="recent_actors"
+              :to="{ name: 'PYScards' }"
             />
+            <q-breadcrumbs-el label="Ficha candidatura" icon="library_books" />
           </q-breadcrumbs>
         </div>
       </div>

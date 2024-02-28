@@ -73,6 +73,12 @@ const routes = [
         component: () =>
           import("../modulos/regidurias/pages/DetalleRegiduriasPage"),
       },
+      {
+        path: "/preguntasFrecuentes",
+        name: "preguntasFrecuentes",
+        component: () =>
+          import("../modulos/preguntasFrecuentes/pages/IndexPage"),
+      },
     ],
   },
 

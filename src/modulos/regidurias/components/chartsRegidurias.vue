@@ -127,7 +127,7 @@
     >
       <q-spinner-cube color="pink" size="5.5em" />
     </div>
-    <q-splitter v-else style="height: 500px">
+    <q-splitter v-else unit="px" style="height: 500px">
       <template
         v-if="!$q.screen.xs && !$q.screen.sm && !$q.screen.md"
         v-slot:before
@@ -230,13 +230,30 @@
       acción afirmativa.
     </template>
   </banner>
+  <div class="text-h6 q-mb-md q-pt-lg">
+    Registro curricular
+    <div
+      style="height: 500px"
+      class="flex-center"
+      v-if="list_Graficas_By_Eleccion.length == 0"
+    >
+      <q-spinner-cube color="pink" size="5.5em" />
+    </div>
+    <chartAvanceCurricular v-else />
+  </div>
+
+  <div class="q-pt-md text-right text-subtitle2">
+    La presente sección se actualizará conforme a los plazos establecidos en el
+    <a style="color: #e710b9" class="text-bold">Acuerdo pendiente.</a>
+  </div>
 </template>
 
 <script setup>
 import { useCardsStore } from "src/stores/cards-store";
 import { useGraficasStore } from "src/stores/graficas-store";
 import { storeToRefs } from "pinia";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
+import { useQuasar } from "quasar";
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
 import chartGradoAcademico from "../../../charts/chartGradoAcademico.vue";
 import chartSexo from "../../../charts/chartSexo.vue";
@@ -249,8 +266,11 @@ import chartCandMigrantes from "../../../charts/chartMigrantes.vue";
 import chartCandJov from "../../../charts/chartCandJovenes.vue";
 import chartCandMayores from "../../../charts/chartCandMayores.vue";
 import banner from "../../../components/bannerComp.vue";
+import chartAvanceCurricular from "src/charts/chartAvanceCurricular.vue";
 
 //---------------------------------------------------------------------------------
+
+const $q = useQuasar();
 const useCards = useCardsStore();
 const tab = ref("grado_academico");
 const open_tab = ref(false);

@@ -66,7 +66,6 @@ export const useConfiguracionStore = defineStore("configuracion", {
           value: 0,
           label: "Todos",
         });
-        listDistritos.push({ value: 99, label: "RP" });
         this.list_Distritos = listDistritos;
       } catch (error) {
         return {
@@ -110,7 +109,6 @@ export const useConfiguracionStore = defineStore("configuracion", {
           resp = await api.get(
             "/Tipos_Elecciones/Todos_Coaliciones_Partidos_Demarcacion"
           );
-        } else {
         }
 
         let { data } = resp.data;
@@ -123,6 +121,10 @@ export const useConfiguracionStore = defineStore("configuracion", {
             coalicion_Id: item.coalicion_Id,
             coalicion: item.coalicion,
             logo_URL_Coalicion: item.logo_URL_Coalicion,
+            logo:
+              item.is_Coalicion == true
+                ? item.logo_URL_Coalicion
+                : item.logo_URL_Partido,
             label: item.partido == null ? item.coalicion : item.partido,
             value:
               item.partido_Id == null ? item.coalicion_Id : item.partido_Id,
@@ -158,6 +160,10 @@ export const useConfiguracionStore = defineStore("configuracion", {
             coalicion_Id: item.coalicion_Id,
             coalicion: item.coalicion,
             logo_URL_Coalicion: item.logo_URL_Coalicion,
+            logo:
+              item.is_Coalicion == true
+                ? item.logo_URL_Coalicion
+                : item.logo_URL_Partido,
             label: item.partido,
             value: item.partido_Id,
           };
@@ -192,6 +198,10 @@ export const useConfiguracionStore = defineStore("configuracion", {
             coalicion_Id: item.coalicion_Id,
             coalicion: item.coalicion,
             logo_URL_Coalicion: item.logo_URL_Coalicion,
+            logo:
+              item.is_Coalicion == true
+                ? item.logo_URL_Coalicion
+                : item.logo_URL_Partido,
             label: item.partido == null ? item.coalicion : item.partido,
             value:
               item.partido_Id == null ? item.coalicion_Id : item.partido_Id,
@@ -263,7 +273,6 @@ export const useConfiguracionStore = defineStore("configuracion", {
           value: 0,
           label: "Todos",
         });
-        listDemarcaciones.push({ value: 99, label: "RP" });
         this.list_Demarcaciones = listDemarcaciones;
       } catch (error) {
         return {

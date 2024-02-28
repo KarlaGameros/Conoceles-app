@@ -4,12 +4,13 @@
       <div class="col">
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
-            <q-breadcrumbs-el icon="home" to="/" />
-            <q-breadcrumbs-el icon="recent_actors" :to="{ name: 'DIPcards' }" />
+            <q-breadcrumbs-el label="Inicio" icon="home" to="/" />
             <q-breadcrumbs-el
-              label="Detalle del candidato o candidata"
-              icon="library_books"
+              icon="recent_actors"
+              label="Candidatas y candidatos"
+              :to="{ name: 'DIPcards' }"
             />
+            <q-breadcrumbs-el label="Ficha candidatura" icon="library_books" />
           </q-breadcrumbs>
         </div>
       </div>
@@ -33,8 +34,8 @@ import filtros from "../../../components/filtrosComp.vue";
 
 const cardsStore = useCardsStore();
 const props = defineProps({
-  id: { type: String, required: true },
-  puesto: { type: String, required: true },
+  id: { type: Number, required: true },
+  puesto: { type: Number, required: true },
   eleccion_Id: { type: String, required: true },
 });
 //---------------------------------------------------------------------------------

@@ -28,6 +28,9 @@ watch(list_Graficas_Filtrado, (val) => {
 });
 
 const rellenarGrafica = () => {
+  let sinEstudios = list_Graficas_Filtrado.value.filter(
+    (candidato) => candidato.grado_Maximo_Studio == "Sin estudios"
+  );
   let primaria = list_Graficas_Filtrado.value.filter(
     (candidato) => candidato.grado_Maximo_Studio == "Primaria"
   );
@@ -57,6 +60,7 @@ const rellenarGrafica = () => {
   );
 
   series.value.push(
+    sinEstudios.length,
     primaria.length,
     secundaria.length,
     preparatoria.length,
@@ -88,6 +92,7 @@ const chartOptions = {
   },
   colors: colors,
   labels: [
+    "Sin estudios",
     "Primaria",
     "Secundaria",
     "Preparatoria",

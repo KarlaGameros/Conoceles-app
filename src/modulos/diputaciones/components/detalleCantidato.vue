@@ -1,5 +1,6 @@
 <template>
   <!---------------------------BANNER--------------------------->
+
   <banner>
     <template v-slot:icono>
       <q-icon name="error" color="purple-ieen" />
@@ -14,24 +15,26 @@
   <br />
   <!---------------------------BUTTON BACK AND PDF--------------------------->
   <div class="row">
-    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12 text-h6">
-      <q-avatar class="bg-purple-ieen" text-color="white"
-        ><q-btn
-          :to="{ name: 'DIPcards', params: { eleccion_Id: props.eleccion_Id } }"
-          flat
-          icon="reply"
-        >
-          <q-tooltip>Regresar</q-tooltip>
-        </q-btn></q-avatar
-      >
-      Distrito {{ `${candidato.distrito}  ` }}
+    <div class="col-10 text-subtitle1 text-bold">
+      <q-btn
+        outline
+        style="color: #673e84"
+        label="Regresar"
+        :to="{ name: 'DIPcards', params: { eleccion_Id: props.eleccion_Id } }"
+        icon="reply"
+      />
+      {{
+        candidato.tipo_Candidato != "RP"
+          ? `Distrito ${candidato.no_Distrito} - ${candidato.distrito}`
+          : ""
+      }}
     </div>
     <q-btn
       :disable="activar_pdf == true"
       @click="pdf(props.id, candidato.selection == 'prop' ? 0 : 1)"
       flat
       icon="picture_as_pdf"
-      class="col-lg-2 col-md-2 col-sm-2 col-xs-12 text-purple-ieen"
+      class="text-purple-ieen"
       >Descargar</q-btn
     >
   </div>
@@ -42,54 +45,44 @@
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
             <q-avatar size="600%">
-              <q-img
-                :src="
-                  candidato.selection == 'prop'
-                    ? candidato.url_Foto_Propietario
-                    : candidato.url_Foto_Suplente
-                "
-              />
+              <q-img :src="candidato.url_Foto" />
             </q-avatar>
           </div>
           <div class="col-12 q-pb-md" align="center">
-            <div class="text-h6 text-grey-9">
-              {{
-                candidato.selection == "prop"
-                  ? candidato.nombre_Completo_Propietario
-                  : candidato.nombre_Completo_Suplente
-              }}
-            </div>
-
             <q-avatar style="width: auto; height: 35px" square size="40px">
               <img
                 :src="
                   candidato.is_Coalicion == true
                     ? candidato.url_Logo_Coalicion
-                    : candidato.selection == 'prop'
-                    ? candidato.url_Logo_Partido_Propietario
-                    : candidato.url_Logo_Partido_Suplente
+                    : candidato.logo_Partido
                 "
                 alt=""
               />
             </q-avatar>
 
-            <div class="q-pt-lg">
-              <div class="text-subtitle2 text-center text-grey-9">
-                CANDIDATURA - {{ candidato.tipo_Candidato }}
-              </div>
-              <q-btn-toggle
-                @click="cambiar(candidato.selection)"
-                v-model="candidato.selection"
-                push
-                glossy
-                class="text-grey-9"
-                toggle-color="purple-ieen"
-                :options="[
-                  { label: 'Propietaria', value: 'prop' },
-                  { label: 'Suplente', value: 'sup' },
-                ]"
-              />
+            <div class="text-subtitle1 text-bold text-grey-9 q-pa-xs">
+              {{ candidato.nombre_Completo }}
             </div>
+
+            <div class="text-subtitle2 text-center text-grey-9 q-pb-lg">
+              {{
+                candidato.is_Coalicion == true
+                  ? candidato.coalicion
+                  : candidato.partido
+              }}
+            </div>
+            <q-btn-toggle
+              @click="cambiar(candidato.selection)"
+              v-model="candidato.selection"
+              push
+              glossy
+              class="text-grey-9"
+              toggle-color="purple-ieen"
+              :options="[
+                { label: 'Propietaria', value: 'prop' },
+                { label: 'Suplente', value: 'sup' },
+              ]"
+            />
           </div>
         </div>
       </div>
@@ -152,26 +145,25 @@
                     align="center"
                   >
                     <q-avatar size="180px">
-                      <q-img
-                        :src="
-                          candidato.selection == 'prop'
-                            ? candidato.url_Foto_Propietario
-                            : candidato.url_Foto_Suplente
-                        "
-                      /> </q-avatar
+                      <q-img :src="candidato.url_Foto" /> </q-avatar
                     ><br /><br />
                     <q-avatar style="width: auto; height: 35px" square>
                       <img
                         :src="
                           candidato.is_Coalicion == true
                             ? candidato.url_Logo_Coalicion
-                            : candidato.selection == 'prop'
-                            ? candidato.url_Logo_Partido_Propietario
-                            : candidato.url_Logo_Partido_Suplente
+                            : candidato.logo_Partido
                         "
                         alt=""
                       />
                     </q-avatar>
+                    <div class="text-subtitle2 text-center text-grey-9 q-pb-lg">
+                      {{
+                        candidato.is_Coalicion == true
+                          ? candidato.coalicion
+                          : candidato.partido
+                      }}
+                    </div>
                   </div>
                   <div
                     :class="
@@ -182,27 +174,15 @@
                   >
                     <div class="text-h6 text-grey-9">Nombre :</div>
                     <div class="text-subtitle1">
-                      {{
-                        candidato.selection == "prop"
-                          ? candidato.nombre_Completo_Propietario
-                          : candidato.nombre_Completo_Suplente
-                      }}
+                      {{ candidato.nombre_Completo }}
                     </div>
                     <div class="text-h6 text-grey-9">Edad:</div>
                     <div class="text-subtitle1">
-                      {{
-                        candidato.selection == "prop"
-                          ? candidato.edad_Propietario
-                          : candidato.edad_Suplente
-                      }}
+                      {{ candidato.edad }}
                     </div>
                     <div class="text-h6 text-grey-9">Sexo:</div>
                     <div class="text-subtitle1">
-                      {{
-                        candidato.selection == "prop"
-                          ? candidato.sexo_Propietario
-                          : candidato.sexo_Suplente
-                      }}
+                      {{ candidato.sexo }}
                     </div>
                   </div>
                   <div
@@ -278,52 +258,135 @@
                     </div>
                   </div>
                 </div>
+                <br />
+                <div v-if="candidato.consentimiento_URL != null">
+                  <div
+                    v-if="candidato.indigena == 'Sí'"
+                    class="col-12 bg-grey-5"
+                    style="border-radius: 5px; color: white"
+                  >
+                    <div class="text-subtitle2" align="center">
+                      <q-icon name="check_circle" color="pink" /> Candidatura
+                      con autoadscripción indígena
+                    </div>
+                  </div>
+                  <div class="q-pb-xs"></div>
+                  <div
+                    v-if="candidato.discapacidad == 'Sí'"
+                    class="col-12 bg-grey-5"
+                    style="border-radius: 5px; color: white"
+                  >
+                    <div class="text-subtitle2" align="center">
+                      <q-icon name="check_circle" color="pink" /> Candidatura
+                      con discapacidad
+                    </div>
+                  </div>
+                  <div class="q-pb-xs"></div>
+                  <div
+                    v-if="candidato.afromexicano == 'Sí'"
+                    class="col-12 bg-grey-5"
+                    style="border-radius: 5px; color: white"
+                  >
+                    <div class="text-subtitle2" align="center">
+                      <q-icon name="check_circle" color="pink" /> Candidatura
+                      afromexicana
+                    </div>
+                  </div>
+                  <div class="q-pb-xs"></div>
+                  <div
+                    v-if="candidato.lgbttiq == 'Sí'"
+                    class="col-12 bg-grey-5"
+                    style="border-radius: 5px; color: white"
+                  >
+                    <div class="text-subtitle2" align="center">
+                      <q-icon name="check_circle" color="pink" /> Candidatura
+                      perteneciente a la comunidad LGBTTTIQ+
+                    </div>
+                  </div>
+                  <div class="q-pb-xs"></div>
+                  <div
+                    v-if="candidato.poblacion_Joven == 'Sí'"
+                    class="col-12 bg-grey-5"
+                    style="border-radius: 5px; color: white"
+                  >
+                    <div class="text-subtitle2" align="center">
+                      <q-icon name="check_circle" color="pink" /> Candidatura
+                      perteneciente a la población de personas jóvenes
+                    </div>
+                  </div>
+                  <div class="q-pb-xs"></div>
+                  <div
+                    v-if="candidato.poblacion_Mayor == 'Sí'"
+                    class="col-12 bg-grey-5"
+                    style="border-radius: 5px; color: white"
+                  >
+                    <div class="text-subtitle2" align="center">
+                      <q-icon name="check_circle" color="pink" /> Candidatura
+                      perteneciente a la población de personas mayores
+                    </div>
+                  </div>
+                </div>
               </q-tab-panel>
 
               <q-tab-panel name="HISTORIA PROFESIONAL Y/O LABORAL">
-                <br />
-                <div
-                  class="col-12 bg-purple-ieen"
-                  style="border-radius: 10px; color: white"
-                >
-                  <div class="text-subtitle2" align="center">
+                <div v-if="candidato.validado == false">
+                  Aquí se mostrará la información capturada por el candidato
+                </div>
+                <div v-else>
+                  <br />
+                  <hr color="purple" />
+                  <div class="text-subtitle2 text-purple-3" align="center">
                     <q-icon name="school" /> ESTUDIOS
                   </div>
-                </div>
-                <div class="row q-pa-sm">
-                  <div class="col">
-                    <div class="text-h6">Grado maximo de estudios:</div>
-                    <div class="text-subtitle1">
-                      {{ datos_Generales.grado_Maximo_Estudios }}
+                  <hr color="purple" />
+                  <div class="row q-pa-sm">
+                    <div class="col">
+                      <div class="text-h6">Grado máximo de estudios:</div>
+                      <div class="text-subtitle1">
+                        {{ datos_Generales.grado_Maximo_Estudios }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="text-h6">Estatus:</div>
+                      <div class="text-subtitle1">
+                        {{ datos_Generales.estatus_Grado_Estudios }}
+                      </div>
                     </div>
                   </div>
-                  <div class="col">
-                    <div class="text-h6">Estatus:</div>
-                    <div class="text-subtitle1">
-                      {{ datos_Generales.estatus_Grado_Estudios }}
-                    </div>
-                  </div>
-                </div>
-                <br />
-                <div
-                  class="col-12 bg-purple-3"
-                  style="border-radius: 10px; color: white"
-                >
-                  <div class="text-subtitle2" align="center">
+                  <br />
+                  <hr color="purple" />
+                  <div class="text-subtitle2 text-purple-3" align="center">
                     <q-icon name="import_contacts" /> CURSOS
                   </div>
+                  <hr color="purple" />
+                  <div class="q-pa-sm text-subtitle1 text-justify">
+                    {{
+                      formacion.formacion == null
+                        ? "En este apartado se mostrará la información academica que el candidato registro en el cuestionario curricular"
+                        : formacion.formacion
+                    }}
+                  </div>
                 </div>
-                <div class="q-pa-sm text-subtitle1 text-justify">
+              </q-tab-panel>
+
+              <q-tab-panel name="TRAYECTORIA POLÍTICA Y/O PARTICIPACIÓN SOCIAL">
+                <div v-if="candidato.validado == false">
+                  Aquí se mostrará la información capturada por el candidato
+                </div>
+                <div class="text-subtitle1 text-justify" v-else>
                   {{
-                    formacion.formacion == null
-                      ? "En este apartado se mostrará la información academica que el candidato registro en el cuestionario curricular"
-                      : formacion.formacion
+                    datos_Generales.trayectoria == null
+                      ? "En este apartado se mostrará los motivos de ocupar un cargo público que el candidato registro en el cuestionario curricular"
+                      : datos_Generales.trayectoria
                   }}
                 </div>
               </q-tab-panel>
 
               <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?">
-                <div class="text-subtitle1 text-justify">
+                <div v-if="candidato.validado == false">
+                  Aquí se mostrará la información capturada por el candidato
+                </div>
+                <div v-else class="text-subtitle1 text-justify">
                   {{
                     datos_Generales.motivo_Cargo_Publico == null
                       ? "En este apartado se mostrará los motivos de ocupar un cargo público que el candidato registro en el cuestionario curricular"
@@ -331,60 +394,61 @@
                   }}
                 </div>
               </q-tab-panel>
-
               <q-tab-panel name="PROPUESTAS">
-                <div class="text-subtitle1 text-center text-bold q-pb-md">
-                  PRINCIPALES PROPUESTAS
+                <div v-if="candidato.validado == false">
+                  Aquí se mostrará la información capturada por el candidato
                 </div>
-                <div
-                  class="col-12 bg-purple-ieen"
-                  style="border-radius: 10px; color: white"
-                >
-                  <div class="text-subtitle2" align="center">
+                <div v-else>
+                  <div class="text-subtitle1 text-center text-bold q-pb-md">
+                    PRINCIPALES PROPUESTAS
+                  </div>
+                  <hr color="purple" />
+                  <div class="text-subtitle2 text-purple-3" align="center">
                     <q-icon name="import_contacts" /> PROPUESTA 1
                   </div>
-                </div>
-                <div class="q-pa-sm text-subtitle1 text-justify">
-                  {{
-                    list_Propuestas.length != 0
-                      ? list_Propuestas[0].propuesta
-                      : "En este apartado se mostrará la propuesta 1 registrada por el candidato en el cuestionario curricular"
-                  }}
-                </div>
-                <div
-                  class="col-12 bg-purple-3"
-                  style="border-radius: 10px; color: white"
-                >
-                  <div class="text-subtitle2" align="center">
+                  <hr color="purple" />
+
+                  <div class="q-pa-sm text-subtitle1 text-justify">
+                    {{
+                      list_Propuestas.length != 0
+                        ? list_Propuestas[0].propuesta
+                        : "En este apartado se mostrará la propuesta 1 registrada por el candidato en el cuestionario curricular"
+                    }}
+                  </div>
+                  <hr color="purple" />
+                  <div class="text-subtitle2 text-purple-3" align="center">
                     <q-icon name="import_contacts" /> PROPUESTA 2
                   </div>
-                </div>
-                <div class="q-pa-sm text-subtitle1 text-justify">
-                  {{
-                    list_Propuestas.length != 0
-                      ? list_Propuestas[1].propuesta
-                      : "En este apartado se mostrará la propuesta 2 registrada por el candidato en el cuestionario curricular"
-                  }}
+                  <hr color="purple" />
+                  <div class="q-pa-sm text-subtitle1 text-justify">
+                    {{
+                      list_Propuestas.length != 0
+                        ? list_Propuestas[1].propuesta
+                        : "En este apartado se mostrará la propuesta 2 registrada por el candidato en el cuestionario curricular"
+                    }}
+                  </div>
                 </div>
               </q-tab-panel>
 
               <q-tab-panel name="PROPUESTA EN MATERIA DE GÉNERO">
-                <div
-                  class="col-12 bg-purple-ieen"
-                  style="border-radius: 10px; color: white"
-                >
-                  <div class="text-subtitle2" align="center">
+                <div v-if="candidato.validado == false">
+                  Aquí se mostrará la información capturada por el candidato
+                </div>
+                <div v-else>
+                  <hr color="purple" />
+                  <div class="text-subtitle2 text-purple-3" align="center">
                     <q-icon name="import_contacts" /> PROPUESTA EN MATERIA DE
                     GÉNERO O, EN SU CASO, DEL GRUPO EN SITUACIÓN DE
                     DISCRIMINACIÓN QUE REPRESENTO
                   </div>
-                </div>
-                <div class="q-pa-sm text-subtitle1 text-justify">
-                  {{
-                    datos_Generales.propuesta_Genero == null
-                      ? "En este apartado se mostrará la propuesta en materia de género que el candidato registro en el cuestionario curricular"
-                      : datos_Generales.propuesta_Genero
-                  }}
+                  <hr color="purple" />
+                  <div class="q-pa-sm text-subtitle1 text-justify">
+                    {{
+                      datos_Generales.propuesta_Genero == null
+                        ? "En este apartado se mostrará la propuesta en materia de género que el candidato registro en el cuestionario curricular"
+                        : datos_Generales.propuesta_Genero
+                    }}
+                  </div>
                 </div>
               </q-tab-panel>
             </q-tab-panels>
@@ -396,11 +460,10 @@
 </template>
 
 <script setup>
-import { useQuasar } from "quasar";
+import { useQuasar, QSpinnerCube } from "quasar";
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 import { onMounted, ref, defineProps } from "vue";
-import pdfCandidato from "../../../helpers/pdf";
 import banner from "../../../components/bannerComp.vue";
 import ReporteConoceles01 from "src/helpers/Conoceles-01";
 
@@ -416,13 +479,14 @@ const activar_pdf = ref(false);
 const tabs = ref([
   "DATOS GENERALES",
   "HISTORIA PROFESIONAL Y/O LABORAL",
+  "TRAYECTORIA POLÍTICA Y/O PARTICIPACIÓN SOCIAL",
   "¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?",
   "PROPUESTAS",
   "PROPUESTA EN MATERIA DE GÉNERO",
 ]);
 const props = defineProps({
-  id: { type: String, required: true },
-  puesto: { type: String, required: true },
+  id: { type: Number, required: true },
+  puesto: { type: Number, required: true },
   eleccion_Id: { type: String, required: true },
 });
 
@@ -435,8 +499,15 @@ onMounted(() => {
 //---------------------------------------------------------------------------------
 
 const pdf = async (id, puesto) => {
-  $q.loading.show();
-  ReporteConoceles01(id, puesto);
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
+  await ReporteConoceles01(id, puesto);
   activar_pdf.value = true;
   setTimeout(() => {
     activar_pdf.value = false;
@@ -445,8 +516,17 @@ const pdf = async (id, puesto) => {
 };
 
 const cambiar = async (val) => {
-  $q.loading.show();
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
   cardsStore.initDatosGenerales();
+
+  await cardsStore.loadCandidatoById(props.id, val == "prop" ? 0 : 1);
   await cardsStore.loadFormacionAcademicaById(props.id, val == "prop" ? 0 : 1);
   await cardsStore.loadDatosGeneralesById(props.id, val == "prop" ? 0 : 1);
   await cardsStore.loadPropuestasByCandidato(props.id, val == "prop" ? 0 : 1);

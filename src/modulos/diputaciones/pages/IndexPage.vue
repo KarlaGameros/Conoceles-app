@@ -4,7 +4,7 @@
       <div class="col">
         <div class="q-pa-md q-gutter-sm">
           <q-breadcrumbs>
-            <q-breadcrumbs-el icon="home" to="/" />
+            <q-breadcrumbs-el icon="home" label="Inicio" to="/" />
             <q-breadcrumbs-el icon="bar_chart" label="Numeralia" />
           </q-breadcrumbs>
         </div>

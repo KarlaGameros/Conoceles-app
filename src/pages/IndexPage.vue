@@ -1,17 +1,22 @@
 <template>
-  <q-page class="flex flex-center">
-    <div class="text-center col-lg-6 col-md-5 col-sm-12 col-xs-12">
-      <div class="text-h4 text-bold text-purple-ieen-1">Te damos la</div>
-      <div class="text-h2 text-bold text-purple-ieen-1">BIENVENIDA</div>
-      <div class="text-subtitle1">
-        Al sistema de consulta de información proporcionada por las y los
-        candidatos
+  <q-page class="row flex flex-center">
+    <div class="col-2"></div>
+    <div class="text-center col-lg-4 col-md-4 col-sm-12 col-xs-12">
+      <div class="text-h4 text-bold text-purple-ieen-1">
+        Candidatas y Candidatos,
+      </div>
+      <div class="text-h2 text-bold text-purple-ieen-1">Conóceles</div>
+      <div class="text-subtitle2 center text-justify q-pa-md">
+        Consulta la trayectoria política y profesional, las propuestas de
+        campaña y la autoidentificación a determinados grupos en situación de
+        discriminación de las y los candidatos que participan en el Proceso
+        Local Ordinario 2024 en Nayarit.
       </div>
     </div>
     <div class="imgHome col-lg-6 col-md-5 col-sm-12 col-xs-12">
       <img
         alt="PREP logo"
-        src="../assets/opcion2.png"
+        src="../assets/ConocelesInicio.png"
         :style="
           $q.screen.xs
             ? 'width: 400px; height: 350px'

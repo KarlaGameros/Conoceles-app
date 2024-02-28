@@ -88,7 +88,7 @@
   >
     <q-spinner-cube color="pink" size="5.5em" />
   </div>
-  <q-splitter v-else style="height: 500px">
+  <q-splitter unit="px" style="height: 500px" v-else>
     <template
       v-if="!$q.screen.xs && !$q.screen.sm && !$q.screen.md"
       v-slot:before
@@ -168,12 +168,28 @@
       acción afirmativa.
     </template>
   </banner>
+  <div class="text-h6 q-mb-md q-pt-lg">
+    Registro curricular
+    <div
+      style="height: 500px"
+      class="flex-center"
+      v-if="list_Graficas_By_Eleccion.length == 0"
+    >
+      <q-spinner-cube color="pink" size="5.5em" />
+    </div>
+    <chartAvanceCurricular v-else />
+  </div>
+
+  <div class="q-pt-md text-right text-subtitle2">
+    La presente sección se actualizará conforme a los plazos establecidos en el
+    <a style="color: #e710b9" class="text-bold">Acuerdo pendiente.</a>
+  </div>
 </template>
 
 <script setup>
 import { useCardsStore } from "src/stores/cards-store";
 import { useQuasar } from "quasar";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import { useGraficasStore } from "src/stores/graficas-store";
 import { storeToRefs } from "pinia";
 import chartRangoEdad from "../../../charts/chartRangoEdad.vue";
@@ -187,6 +203,7 @@ import chartCandDivSexual from "../../../charts/chartCandDivSexual.vue";
 import chartCandMigrantes from "../../../charts/chartMigrantes.vue";
 import chartCandJov from "../../../charts/chartCandJovenes.vue";
 import chartCandMayores from "../../../charts/chartCandMayores.vue";
+import chartAvanceCurricular from "src/charts/chartAvanceCurricular.vue";
 import banner from "../../../components/bannerComp.vue";
 
 //---------------------------------------------------------------------------------
@@ -199,8 +216,10 @@ const {
   list_Graficas_Genero_Edad,
   list_Graficas_Genero_Edad_Filtrado,
 } = storeToRefs(graficasStore);
+
 const tab = ref("Grado académico");
 const open_tab = ref(false);
+// "Registro curricular",
 const tabs = ref([
   "Grado académico",
   "Nivel de ingresos",

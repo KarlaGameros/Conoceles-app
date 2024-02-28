@@ -99,7 +99,6 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
       try {
         let resp = await api.get(`/Candidatos/${id}/${puesto}`);
         let { data } = resp.data;
-
         let datosCandidato = null;
         datosCandidato = {
           id: data.id,
@@ -112,12 +111,16 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
             data.apellido_Materno,
           candidatura: data.tipo_Eleccion,
           cargo: data.tipo_Candidato,
-          partido: "partido",
+          partido: data.partido,
           logo_Partido: data.logo_Partido,
           sexo: data.sexo,
           telefono: data.telefono,
           correo: data.correo,
           edad: data.edad,
+          is_Coalicion: data.is_Coalicion,
+          coalicion_Id: data.coalicion_Id,
+          coalicion: data.coalicion,
+          logo_Coalicion: data.logo_Coalicion,
         };
         return datosCandidato;
       } catch (error) {
