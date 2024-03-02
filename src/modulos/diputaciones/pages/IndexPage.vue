@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
 import DiputacionesComp from "../components/diputacionesComp.vue";
 import filtros from "../../../components/filtrosComp.vue";

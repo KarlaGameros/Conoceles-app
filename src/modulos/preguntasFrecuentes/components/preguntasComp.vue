@@ -15,6 +15,7 @@
         expand-separator
         :label="`${pregunta.num}. ${pregunta.pregunta}`"
         class="text-weight-medium text-grey-8"
+        default-opened
       >
         <q-card>
           <q-card-section class="text-black">
