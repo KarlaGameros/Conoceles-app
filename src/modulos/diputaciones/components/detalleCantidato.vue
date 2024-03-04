@@ -44,8 +44,18 @@
       <div class="shadow-7" style="border-radius: 20px">
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
-            <q-avatar size="600%">
+            <q-avatar size="600%" v-if="candidato.validado == true">
               <q-img :src="candidato.url_Foto" />
+            </q-avatar>
+            <q-avatar size="600%" v-else>
+              <q-img
+                v-if="candidato.sexo == 'Mujer'"
+                src="../../../assets/avatarmujer.jpg"
+              />
+              <q-img
+                v-else-if="candidato.sexo == 'Hombre'"
+                src="../../../assets/avatarHombre.jpg"
+              />
             </q-avatar>
           </div>
           <div class="col-12 q-pb-md" align="center">
@@ -144,9 +154,20 @@
                     class="col-lg-3 col-md-12 col-sm-12 col-xs-12 q-pb-md"
                     align="center"
                   >
-                    <q-avatar size="180px">
-                      <q-img :src="candidato.url_Foto" /> </q-avatar
-                    ><br /><br />
+                    <q-avatar size="180px" v-if="candidato.validado == true">
+                      <q-img :src="candidato.url_Foto" />
+                    </q-avatar>
+                    <q-avatar size="180px" v-else>
+                      <q-img
+                        v-if="candidato.sexo == 'Mujer'"
+                        src="../../../assets/avatarmujer.jpg"
+                      />
+                      <q-img
+                        v-else-if="candidato.sexo == 'Hombre'"
+                        src="../../../assets/avatarHombre.jpg"
+                      />
+                    </q-avatar>
+                    <br /><br />
                     <q-avatar style="width: auto; height: 35px" square>
                       <img
                         :src="

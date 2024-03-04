@@ -27,7 +27,7 @@
 
     <div class="absolute-bottom-right">
       <div class="text-subtitle1 q-pr-md text-purple-ieen">
-        <strong>Eres el visitante número:</strong> 100
+        <!-- <strong>Eres el visitante número:</strong> 100 -->
       </div>
     </div>
   </q-page>

@@ -106,9 +106,16 @@
         bordered
         style="width: 255px"
       >
-        <!-- <div class="q-pt-md" style="text-align: center">
+        <div class="q-pt-md" style="text-align: center">
           <div class="q-pa-md q-gutter-sm">
-            <q-avatar size="100px">
+            <q-avatar
+              size="100px"
+              v-if="
+                (item.selection == 'prop' &&
+                  item.validado_Propietario == true) ||
+                (item.selection == 'sup' && item.validado_Suplente == true)
+              "
+            >
               <q-img
                 :src="
                   item.selection == 'prop'
@@ -117,8 +124,26 @@
                 "
               />
             </q-avatar>
+            <q-avatar size="100px" v-else>
+              <q-img
+                v-if="
+                  (item.selection == 'prop' &&
+                    item.sexo_Propietario == 'Mujer') ||
+                  (item.selection == 'sup' && item.sexo_Suplente == 'Mujer')
+                "
+                src="../../../assets/avatarmujer.jpg"
+              />
+              <q-img
+                v-if="
+                  (item.selection == 'prop' &&
+                    item.sexo_Propietario == 'Hombre') ||
+                  (item.selection == 'sup' && item.sexo_Suplente == 'Hombre')
+                "
+                src="../../../assets/avatarHombre.jpg"
+              />
+            </q-avatar>
           </div>
-        </div> -->
+        </div>
         <q-card-section class="q-pt-md">
           <div class="text-subtitle2 text-center text-grey-9">
             {{
