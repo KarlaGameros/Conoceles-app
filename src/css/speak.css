@@ -1,0 +1,183 @@
+/*BOTONES*/
+
+.btn2 {
+	width: 30px;
+	height: 30px;
+	color: #C80096;
+	background-color: #fff;
+	cursor: pointer;
+	border: 2px solid #C80096;
+	border-radius: 30%;
+	display: inline;
+	z-index: 10;
+	margin-left: 10px;
+}
+
+.btn2:hover {
+	color: #fff;
+	background-color: #C80096;
+}
+
+.btn2 i {
+	pointer-events: none;
+	display: block;
+	font-size: 20px;
+}
+
+.btn3 {
+	display: none;
+}
+
+#btnVoz {
+	color: #C80096;
+	background-color: #fff;
+	cursor: pointer;
+	border: 2px solid #C80096;
+	position: absolute;
+	transition: color 0.2s, background-color 0.2s ease-in-out;
+}
+
+.btnEntrance {
+	animation-duration: 0.2s;
+	animation-fill-mode: both;
+	animation-name: btnEntrance;
+}
+
+/*BOTONES ACTIVAR-DESACTIVAR*/
+
+#btn-mas {
+	display: none;
+}
+
+.container-voice {
+	position: fixed;
+	bottom: 70px;
+	margin-left: 10px;
+}
+
+.Acces-voz button, .btn-mas label {
+	text-decoration: none;
+	width: 50px;
+	height: 50px;
+	line-height: 48px;
+	text-align: center;
+	border-radius: 50%;
+	transition: all 500ms ease;
+}
+
+.Acces-voz button:hover {
+	background: #fff;
+	color: #C80096;
+}
+
+.Acces-voz button {
+	margin-bottom: -16px;
+	opacity: 0;
+	visibility: hidden;
+}
+
+#btn-mas:checked~.Acces-voz button {
+	margin-bottom: 8px;
+	opacity: 1;
+	visibility: visible;
+}
+
+.btn-mas label {
+	cursor: pointer;
+	background: #C80096;
+	color: #fff;
+	font-size: 24px;
+}
+
+#btn-mas:checked~.btn-mas label {
+	transform: rotate(360deg);
+	font-size: 18px;
+}
+
+.activado {
+	background: #76777a;
+	color: #fff;
+}
+
+.desactivado {
+	background: #C80096;
+	color: #fff;
+}
+
+/*ALERTA ACTIVADO-DESACTIVADO*/
+
+.toastr {
+	position: fixed;
+	bottom: 244px;
+	left: 10px;
+	display: none;
+	width: 300px;
+	height: 40px;
+	border-radius: 10px;
+	padding-left: 10px;
+	line-height: 40px;
+	margin-left: 10px;
+	float: left;
+	background: #fff;
+	border: 2px solid #C80096;
+	font-family: Century Gothic, sans-serif;
+	color: #C80096;
+	font-weight: bold;
+	margin: 3px;
+}
+
+
+/*BOTON SELECCIONAR TEXTO*/
+
+.seleccionar-texto {
+	width: 40px;
+	height: 40px;
+	font-size: 24px;
+	color: #C80096;
+	background-color: #fff;
+	cursor: pointer;
+	border: 2px solid #C80096;
+	border-radius: 50%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 12;
+	display: none;
+	transition: color 0.2s, background-color 0.2s ease-in-out;
+}
+
+.seleccionar-texto:hover {
+	color: #fff;
+	background-color: #C80096;
+}
+
+.seleccionar-texto i {
+	pointer-events: none;
+}
+
+.btnEntrance {
+	animation-duration: 0.2s;
+	animation-fill-mode: both;
+	animation-name: btnEntrance;
+}
+
+@keyframes btnEntrance {
+	0% {
+		opacity: 0;
+		transform: scale3d(0.3, 0.3, 0.3);
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@media screen and (max-width: 992px) {
+	.container-voice {
+		left: 2px;
+		z-index: 2;
+	}
+
+	.toastr {
+		z-index: 3;
+	}
+}

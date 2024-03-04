@@ -4,230 +4,164 @@
     <template v-slot:icono>
       <q-icon name="badge" color="purple-ieen" />
     </template>
+
     <template v-slot:contenido>
-      En este espacio tendrás la oportunidad de conocer a las personas
-      candidatas, así como su trayectoria y sus principales propuestas de
-      campaña, entre otras cosas, en la Elección de Diputaciones 2024 en el
-      Estado de Nayarit, lo que puede darte más información para ejercer tu
-      voto, para lo cual bastará que des un click en la opción que desees
-      consultar.
+      <span id="speak">
+        En este espacio tendrás la oportunidad de conocer a las personas
+        candidatas, así como su trayectoria y sus principales propuestas de
+        campaña, entre otras cosas, en la Elección de Diputaciones 2024 en el
+        Estado de Nayarit, lo que puede darte más información para ejercer tu
+        voto, para lo cual bastará que des un click en la opción que desees
+        consultar
+      </span>
     </template>
   </banner>
   <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row q-pt-md">
     <div class="col-lg-7 col-md-6 col-sm-7 col-xs-12 text-subtitle2">
-      Buscar por candidatura:
-      <q-radio
-        checked-icon="task_alt"
-        unchecked-icon="panorama_fish_eye"
-        v-model="shape"
-        color="purple-ieen"
-        val="prop"
-        label="Propietaria"
-      />
-      <q-radio
-        v-model="shape"
-        checked-icon="task_alt"
-        unchecked-icon="panorama_fish_eye"
-        color="purple-ieen"
-        val="sup"
-        label="Suplente"
-      />
+      <span id="speak">Buscar por candidatura: </span>
+      <q-radio checked-icon="task_alt" unchecked-icon="panorama_fish_eye" v-model="shape" color="purple-ieen" val="prop"
+        label="Propietaria" />
+      <q-radio v-model="shape" checked-icon="task_alt" unchecked-icon="panorama_fish_eye" color="purple-ieen" val="sup"
+        label="Suplente" />
     </div>
     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 q-pr-md">
-      <q-input
-        v-model="filtro"
-        color="purple-ieen"
-        dense
-        debounce="300"
-        placeholder="Ingrese un nombre"
-      >
+      <q-input v-model="filtro" color="purple-ieen" dense debounce="300" placeholder="Ingrese un nombre">
+
         <template v-slot:append>
           <q-icon name="search" />
         </template>
       </q-input>
     </div>
 
-    <div
-      :class="
-        $q.screen.xs
-          ? 'col-lg-2 col-md-3 col-sm-6 col-xs-12 flex-center q-pt-md'
-          : 'col-lg-2 col-md-3 col-sm-6 col-xs-12 flex-center'
-      "
-    >
+    <div :class="$q.screen.xs
+        ? 'col-lg-2 col-md-3 col-sm-6 col-xs-12 flex-center q-pt-md'
+        : 'col-lg-2 col-md-3 col-sm-6 col-xs-12 flex-center'
+        ">
       <q-btn-group push>
-        <q-btn
-          :disable="visualizarTable != true"
-          @click="visualizarTable = false"
-          :class="visualizarTable != true ? 'bg-grey-6' : ''"
-          icon="style"
-          glossy
-          :text-color="visualizarTable != true ? 'white' : 'purple-ieen'"
-          push
-          label="Tarjetas"
-        />
-        <q-btn
-          :disable="visualizarTable != false"
-          @click="visualizarTable = true"
-          :class="visualizarTable == true ? 'bg-grey-6' : ''"
-          icon="table_rows"
-          glossy
-          :text-color="visualizarTable == true ? 'white' : 'purple-ieen'"
-          push
-          label="Tabla"
-        />
+        <q-btn :disable="visualizarTable != true" @click="visualizarTable = false"
+          :class="visualizarTable != true ? 'bg-grey-6' : ''" icon="style" glossy
+          :text-color="visualizarTable != true ? 'white' : 'purple-ieen'" push label="Tarjetas" />
+        <q-btn :disable="visualizarTable != false" @click="visualizarTable = true"
+          :class="visualizarTable == true ? 'bg-grey-6' : ''" icon="table_rows" glossy
+          :text-color="visualizarTable == true ? 'white' : 'purple-ieen'" push label="Tabla" />
       </q-btn-group>
     </div>
   </div>
   <!---------------------------CARDS--------------------------->
-  <template v-if="listFiltroCards.length == 0"
-    ><div
-      :class="
-        $q.screen.xs
-          ? 'flex-center text-h6 text-grey-8'
-          : 'absolute-center text-h6 text-grey-8'
-      "
-    >
-      No hay información con los filtros seleccionados...
+
+  <template v-if="listFiltroCards.length == 0">
+    <div :class="$q.screen.xs
+        ? 'flex-center text-h6 text-grey-8'
+        : 'absolute-center text-h6 text-grey-8'
+        ">
+      <span id="speak">No hay información con los filtros seleccionados...</span>
     </div>
   </template>
 
   <template v-else-if="listFiltroCards.length > 0 && visualizarTable == false">
     <div class="q-pa-md row items-start q-gutter-md flex flex-center">
-      <q-card
-        v-for="item in listCardsFiltro"
-        :key="item"
-        class="col-lg-2 col-md-2 col-sm-3 col-xs-12"
-        flat
-        bordered
-        style="width: 255px"
-      >
+      <q-card v-for="item in listCardsFiltro" :key="item" class="col-lg-2 col-md-2 col-sm-3 col-xs-12" flat bordered
+        style="width: 255px">
         <div class="q-pt-xs" style="text-align: center">
           <div class="q-pa-md q-gutter-sm">
             <q-avatar size="100px">
-              <q-img
-                :src="
-                  item.selection == 'prop'
-                    ? item.url_Foto_Propietario
-                    : item.url_Foto_Suplente
-                "
-              />
+              <q-img :src="item.selection == 'prop'
+        ? item.url_Foto_Propietario
+        : item.url_Foto_Suplente
+        " />
             </q-avatar>
           </div>
         </div>
         <q-card-section class="q-pt-xs">
-          <div class="text-subtitle1 text-center text-grey-9 text-weight-bold">
+          <div class="text-subtitle1 text-center text-grey-9 text-weight-bold" id="speak">
             {{
-              item.selection == "prop"
-                ? item.nombre_Completo_Propietario
-                : item.nombre_Completo_Suplente
-            }}
+        item.selection == "prop"
+          ? item.nombre_Completo_Propietario
+          : item.nombre_Completo_Suplente
+      }}
           </div>
-          <div class="text-subtitle2 text-center text-grey-8">
-            {{
-              item.selection == "prop"
-                ? item.mote_Propietario == null
-                  ? ""
-                  : `"${item.mote_Propietario}"`
-                : item.mote_Suplente == null
-                ? ""
-                : `"${item.mote_Suplente}"`
-            }}
-          </div>
-          <div class="row text-center q-pt-xs">
-            <div class="text-caption text-grey-8 col-6">
-              EDAD:
+          <div id="speak">
+            <div class="text-subtitle2 text-center text-grey-8">
               {{
-                item.selection == "prop"
-                  ? item.edad_Propietario
-                  : item.edad_Suplente
-              }}
+          item.selection == "prop"
+            ? item.mote_Propietario == null
+              ? ""
+              : `"${item.mote_Propietario}"`
+            : item.mote_Suplente == null
+              ? ""
+              : `"${item.mote_Suplente}"`
+        }}
             </div>
-            <div class="text-caption text-grey-8 col-6">
-              Género:
-              {{
-                item.selection == "prop"
-                  ? item.sexo_Propietario
-                  : item.sexo_Suplente
-              }}
+            <div class="row text-center q-pt-xs">
+              <div class="text-caption text-grey-8 col-6">
+                EDAD:
+                {{
+          item.selection == "prop"
+            ? item.edad_Propietario
+            : item.edad_Suplente
+        }}
+              </div>
+              <div class="text-caption text-grey-8 col-6">
+                Género:
+                {{
+          item.selection == "prop"
+            ? item.sexo_Propietario
+            : item.sexo_Suplente
+        }}
+              </div>
             </div>
           </div>
         </q-card-section>
 
         <q-card-section class="q-pt-xs">
-          <div
-            v-if="item.tipo_Candidato == 'MR'"
-            class="row text-subtitle2 flex-center text-grey-9"
-          >
-            Distrito
-            {{ item.no_Distrito }}
-          </div>
-          <div
-            v-if="item.tipo_Candidato == 'MR'"
-            class="row text-subtitle2 flex-center text-grey-8"
-          >
-            {{ item.distrito }}
-          </div>
-          <div class="row no-wrap items-center flex-center">
-            <q-avatar style="width: auto; height: 28px" square>
-              <img
-                :src="
-                  item.is_Coalicion == true
-                    ? item.url_Logo_Coalicion
-                    : item.selection == 'prop'
-                    ? item.url_Logo_Partido_Propietario
-                    : item.url_Logo_Partido_Suplente
-                "
-                alt=""
-              />
-            </q-avatar>
-          </div>
-          <div
-            class="row text-subtitle2 flex-center text-grey-8 text-center q-pb-md"
-          >
-            {{
-              item.is_Coalicion == true
-                ? item.coalicion
-                : item.selection == "prop"
-                ? item.partido
-                : item.partido_Suplente
-            }}
+          <div id="speak">
+            <div v-if="item.tipo_Candidato == 'MR'" class="row text-subtitle2 flex-center text-grey-9">
+              Distrito
+              {{ item.no_Distrito }}
+            </div>
+            <div v-if="item.tipo_Candidato == 'MR'" class="row text-subtitle2 flex-center text-grey-8">
+              {{ item.distrito }}
+            </div>
+            <div class="row no-wrap items-center flex-center">
+              <q-avatar style="width: auto; height: 28px" square>
+                <img :src="item.is_Coalicion == true
+        ? item.url_Logo_Coalicion
+        : item.selection == 'prop'
+          ? item.url_Logo_Partido_Propietario
+          : item.url_Logo_Partido_Suplente
+        " alt="" />
+              </q-avatar>
+            </div>
+            <div class="row text-subtitle2 flex-center text-grey-8 text-center q-pb-md">
+              {{
+        item.is_Coalicion == true
+          ? item.coalicion
+          : item.selection == "prop"
+            ? item.partido
+            : item.partido_Suplente
+      }}
+            </div>
           </div>
           <!-- <div class="text-subtitle2 text-center q-pt-lg text-grey-9">
             CANDIDATURA {{ item.tipo_Candidato }}
           </div> -->
-          <q-btn-toggle
-            v-model="item.selection"
-            push
-            glossy
-            toggle-color="purple-ieen"
-            class="text-grey-9"
-            :options="[
-              { label: 'Propietaria', value: 'prop' },
-              { label: 'Suplente', value: 'sup' },
-            ]"
-          />
+          <q-btn-toggle v-model="item.selection" push glossy toggle-color="purple-ieen" class="text-grey-9" :options="[
+        { label: 'Propietaria', value: 'prop' },
+        { label: 'Suplente', value: 'sup' },
+      ]" />
         </q-card-section>
         <q-separator />
         <q-card-actions>
           <div class="col-10">
-            <q-btn
-              :to="{ name: 'diputacionesDetalle' }"
-              flat
-              class="text-purple-ieen"
-              @click="verMas(item.id, item.selection == 'prop' ? 0 : 1)"
-            >
+            <q-btn :to="{ name: 'diputacionesDetalle' }" flat class="text-purple-ieen"
+              @click="verMas(item.id, item.selection == 'prop' ? 0 : 1)">
               ¡Consulta!
             </q-btn>
           </div>
           <div class="col-2">
-            <q-btn
-              :disable="activar_pdf == true"
-              @click="pdf(item.id, item.selection == 'prop' ? 0 : 1)"
-              flat
-              icon="picture_as_pdf"
-              color="purple-ieen"
-            >
+            <q-btn :disable="activar_pdf == true" @click="pdf(item.id, item.selection == 'prop' ? 0 : 1)" flat
+              icon="picture_as_pdf" color="purple-ieen">
               <q-tooltip>PDF</q-tooltip>
             </q-btn>
           </div>
@@ -236,63 +170,34 @@
     </div>
     <!---------------------------PAGINACION--------------------------->
     <div class="q-pa-lg flex flex-center">
-      <q-pagination
-        v-model="pageActual"
-        :max="paginas"
-        color="purple"
-        input
-        input-class="text-purple"
-      />
-      <q-select
-        color="purple"
-        outlined
-        dense
-        v-model="elementosPorPage"
-        :options="num_Paginas"
-      ></q-select>
+      <q-pagination v-model="pageActual" :max="paginas" color="purple" input input-class="text-purple" />
+      <q-select color="purple" outlined dense v-model="elementosPorPage" :options="num_Paginas"></q-select>
     </div>
   </template>
+
   <template v-else-if="listFiltroCards.length != 0 && visualizarTable == true">
     <div class="q-pt-lg">
-      <q-table
-        flat
-        bordered
-        :rows="listCardsFiltro"
-        :columns="columns"
-        row-key="name"
-        :visible-columns="visisble_columns"
-        :pagination="pagination"
-      >
+      <q-table flat bordered :rows="listCardsFiltro" :columns="columns" row-key="name"
+        :visible-columns="visisble_columns" :pagination="pagination">
         <template v-slot:body="props">
-          <q-tr :props="props">
+          <q-tr :props="props" id="speak">
             <q-td v-for="col in props.cols" :key="col.name" :props="props">
               <div v-if="col.name === 'url_Logo_Partido_Propietario'">
                 <q-avatar square style="width: auto; height: 28px">
-                  <img
-                    :src="
-                      props.row.is_Coalicion == true
-                        ? props.row.url_Logo_Coalicion
-                        : col.value
-                    "
-                    alt=""
-                  />
+                  <img :src="props.row.is_Coalicion == true
+        ? props.row.url_Logo_Coalicion
+        : col.value
+        " alt="" />
                 </q-avatar>
               </div>
               <div v-else-if="col.name === 'no_Distrito'">
                 Distrito {{ col.value }}
               </div>
               <div v-else-if="col.name === 'id'">
-                <q-btn
-                  flat
-                  round
-                  color="pink-4"
-                  icon="search"
-                  :to="{ name: 'diputacionesDetalle' }"
-                  class="pink"
+                <q-btn flat round color="pink-4" icon="search" :to="{ name: 'diputacionesDetalle' }" class="pink"
                   @click="
-                    verMas(col.value, props.row.selection == 'prop' ? 0 : 1)
-                  "
-                >
+        verMas(col.value, props.row.selection == 'prop' ? 0 : 1)
+        ">
                   <q-tooltip>Consultar</q-tooltip>
                 </q-btn>
               </div>

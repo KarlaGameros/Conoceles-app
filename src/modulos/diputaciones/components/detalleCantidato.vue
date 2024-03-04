@@ -5,6 +5,7 @@
     <template v-slot:icono>
       <q-icon name="error" color="purple-ieen" />
     </template>
+
     <template v-slot:contenido>
       La información es proporcionada por las personas candidatas a las
       Diputaciones del Estado de Nayarit, por lo que su contenido es
@@ -44,8 +45,18 @@
       <div class="shadow-7" style="border-radius: 20px">
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
-            <q-avatar size="600%">
+            <q-avatar size="600%" v-if="candidato.validado == true">
               <q-img :src="candidato.url_Foto" />
+            </q-avatar>
+            <q-avatar size="600%" v-else>
+              <q-img
+                v-if="candidato.sexo == 'Mujer'"
+                src="../../../assets/avatarmujer.jpg"
+              />
+              <q-img
+                v-else-if="candidato.sexo == 'Hombre'"
+                src="../../../assets/avatarHombre.jpg"
+              />
             </q-avatar>
           </div>
           <div class="col-12 q-pb-md" align="center">
@@ -144,9 +155,20 @@
                     class="col-lg-3 col-md-12 col-sm-12 col-xs-12 q-pb-md"
                     align="center"
                   >
-                    <q-avatar size="180px">
-                      <q-img :src="candidato.url_Foto" /> </q-avatar
-                    ><br /><br />
+                    <q-avatar size="180px" v-if="candidato.validado == true">
+                      <q-img :src="candidato.url_Foto" />
+                    </q-avatar>
+                    <q-avatar size="180px" v-else>
+                      <q-img
+                        v-if="candidato.sexo == 'Mujer'"
+                        src="../../../assets/avatarmujer.jpg"
+                      />
+                      <q-img
+                        v-else-if="candidato.sexo == 'Hombre'"
+                        src="../../../assets/avatarHombre.jpg"
+                      />
+                    </q-avatar>
+                    <br /><br />
                     <q-avatar style="width: auto; height: 35px" square>
                       <img
                         :src="
@@ -362,7 +384,7 @@
                   <div class="q-pa-sm text-subtitle1 text-justify">
                     {{
                       formacion.formacion == null
-                        ? "En este apartado se mostrará la información academica que el candidato registro en el cuestionario curricular"
+                        ? "En este apartado se mostrará la información academica que el candidato registro en el cuestionario  curricular"
                         : formacion.formacion
                     }}
                   </div>
@@ -389,7 +411,7 @@
                 <div v-else class="text-subtitle1 text-justify">
                   {{
                     datos_Generales.motivo_Cargo_Publico == null
-                      ? "En este apartado se mostrará los motivos de ocupar un cargo público que el candidato registro en el cuestionario curricular"
+                      ? "En este apartado se mostrará los motivos de ocupar un  cargo público que el candidato registro en el cuestionario curricular"
                       : datos_Generales.motivo_Cargo_Publico
                   }}
                 </div>
@@ -412,7 +434,7 @@
                     {{
                       list_Propuestas.length != 0
                         ? list_Propuestas[0].propuesta
-                        : "En este apartado se mostrará la propuesta 1 registrada por el candidato en el cuestionario curricular"
+                        : "En este apartado se mostrará la propuesta 1 registrada por el candidato en el cuestionario  curricular"
                     }}
                   </div>
                   <hr color="purple" />
@@ -445,7 +467,7 @@
                   <div class="q-pa-sm text-subtitle1 text-justify">
                     {{
                       datos_Generales.propuesta_Genero == null
-                        ? "En este apartado se mostrará la propuesta en materia de género que el candidato registro en el cuestionario curricular"
+                        ? "En este apartado se mostrará la propuesta en materia de género que el candidato registro en el  cuestionario curricular"
                         : datos_Generales.propuesta_Genero
                     }}
                   </div>
@@ -533,4 +555,5 @@ const cambiar = async (val) => {
   $q.loading.hide();
 };
 </script>
+
 <style></style>
