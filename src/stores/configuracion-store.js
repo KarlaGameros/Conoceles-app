@@ -10,8 +10,62 @@ export const useConfiguracionStore = defineStore("configuracion", {
     list_Demarcaciones: [],
     list_Edades: [],
     list_Sexo: [],
+    metrica: {
+      metrics: [{ name: "active7DayUsers" }],
+      dateRanges: [{ startDate: "30daysAgo", endDate: "yesterday" }],
+    },
+    consultas: null,
+    info: {
+      latitud: null,
+      longitud: null,
+      marca: null,
+      modelo: null,
+      sistema_Operativo: null,
+    },
   }),
   actions: {
+    //----------------------------------------------------------------------
+    async infoDeviceConoceles(device) {
+      try {
+        const resp = null;
+        resp = await api.post("/Candidatos/RegistroPeticiones", device);
+        if (resp.status == 200) {
+          const { success, data } = resp.data;
+          if (success === true) {
+            return { success, data };
+          } else {
+            return { success, data };
+          }
+        } else {
+          return {
+            success: false,
+            data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+          };
+        }
+      } catch (error) {
+        return {
+          success: false,
+          data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+        };
+      }
+    },
+
+    //----------------------------------------------------------------------
+    async loadVisitas() {
+      try {
+        let resp = await api.get("/Candidatos/Consultas");
+        if (resp.status == 200) {
+          let { data } = resp;
+          this.consultas = data.data;
+        }
+      } catch (error) {
+        return {
+          success: false,
+          data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+        };
+      }
+    },
+
     //----------------------------------------------------------------------
     //TIPO DE ELECCIONES
     async loadTipoElecciones() {

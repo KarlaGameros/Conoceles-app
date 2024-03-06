@@ -222,33 +222,6 @@ export const useCardsStore = defineStore("cards", {
 
     //---------------------------------------------------------------------------------
 
-    async infoDeviceConoceles(device) {
-      try {
-        const resp = null;
-        resp = await api.post("/Tipos_Elecciones/RegistroPeticiones", device);
-        if (resp.status == 200) {
-          const { success, data } = resp.data;
-          if (success === true) {
-            return { success, data };
-          } else {
-            return { success, data };
-          }
-        } else {
-          return {
-            success: false,
-            data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
-          };
-        }
-      } catch (error) {
-        return {
-          success: false,
-          data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
-        };
-      }
-    },
-
-    //---------------------------------------------------------------------------------
-
     async loadCandidatosByEleccion(id) {
       try {
         let resp = await api.get(`/Candidatos/ByTipoEleccion/${id}`);

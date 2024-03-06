@@ -352,7 +352,7 @@
             <q-btn
               dense
               :disable="cargo_Id.value == 0"
-              @click="consultar"
+              @click="botonConsultar"
               push
               class="bg-pink-ieen"
             >
@@ -404,6 +404,7 @@
                 <q-icon name="live_help" />
               </q-btn>
             </div>
+
             <div v-if="!$q.screen.xs" class="absolute-right q-pa-xs">
               <q-btn
                 flat
@@ -460,7 +461,7 @@ const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
 const cardsStore = useCardsStore();
-const { isHomePage, back, buttons, list_Candidatos_By_Eleccion, cargo } =
+const { isHomePage, buttons, list_Candidatos_By_Eleccion, cargo } =
   storeToRefs(cardsStore);
 const {
   list_Tipos_Elecciones,
@@ -470,6 +471,7 @@ const {
   list_Demarcaciones,
   list_Edades,
   list_Sexo,
+  info,
 } = storeToRefs(configuracionStore);
 const {
   list_Graficas_By_Eleccion,
@@ -480,8 +482,6 @@ const distrito_Id = ref(null);
 const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
 const sexo_Id = ref(null);
-const numeraliaSelected = ref(true);
-const candidatosSelected = ref(false);
 const municipio_Id = ref(null);
 const demarcacion_Id = ref(null);
 const tab = ref("");
@@ -502,7 +502,7 @@ const list_Grado_Academico = ref([
 ]);
 const cargo_Id = ref(null);
 const list_Cargos = ref([]);
-const visitorCount = ref(null);
+
 //---------------------------------------------------------------------------------
 
 onBeforeMount(() => {
@@ -520,8 +520,6 @@ onBeforeMount(() => {
   }
   limpiarFiltros();
   cargarData();
-  obtenerNumeroVisitas();
-  //configuracionStore.loadTipoElecciones();
 });
 
 //---------------------------------------------------------------------------------
@@ -603,7 +601,6 @@ watch(list_Candidatos_By_Eleccion, (val) => {
 
 //---------------------------------------------------------------------------------
 
-const obtenerNumeroVisitas = async () => {};
 const cargarData = async () => {
   $q.loading.show({
     spinner: QSpinnerCube,
@@ -619,6 +616,7 @@ const cargarData = async () => {
   await configuracionStore.loadEdades();
   await configuracionStore.loadGenero();
   await configuracionStore.loadMunicipios();
+
   $q.loading.hide();
 };
 
@@ -629,14 +627,6 @@ const cargar = async (val, tab) => {
   if (tab != "inicio") {
     graficasStore.loadGraficasByEleccion(val);
   }
-  // let { latitude, longitude } = await getCurrentLocation();
-  // let { brand, model, os } = getDataDevice();
-  // info.value.latitud = latitude;
-  // info.value.longitud = longitude;
-  // info.value.marca = brand;
-  // info.value.modelo = model;
-  // info.value.sistema_Operativo = os;
-  // await cardsStore.infoDeviceConoceles(info.value);
 };
 
 const isTabSelected = async (nombre, id) => {
@@ -745,6 +735,19 @@ const exportarBD = async () => {
   document.body.appendChild(link);
   link.click();
   $q.loading.hide();
+};
+
+const botonConsultar = async () => {
+  let { latitude, longitude } = await getCurrentLocation();
+  let { brand, model, os } = getDataDevice();
+  info.value.latitud = latitude;
+  info.value.longitud = longitude;
+  info.value.marca = brand;
+  info.value.modelo = model;
+  info.value.sistema_Operativo = os;
+  await configuracionStore.infoDeviceConoceles(info.value);
+  await configuracionStore.loadVisitas();
+  consultar();
 };
 
 const consultar = async () => {

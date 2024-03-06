@@ -215,7 +215,7 @@
                   size="sm"
                   icon="search"
                   :disable="cargo_Id.value == 0 && selectedTab != 'PYS'"
-                  @click="consultar"
+                  @click="botonConsultar"
                   push
                   label="Consultar"
                   class="bg-pink-ieen"
@@ -236,6 +236,7 @@ import { useQuasar } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
 import { useConfiguracionStore } from "src/stores/configuracion-store";
 import { useGraficasStore } from "src/stores/graficas-store";
+import { getCurrentLocation, getDataDevice } from "../helpers/CurrentLocation";
 import Filtrar from "src/helpers/Filtrar";
 import FiltrarCandidatos from "src/helpers/FiltrarCandidatos";
 
@@ -402,6 +403,19 @@ const limpiarFiltros = () => {
   sexo_Id.value = { value: 0, label: "Todos" };
   municipio_Id.value = { value: 0, label: "Todos" };
   demarcacion_Id.value = { value: 0, label: "Todos" };
+  consultar();
+};
+
+const botonConsultar = async () => {
+  let { latitude, longitude } = await getCurrentLocation();
+  let { brand, model, os } = getDataDevice();
+  info.value.latitud = latitude;
+  info.value.longitud = longitude;
+  info.value.marca = brand;
+  info.value.modelo = model;
+  info.value.sistema_Operativo = os;
+  await configuracionStore.infoDeviceConoceles(info.value);
+  await configuracionStore.loadVisitas();
   consultar();
 };
 

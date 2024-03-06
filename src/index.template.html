@@ -7,6 +7,7 @@
     ></script>
     <script src="https://apis.google.com/js/api.js"></script>
     <!-- Google tag (gtag.js) -->
+    <script src="https://apis.google.com/js/api.js"></script>
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-TM054D6G54"
@@ -18,14 +19,12 @@
       }
       gtag("js", new Date());
 
-      gtag("config", "G-TM054D6G54");
-
-      // Obtener la cantidad de usuarios activos actualmente
-      gtag("event", "config", {
+      gtag("config", "G-TM054D6G54", {
         send_to: "G-TM054D6G54",
         metric_user_engagement_active_users: true,
       });
     </script>
+
     <!-- <script src="https://code.highcharts.com/modules/accessibility.js"></script> -->
     <title><%= productName %></title>
 
@@ -62,8 +61,6 @@
     <link rel="icon" type="image/ico" href="icons/ieenico.ico" />
   </head>
   <body>
-    <!-- <div id="sfc6eemwqc6ddr72qnjgrza1s2cpuzragat"></div>
-    <script type="text/javascript" src="https://counter11.optistats.ovh/private/counter.js?c=6eemwqc6ddr72qnjgrza1s2cpuzragat&down=async" async></script>   -->
     <div id="q-app"></div>
   </body>
 </html>
