@@ -318,7 +318,7 @@ export default {
         { id: "PT", data: ptSeries.value },
         { id: "PVEM", data: pvemSeries.value },
         { id: "MC", data: mcSeries.value },
-        { id: "MORENA", data: morena.value },
+        { id: "MORENA", data: morenaSeries.value },
         { id: "NAN", data: nanSeries.value },
         { id: "MLN", data: mlnSeries.value },
         { id: "FXMN", data: fxmnSeries.value },
@@ -352,17 +352,22 @@ export default {
         legend: {
           enabled: false,
         },
+        tooltip: {
+          pointFormat: "<b>{point.y} %<br/>",
+          shared: true,
+        },
         plotOptions: {
           series: {
             borderWidth: 0,
             dataLabels: {
               enabled: true,
+              pointFormat: "<b>{point.y} %<br/>",
             },
           },
         },
         series: [
           {
-            name: "Edades",
+            name: "Avance",
             colorByPoint: true,
             data: [
               {
@@ -449,6 +454,9 @@ export default {
           },
         ],
         drilldown: {
+          dataLabels: {
+            enabled: false,
+          },
           breadcrumbs: {
             position: {
               align: "right",
