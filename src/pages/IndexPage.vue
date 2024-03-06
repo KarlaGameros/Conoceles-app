@@ -1,5 +1,16 @@
+<<<<<<< HEAD
 <template class="selectable-text-area">
   <q-page class="row flex flex-center selectable-text-area">
+=======
+<template>
+  <q-page class="row flex flex-center">
+    <div class="absolute-top-right">
+      <div class="text-subtitle1 q-pr-md text-purple-ieen">
+        <strong>{{ consultas }} </strong>
+      </div>
+    </div>
+    <br /><br />
+>>>>>>> 733c982adbc1a332b00ee39854e18e24b3ab4098
     <div class="col-2"></div>
     <div class="text-center col-lg-4 col-md-4 col-sm-12 col-xs-12">
       <div class="text-h4 text-bold text-purple-ieen-1" id="speak">
@@ -26,27 +37,45 @@
         "
       />
     </div>
-
-    <div class="absolute-bottom-right">
-      <div class="text-subtitle1 q-pr-md text-purple-ieen">
-        <!-- <strong>Eres el visitante número:</strong> 100 -->
-      </div>
-    </div>
   </q-page>
 </template>
 
 <script setup>
+import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { onMounted, ref, watch } from "vue";
+import { useConfiguracionStore } from "src/stores/configuracion-store";
+import { onMounted, ref } from "vue";
 
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
+const configuracionStore = useConfiguracionStore();
+const { consultas } = storeToRefs(configuracionStore);
 
 //---------------------------------------------------------------------------------
 
-onMounted(() => {
+onMounted(async () => {
   cardsStore.actualizarMenu(false);
+  await configuracionStore.loadVisitas();
+  // const url =
+  //   "https://content-analyticsdata.googleapis.com/v1beta/properties/429912171:runReport?alt=json";
+  // const token =
+  //   "ya29.a0Ad52N38cq1JOten1BlKAfSQ50evwedlbVPGFjto1VvlHT5WbZgOY5dtOv7YaNvduOT7AMtOlK58twGWDoGBlmfzcGbGgmwJPodw11GBhZH_BjtjdVSGjQ9KJ-FKl4RJI1mq0t3-lTebbqjvAkc2gW5Aqdmr8z5mLwmRc__8nadYE-hFgl5GreisL6_do_f17mC2KXLBUqoB5yAvwvFGgyzqplD_aiwtXScwWCForBfpRUms6uhf6YE8eK_Y1lNWSPdeUoBtHGbbGVrVBB4LheRU2wlnQSeQqduUnwnqvVrMigYbJEbySBHCzsLualwH7Ce-h8pv0qoI_qTMKWXXlg3rRZVedJ6GX4S3SIroBmakpL0XWM1T9PWCEbFLt8yqIzTusbtrzT0Wbe8eqcigDnggFof6YbE8aCgYKATgSAQ4SFQHGX2MiNQrlQCo9prf1Qy34v0CRRg0422";
+
+  // fetch(url, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  //   body: JSON.stringify({
+  //     metrics: [{ name: "active7DayUsers" }],
+  //     dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+  //   }),
+  // })
+  //   .then((response) => response.json())
+  //   .then((data) => (visitorCount.value = data.rows[0].metricValues))
+  //   .catch((error) => console.error(error));
 });
 
 //---------------------------------------------------------------------------------

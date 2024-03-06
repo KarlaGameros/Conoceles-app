@@ -30,6 +30,63 @@
           >
             <q-img src="../assets/Conoceles2@300x.png"></q-img>
           </div>
+<<<<<<< HEAD
+=======
+          <q-item clickable v-ripple>
+            <q-btn
+              @click="isTabSelected('INICIO')"
+              rounded
+              name="inicio"
+              icon="home"
+              to="/inicio"
+              label="Inicio"
+              class="bg-pink-ieen-3"
+            />
+          </q-item>
+          <q-item
+            v-for="eleccion in list_Tipos_Elecciones"
+            :key="eleccion"
+            clickable
+            v-ripple
+          >
+            <q-btn
+              v-model="tab"
+              @click="isTabSelected(eleccion.siglas, eleccion.id)"
+              rounded
+              :to="{
+                name: eleccion.siglas,
+              }"
+              :label="eleccion.label"
+              class="bg-pink-ieen-3"
+            />
+          </q-item>
+        </q-list>
+      </q-scroll-area>
+      <q-page-sticky v-if="!$q.screen.xs" :offset="[18, 18]">
+        <div class="row justify-center">
+          <div class="q-pr-sm">
+            <q-btn dense @click="limpiarFiltros" outline style="color: #d1308a">
+              <div class="row items-center no-wrap">
+                <q-icon left name="cleaning_services" size="xs" />
+                <div class="text-center">Limpiar campos</div>
+              </div>
+            </q-btn>
+          </div>
+          <div>
+            <q-btn
+              dense
+              :disable="cargo_Id.value == 0"
+              @click="botonConsultar"
+              push
+              class="bg-pink-ieen"
+            >
+              <div class="row items-center no-wrap">
+                <q-icon name="search" size="xs"></q-icon>
+                <div class="text-center">Consultar</div>
+              </div>
+            </q-btn>
+          </div>
+>>>>>>> 733c982adbc1a332b00ee39854e18e24b3ab4098
         </div>
         <q-toolbar>
           <div class="row">
@@ -81,7 +138,36 @@
               v-if="$q.screen.xs || $q.screen.sm"
               class="absolute-right q-pa-xs"
             >
+<<<<<<< HEAD
               <q-btn flat @click="exportarBD()">
+=======
+              <div><q-icon name="home" color="white" />Domicilio</div>
+              Av. Country Club 13, Colonia Versalles, 63138, Tepic, Nayarit
+            </div>
+            <div
+              class="text-caption col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center"
+            >
+              <div><q-icon name="phone" color="white" />Teléfono</div>
+              (311) - 210 - 3235 /36 /47
+            </div>
+            <div
+              class="text-caption col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center"
+            >
+              Preguntas frecuentes
+              <q-btn flat round dense :to="{ name: 'preguntasFrecuentes' }">
+                <q-icon name="live_help" />
+              </q-btn>
+            </div>
+
+            <div v-if="!$q.screen.xs" class="absolute-right q-pa-xs">
+              <q-btn
+                flat
+                round
+                dense
+                href="https://www.facebook.com/IEENayarit?mibextid=sCpJLy"
+                target="_blank"
+              >
+>>>>>>> 733c982adbc1a332b00ee39854e18e24b3ab4098
                 <i
                   class="fa-solid fa-database fa-2xl"
                   style="color: #ffffff"
@@ -548,7 +634,7 @@ const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
 const cardsStore = useCardsStore();
-const { isHomePage, back, buttons, list_Candidatos_By_Eleccion, cargo } =
+const { isHomePage, buttons, list_Candidatos_By_Eleccion, cargo } =
   storeToRefs(cardsStore);
 const {
   list_Tipos_Elecciones,
@@ -558,6 +644,7 @@ const {
   list_Demarcaciones,
   list_Edades,
   list_Sexo,
+  info,
 } = storeToRefs(configuracionStore);
 const {
   list_Graficas_By_Eleccion,
@@ -568,8 +655,6 @@ const distrito_Id = ref(null);
 const actor_politico_Id = ref(null);
 const rango_edad_Id = ref(null);
 const sexo_Id = ref(null);
-const numeraliaSelected = ref(true);
-const candidatosSelected = ref(false);
 const municipio_Id = ref(null);
 const demarcacion_Id = ref(null);
 const tab = ref("");
@@ -590,7 +675,7 @@ const list_Grado_Academico = ref([
 ]);
 const cargo_Id = ref(null);
 const list_Cargos = ref([]);
-const visitorCount = ref(null);
+
 //---------------------------------------------------------------------------------
 
 onBeforeMount(() => {
@@ -608,8 +693,6 @@ onBeforeMount(() => {
   }
   limpiarFiltros();
   cargarData();
-  obtenerNumeroVisitas();
-  //configuracionStore.loadTipoElecciones();
 });
 
 //---------------------------------------------------------------------------------
@@ -691,7 +774,6 @@ watch(list_Candidatos_By_Eleccion, (val) => {
 
 //---------------------------------------------------------------------------------
 
-const obtenerNumeroVisitas = async () => {};
 const cargarData = async () => {
   $q.loading.show({
     spinner: QSpinnerCube,
@@ -707,6 +789,7 @@ const cargarData = async () => {
   await configuracionStore.loadEdades();
   await configuracionStore.loadGenero();
   await configuracionStore.loadMunicipios();
+
   $q.loading.hide();
 };
 
@@ -717,14 +800,6 @@ const cargar = async (val, tab) => {
   if (tab != "inicio") {
     graficasStore.loadGraficasByEleccion(val);
   }
-  // let { latitude, longitude } = await getCurrentLocation();
-  // let { brand, model, os } = getDataDevice();
-  // info.value.latitud = latitude;
-  // info.value.longitud = longitude;
-  // info.value.marca = brand;
-  // info.value.modelo = model;
-  // info.value.sistema_Operativo = os;
-  // await cardsStore.infoDeviceConoceles(info.value);
 };
 
 const isTabSelected = async (nombre, id) => {
@@ -833,6 +908,19 @@ const exportarBD = async () => {
   document.body.appendChild(link);
   link.click();
   $q.loading.hide();
+};
+
+const botonConsultar = async () => {
+  let { latitude, longitude } = await getCurrentLocation();
+  let { brand, model, os } = getDataDevice();
+  info.value.latitud = latitude;
+  info.value.longitud = longitude;
+  info.value.marca = brand;
+  info.value.modelo = model;
+  info.value.sistema_Operativo = os;
+  await configuracionStore.infoDeviceConoceles(info.value);
+  await configuracionStore.loadVisitas();
+  consultar();
 };
 
 const consultar = async () => {
