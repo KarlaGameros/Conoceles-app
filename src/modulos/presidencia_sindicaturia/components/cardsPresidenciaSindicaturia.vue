@@ -5,18 +5,20 @@
       <q-icon name="badge" color="purple-ieen" />
     </template>
     <template v-slot:contenido>
-      En este espacio tendrás la oportunidad de conocer a las personas
-      candidatas, así como su trayectoria y sus principales propuestas de
-      campaña, entre otras cosas, en la Elección de Presidencias y Sindicaturas
-      2024 en el Estado de Nayarit lo que puede darte más información para
-      ejercer tu voto, para lo cual bastará que des un click en la opción que
-      desees consultar.
+      <span id="speak">
+        En este espacio tendrás la oportunidad de conocer a las personas
+        candidatas, así como su trayectoria y sus principales propuestas de
+        campaña, entre otras cosas, en la Elección de Diputaciones 2024 en el
+        Estado de Nayarit, lo que puede darte más información para ejercer tu
+        voto, para lo cual bastará que des un click en la opción que desees
+        consultar
+      </span>
     </template>
   </banner>
   <!---------------------------BUTTON BACK AND SEARCH BY NAME--------------------------->
   <div class="row q-pt-md">
     <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 text-subtitle2">
-      Buscar por candidatura:
+      <span id="speak">Buscar por candidatura: </span>
       <q-radio
         v-for="item in dropdownOptions"
         :key="item"
@@ -81,7 +83,9 @@
           : 'absolute-center text-h6 text-grey-8'
       "
     >
-      No hay información con los filtros seleccionados...
+      <span id="speak"
+        >No hay información con los filtros seleccionados...</span
+      >
     </div>
   </template>
   <template
@@ -154,7 +158,7 @@
           </div>
         </div>
         <q-card-section class="q-pt-md">
-          <div class="text-subtitle2 text-center text-grey-9">
+          <div class="text-subtitle2 text-center text-grey-9" id="speak">
             {{
               item.selection == "prop"
                 ? item.nombre_Completo_Propietario
@@ -165,47 +169,49 @@
                 : item.nombre_Completo_Suplente_2
             }}
           </div>
-          <div class="text-subtitle2 text-center text-grey-8">
-            {{
-              item.selection == "prop"
-                ? item.mote_Propietario
-                : item.selection == "sup"
-                ? item.mote_Suplente
-                : item.selection == "propSin"
-                ? item.mote_Propietario_2
-                : item.mote_Suplente_2
-            }}
-          </div>
-          <div class="row text-center">
-            <div class="text-caption text-grey col-6">
-              EDAD:
+          <div id="speak">
+            <div class="text-subtitle2 text-center text-grey-8">
               {{
                 item.selection == "prop"
-                  ? item.edad_Propietario
+                  ? item.mote_Propietario
                   : item.selection == "sup"
-                  ? item.edad_Suplente
+                  ? item.mote_Suplente
                   : item.selection == "propSin"
-                  ? item.edad_Propietario
-                  : item.edad_Suplente_2
+                  ? item.mote_Propietario_2
+                  : item.mote_Suplente_2
               }}
             </div>
-            <div class="text-caption text-grey col-6">
-              Género:
-              {{
-                item.selection == "prop"
-                  ? item.sexo_Propietario
-                  : item.selection == "sup"
-                  ? item.sexo_Suplente
-                  : item.selection == "propSin"
-                  ? item.sexo_Propietario_2
-                  : item.sexo_Suplente_2
-              }}
+            <div class="row text-center">
+              <div class="text-caption text-grey col-6">
+                EDAD:
+                {{
+                  item.selection == "prop"
+                    ? item.edad_Propietario
+                    : item.selection == "sup"
+                    ? item.edad_Suplente
+                    : item.selection == "propSin"
+                    ? item.edad_Propietario
+                    : item.edad_Suplente_2
+                }}
+              </div>
+              <div class="text-caption text-grey col-6">
+                Género:
+                {{
+                  item.selection == "prop"
+                    ? item.sexo_Propietario
+                    : item.selection == "sup"
+                    ? item.sexo_Suplente
+                    : item.selection == "propSin"
+                    ? item.sexo_Propietario_2
+                    : item.sexo_Suplente_2
+                }}
+              </div>
             </div>
           </div>
         </q-card-section>
 
         <q-card-section>
-          <div class="row text-subtitle2 flex-center text-grey-9">
+          <div class="row text-subtitle2 flex-center text-grey-9" id="speak">
             Municipio de {{ item.municipio }}
           </div>
           <div class="row no-wrap items-center flex-center">
@@ -230,6 +236,7 @@
         <q-card-section class="q-pa-xs">
           <div
             class="row text-subtitle2 flex-center text-grey-8 text-center q-pb-lg"
+            id="speak"
           >
             {{
               item.is_Coalicion == true
@@ -348,7 +355,7 @@
         row-key="name"
       >
         <template v-slot:body="props">
-          <q-tr :props="props">
+          <q-tr :props="props" id="speak">
             <q-td v-for="col in props.cols" :key="col.name" :props="props">
               <div v-if="col.name === 'url_Logo_Partido_Propietario'">
                 <q-avatar square style="width: auto; height: 28px">

@@ -1,11 +1,13 @@
-<template>
+<template class="selectable-text-area">
   <q-page class="row flex flex-center selectable-text-area">
     <div class="col-2"></div>
     <div class="text-center col-lg-4 col-md-4 col-sm-12 col-xs-12">
       <div class="text-h4 text-bold text-purple-ieen-1" id="speak">
         Candidatas y Candidatos,
       </div>
-      <div class="text-h2 text-bold text-purple-ieen-1" id="speak">Conóceles</div>
+      <div class="text-h2 text-bold text-purple-ieen-1" id="speak">
+        Conóceles
+      </div>
       <div class="text-subtitle2 center text-justify q-pa-md" id="speak">
         Consulta la trayectoria política y profesional, las propuestas de
         campaña y la autoidentificación a determinados grupos en situación de
@@ -14,10 +16,15 @@
       </div>
     </div>
     <div class="imgHome col-lg-6 col-md-5 col-sm-12 col-xs-12">
-      <img alt="PREP logo" src="../assets/ConocelesInicio.png" :style="$q.screen.xs
-        ? 'width: 400px; height: 350px'
-        : 'width: 650px; height: 550px'
-        " />
+      <img
+        alt="PREP logo"
+        src="../assets/ConocelesInicio.png"
+        :style="
+          $q.screen.xs
+            ? 'width: 400px; height: 350px'
+            : 'width: 650px; height: 550px'
+        "
+      />
     </div>
 
     <div class="absolute-bottom-right">

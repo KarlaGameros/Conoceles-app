@@ -7,10 +7,12 @@
     </template>
 
     <template v-slot:contenido>
-      La información es proporcionada por las personas candidatas a las
-      Diputaciones del Estado de Nayarit, por lo que su contenido es
-      responsabilidad de los actores políticos. El Instituto Estatal Electoral
-      de Nayarit únicamente apoya para su difusión.
+      <span id="speak">
+        La información es proporcionada por las personas candidatas a las
+        Diputaciones del Estado de Nayarit, por lo que su contenido es
+        responsabilidad de los actores políticos. El Instituto Estatal Electoral
+        de Nayarit únicamente apoya para su difusión.
+      </span>
     </template>
   </banner>
   <br />
@@ -23,12 +25,13 @@
         label="Regresar"
         :to="{ name: 'DIPcards', params: { eleccion_Id: props.eleccion_Id } }"
         icon="reply"
-      />
-      {{
-        candidato.tipo_Candidato != "RP"
-          ? `Distrito ${candidato.no_Distrito} - ${candidato.distrito}`
-          : ""
-      }}
+      /><span id="speak">
+        {{
+          candidato.tipo_Candidato != "RP"
+            ? `Distrito ${candidato.no_Distrito} - ${candidato.distrito}`
+            : ""
+        }}</span
+      >
     </div>
     <q-btn
       :disable="activar_pdf == true"
@@ -36,7 +39,7 @@
       flat
       icon="picture_as_pdf"
       class="text-purple-ieen"
-      >Descargar</q-btn
+      ><span id="speak">Descargar</span></q-btn
     >
   </div>
   <!---------------------------CANDIDATE DETAIL--------------------------->
@@ -72,15 +75,17 @@
             </q-avatar>
 
             <div class="text-subtitle1 text-bold text-grey-9 q-pa-xs">
-              {{ candidato.nombre_Completo }}
+              <span id="speak"> {{ candidato.nombre_Completo }} </span>
             </div>
 
             <div class="text-subtitle2 text-center text-grey-9 q-pb-lg">
-              {{
-                candidato.is_Coalicion == true
-                  ? candidato.coalicion
-                  : candidato.partido
-              }}
+              <span id="speak">
+                {{
+                  candidato.is_Coalicion == true
+                    ? candidato.coalicion
+                    : candidato.partido
+                }}
+              </span>
             </div>
             <q-btn-toggle
               @click="cambiar(candidato.selection)"
@@ -180,14 +185,17 @@
                       />
                     </q-avatar>
                     <div class="text-subtitle2 text-center text-grey-9 q-pb-lg">
-                      {{
-                        candidato.is_Coalicion == true
-                          ? candidato.coalicion
-                          : candidato.partido
-                      }}
+                      <span id="speak">
+                        {{
+                          candidato.is_Coalicion == true
+                            ? candidato.coalicion
+                            : candidato.partido
+                        }}
+                      </span>
                     </div>
                   </div>
                   <div
+                    id="speak"
                     :class="
                       $q.screen.xs
                         ? 'text-center col-lg-4 col-md-6 col-sm-12 col-xs-12'
@@ -214,32 +222,44 @@
                         : 'col-lg-4 col-md-6 col-sm-12 col-xs-12'
                     "
                   >
-                    <div class="text-h6 text-grey-9">Tipo de elección:</div>
-                    <div class="text-subtitle1">
-                      {{ candidato.tipo_Eleccion }} -
-                      {{ candidato.tipo_Candidato }}
+                    <div id="speak">
+                      <div class="text-h6 text-grey-9">Tipo de elección:</div>
+                      <div class="text-subtitle1">
+                        {{ candidato.tipo_Eleccion }} -
+                        {{ candidato.tipo_Candidato }}
+                      </div>
                     </div>
-                    <div class="text-h6 text-grey-9">Cargo:</div>
-                    <div class="text-subtitle1">
-                      {{
-                        candidato.selection == "prop"
-                          ? "Propietario"
-                          : "Suplente"
-                      }}
+                    <div id="speak">
+                      <div class="text-h6 text-grey-9">Cargo:</div>
+                      <div class="text-subtitle1">
+                        {{
+                          candidato.selection == "prop"
+                            ? "Propietario"
+                            : "Suplente"
+                        }}
+                      </div>
                     </div>
-                    <div class="text-h6 text-grey-9">Estado:</div>
-                    <div class="text-subtitle1 text-grey-9">Nayarit</div>
-                    <div class="text-h6 text-grey-9">Número de fórmula:</div>
-                    <div class="text-subtitle1">{{ candidato.id }}</div>
+                    <div id="speak">
+                      <div class="text-h6 text-grey-9">Estado:</div>
+                      <div class="text-subtitle1 text-grey-9">Nayarit</div>
+                    </div>
+                    <div id="speak">
+                      <div class="text-h6 text-grey-9">Número de fórmula:</div>
+                      <div class="text-subtitle1">{{ candidato.id }}</div>
+                    </div>
                     <br />
                     <div class="text-grey-9">
-                      <q-icon name="location_on" />{{
+                      <q-icon name="location_on" /><span id="speak">{{
                         datos_Generales.domicilio
-                      }}
+                      }}</span>
                       <br />
-                      <q-icon name="call" /> {{ datos_Generales.telefono }}
+                      <q-icon name="call" /><span id="speak">
+                        {{ datos_Generales.telefono }}
+                      </span>
                       <br />
-                      <q-icon name="email" /> {{ datos_Generales.email }}
+                      <q-icon name="email" /><span id="speak">
+                        {{ datos_Generales.email }}
+                      </span>
                     </div>
                     <br />
                     <div>
@@ -352,16 +372,18 @@
 
               <q-tab-panel name="HISTORIA PROFESIONAL Y/O LABORAL">
                 <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                  <span id="speak">
+                    Aquí se mostrará la información capturada por el candidato
+                  </span>
                 </div>
                 <div v-else>
                   <br />
                   <hr color="purple" />
                   <div class="text-subtitle2 text-purple-3" align="center">
-                    <q-icon name="school" /> ESTUDIOS
+                    <q-icon name="school" /> <span id="speak"> ESTUDIOS </span>
                   </div>
                   <hr color="purple" />
-                  <div class="row q-pa-sm">
+                  <div class="row q-pa-sm" id="speak">
                     <div class="col">
                       <div class="text-h6">Grado máximo de estudios:</div>
                       <div class="text-subtitle1">
@@ -378,98 +400,123 @@
                   <br />
                   <hr color="purple" />
                   <div class="text-subtitle2 text-purple-3" align="center">
-                    <q-icon name="import_contacts" /> CURSOS
+                    <q-icon name="import_contacts" />
+                    <span id="speak"> CURSOS </span>
                   </div>
                   <hr color="purple" />
                   <div class="q-pa-sm text-subtitle1 text-justify">
-                    {{
-                      formacion.formacion == null
-                        ? "En este apartado se mostrará la información academica que el candidato registro en el cuestionario  curricular"
-                        : formacion.formacion
-                    }}
+                    <span id="speak">
+                      {{
+                        formacion.formacion == null
+                          ? "En este apartado se mostrará la información academica que el candidato registro en el cuestionario  curricular"
+                          : formacion.formacion
+                      }}
+                    </span>
                   </div>
                 </div>
               </q-tab-panel>
 
               <q-tab-panel name="TRAYECTORIA POLÍTICA Y/O PARTICIPACIÓN SOCIAL">
                 <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                  <span id="speak">
+                    Aquí se mostrará la información capturada por el candidato
+                  </span>
                 </div>
                 <div class="text-subtitle1 text-justify" v-else>
-                  {{
-                    datos_Generales.trayectoria == null
-                      ? "En este apartado se mostrará los motivos de ocupar un cargo público que el candidato registro en el cuestionario curricular"
-                      : datos_Generales.trayectoria
-                  }}
+                  <span id="speak">
+                    {{
+                      datos_Generales.trayectoria == null
+                        ? "En este apartado se mostrará los motivos de ocupar un cargo público que el candidato registro en el cuestionario curricular"
+                        : datos_Generales.trayectoria
+                    }}
+                  </span>
                 </div>
               </q-tab-panel>
 
               <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?">
                 <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                  <span id="speak">
+                    Aquí se mostrará la información capturada por el candidato
+                  </span>
                 </div>
                 <div v-else class="text-subtitle1 text-justify">
-                  {{
-                    datos_Generales.motivo_Cargo_Publico == null
-                      ? "En este apartado se mostrará los motivos de ocupar un  cargo público que el candidato registro en el cuestionario curricular"
-                      : datos_Generales.motivo_Cargo_Publico
-                  }}
+                  <span id="speak">
+                    {{
+                      datos_Generales.motivo_Cargo_Publico == null
+                        ? "En este apartado se mostrará los motivos de ocupar un  cargo público que el candidato registro en el cuestionario curricular"
+                        : datos_Generales.motivo_Cargo_Publico
+                    }}
+                  </span>
                 </div>
               </q-tab-panel>
               <q-tab-panel name="PROPUESTAS">
                 <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                  <span id="speak">
+                    Aquí se mostrará la información capturada por el candidato
+                  </span>
                 </div>
                 <div v-else>
                   <div class="text-subtitle1 text-center text-bold q-pb-md">
-                    PRINCIPALES PROPUESTAS
+                    <span id="speak"> PRINCIPALES PROPUESTAS </span>
                   </div>
                   <hr color="purple" />
                   <div class="text-subtitle2 text-purple-3" align="center">
-                    <q-icon name="import_contacts" /> PROPUESTA 1
+                    <q-icon name="import_contacts" />
+                    <span id="speak"> PROPUESTA 1 </span>
                   </div>
                   <hr color="purple" />
 
                   <div class="q-pa-sm text-subtitle1 text-justify">
-                    {{
-                      list_Propuestas.length != 0
-                        ? list_Propuestas[0].propuesta
-                        : "En este apartado se mostrará la propuesta 1 registrada por el candidato en el cuestionario  curricular"
-                    }}
+                    <span id="speak">
+                      {{
+                        list_Propuestas.length != 0
+                          ? list_Propuestas[0].propuesta
+                          : "En este apartado se mostrará la propuesta 1 registrada por el candidato en el cuestionario  curricular"
+                      }}
+                    </span>
                   </div>
                   <hr color="purple" />
                   <div class="text-subtitle2 text-purple-3" align="center">
-                    <q-icon name="import_contacts" /> PROPUESTA 2
+                    <q-icon name="import_contacts" />
+                    <span id="speak"> PROPUESTA 2 </span>
                   </div>
                   <hr color="purple" />
                   <div class="q-pa-sm text-subtitle1 text-justify">
-                    {{
-                      list_Propuestas.length != 0
-                        ? list_Propuestas[1].propuesta
-                        : "En este apartado se mostrará la propuesta 2 registrada por el candidato en el cuestionario curricular"
-                    }}
+                    <span id="speak">
+                      {{
+                        list_Propuestas.length != 0
+                          ? list_Propuestas[1].propuesta
+                          : "En este apartado se mostrará la propuesta 2 registrada por el candidato en el cuestionario curricular"
+                      }}
+                    </span>
                   </div>
                 </div>
               </q-tab-panel>
 
               <q-tab-panel name="PROPUESTA EN MATERIA DE GÉNERO">
                 <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                  <span id="speak">
+                    Aquí se mostrará la información capturada por el candidato
+                  </span>
                 </div>
                 <div v-else>
                   <hr color="purple" />
                   <div class="text-subtitle2 text-purple-3" align="center">
-                    <q-icon name="import_contacts" /> PROPUESTA EN MATERIA DE
-                    GÉNERO O, EN SU CASO, DEL GRUPO EN SITUACIÓN DE
-                    DISCRIMINACIÓN QUE REPRESENTO
+                    <q-icon name="import_contacts" />
+                    <span id="speak">
+                      PROPUESTA EN MATERIA DE GÉNERO O, EN SU CASO, DEL GRUPO EN
+                      SITUACIÓN DE DISCRIMINACIÓN QUE REPRESENTO
+                    </span>
                   </div>
                   <hr color="purple" />
                   <div class="q-pa-sm text-subtitle1 text-justify">
-                    {{
-                      datos_Generales.propuesta_Genero == null
-                        ? "En este apartado se mostrará la propuesta en materia de género que el candidato registro en el  cuestionario curricular"
-                        : datos_Generales.propuesta_Genero
-                    }}
+                    <span id="speak">
+                      {{
+                        datos_Generales.propuesta_Genero == null
+                          ? "En este apartado se mostrará la propuesta en materia de género que el candidato registro en el  cuestionario curricular"
+                          : datos_Generales.propuesta_Genero
+                      }}
+                    </span>
                   </div>
                 </div>
               </q-tab-panel>
