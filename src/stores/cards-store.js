@@ -291,10 +291,7 @@ export const useCardsStore = defineStore("cards", {
             nombre_Completo_Propietario: `${candidato.nombres_Propietario} ${candidato.apellido_Paterno_Propietario} ${candidato.apellido_Materno_Propietario}`,
             mote_Propietario: candidato.mote_Propietario,
             sexo_Propietario: candidato.sexo_Propietario,
-            url_Foto_Propietario:
-              candidato.validado_Propietario == true
-                ? candidato.url_Foto_Propietario
-                : "https://static.vecteezy.com/system/resources/previews/026/434/409/non_2x/default-avatar-profile-icon-social-media-user-photo-vector.jpg",
+            url_Foto_Propietario: candidato.url_Foto_Propietario,
             clave_Elector_Propietario: candidato.clave_Elector_Propietario,
             rfC_Propietario: candidato.rfC_Propietario,
             curP_Propietario: candidato.curP_Propietario,
@@ -320,10 +317,7 @@ export const useCardsStore = defineStore("cards", {
               candidato.apellido_Materno_Propietario_2,
             mote_Propietario_2: candidato.mote_Propietario_2,
             sexo_Propietario_2: candidato.sexo_Propietario_2,
-            url_Foto_Propietario_2:
-              candidato.validado_Propietario_2 == true
-                ? candidato.url_Foto_Propietario_2
-                : "https://static.vecteezy.com/system/resources/previews/026/434/409/non_2x/default-avatar-profile-icon-social-media-user-photo-vector.jpg",
+            url_Foto_Propietario_2: candidato.url_Foto_Propietario_2,
             clave_Elector_Propietario_2: candidato.clave_Elector_Propietario_2,
             rfC_Propietario_2: candidato.rfC_Propietario_2,
             curP_Propietario_2: candidato.curP_Propietario_2,
@@ -347,10 +341,7 @@ export const useCardsStore = defineStore("cards", {
             apellido_Materno_Suplente: candidato.apellido_Materno_Suplente,
             mote_Suplente: candidato.mote_Suplente,
             sexo_Suplente: candidato.sexo_Suplente,
-            url_Foto_Suplente:
-              candidato.validado_Suplente == true
-                ? candidato.url_Foto_Suplente
-                : "https://static.vecteezy.com/system/resources/previews/026/434/409/non_2x/default-avatar-profile-icon-social-media-user-photo-vector.jpg",
+            url_Foto_Suplente: candidato.url_Foto_Suplente,
             clave_Elector_Suplente: candidato.clave_Elector_Suplente,
             rfC_Suplente: candidato.rfC_Suplente,
             curP_Suplente: candidato.curP_Suplente,
@@ -371,10 +362,7 @@ export const useCardsStore = defineStore("cards", {
             apellido_Materno_Suplente_2: candidato.apellido_Materno_Suplente_2,
             mote_Suplente_2: candidato.mote_Suplente_2,
             sexo_Suplente_2: candidato.sexo_Suplente_2,
-            url_Foto_Suplente_2:
-              candidato.validado_Suplente_2 == true
-                ? candidato.url_Foto_Suplente_2
-                : "https://static.vecteezy.com/system/resources/previews/026/434/409/non_2x/default-avatar-profile-icon-social-media-user-photo-vector.jpg",
+            url_Foto_Suplente_2: candidato.url_Foto_Suplente_2,
             clave_Elector_Suplente_2: candidato.clave_Elector_Suplente_2,
             rfC_Suplente_2: candidato.rfC_Suplente_2,
             curP_Suplente_2: candidato.curP_Suplente_2,

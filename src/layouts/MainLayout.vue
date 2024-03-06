@@ -286,7 +286,6 @@ import { useGraficasStore } from "src/stores/graficas-store";
 import { getCurrentLocation, getDataDevice } from "../helpers/CurrentLocation";
 import Filtrar from "src/helpers/Filtrar";
 import FiltrarCandidatos from "src/helpers/FiltrarCandidatos";
-import VueAnalytics from "vue-analytics";
 
 
 
@@ -347,7 +346,7 @@ const list_Grado_Academico = ref([
 ]);
 const cargo_Id = ref(null);
 const list_Cargos = ref([]);
-const numeroVisitas = ref(null);
+const visitorCount = ref(null);
 //---------------------------------------------------------------------------------
 
 onBeforeMount(() => {
@@ -448,24 +447,7 @@ watch(list_Candidatos_By_Eleccion, (val) => {
 
 //---------------------------------------------------------------------------------
 
-const obtenerNumeroVisitas = () => {
-  // Configura la autenticación y obtén el número de visitas desde la API de Reporting
-  // gapi.client.analytics.data.ga
-  //   .get({
-  //     ids: "ga:YOUR_VIEW_ID",
-  //     "start-date": "30daysAgo",
-  //     "end-date": "yesterday",
-  //     metrics: "ga:sessions",
-  //   })
-  //   .then((response) => {
-  //     // Actualiza la variable en tu componente con el número de visitas
-  //     numeroVisitas.value = response.result.rows[0][0];
-  //     console.log(numeroVisitas.value);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error al obtener el número de visitas:", error);
-  //   });
-};
+const obtenerNumeroVisitas = async () => {};
 const cargarData = async () => {
   $q.loading.show({
     spinner: QSpinnerCube,
