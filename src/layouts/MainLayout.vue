@@ -1,435 +1,528 @@
 <template>
-  <q-layout :view="$q.screen.xs ? 'hHh lpR lff' : 'hHh LpR fFf'">
-    <q-header elevated class="bg-pink-ieen" height-hint="98">
-      <div class="row bg-grey-3">
-        <div class="col-lg-1 col-md-2 col-sm-3 col-xs-3 q-pl-xl q-pt-md">
-          <a href="https://ieenayarit.org/" target="_black">
-            <q-img v-if="!$q.screen.xs" src="../assets/IEEN300.png"></q-img>
-          </a>
-        </div>
-        <div
-          :class="
-            !$q.screen.xs
-              ? 'col-lg-9 col-md-8 col-sm-6 col-xs-6 q-pr-xl q-pt-md'
-              : 'col-12'
-          "
-        >
-          <div class="text-h5 text-center text-bold text-grey-8">
-            Candidatas y Candidatos,
-            <b class="text-pink-conoceles">Conóceles</b>
+  <div class="selectable-text-area">
+    <q-layout :view="$q.screen.xs ? 'hHh lpR lff' : 'hHh LpR fFf'">
+      <q-header elevated class="bg-pink-ieen" height-hint="98">
+        <div class="row bg-grey-3">
+          <div class="col-lg-1 col-md-2 col-sm-3 col-xs-3 q-pl-xl q-pt-md">
+            <a href="https://ieenayarit.org/" target="_black">
+              <q-img v-if="!$q.screen.xs" src="../assets/IEEN300.png"></q-img>
+            </a>
           </div>
-          <div class="text-h6 text-center text-grey-8 text-bold">
-            Proceso Electoral Local Ordinario
-            <b class="text-pink-conoceles">2024</b>
+          <div
+            :class="
+              !$q.screen.xs
+                ? 'col-lg-9 col-md-8 col-sm-6 col-xs-6 q-pr-xl q-pt-md'
+                : 'col-12'
+            "
+          >
+            <div class="text-h5 text-center text-bold text-grey-8" id="speak">
+              Candidatas y Candidatos,
+              <b class="text-pink-conoceles">Conóceles</b>
+            </div>
+            <div class="text-h6 text-center text-grey-8 text-bold" id="speak">
+              Proceso Electoral Local Ordinario
+              <b class="text-pink-conoceles">2024</b>
+            </div>
           </div>
-        </div>
-        <div
-          v-if="!$q.screen.xs"
-          class="col-lg-2 col-md-2 col-sm-3 col-xs-3 q-pr-xl"
-        >
-          <q-img src="../assets/Conoceles2@300x.png"></q-img>
-        </div>
-      </div>
-      <q-toolbar>
-        <div class="row">
-          <q-btn
-            v-if="isHomePage || $q.screen.xs"
-            dense
-            class="absolute-left"
-            flat
-            round
-            icon="menu"
-            @click="toggleLeftDrawer"
-          />
-          <!---------------------------HEADER TABS--------------------------->
           <div
             v-if="!$q.screen.xs"
-            class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9"
+            class="col-lg-2 col-md-2 col-sm-3 col-xs-3 q-pr-xl"
           >
-            <q-tabs v-model="tab">
-              <q-route-tab :to="{ name: 'inicio' }" name="inicio" icon="home" />
-
-              <q-tab
-                v-model="tab"
-                v-for="eleccion in list_Tipos_Elecciones"
-                :key="eleccion.siglas"
-                :name="eleccion.siglas"
-                :label="eleccion.nombre"
-                @click="isTabSelected(eleccion.siglas, eleccion.id)"
-              />
-            </q-tabs>
-          </div>
-          <!---------------------------HEADER ISSMALLSREEN--------------------------->
-          <div class="absolute-center" v-else>
-            <strong>{{
-              tab == "DIP"
-                ? "DIPUTACIONES"
-                : tab == "PYS"
-                ? "PRESIDENCIA Y SINDICATURA"
-                : tab == "REG"
-                ? "REGIDURIAS"
-                : "INICIO"
-            }}</strong>
-          </div>
-          <div
-            v-if="$q.screen.xs || $q.screen.sm"
-            class="absolute-right q-pa-xs"
-          >
-            <q-btn flat @click="exportarBD()">
-              <i class="fa-solid fa-database fa-2xl" style="color: #ffffff"></i>
-              <q-tooltip>Exportar base de datos</q-tooltip>
-            </q-btn>
-          </div>
-          <div
-            v-if="!$q.screen.xs && !$q.screen.sm"
-            class="absolute-right q-pa-xs"
-          >
-            Exportar base de datos
-
-            <q-btn @click="exportarBD()" flat>
-              <i class="fa-solid fa-database fa-2xl" style="color: #ffffff"></i>
-              <q-tooltip>Exportar base de datos</q-tooltip>
-            </q-btn>
-          </div>
-        </div>
-      </q-toolbar>
-    </q-header>
-    <q-drawer
-      v-if="isHomePage || $q.screen.xs"
-      show-if-above
-      v-model="leftDrawerOpen"
-      side="left"
-      bordered
-      :class="{
-        'bg-grey-3': $q.screen.xs,
-      }"
-    >
-      <q-scroll-area
-        style="height: calc(100% - 150px); border-right: 1px solid #ddd"
-      >
-        <!---------------------------DRAWER NORMAL--------------------------->
-        <q-list v-if="!$q.screen.xs">
-          <q-item>
-            <q-item-section class="bg-grey-3" style="border-radius: 10px">
-              <q-item-label
-                class="text-h5 label-title text-bold q-pa-xs"
-                style="color: gray"
-                >Consulta
-              </q-item-label>
-              <div class="text-subtitle2 q-pa-xs" style="color: grey">
-                Selecciona el reporte que deseas consultar:
-              </div>
-              <q-btn
-                rounded
-                @click="activaNumeralia(tab)"
-                :to="{
-                  name: `${tab}`,
-                  params: { eleccion_Id: tab_Id },
-                }"
-                label="Numeralia"
-                :class="buttons == false ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
-              />
-              <div class="q-pb-xs"></div>
-              <q-btn
-                rounded
-                :to="{
-                  name: `${tab}cards`,
-                  params: { eleccion_Id: tab_Id },
-                }"
-                label="Candidatas y candidatos"
-                :class="buttons ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
-                @click="activaCandidatos(tab)"
-              />
-            </q-item-section>
-          </q-item>
-          <!---------------FILTERS--------------->
-          <q-item v-if="tab != 'PYS'">
-            <q-item-section>
-              <q-item-label class="text-purple-ieen label-title text-bold">
-                Cargo
-              </q-item-label>
-              <q-select
-                dense
-                color="purple"
-                rounded
-                outlined
-                bg-color="grey-3"
-                v-model="cargo_Id"
-                :options="list_Cargos"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item
-            v-if="tab === 'DIP'"
-            :content-inset-level="2"
-            :header-inset-level="2"
-          >
-            <q-item-section>
-              <q-item-label class="text-purple-ieen label-title text-bold"
-                >Distrito</q-item-label
-              >
-              <q-select
-                :disable="cargo_Id.value == 0 || cargo_Id.cargo == 'RP'"
-                dense
-                color="purple"
-                rounded
-                outlined
-                bg-color="grey-3"
-                v-model="distrito_Id"
-                :options="list_Distritos"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item
-            v-if="tab === 'PYS' || tab === 'REG'"
-            :content-inset-level="2"
-            :header-inset-level="2"
-          >
-            <q-item-section>
-              <q-item-label class="text-purple-ieen label-title text-bold"
-                >Municipio</q-item-label
-              >
-              <q-select
-                :disable="cargo_Id.value == 0"
-                dense
-                color="purple"
-                outlined
-                rounded
-                bg-color="grey-3"
-                v-model="municipio_Id"
-                :options="list_Municipios"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item
-            v-if="tab === 'REG'"
-            :content-inset-level="2"
-            :header-inset-level="2"
-          >
-            <q-item-section>
-              <q-item-label class="text-purple-ieen label-title text-bold"
-                >Demarcación</q-item-label
-              >
-              <q-select
-                :disable="cargo_Id.value == 0 || cargo_Id.cargo == 'RP'"
-                dense
-                color="purple"
-                outlined
-                bg-color="grey-3"
-                rounded
-                v-model="demarcacion_Id"
-                :options="list_Demarcaciones"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item>
-            <q-item-section>
-              <q-item-label class="text-purple-ieen label-title text-bold"
-                >Partido político o Coalición</q-item-label
-              >
-              <q-select
-                :disable="cargo_Id.value == 0"
-                dense
-                color="purple"
-                rounded
-                outlined
-                bg-color="grey-3"
-                v-model="actor_politico_Id"
-                :options="list_Partidos_Politicos"
-              >
-                <template v-slot:option="scope">
-                  <q-item v-bind="scope.itemProps">
-                    <q-item-section avatar v-if="scope.opt.logo != null">
-                      <q-img :src="scope.opt.logo" />
-                    </q-item-section>
-                    <q-item-section>
-                      <q-item-label>{{ scope.opt.label }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </template>
-              </q-select>
-            </q-item-section>
-          </q-item>
-          <q-item>
-            <q-item-section>
-              <q-item-label class="text-purple-ieen label-title text-bold"
-                >Grado académico</q-item-label
-              >
-              <q-select
-                :disable="cargo_Id.value == 0"
-                dense
-                color="purple"
-                rounded
-                outlined
-                bg-color="grey-3"
-                v-model="grado_Academica_Id"
-                :options="list_Grado_Academico"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item>
-            <q-item-section>
-              <q-item-label class="text-purple-ieen label-title text-bold"
-                >Rango de edad</q-item-label
-              >
-              <q-select
-                :disable="cargo_Id.value == 0"
-                dense
-                color="purple"
-                rounded
-                outlined
-                bg-color="grey-3"
-                v-model="rango_edad_Id"
-                :options="list_Edades"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item>
-            <q-item-section>
-              <q-item-label class="text-purple-ieen label-title text-bold"
-                >Género</q-item-label
-              >
-              <q-select
-                :disable="cargo_Id.value == 0"
-                dense
-                color="purple"
-                rounded
-                outlined
-                bg-color="grey-3"
-                v-model="sexo_Id"
-                :options="list_Sexo"
-              />
-            </q-item-section>
-          </q-item>
-        </q-list>
-
-        <!---------------------------DRAWER ISSMALLSCREEN--------------------------->
-        <q-list v-else class="absolute">
-          <div class="text-center q-pa-md">
             <q-img src="../assets/Conoceles2@300x.png"></q-img>
           </div>
-          <q-item clickable v-ripple>
-            <q-btn
-              @click="isTabSelected('INICIO')"
-              rounded
-              name="inicio"
-              icon="home"
-              to="/inicio"
-              label="Inicio"
-              class="bg-pink-ieen-3"
-            />
-          </q-item>
-          <q-item
-            v-for="eleccion in list_Tipos_Elecciones"
-            :key="eleccion"
-            clickable
-            v-ripple
-          >
-            <q-btn
-              v-model="tab"
-              @click="isTabSelected(eleccion.siglas, eleccion.id)"
-              rounded
-              :to="{
-                name: eleccion.siglas,
-              }"
-              :label="eleccion.label"
-              class="bg-pink-ieen-3"
-            />
-          </q-item>
-        </q-list>
-      </q-scroll-area>
-      <q-page-sticky v-if="!$q.screen.xs" :offset="[18, 18]">
-        <div class="row justify-center">
-          <div class="q-pr-sm">
-            <q-btn dense @click="limpiarFiltros" outline style="color: #d1308a">
-              <div class="row items-center no-wrap">
-                <q-icon left name="cleaning_services" size="xs" />
-                <div class="text-center">Limpiar campos</div>
-              </div>
-            </q-btn>
-          </div>
-          <div>
-            <q-btn dense @click="botonConsultar" push class="bg-pink-ieen">
-              <div class="row items-center no-wrap">
-                <q-icon name="search" size="xs"></q-icon>
-                <div class="text-center">Consultar</div>
-              </div>
-            </q-btn>
-          </div>
+          adbc1a332b00ee39854e18e24b3ab4098
         </div>
-      </q-page-sticky>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-
-    <!---------------------------FOOTER--------------------------->
-    <q-footer elevated class="bg-pink-ieen text-white">
-      <q-toolbar>
-        <q-toolbar-title>
+        <q-toolbar>
           <div class="row">
+            <q-btn
+              v-if="isHomePage || $q.screen.xs"
+              dense
+              class="absolute-left"
+              flat
+              round
+              icon="menu"
+              @click="toggleLeftDrawer"
+            />
+            <!---------------------------HEADER TABS--------------------------->
             <div
-              :class="
-                $q.screen.xs
-                  ? 'col-12 text-subtitle2 text-center'
-                  : 'col-lg-3 col-md-3 col-sm-12 col-xs-12 text-subtitle1'
-              "
+              v-if="!$q.screen.xs"
+              class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9"
             >
-              &#169; 2024 Instituto Estatal Electoral de Nayarit
-            </div>
-            <div
-              class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center text-caption"
-            >
-              <div><q-icon name="home" color="white" />Domicilio</div>
-              Av. Country Club 13, Colonia Versalles, 63138, Tepic, Nayarit
-            </div>
-            <div
-              class="text-caption col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center"
-            >
-              <div><q-icon name="phone" color="white" />Teléfono</div>
-              (311) - 210 - 3235 /36 /47
-            </div>
-            <div
-              class="text-caption col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center"
-            >
-              Preguntas frecuentes
-              <q-btn flat round dense :to="{ name: 'preguntasFrecuentes' }">
-                <q-icon name="live_help" />
-              </q-btn>
-            </div>
+              <q-tabs v-model="tab">
+                <q-route-tab
+                  :to="{ name: 'inicio' }"
+                  name="inicio"
+                  icon="home"
+                />
 
-            <div v-if="!$q.screen.xs" class="absolute-right q-pa-xs">
-              <q-btn
-                flat
-                round
-                dense
-                href="https://www.facebook.com/IEENayarit?mibextid=sCpJLy"
-                target="_blank"
-              >
+                <q-tab
+                  id="speak"
+                  v-model="tab"
+                  v-for="eleccion in list_Tipos_Elecciones"
+                  :key="eleccion.siglas"
+                  :name="eleccion.siglas"
+                  :label="eleccion.nombre"
+                  @click="isTabSelected(eleccion.siglas, eleccion.id)"
+                />
+              </q-tabs>
+            </div>
+            <!---------------------------HEADER ISSMALLSREEN--------------------------->
+            <div class="absolute-center" v-else>
+              <strong>{{
+                tab == "DIP"
+                  ? "DIPUTACIONES"
+                  : tab == "PYS"
+                  ? "PRESIDENCIA Y SINDICATURA"
+                  : tab == "REG"
+                  ? "REGIDURIAS"
+                  : "INICIO"
+              }}</strong>
+            </div>
+            <div
+              v-if="$q.screen.xs || $q.screen.sm"
+              class="absolute-right q-pa-xs"
+            >
+              <q-btn flat @click="exportarBD()">
                 <i
-                  class="fa-brands fa-square-facebook fa-2xl"
+                  class="fa-solid fa-database fa-2xl"
                   style="color: #ffffff"
                 ></i>
+                <q-tooltip>Exportar base de datos</q-tooltip>
               </q-btn>
-              <q-btn
-                flat
-                round
-                dense
-                href="https://www.youtube.com/@IEENayarit"
-                target="_blank"
-              >
+            </div>
+            <div
+              v-if="!$q.screen.xs && !$q.screen.sm"
+              class="absolute-right q-pa-xs"
+            >
+              Exportar base de datos
+
+              <q-btn @click="exportarBD()" flat>
                 <i
-                  class="fa-brands fa-youtube fa-2xl"
+                  class="fa-solid fa-database fa-2xl"
                   style="color: #ffffff"
                 ></i>
+                <q-tooltip>Exportar base de datos</q-tooltip>
               </q-btn>
             </div>
           </div>
-        </q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
-  </q-layout>
+        </q-toolbar>
+      </q-header>
+      <q-drawer
+        v-if="isHomePage || $q.screen.xs"
+        show-if-above
+        v-model="leftDrawerOpen"
+        side="left"
+        bordered
+        :class="{
+          'bg-grey-3': $q.screen.xs,
+        }"
+      >
+        <q-scroll-area
+          style="height: calc(100% - 150px); border-right: 1px solid #ddd"
+        >
+          <!---------------------------DRAWER NORMAL--------------------------->
+          <q-list v-if="!$q.screen.xs">
+            <q-item>
+              <q-item-section class="bg-grey-3" style="border-radius: 10px">
+                <q-item-label
+                  class="text-h5 label-title text-bold q-pa-xs"
+                  style="color: gray"
+                  id="speak"
+                  >Consulta
+                </q-item-label>
+                <div
+                  class="text-subtitle2 q-pa-xs"
+                  style="color: grey"
+                  id="speak"
+                >
+                  Selecciona el reporte que deseas consultar:
+                </div>
+                <q-btn
+                  rounded
+                  @click="activaNumeralia(tab)"
+                  :to="{
+                    name: `${tab}`,
+                    params: { eleccion_Id: tab_Id },
+                  }"
+                  label="Numeralia"
+                  :class="buttons == false ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
+                />
+                <div class="q-pb-xs"></div>
+                <q-btn
+                  rounded
+                  :to="{
+                    name: `${tab}cards`,
+                    params: { eleccion_Id: tab_Id },
+                  }"
+                  label="Candidatas y candidatos"
+                  :class="buttons ? 'bg-pink-ieen' : 'bg-pink-ieen-3'"
+                  @click="activaCandidatos(tab)"
+                />
+              </q-item-section>
+            </q-item>
+            <!---------------FILTERS--------------->
+            <q-item v-if="tab != 'PYS'">
+              <q-item-section>
+                <q-item-label
+                  class="text-purple-ieen label-title text-bold"
+                  id="speak"
+                >
+                  Cargo
+                </q-item-label>
+                <q-select
+                  dense
+                  color="purple"
+                  rounded
+                  outlined
+                  bg-color="grey-3"
+                  v-model="cargo_Id"
+                  :options="list_Cargos"
+                />
+              </q-item-section>
+            </q-item>
+            <q-item
+              v-if="tab === 'DIP'"
+              :content-inset-level="2"
+              :header-inset-level="2"
+            >
+              <q-item-section>
+                <q-item-label
+                  class="text-purple-ieen label-title text-bold"
+                  id="speak"
+                  >Distrito</q-item-label
+                >
+                <q-select
+                  :disable="cargo_Id.value == 0 || cargo_Id.cargo == 'RP'"
+                  dense
+                  color="purple"
+                  rounded
+                  outlined
+                  bg-color="grey-3"
+                  v-model="distrito_Id"
+                  :options="list_Distritos"
+                />
+              </q-item-section>
+            </q-item>
+            <q-item
+              v-if="tab === 'PYS' || tab === 'REG'"
+              :content-inset-level="2"
+              :header-inset-level="2"
+            >
+              <q-item-section>
+                <q-item-label
+                  class="text-purple-ieen label-title text-bold"
+                  id="speak"
+                  >Municipio</q-item-label
+                >
+                <q-select
+                  :disable="cargo_Id.value == 0"
+                  dense
+                  color="purple"
+                  outlined
+                  rounded
+                  bg-color="grey-3"
+                  v-model="municipio_Id"
+                  :options="list_Municipios"
+                />
+              </q-item-section>
+            </q-item>
+            <q-item
+              v-if="tab === 'REG'"
+              :content-inset-level="2"
+              :header-inset-level="2"
+            >
+              <q-item-section>
+                <q-item-label
+                  class="text-purple-ieen label-title text-bold"
+                  id="speak"
+                  >Demarcación</q-item-label
+                >
+                <q-select
+                  :disable="cargo_Id.value == 0 || cargo_Id.cargo == 'RP'"
+                  dense
+                  color="purple"
+                  outlined
+                  bg-color="grey-3"
+                  rounded
+                  v-model="demarcacion_Id"
+                  :options="list_Demarcaciones"
+                />
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label
+                  class="text-purple-ieen label-title text-bold"
+                  id="speak"
+                  >Partido político o Coalición</q-item-label
+                >
+                <q-select
+                  :disable="cargo_Id.value == 0"
+                  dense
+                  color="purple"
+                  rounded
+                  outlined
+                  bg-color="grey-3"
+                  v-model="actor_politico_Id"
+                  :options="list_Partidos_Politicos"
+                >
+                  <template v-slot:option="scope">
+                    <q-item v-bind="scope.itemProps">
+                      <q-item-section avatar v-if="scope.opt.logo != null">
+                        <q-img :src="scope.opt.logo" />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label>{{ scope.opt.label }}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label
+                  class="text-purple-ieen label-title text-bold"
+                  id="speak"
+                  >Grado académico</q-item-label
+                >
+                <q-select
+                  :disable="cargo_Id.value == 0"
+                  dense
+                  color="purple"
+                  rounded
+                  outlined
+                  bg-color="grey-3"
+                  v-model="grado_Academica_Id"
+                  :options="list_Grado_Academico"
+                />
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label
+                  class="text-purple-ieen label-title text-bold"
+                  id="speak"
+                  >Rango de edad</q-item-label
+                >
+                <q-select
+                  :disable="cargo_Id.value == 0"
+                  dense
+                  color="purple"
+                  rounded
+                  outlined
+                  bg-color="grey-3"
+                  v-model="rango_edad_Id"
+                  :options="list_Edades"
+                />
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label
+                  class="text-purple-ieen label-title text-bold"
+                  id="speak"
+                  >Género</q-item-label
+                >
+                <q-select
+                  :disable="cargo_Id.value == 0"
+                  dense
+                  color="purple"
+                  rounded
+                  outlined
+                  bg-color="grey-3"
+                  v-model="sexo_Id"
+                  :options="list_Sexo"
+                />
+              </q-item-section>
+            </q-item>
+          </q-list>
+
+          <!---------------------------DRAWER ISSMALLSCREEN--------------------------->
+          <q-list v-else class="absolute">
+            <div class="text-center q-pa-md">
+              <q-img src="../assets/Conoceles2@300x.png"></q-img>
+            </div>
+            <q-item clickable v-ripple>
+              <q-btn
+                @click="isTabSelected('INICIO')"
+                rounded
+                name="inicio"
+                icon="home"
+                to="/inicio"
+                label="Inicio"
+                class="bg-pink-ieen-3"
+              />
+            </q-item>
+            <q-item
+              v-for="eleccion in list_Tipos_Elecciones"
+              :key="eleccion"
+              clickable
+              v-ripple
+            >
+              <q-btn
+                v-model="tab"
+                @click="isTabSelected(eleccion.siglas, eleccion.id)"
+                rounded
+                :to="{
+                  name: eleccion.siglas,
+                }"
+                :label="eleccion.label"
+                class="bg-pink-ieen-3"
+              />
+            </q-item>
+          </q-list>
+        </q-scroll-area>
+        <q-page-sticky v-if="!$q.screen.xs" :offset="[18, 18]">
+          <div class="row justify-center">
+            <div class="q-pr-sm">
+              <q-btn
+                dense
+                @click="limpiarFiltros"
+                outline
+                style="color: #d1308a"
+              >
+                <div class="row items-center no-wrap">
+                  <q-icon left name="cleaning_services" size="xs" />
+                  <div class="text-center">Limpiar campos</div>
+                </div>
+              </q-btn>
+            </div>
+            <div>
+              <q-btn
+                dense
+                :disable="cargo_Id.value == 0"
+                @click="botonConsultar"
+                push
+                class="bg-pink-ieen"
+              >
+                <div class="row items-center no-wrap">
+                  <q-icon name="search" size="xs"></q-icon>
+                  <div class="text-center">Consultar</div>
+                </div>
+              </q-btn>
+            </div>
+          </div>
+        </q-page-sticky>
+      </q-drawer>
+
+      <q-page-container>
+        <router-view />
+      </q-page-container>
+
+      <!---------------------------FOOTER--------------------------->
+      <q-footer elevated class="bg-pink-ieen text-white">
+        <q-toolbar>
+          <q-toolbar-title>
+            <!--Accesibilidad Inicia-->
+            <div>
+              <div class="container-voice">
+                <input type="checkbox" id="btn-mas" />
+                <q-tooltip
+                  anchor="center right"
+                  self="top left"
+                  :offset="[10, 10]"
+                  class="bg-purple text-body2"
+                >
+                  <strong>Lectura por Voz</strong>
+                </q-tooltip>
+                <div class="Acces-voz">
+                  <button
+                    id="activar-voz"
+                    class="fa fa-eye desactivado activar-voz"
+                    style="display: block"
+                    onClick="openToastr('Lectura por Parrafos Activada')"
+                  ></button>
+                  <button
+                    id="desactivar-voz"
+                    class="fa fa-eye-slash activado"
+                    style="display: none"
+                    onClick="openToastr('Lectura por Parrafos Desactivada')"
+                  ></button>
+                </div>
+                <div class="btn-mas">
+                  <label
+                    for="btn-mas"
+                    class="fa fa-assistive-listening-systems"
+                  ></label>
+                </div>
+              </div>
+              <div id="toastr" class="toastr"></div>
+            </div>
+            <!--Accesibilidad Termina-->
+            <div class="row">
+              <div
+                :class="
+                  $q.screen.xs
+                    ? 'col-12 text-subtitle2 text-center'
+                    : 'col-lg-3 col-md-3 col-sm-12 col-xs-12 text-subtitle1'
+                "
+                id="speak"
+              >
+                &#169; 2024 Instituto Estatal Electoral de Nayarit
+              </div>
+              <div
+                class="col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center text-caption"
+              >
+                <div>
+                  <q-icon name="home" color="white" /><span id="speak"
+                    >Domicilio</span
+                  >
+                </div>
+                <span id="speak"
+                  >Av. Country Club 13, Colonia Versalles, 63138, Tepic,
+                  Nayarit</span
+                >
+              </div>
+              <div
+                class="text-caption col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center"
+              >
+                <div>
+                  <q-icon name="phone" color="white" />
+                  <span id="speak">Teléfono</span>
+                </div>
+                <span id="speak">(311) - 210 - 3235 /36 /47</span>
+              </div>
+              <div
+                class="text-caption col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center"
+              >
+                <q-btn flat round dense :to="{ name: 'preguntasFrecuentes' }">
+                  <q-icon name="live_help" />
+                </q-btn>
+                <span id="speak">Preguntas frecuentes</span>
+              </div>
+              <div v-if="!$q.screen.xs" class="absolute-right q-pa-xs">
+                <q-btn
+                  flat
+                  round
+                  dense
+                  href="https://www.facebook.com/IEENayarit?mibextid=sCpJLy"
+                  target="_blank"
+                >
+                  <i
+                    class="fa-brands fa-square-facebook fa-2xl"
+                    style="color: #ffffff"
+                  ></i>
+                </q-btn>
+                <q-btn
+                  flat
+                  round
+                  dense
+                  href="https://www.youtube.com/@IEENayarit"
+                  target="_blank"
+                >
+                  <i
+                    class="fa-brands fa-youtube fa-2xl"
+                    style="color: #ffffff"
+                  ></i>
+                </q-btn>
+              </div>
+            </div>
+          </q-toolbar-title>
+        </q-toolbar>
+      </q-footer>
+    </q-layout>
+  </div>
 </template>
 
 <script setup>
@@ -902,96 +995,521 @@ const filtrarCards = async (list_Candidatos_By_Eleccion, filtro) => {
   $q.loading.hide();
 };
 
-//---------------------------------------------------------------------------------
+//------------------------------ACCESIBILIDAD------------------------------
+
+setTimeout(() => {
+  /*Botones de Lectura por Parrafos*/
+  const actVoz = document.querySelector("#activar-voz");
+  const desacVoz = document.querySelector("#desactivar-voz");
+  /*Elementos en Memoria */
+  var idTextoMemoria;
+  var idBotonMemoria;
+  /*Variable de Voz */
+  var synth = speechSynthesis;
+  /*Activar el boton de lectura por parrafos*/
+  function onClickActivarVoz(event) {
+    if (event.target.id == "activar-voz") {
+      /*Activar y desactivar el boton de lectura por parrafos*/
+      document.getElementById("activar-voz").style.display = "none";
+      document.getElementById("desactivar-voz").style.display = "block";
+
+      let contenido;
+      contenido = document.querySelectorAll("#speak");
+      let botones = document.querySelectorAll(".btnA");
+
+      if (contenido.length > 0) {
+        for (var i = 0; i < contenido.length; i++) {
+          let idTexto = document.getElementById("speak");
+
+          if (idBotonMemoria != botones.length) {
+            console.log("entre");
+            idTexto.id = `${botones.length + i}`;
+
+            /*Crear Boton PLAY*/
+            const btn_play = document.createElement("button");
+            idTexto.appendChild(btn_play);
+            btn_play.className = "btn1 btn2 btnA";
+            btn_play.id = `play${botones.length + i}`;
+
+            const i_play = document.createElement("i");
+            i_play.className = "fa fa-play";
+            btn_play.appendChild(i_play);
+
+            /*Crear Boton PAUSE*/
+            const btn_pause = document.createElement("button");
+            idTexto.appendChild(btn_pause);
+            btn_pause.className = "btn1 btn3 btnA";
+            btn_pause.id = `pause${botones.length + i}`;
+            btn_pause.display = "none";
+
+            const i_pause = document.createElement("i");
+            i_pause.className = "fa fa-pause";
+            btn_pause.appendChild(i_pause);
+
+            /*Crear Boton STOP*/
+            const btn_stop = document.createElement("button");
+            idTexto.appendChild(btn_stop);
+            btn_stop.className = "btn1 btn3 btnA";
+            btn_stop.id = `stop${botones.length + i}`;
+
+            const i_stop = document.createElement("i");
+            i_stop.className = "fa fa-stop";
+            btn_stop.appendChild(i_stop);
+
+            /*Posición*/
+            idTexto.insertAdjacentElement("beforeend", btn_play);
+            btn_play.insertAdjacentElement("afterend", btn_pause);
+            btn_pause.insertAdjacentElement("afterend", btn_stop);
+
+            const br = document.createElement("br");
+            btn_stop.insertAdjacentElement("afterend", br);
+
+            /*Guardar boton en memoria*/
+            idBotonMemoria = btn_play.id;
+          }
+
+          var btnPlayParrafo = document.querySelector(
+            `#play${botones.length + i}`
+          );
+          var btnPauseParrafo = document.querySelector(
+            `#pause${botones.length + i}`
+          );
+          var btnStopParrafo = document.querySelector(
+            `#stop${botones.length + i}`
+          );
+          btnPlayParrafo.addEventListener("click", (event) =>
+            play(event, idTexto)
+          );
+          btnPauseParrafo.addEventListener("click", (event) =>
+            pause(event, idTexto)
+          );
+          btnStopParrafo.addEventListener("click", (event) =>
+            stop(event, idTexto)
+          );
+        }
+
+        for (var i = 0; i < botones.length; i++) {
+          let btnplay = document.getElementById(`play${i}`);
+          if (btnplay) btnplay.className = "btn1 btn2";
+        }
+      } else {
+        /*Esconder botones */
+        for (var i = 0; i < botones.length; i++) {
+          let btnplay = document.getElementById(`play${i}`);
+          if (btnplay) btnplay.className = "btn1 btn2";
+        }
+      }
+
+      const play = (event, idTexto) => {
+        /*Cambiar lectura de parrafo*/
+        if (idTextoMemoria != idTexto) {
+          synth.cancel();
+          if (idTextoMemoria != null) {
+            let btnplay = document.getElementById(`play${idTextoMemoria}`);
+            if (btnplay) btnplay.className = "btn2";
+            let btnpause = document.getElementById(`pause${idTextoMemoria}`);
+            if (btnpause) btnpause.className = "btn3";
+            let btnstop = document.getElementById(`stop${idTextoMemoria}`);
+            if (btnstop) btnstop.className = "btn3";
+          }
+        }
+
+        /*Mostrar y esconder botones al clic*/
+        let btnplay = document.getElementById(`play${idTexto.id}`);
+        if (btnplay) btnplay.className = "btn3";
+        let btnpause = document.getElementById(`pause${idTexto.id}`);
+        if (btnpause) btnpause.className = "btn2";
+        let btnstop = document.getElementById(`stop${idTexto.id}`);
+        if (btnstop) btnstop.className = "btn2";
+
+        /*Lectura de Texto*/
+        let utterance = new SpeechSynthesisUtterance(idTexto.textContent);
+        utterance.voice = speechSynthesis.getVoices()[0];
+        synth.speak(utterance);
+
+        /*Quitar Pause*/
+        if (synth.paused) {
+          synth.resume();
+        }
+
+        /*Mostrar y esconder botones cuando termine la lectura*/
+        utterance.onend = function (event) {
+          let btnplay = document.getElementById(`play${idTexto.id}`);
+          if (btnplay) btnplay.className = "btn2";
+          let btnpause = document.getElementById(`pause${idTexto.id}`);
+          if (btnpause) btnpause.className = "btn3";
+          let btnstop = document.getElementById(`stop${idTexto.id}`);
+          if (btnstop) btnstop.className = "btn3";
+        };
+
+        /*Guardar IdTexto en memoria (variable)*/
+        idTextoMemoria = idTexto.id;
+      };
+
+      const pause = (event, idTexto) => {
+        if (synth.speaking && !synth.paused) {
+          /*Mostrar y esconder botones al clic*/
+          let btnplay = document.getElementById(`play${idTexto.id}`);
+          if (btnplay) btnplay.className = "btn2";
+          let btnpause = document.getElementById(`pause${idTexto.id}`);
+          if (btnpause) btnpause.className = "btn3";
+          let btnstop = document.getElementById(`stop${idTexto.id}`);
+          if (btnstop) btnstop.className = "btn3";
+
+          /*Pausar Lectura*/
+          synth.pause();
+        }
+      };
+
+      const stop = (event, idTexto) => {
+        if (synth.speaking) {
+          /*Mostrar y esconder botones al clic*/
+          let btnplay = document.getElementById(`play${idTexto.id}`);
+          if (btnplay) btnplay.className = "btn2";
+          let btnpause = document.getElementById(`pause${idTexto.id}`);
+          if (btnpause) btnpause.className = "btn3";
+          let btnstop = document.getElementById(`stop${idTexto.id}`);
+          if (btnstop) btnstop.className = "btn3";
+
+          /*Stop Lectura*/
+          synth.cancel();
+        }
+      };
+    }
+  }
+
+  /*Desactivar el boton de lectura por parrafos*/
+  function onClickDesactivarVoz(event) {
+    if (event.target.id == "desactivar-voz") {
+      /*Activar y desactivar el boton de lectura por parrafos*/
+      document.getElementById("activar-voz").style.display = "block";
+      document.getElementById("desactivar-voz").style.display = "none";
+
+      /*Cancelar Lectura*/
+      synth.cancel();
+
+      const botones = document.querySelectorAll("button");
+
+      /*Desactivar botones de lectura por parrafo*/
+      for (var i = 0; i < botones.length; i++) {
+        let btnplay = document.getElementById(`play${i}`);
+        if (btnplay) btnplay.className = "btn1 btn3";
+        let btnpause = document.getElementById(`pause${i}`);
+        if (btnpause) btnpause.className = "btn3";
+        let btnstop = document.getElementById(`stop${i}`);
+        if (btnstop) btnstop.className = "btn3";
+      }
+    }
+  }
+
+  if (actVoz) {
+    actVoz.addEventListener("click", onClickActivarVoz);
+  }
+
+  desacVoz.addEventListener("click", onClickDesactivarVoz);
+}, 500);
 </script>
+
 <style lang="scss">
 .text-purple-pink {
   color: #af7ead;
 }
+
 .bg-purple-pink {
   background-color: #af7ead;
 }
+
 .flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .text-purple-ieen {
   color: #673e84 !important;
 }
+
 .bg-purple-ieen {
   background-color: #673e84 !important;
 }
+
 .bg-pink-ieen {
   color: white;
   background: #d1308a !important;
 }
+
 .bg-pink-ieen-2 {
   background: #e97ebd !important;
 }
+
 .text-pink-ieen {
   background: #d1308a !important;
 }
+
 .text-purple-ieen-1 {
   color: #863399 !important;
 }
+
 .bg-purple-ieen-1 {
   background: #863399 !important;
 }
+
 .text-purple-ieen-2 {
   color: #a25eb5 !important;
 }
+
 .bg-purple-ieen-2 {
   background: #a25eb5 !important;
 }
+
 .text-purple-ieen-3 {
   color: #bb83ca !important;
 }
+
 .bg-purple-ieen-3 {
   background: #bb83ca !important;
 }
+
 .text-pink-ieen-1 {
   color: #b32572 !important;
 }
+
 .bg-pink-ieen-1 {
   background: #b32572 !important;
 }
+
 .text-pink-ieen-2 {
   color: #cc5599 !important;
 }
+
 .bg-pink-ieen-2 {
   background: #cc5599 !important;
 }
+
 .text-pink-ieen-3 {
   color: #dd85ba !important;
 }
+
 .bg-pink-ieen-3 {
   color: white;
   background: #dd85ba !important;
 }
+
 .text-gray-ieen-1 {
   color: #76777a !important;
 }
+
 .bg-gray-ieen-1 {
   background: #76777a !important;
 }
+
 .text-gray-ieen-2 {
   color: #98989a !important;
 }
+
 .bg-gray-ieen-2 {
   background: #98989a !important;
 }
+
 .text-gray-ieen-3 {
   color: #b1b1b1 !important;
 }
+
 .bg-gray-ieen-3 {
   background: #b1b1b1 !important;
 }
+
 .text-pink-conoceles {
   color: #d1308a !important;
 }
 
 .sticky {
   position: sticky;
+}
+
+/*ACCESIBILIDAD*/
+/*BOTONES*/
+
+.btn2 {
+  width: 30px;
+  height: 30px;
+  color: #c80096;
+  background-color: #fff;
+  cursor: pointer;
+  border: 2px solid #c80096;
+  border-radius: 30%;
+  display: inline;
+  z-index: 10;
+  margin-left: 10px;
+}
+
+.btn2:hover {
+  color: #fff;
+  background-color: #c80096;
+}
+
+.btn2 i {
+  pointer-events: none;
+  display: block;
+  font-size: 20px;
+}
+
+.btn3 {
+  display: none;
+}
+
+#btnVoz {
+  color: #c80096;
+  background-color: #fff;
+  cursor: pointer;
+  border: 2px solid #c80096;
+  position: absolute;
+  transition: color 0.2s, background-color 0.2s ease-in-out;
+}
+
+.btnEntrance {
+  animation-duration: 0.2s;
+  animation-fill-mode: both;
+  animation-name: btnEntrance;
+}
+
+/*BOTONES ACTIVAR-DESACTIVAR*/
+
+#btn-mas {
+  display: none;
+}
+
+.container-voice {
+  position: fixed;
+  bottom: 64px;
+  margin-left: 4px;
+}
+
+.Acces-voz button,
+.btn-mas label {
+  text-decoration: none;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+  transition: all 500ms ease;
+}
+
+.Acces-voz button:hover {
+  background: #fff;
+  color: #c80096;
+}
+
+.Acces-voz button {
+  margin-bottom: -16px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+#btn-mas:checked ~ .Acces-voz button {
+  margin-bottom: 8px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.btn-mas label {
+  cursor: pointer;
+  background: #c80096;
+  color: #fff;
+  font-size: 20px;
+}
+
+#btn-mas:checked ~ .btn-mas label {
+  transform: rotate(360deg);
+  font-size: 18px;
+}
+
+.activado {
+  background: #76777a;
+  color: #fff;
+}
+
+.desactivado {
+  background: #c80096;
+  color: #fff;
+}
+
+/*ALERTA ACTIVADO-DESACTIVADO*/
+
+.toastr {
+  position: fixed;
+  bottom: 244px;
+  left: 10px;
+  display: none;
+  width: 300px;
+  height: 40px;
+  border-radius: 10px;
+  padding-left: 10px;
+  line-height: 40px;
+  margin-left: 10px;
+  float: left;
+  background: #fff;
+  border: 2px solid #c80096;
+  font-family: Century Gothic, sans-serif;
+  color: #c80096;
+  font-weight: bold;
+  margin: 3px;
+}
+
+/*BOTON SELECCIONAR TEXTO*/
+
+.seleccionar-texto {
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  color: #c80096;
+  background-color: #fff;
+  cursor: pointer;
+  border: 2px solid #c80096;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 12;
+  display: none;
+  transition: color 0.2s, background-color 0.2s ease-in-out;
+}
+
+.seleccionar-texto:hover {
+  color: #fff;
+  background-color: #c80096;
+}
+
+.seleccionar-texto i {
+  pointer-events: none;
+}
+
+.btnEntrance {
+  animation-duration: 0.2s;
+  animation-fill-mode: both;
+  animation-name: btnEntrance;
+}
+
+@keyframes btnEntrance {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .container-voice {
+    left: 2px;
+    z-index: 2;
+  }
+
+  .toastr {
+    z-index: 3;
+  }
 }
 </style>

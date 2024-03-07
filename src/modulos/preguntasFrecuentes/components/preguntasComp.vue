@@ -4,7 +4,9 @@
       <q-icon name="live_help" color="purple-ieen" />
     </template>
     <template v-slot:contenido
-      ><div class="text-bold text-h6 text-grey-7">Preguntas frecuentes.</div>
+      ><div class="text-bold text-h6 text-grey-7">
+        <span id="speak"> Preguntas frecuentes. </span>
+      </div>
     </template>
   </banner>
   <div class="q-pt-md">
@@ -18,7 +20,7 @@
         default-opened
       >
         <q-card>
-          <q-card-section class="text-black">
+          <q-card-section class="text-black" id="speak">
             {{ pregunta.respuesta }}
           </q-card-section>
         </q-card>

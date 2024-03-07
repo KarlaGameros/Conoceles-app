@@ -5,10 +5,12 @@
       <q-icon name="search" color="purple-ieen" />
     </template>
     <template v-slot:contenido>
-      Consulte la información proporcionada de manera obligatoria por las
-      candidaturas que participan en la contienda electoral local 2024. La
-      información es responsabilidad de los partidos políticos. El Instituto
-      únicamente apoya para su difusión.
+      <span id="speak">
+        Consulte la información proporcionada de manera obligatoria por las
+        candidaturas que participan en la contienda electoral local 2024. La
+        información es responsabilidad de los partidos políticos. El Instituto
+        únicamente apoya para su difusión.
+      </span>
     </template>
   </banner>
   <br />
@@ -31,11 +33,11 @@
         <q-spinner-cube color="pink" size="5.5em" />
       </div>
       <div v-else class="col-lg-6 col-md-6 col-sm-12 col-xs-12 q-pr-lg">
-        <div class="text-h6 q-mb-md">Rango de edades</div>
+        <div class="text-h6 q-mb-md" id="speak">Rango de edades</div>
         <chartRangoEdad />
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="text-h6 q-mb-md">Género</div>
+        <div class="text-h6 q-mb-md" id="speak">Género</div>
         <chartSexo class="flex flex-center" />
       </div>
     </div>
@@ -45,7 +47,9 @@
     <template v-slot:icono>
       <q-icon name="manage_search" color="purple-ieen" />
     </template>
-    <template v-slot:contenido>Consulta más gráficas a continuación </template>
+    <template v-slot:contenido
+      ><span id="speak">Consulta más gráficas a continuación</span></template
+    >
   </banner>
   <br />
   <div>
@@ -76,46 +80,55 @@
             @click="open_tab = !open_tab"
             name="grado_academico"
             label="Grado académico"
+            id="speak"
           />
           <q-tab
             @click="open_tab = !open_tab"
             name="nivel_ingresos"
             label="Nivel de ingresos"
+            id="speak"
           />
           <q-tab
             @click="open_tab = !open_tab"
             name="cand_indigenas"
             label="Candidaturas indígenas"
+            id="speak"
           />
           <q-tab
             @click="open_tab = !open_tab"
             name="cand_discapacidad"
             label="Candidaturas con discapacidad"
+            id="speak"
           />
           <q-tab
             @click="open_tab = !open_tab"
             name="cand_afromexicanas"
             label="Candidaturas afromexicanas"
+            id="speak"
           />
           <q-tab
             @click="open_tab = !open_tab"
             name="cand_div_sex"
             label="Candidaturas de la diversidad sexual"
+            id="speak"
           />
           <q-tab
             @click="open_tab = !open_tab"
             name="cand_mig"
             label="Candidaturas migrantes"
+            id="speak"
           />
           <q-tab
             @click="open_tab = !open_tab"
             name="cand_jov"
             label="Candidaturas de personas jóvenes"
+            id="speak"
           />
           <q-tab
             @click="open_tab = !open_tab"
             name="cand_mayores"
             label="Candidaturas de personas mayores"
+            id="speak"
           />
         </q-tabs>
       </q-expansion-item>
@@ -168,49 +181,57 @@
             name="grado_academico"
             class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
           >
-            <div class="text-h6 q-mb-md">Grado académico</div>
+            <div class="text-h6 q-mb-md" id="speak">Grado académico</div>
             <chartGradoAcademico class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="nivel_ingresos">
-            <div class="text-h6 q-mb-md">Nivel de ingresos</div>
+            <div class="text-h6 q-mb-md" id="speak">Nivel de ingresos</div>
             <chartNivelIngresos class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_indigenas">
-            <div class="text-h6 q-mb-md">Candidaturas Indígenas</div>
+            <div class="text-h6 q-mb-md" id="speak">Candidaturas Indígenas</div>
             <chartCandIndigenas class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_discapacidad">
-            <div class="text-h6 q-mb-md">Candidaturas con discapacidad</div>
+            <div class="text-h6 q-mb-md" id="speak">
+              Candidaturas con discapacidad
+            </div>
             <chartCandDiscapacidad class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_afromexicanas">
-            <div class="text-h6 q-mb-md">Candidaturas Afromexicanas</div>
+            <div class="text-h6 q-mb-md" id="speak">
+              Candidaturas Afromexicanas
+            </div>
             <chartCandAfromexicanas class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_div_sex">
-            <div class="text-h6 q-mb-md">
+            <div class="text-h6 q-mb-md" id="speak">
               Candidaturas de la diversidad sexual
             </div>
             <chartCandDivSexual class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_mig">
-            <div class="text-h6 q-mb-md">Candidaturas migrantes</div>
+            <div class="text-h6 q-mb-md" id="speak">Candidaturas migrantes</div>
             <chartCandMigrantes class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_jov">
-            <div class="text-h6 q-mb-md">Candidaturas de personas jóvenes</div>
+            <div class="text-h6 q-mb-md" id="speak">
+              Candidaturas de personas jóvenes
+            </div>
             <chartCandJov class="flex flex-center" />
           </q-tab-panel>
 
           <q-tab-panel name="cand_mayores">
-            <div class="text-h6 q-mb-md">Candidaturas de personas mayores</div>
+            <div class="text-h6 q-mb-md" id="speak">
+              Candidaturas de personas mayores
+            </div>
             <chartCandMayores class="flex flex-center" />
           </q-tab-panel>
         </q-tab-panels>
@@ -222,16 +243,18 @@
       <q-icon name="error" color="purple-ieen" />
     </template>
     <template v-slot:contenido>
-      Los datos aquí presentados corresponden al número de personas candidatas
-      (propietarias y suplentes) que respondieron el "Cuestionario de
-      Identidad", este contiene preguntas en ocho dimensiones relativas a la
-      autoidentificación con algún grupo en situación de discriminación; lo que
-      implica necesariamente que hayan sido registradas en el marco de una
-      acción afirmativa.
+      <span id="speak">
+        Los datos aquí presentados corresponden al número de personas candidatas
+        (propietarias y suplentes) que respondieron el "Cuestionario de
+        Identidad", este contiene preguntas en ocho dimensiones relativas a la
+        autoidentificación con algún grupo en situación de discriminación; lo
+        que implica necesariamente que hayan sido registradas en el marco de una
+        acción afirmativa.
+      </span>
     </template>
   </banner>
   <div class="text-h6 q-mb-md q-pt-lg">
-    Registro curricular
+    <span id="speak">Registro curricular</span>
     <div
       style="height: 500px"
       class="flex-center"
@@ -242,7 +265,7 @@
     <chartAvanceCurricular v-else />
   </div>
 
-  <div class="q-pt-md text-right text-subtitle2">
+  <div class="q-pt-md text-right text-subtitle2" id="speak">
     La presente sección se actualizará conforme a los plazos establecidos en el
     <a
       target="_blank"
