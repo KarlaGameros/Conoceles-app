@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-<template class="selectable-text-area">
-  <q-page class="row flex flex-center selectable-text-area">
-=======
 <template>
   <q-page class="row flex flex-center">
     <div class="absolute-top-right">
@@ -10,7 +6,6 @@
       </div>
     </div>
     <br /><br />
->>>>>>> 733c982adbc1a332b00ee39854e18e24b3ab4098
     <div class="col-2"></div>
     <div class="text-center col-lg-4 col-md-4 col-sm-12 col-xs-12">
       <div class="text-h4 text-bold text-purple-ieen-1" id="speak">
