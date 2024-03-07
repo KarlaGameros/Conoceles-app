@@ -1015,7 +1015,7 @@ setTimeout(() => {
 
       let contenido;
       contenido = document.querySelectorAll("#speak");
-      let botones = document.querySelectorAll(".btnA");
+      let botones = document.querySelectorAll("button");
 
       if (contenido.length > 0) {
         for (var i = 0; i < contenido.length; i++) {
