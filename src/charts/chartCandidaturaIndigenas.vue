@@ -35,7 +35,6 @@ const rellenarGrafica = () => {
       candidato.sexo == "Hombre" &&
       candidato.avance_Curricular == 100
   );
-  console.log("---", filter);
   let si = list_Graficas_Filtrado.value.filter(
     (candidato) => candidato.indigena == "Sí"
   );
@@ -45,7 +44,6 @@ const rellenarGrafica = () => {
   let prefiero_No_Contestar = list_Graficas_Filtrado.value.filter(
     (candidato) => candidato.indigena == "Prefiero no contestar"
   );
-  console.log(prefiero_No_Contestar);
 
   series.value.push(si.length, no.length, prefiero_No_Contestar.length);
 };

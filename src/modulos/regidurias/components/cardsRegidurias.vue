@@ -211,6 +211,9 @@
                 : item.partido_Suplente
             }}
           </div>
+          <div class="text-subtitle2 text-center text-grey-9">
+            CANDIDATURA {{ item.tipo_Candidato }}
+          </div>
           <q-btn-toggle
             v-model="item.selection"
             push

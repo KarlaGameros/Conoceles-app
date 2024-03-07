@@ -243,7 +243,13 @@
 
   <div class="q-pt-md text-right text-subtitle2">
     La presente sección se actualizará conforme a los plazos establecidos en el
-    <a style="color: #e710b9" class="text-bold">Acuerdo pendiente.</a>
+    <a
+      target="_blank"
+      style="color: #e710b9"
+      class="text-bold"
+      href="https://repositoriodocumental.ine.mx/xmlui/handle/123456789/141976"
+      >INE/CG616/2022.</a
+    >
   </div>
 </template>
 

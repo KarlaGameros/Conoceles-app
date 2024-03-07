@@ -214,7 +214,6 @@
                 <q-btn
                   size="sm"
                   icon="search"
-                  :disable="cargo_Id.value == 0 && selectedTab != 'PYS'"
                   @click="botonConsultar"
                   push
                   label="Consultar"
@@ -258,6 +257,7 @@ const {
   list_Graficas_By_Eleccion,
   list_Graficas_Genero_Edad_Filtrado,
   list_Graficas_Genero_Edad,
+  cargoGrafica,
 } = storeToRefs(graficasStore);
 const {
   list_Distritos,
@@ -289,9 +289,14 @@ const list_Grado_Academico = ref([
 ]);
 const cargo_Id = ref({
   value: 0,
-  label: "Selecciona tipo de candidatura",
+  label: "Todos",
 });
 const list_Cargos = ref([
+  {
+    value: 0,
+    cargo: "Todos",
+    label: "Todos",
+  },
   {
     value: 1,
     cargo: "MR",
@@ -321,12 +326,13 @@ onMounted(() => {
   }
 
   //consultar();
-  //limpiarFiltros();
+  limpiarFiltros();
 });
 
 //---------------------------------------------------------------------------------
 watch(cargo_Id, (val) => {
   if (val != null) {
+    cargoGrafica.value = val.cargo;
     cargo.value = val.cargo;
     distrito_Id.value = { value: 0, label: "Todos" };
     if (selectedTab.value == "DIP") {
@@ -395,7 +401,7 @@ const activaCandidatos = () => {
 };
 
 const limpiarFiltros = () => {
-  cargo_Id.value = { value: 0, label: "Selecciona tipo de candidatura" };
+  cargo_Id.value = { value: 0, label: "Todos" };
   grado_Academica_Id.value = { value: 0, label: "Todos" };
   distrito_Id.value = { value: 0, label: "Todos" };
   rango_edad_Id.value = { value: 0, label: "Todos" };
@@ -407,15 +413,15 @@ const limpiarFiltros = () => {
 };
 
 const botonConsultar = async () => {
-  let { latitude, longitude } = await getCurrentLocation();
-  let { brand, model, os } = getDataDevice();
-  info.value.latitud = latitude;
-  info.value.longitud = longitude;
-  info.value.marca = brand;
-  info.value.modelo = model;
-  info.value.sistema_Operativo = os;
-  await configuracionStore.infoDeviceConoceles(info.value);
-  await configuracionStore.loadVisitas();
+  // let { latitude, longitude } = await getCurrentLocation();
+  // let { brand, model, os } = getDataDevice();
+  // info.value.latitud = latitude;
+  // info.value.longitud = longitude;
+  // info.value.marca = brand;
+  // info.value.modelo = model;
+  // info.value.sistema_Operativo = os;
+  // await configuracionStore.infoDeviceConoceles(info.value);
+  // await configuracionStore.loadVisitas();
   consultar();
 };
 
@@ -460,7 +466,6 @@ const filtrar = (
   list_Graficas_By_Eleccion,
   filtro
 ) => {
-  console.log("entro", list_Candidatos_By_Eleccion.value);
   list_Graficas_Filtrado.value = list_Graficas_By_Eleccion.filter((item) => {
     let cumple = true;
 

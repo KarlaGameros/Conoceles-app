@@ -214,11 +214,11 @@
                 :src="
                   item.is_Coalicion == true
                     ? item.url_Logo_Coalicion
-                    : item.selection == 'prop'
+                    : item.selection == 'prop' && item.is_Coalicion == false
                     ? item.url_Logo_Partido_Propietario
-                    : item.selection == 'sup'
+                    : item.selection == 'sup' && item.is_Coalicion == false
                     ? item.url_Logo_Partido_Suplente
-                    : item.selection == 'propSin'
+                    : item.selection == 'propSin' && item.is_Coalicion == false
                     ? item.url_Logo_Partido_Propietario_2
                     : url_Logo_Partido_Suplente_2
                 "
@@ -504,7 +504,6 @@ watch(listFiltroCards, (val) => {
 });
 
 watch(filtro, (val) => {
-  console.log(options.value);
   if (val.length == 0) {
     mostrarElementosPage(pageActual.value);
   } else if (val.length >= 3 && shape.value == "prop") {
@@ -563,6 +562,7 @@ const mostrarElementosPage = (pagina) => {
 //---------------------------------------------------------------------------------
 
 const cargarData = async () => {
+  listCardsFiltro.value = [];
   $q.loading.show({
     spinner: QSpinnerCube,
     spinnerColor: "pink",

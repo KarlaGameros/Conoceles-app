@@ -351,7 +351,7 @@
 
               <q-tab-panel name="HISTORIA PROFESIONAL Y/O LABORAL">
                 <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                  Aquí se mostrará la información capturada por la candidatura.
                 </div>
                 <div v-else>
                   <br />
@@ -392,7 +392,7 @@
 
               <q-tab-panel name="TRAYECTORIA POLÍTICA Y/O PARTICIPACIÓN SOCIAL">
                 <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                  Aquí se mostrará la información capturada por la candidatura.
                 </div>
                 <div class="text-subtitle1 text-justify" v-else>
                   {{
@@ -405,7 +405,7 @@
 
               <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?">
                 <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                  Aquí se mostrará la información capturada por la candidatura.
                 </div>
                 <div v-else class="text-subtitle1 text-justify">
                   {{
@@ -417,7 +417,7 @@
               </q-tab-panel>
               <q-tab-panel name="PROPUESTAS">
                 <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                  Aquí se mostrará la información capturada por la candidatura.
                 </div>
                 <div v-else>
                   <div class="text-subtitle1 text-center text-bold q-pb-md">
@@ -433,7 +433,7 @@
                     {{
                       list_Propuestas.length != 0
                         ? list_Propuestas[0].propuesta
-                        : "En este apartado se mostrará la propuesta 1 registrada por el candidato en el cuestionario curricular"
+                        : "En este apartado se mostrará la propuesta 1 registrada por la candidatura en el cuestionario curricular"
                     }}
                   </div>
                   <hr color="purple" />
@@ -445,7 +445,7 @@
                     {{
                       list_Propuestas.length != 0
                         ? list_Propuestas[1].propuesta
-                        : "En este apartado se mostrará la propuesta 2 registrada por el candidato en el cuestionario curricular"
+                        : "En este apartado se mostrará la propuesta 2 registrada por la candidatura en el cuestionario curricular"
                     }}
                   </div>
                 </div>
@@ -453,7 +453,7 @@
 
               <q-tab-panel name="PROPUESTA EN MATERIA DE GÉNERO">
                 <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                  Aquí se mostrará la información capturada por la candidatura.
                 </div>
                 <div v-else>
                   <hr color="purple" />

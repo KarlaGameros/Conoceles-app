@@ -10,7 +10,7 @@ const FiltrarCandidatos = async (list_Candidatos_By_Eleccion, filtro) => {
       let cumple = true;
 
       if (filtro.cargo !== undefined) {
-        if (filtro.cargo == 0) {
+        if (filtro.cargo.label == "Todos") {
           cumple = cumple && item.tipo_Candidato === item.tipo_Candidato;
         } else {
           cumple = cumple && item.tipo_Candidato === filtro.cargo.cargo;

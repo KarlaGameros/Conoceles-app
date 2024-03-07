@@ -1,11 +1,12 @@
 <template>
   <q-page class="row flex flex-center">
-    <div class="absolute-top-right">
+    <div class="absolute-top-right text-center">
       <div class="text-subtitle1 q-pr-md text-purple-ieen">
-        <strong>{{ consultas }} </strong>
+        Consultas al sistema desde el 01 de marzo de 2024 a la fecha:
+        <strong class="text-h5 text-bold"> 190 </strong>
       </div>
     </div>
-    <br /><br />
+    <br /><br /><br />
     <div class="col-2"></div>
     <div class="text-center col-lg-4 col-md-4 col-sm-12 col-xs-12">
       <div class="text-h4 text-bold text-purple-ieen-1">

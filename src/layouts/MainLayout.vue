@@ -349,13 +349,7 @@
             </q-btn>
           </div>
           <div>
-            <q-btn
-              dense
-              :disable="cargo_Id.value == 0"
-              @click="botonConsultar"
-              push
-              class="bg-pink-ieen"
-            >
+            <q-btn dense @click="botonConsultar" push class="bg-pink-ieen">
               <div class="row items-center no-wrap">
                 <q-icon name="search" size="xs"></q-icon>
                 <div class="text-center">Consultar</div>
@@ -477,6 +471,7 @@ const {
   list_Graficas_By_Eleccion,
   list_Graficas_Filtrado,
   list_Graficas_Genero_Edad,
+  cargoGrafica,
 } = storeToRefs(graficasStore);
 const distrito_Id = ref(null);
 const actor_politico_Id = ref(null);
@@ -526,6 +521,7 @@ onBeforeMount(() => {
 
 watch(cargo_Id, (val) => {
   if (val != null) {
+    cargoGrafica.value = val.cargo;
     cargo.value = val.cargo;
     distrito_Id.value = { value: 0, label: "Todos" };
     if (tab.value == "DIP") {
@@ -582,14 +578,18 @@ watch(demarcacion_Id, (val) => {
 });
 
 watch(list_Graficas_By_Eleccion, (val) => {
-  if (val != null) {
-    consultar();
+  if (val[0] != undefined) {
+    if (val[0].tipo_Eleccion_Id == tab_Id.value) {
+      consultar();
+    }
   }
 });
 
 watch(list_Graficas_Genero_Edad, (val) => {
-  if (val != null) {
-    consultar();
+  if (val[0] != undefined) {
+    if (val[0].tipo_Eleccion_Id == tab_Id.value) {
+      consultar();
+    }
   }
 });
 
@@ -631,6 +631,11 @@ const cargar = async (val, tab) => {
 
 const isTabSelected = async (nombre, id) => {
   list_Cargos.value = [
+    {
+      value: 0,
+      cargo: "Todos",
+      label: "Todos",
+    },
     {
       value: 1,
       cargo: "MR",
@@ -696,7 +701,7 @@ const activaCandidatos = async (tab) => {
 };
 
 const limpiarFiltros = async () => {
-  cargo_Id.value = { value: 0, label: "Selecciona tipo de candidatura" };
+  cargo_Id.value = { value: 0, label: "Todos" };
   grado_Academica_Id.value = { value: 0, label: "Todos" };
   distrito_Id.value = { value: 0, label: "Todos" };
   rango_edad_Id.value = { value: 0, label: "Todos" };
@@ -738,15 +743,15 @@ const exportarBD = async () => {
 };
 
 const botonConsultar = async () => {
-  let { latitude, longitude } = await getCurrentLocation();
-  let { brand, model, os } = getDataDevice();
-  info.value.latitud = latitude;
-  info.value.longitud = longitude;
-  info.value.marca = brand;
-  info.value.modelo = model;
-  info.value.sistema_Operativo = os;
-  await configuracionStore.infoDeviceConoceles(info.value);
-  await configuracionStore.loadVisitas();
+  // let { latitude, longitude } = await getCurrentLocation();
+  // let { brand, model, os } = getDataDevice();
+  // info.value.latitud = latitude;
+  // info.value.longitud = longitude;
+  // info.value.marca = brand;
+  // info.value.modelo = model;
+  // info.value.sistema_Operativo = os;
+  // await configuracionStore.infoDeviceConoceles(info.value);
+  // await configuracionStore.loadVisitas();
   consultar();
 };
 

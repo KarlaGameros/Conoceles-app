@@ -7,6 +7,7 @@ export const useGraficasStore = defineStore("useGraficasStore", {
     list_Graficas_Genero_Edad: [],
     list_Graficas_Genero_Edad_Filtrado: [],
     list_Graficas_Filtrado: [],
+    cargoGrafica: "Todos",
   }),
 
   actions: {
@@ -59,11 +60,10 @@ export const useGraficasStore = defineStore("useGraficasStore", {
           `/Tipos_Elecciones/DataGraficasByTipoEleccion/${id}`
         );
         let { data } = resp.data;
-
         this.list_Graficas_By_Eleccion = data.map((item) => {
           return {
             candidato_Id: item.candidato_Id,
-            tipo_Eleccion_Id: item.tipo_Eleccion_Id,
+            tipo_Eleccion_Id: id,
             puesto: item.puesto,
             sexo: item.sexo,
             edad: item.edad,
