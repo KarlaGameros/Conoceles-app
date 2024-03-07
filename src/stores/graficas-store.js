@@ -21,6 +21,16 @@ export const useGraficasStore = defineStore("useGraficasStore", {
         };
       }
     },
+    async limpiarGraficasFiltrado() {
+      try {
+        this.list_Graficas_Filtrado = [];
+        return { success: true };
+      } catch (error) {
+        return {
+          success: false,
+        };
+      }
+    },
     //---------------------------------------------------------------------------------
     //GRAFICAS
     async loadGraficasGeneroEdad(id) {

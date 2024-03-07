@@ -8,7 +8,7 @@
 import { ref, watch } from "vue";
 import { useGraficasStore } from "src/stores/graficas-store";
 import { storeToRefs } from "pinia";
-import Highcharts, { chart } from "highcharts";
+import Highcharts from "highcharts";
 import drilldown from "highcharts/modules/drilldown";
 import accessibility from "highcharts/modules/accessibility";
 import exporting from "highcharts/modules/exporting";
@@ -97,10 +97,22 @@ export default {
       fxmnSeries.value = [];
       rspnPorcentaje.value = null;
       rspnSeries.value = [];
+      priPorcentaje.value = null;
+      priSeries.value = [];
+      panPorcentaje.value = null;
+      panSeries.value = [];
+      prdPorcentaje.value = null;
+      prdSeries.value = [];
       totalShhn.value = null;
       shhn.value = null;
       totalFycn.value = null;
       fycn.value = null;
+      totalPri.value = null;
+      pri.value = null;
+      totalPan.value = null;
+      pan.value = null;
+      totalPrd.value = null;
+      prd.value = null;
       totalPt.value = null;
       pt.value = null;
       totalPvem.value = null;
@@ -143,9 +155,18 @@ export default {
           (candidato) => candidato.sexo === "No binario"
         );
         panSeries.value.push(
-          ["Mujer", parseInt((mujeres.length * 100) / pan.value.length)],
-          ["Hombre", parseInt((hombres.length * 100) / pan.value.length)],
-          ["No binario", parseInt((noBinario.length * 100) / pan.value.length)]
+          [
+            `Mujer: ${mujeres.length}`,
+            parseInt((mujeres.length * 100) / pan.value.length),
+          ],
+          [
+            `Hombre: ${hombres.length}`,
+            parseInt((hombres.length * 100) / pan.value.length),
+          ],
+          [
+            `No binario: ${noBinario.length}`,
+            parseInt((noBinario.length * 100) / pan.value.length),
+          ]
         );
       }
 
@@ -156,7 +177,7 @@ export default {
       );
       pri.value = list_Graficas_Filtrado.value.filter(
         (candidato) =>
-          candidato.is_Coalicion == true &&
+          candidato.is_Coalicion == false &&
           candidato.partido_Id == 9 &&
           candidato.avance_Curricular == 100
       );
@@ -174,9 +195,18 @@ export default {
           (candidato) => candidato.sexo === "No binario"
         );
         priSeries.value.push(
-          ["Mujer", parseInt((mujeres.length * 100) / pri.value.length)],
-          ["Hombre", parseInt((hombres.length * 100) / pri.value.length)],
-          ["No binario", parseInt((noBinario.length * 100) / pri.value.length)]
+          [
+            `Mujer: ${mujeres.length}`,
+            parseInt((mujeres.length * 100) / pri.value.length),
+          ],
+          [
+            `Hombre: ${hombres.length}`,
+            parseInt((hombres.length * 100) / pri.value.length),
+          ],
+          [
+            `No binario: ${noBinario.length}`,
+            parseInt((noBinario.length * 100) / pri.value.length),
+          ]
         );
       }
       //-----------------------------------------------------
@@ -186,7 +216,7 @@ export default {
       );
       prd.value = list_Graficas_Filtrado.value.filter(
         (candidato) =>
-          candidato.is_Coalicion == true &&
+          candidato.is_Coalicion == false &&
           candidato.partido_Id == 10 &&
           candidato.avance_Curricular == 100
       );
@@ -204,9 +234,18 @@ export default {
           (candidato) => candidato.sexo === "No binario"
         );
         prdSeries.value.push(
-          ["Mujer", parseInt((mujeres.length * 100) / prd.value.length)],
-          ["Hombre", parseInt((hombres.length * 100) / prd.value.length)],
-          ["No binario", parseInt((noBinario.length * 100) / prd.value.length)]
+          [
+            `Mujer: ${mujeres.length}`,
+            parseInt((mujeres.length * 100) / prd.value.length),
+          ],
+          [
+            `Hombre: ${hombres.length}`,
+            parseInt((hombres.length * 100) / prd.value.length),
+          ],
+          [
+            `No binario: ${noBinario.length}`,
+            parseInt((noBinario.length * 100) / prd.value.length),
+          ]
         );
       }
       //-----------------------------------------------------
@@ -436,7 +475,6 @@ export default {
           ],
           [
             `Hombre: ${hombres.length}`,
-            ,
             parseInt((hombres.length * 100) / morena.value.length),
           ],
           [
@@ -512,7 +550,6 @@ export default {
         mlnSeries.value.push(
           [
             `Mujer: ${mujeres.length}`,
-            ,
             parseInt((mujeres.length * 100) / mln.value.length),
           ],
           [

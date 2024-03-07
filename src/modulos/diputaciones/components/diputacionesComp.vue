@@ -16,15 +16,20 @@
   </banner>
   <br />
   <!---------------------------CHARTS--------------------------->
-  <div v-if="list_Graficas_Genero_Edad.length == 0" class="q-pa-md example-row-equal-width">
+  <div
+    v-if="list_Graficas_Genero_Edad.length == 0"
+    class="q-pa-md example-row-equal-width"
+  >
     <div class="row flex-center">
       <q-spinner-cube color="pink" size="5.5em" />
     </div>
   </div>
   <div v-else class="q-pa-md example-row-equal-width">
     <div class="row">
-      <div v-if="list_Graficas_Genero_Edad_Filtrado.length == 0"
-        class="col-lg-6 col-md-6 col-sm-12 col-xs-12 flex-center">
+      <div
+        v-if="list_Graficas_Genero_Edad_Filtrado.length == 0"
+        class="col-lg-6 col-md-6 col-sm-12 col-xs-12 flex-center"
+      >
         <q-spinner-cube color="pink" size="5.5em" />
       </div>
       <div v-else class="col-lg-6 col-md-6 col-sm-12 col-xs-12 q-pr-lg">
@@ -40,37 +45,82 @@
   </div>
   <br />
   <banner v-if="!$q.screen.xs && !$q.screen.sm && !$q.screen.md">
-
     <template v-slot:icono>
       <q-icon name="manage_search" color="purple-ieen" />
     </template>
-
-    <template v-slot:contenido><span id="speak">Consulta más gráficas a continuación</span></template>
+    <template v-slot:contenido
+      ><span id="speak">Consulta más gráficas a continuación</span></template
+    >
   </banner>
   <br />
-  <q-list v-if="$q.screen.xs || $q.screen.sm || $q.screen.md" dark padding bordered class="rounded-borders">
-    <q-expansion-item icon="manage_search" class="bg-grey-3 text-justify" style="border-radius: 20px"
-      label="Consulta más gráficas a continuación " header-class="text-purple" expand-icon-class="text-purple"
-      v-model="open_tab">
-      <q-tabs v-model="tab" vertical class="text-purple" active-bg-color="purple-3" active-color="white">
-        <q-tab v-for="tab in tabs" :key="tab" :name="tab" :label="tab" @click="open_tab = !open_tab" />
+  <q-list
+    v-if="$q.screen.xs || $q.screen.sm || $q.screen.md"
+    dark
+    padding
+    bordered
+    class="rounded-borders"
+  >
+    <q-expansion-item
+      icon="manage_search"
+      class="bg-grey-3 text-justify"
+      style="border-radius: 20px"
+      label="Consulta más gráficas a continuación "
+      header-class="text-purple"
+      expand-icon-class="text-purple"
+      v-model="open_tab"
+    >
+      <q-tabs
+        v-model="tab"
+        vertical
+        class="text-purple"
+        active-bg-color="purple-3"
+        active-color="white"
+      >
+        <q-tab
+          v-for="tab in tabs"
+          :key="tab"
+          :name="tab"
+          :label="tab"
+          @click="open_tab = !open_tab"
+        />
       </q-tabs>
     </q-expansion-item>
   </q-list>
-  <div style="height: 500px" class="flex-center" v-if="list_Graficas_By_Eleccion.length == 0">
+  <div
+    style="height: 500px"
+    class="flex-center"
+    v-if="list_Graficas_By_Eleccion.length == 0"
+  >
     <q-spinner-cube color="pink" size="5.5em" />
   </div>
   <q-splitter unit="px" style="height: 500px" v-else>
-
-    <template v-if="!$q.screen.xs && !$q.screen.sm && !$q.screen.md" v-slot:before>
-      <q-tabs v-model="tab" vertical class="text-purple" active-bg-color="purple-3" active-color="white">
+    <template
+      v-if="!$q.screen.xs && !$q.screen.sm && !$q.screen.md"
+      v-slot:before
+    >
+      <q-tabs
+        v-model="tab"
+        vertical
+        class="text-purple"
+        active-bg-color="purple-3"
+        active-color="white"
+      >
         <q-tab v-for="tab in tabs" :key="tab" :name="tab" :label="tab" />
       </q-tabs>
     </template>
 
     <template v-slot:after>
-      <q-tab-panels v-model="tab" animated vertical transition-prev="jump-up" transition-next="jump-up">
-        <q-tab-panel name="Grado académico" class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+      <q-tab-panels
+        v-model="tab"
+        animated
+        vertical
+        transition-prev="jump-up"
+        transition-next="jump-up"
+      >
+        <q-tab-panel
+          name="Grado académico"
+          class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
+        >
           <div class="text-h6 q-mb-md" id="speak">
             {{ tab }}
           </div>
@@ -112,7 +162,6 @@
     </template>
   </q-splitter>
   <banner>
-
     <template v-slot:icono>
       <q-icon name="error" color="purple-ieen" />
     </template>
@@ -122,18 +171,30 @@
         Los datos aquí presentados corresponden al número de personas candidatas
         (propietarias y suplentes) que respondieron el "Cuestionario de
         Identidad", este contiene preguntas en ocho dimensiones relativas a la
-        autoidentificación con algún grupo en situación de discriminación; lo que
-        implica necesariamente que hayan sido registradas en el marco de una
+        autoidentificación con algún grupo en situación de discriminación; lo
+        que implica necesariamente que hayan sido registradas en el marco de una
         acción afirmativa.
       </span>
     </template>
   </banner>
   <div class="text-h6 q-mb-md q-pt-lg">
     <span id="speak">Registro curricular</span>
-    <div style="height: 500px" class="flex-center" v-if="list_Graficas_By_Eleccion.length == 0">
+    <div
+      style="height: 500px"
+      class="flex-center"
+      v-if="list_Graficas_By_Eleccion.length == 0"
+    >
       <q-spinner-cube color="pink" size="5.5em" />
     </div>
-    <chartAvanceCurricular v-else />
+    <div v-else>
+      <div
+        v-if="list_Graficas_Filtrado.length == 0"
+        class="col-lg-6 col-md-6 col-sm-12 col-xs-12 flex-center"
+      >
+        <q-spinner-cube color="pink" size="5.5em" />
+      </div>
+      <chartAvanceCurricular v-else />
+    </div>
   </div>
 
   <div class="q-pt-md text-right text-subtitle2" id="speak">
@@ -177,6 +238,7 @@ const {
   list_Graficas_By_Eleccion,
   list_Graficas_Genero_Edad,
   list_Graficas_Genero_Edad_Filtrado,
+  list_Graficas_Filtrado,
 } = storeToRefs(graficasStore);
 
 const tab = ref("Grado académico");
