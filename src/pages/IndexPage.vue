@@ -25,7 +25,7 @@
     <div class="imgHome col-lg-6 col-md-5 col-sm-12 col-xs-12">
       <img
         alt="PREP logo"
-        src="../assets/ConocelesInicio.png"
+        src="../assets/ConocelesN.png"
         :style="
           $q.screen.xs
             ? 'width: 400px; height: 350px'
