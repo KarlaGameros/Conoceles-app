@@ -8,7 +8,7 @@
       <span id="speak">
         En este espacio tendrás la oportunidad de conocer a las personas
         candidatas, así como su trayectoria y sus principales propuestas de
-        campaña, entre otras cosas, en la Elección de Diputaciones 2024 en el
+        campaña, entre otras cosas, en la Elección de Regidurías 2024 en el
         Estado de Nayarit, lo que puede darte más información para ejercer tu
         voto, para lo cual bastará que des un click en la opción que desees
         consultar
@@ -117,8 +117,8 @@
               size="100px"
               v-if="
                 (item.selection == 'prop' &&
-                  item.validado_Propietario == true) ||
-                (item.selection == 'sup' && item.validado_Suplente == true)
+                  item.url_Foto_Propietario != null) ||
+                (item.selection == 'sup' && item.url_Foto_Suplente != null)
               "
             >
               <q-img
@@ -145,6 +145,15 @@
                   (item.selection == 'sup' && item.sexo_Suplente == 'Hombre')
                 "
                 src="../../../assets/avatarHombre.jpg"
+              />
+              <q-img
+                v-if="
+                  (item.selection == 'prop' &&
+                    item.sexo_Propietario == 'No binario') ||
+                  (item.selection == 'sup' &&
+                    item.sexo_Suplente == 'No binario')
+                "
+                src="../../../assets/noBinario.png"
               />
             </q-avatar>
           </div>
@@ -248,6 +257,11 @@
           </div>
           <div class="col-2">
             <q-btn
+              v-if="
+                item.selection == 'prop'
+                  ? item.validado_Propietario
+                  : item.validado_Suplente
+              "
               :disable="activar_pdf == true"
               @click="pdf(item.id, item.selection == 'prop' ? 0 : 1)"
               flat
@@ -283,7 +297,7 @@
       <q-table
         flat
         bordered
-        :rows="listCardsFiltro"
+        :rows="listFiltroCards"
         :columns="columns"
         :visible-columns="visisble_columns"
         row-key="name"
@@ -303,24 +317,34 @@
                   />
                 </q-avatar>
               </div>
-              <div v-else-if="col.name === 'no_Distrito'">
-                Distrito {{ col.value }}
+              <div v-else-if="col.name === 'demarcacion'">
+                {{ props.row.tipo_Candidato == "MR" ? col.value : "No aplica" }}
               </div>
-              <div v-else-if="col.name === 'id'">
+              <div v-else-if="col.name === 'nombre_Completo_Propietario'">
                 <q-btn
+                  :label="col.value"
                   flat
-                  round
                   color="pink-4"
-                  icon="search"
                   :to="{ name: 'diputacionesDetalle' }"
                   class="pink"
-                  @click="
-                    verMas(col.value, props.row.selection == 'prop' ? 0 : 1)
-                  "
+                  @click="verMas(props.row.id, 0)"
                 >
-                  <q-tooltip>Consultar</q-tooltip>
+                  <q-tooltip>¡Consulta!</q-tooltip>
                 </q-btn>
               </div>
+              <div v-else-if="col.name === 'nombre_Completo_Suplente'">
+                <q-btn
+                  :label="col.value"
+                  flat
+                  color="pink-4"
+                  :to="{ name: 'diputacionesDetalle' }"
+                  class="pink"
+                  @click="verMas(props.row.id, 1)"
+                >
+                  <q-tooltip>¡Consulta!</q-tooltip>
+                </q-btn>
+              </div>
+
               <label v-else>{{ col.value }}</label>
             </q-td>
           </q-tr>
@@ -333,7 +357,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
-import { onMounted, ref, watch, defineProps } from "vue";
+import { onMounted, ref, watch, defineProps, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { useQuasar, QSpinnerCube } from "quasar";
 import banner from "../../../components/bannerComp.vue";
@@ -361,8 +385,17 @@ const visisble_columns = ref("");
 
 //---------------------------------------------------------------------------------
 
-onMounted(() => {
-  cargarData();
+onBeforeMount(async () => {
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
+  await cargarData();
+  $q.loading.hide();
 });
 
 //---------------------------------------------------------------------------------
@@ -433,22 +466,32 @@ const mostrarElementosPage = (pagina) => {
   listCardsFiltro.value = elementos;
   if (cargo.value == "MR") {
     visisble_columns.value = [
+      "numero_formula",
+      "tipo_Candidato",
       "municipio",
       "demarcacion",
-      "numero_formula",
       "url_Logo_Partido_Propietario",
       "nombre_Completo_Propietario",
       "nombre_Completo_Suplente",
-      "id",
+    ];
+  } else if (cargo.value == "RP") {
+    visisble_columns.value = [
+      "numero_formula",
+      "tipo_Candidato",
+      "municipio",
+      "url_Logo_Partido_Propietario",
+      "nombre_Completo_Propietario",
+      "nombre_Completo_Suplente",
     ];
   } else {
     visisble_columns.value = [
-      "municipio",
       "numero_formula",
+      "tipo_Candidato",
+      "municipio",
+      "demarcacion",
       "url_Logo_Partido_Propietario",
       "nombre_Completo_Propietario",
       "nombre_Completo_Suplente",
-      "id",
     ];
   }
 };
@@ -472,6 +515,20 @@ const cargarData = async () => {
 
 const columns = [
   {
+    name: "numero_formula",
+    align: "center",
+    label: "No. de Fórmula",
+    field: "numero_formula",
+    sortable: true,
+  },
+  {
+    name: "tipo_Candidato",
+    align: "center",
+    label: "Cargo",
+    field: "tipo_Candidato",
+    sortable: true,
+  },
+  {
     name: "municipio",
     align: "center",
     label: "Municipio",
@@ -483,13 +540,6 @@ const columns = [
     align: "center",
     label: "Demarcación",
     field: "demarcacion",
-    sortable: true,
-  },
-  {
-    name: "numero_formula",
-    align: "center",
-    label: "No. de Fórmula",
-    field: "numero_formula",
     sortable: true,
   },
   {
@@ -511,13 +561,6 @@ const columns = [
     align: "center",
     label: "Suplente",
     field: "nombre_Completo_Suplente",
-    sortable: true,
-  },
-  {
-    name: "id",
-    align: "center",
-    label: "¡Consulta!",
-    field: "id",
     sortable: true,
   },
 ];

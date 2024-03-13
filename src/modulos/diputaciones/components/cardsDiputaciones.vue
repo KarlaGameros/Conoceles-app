@@ -114,8 +114,8 @@
               size="100px"
               v-if="
                 (item.selection == 'prop' &&
-                  item.validado_Propietario == true) ||
-                (item.selection == 'sup' && item.validado_Suplente == true)
+                  item.url_Foto_Propietario != null) ||
+                (item.selection == 'sup' && item.url_Foto_Suplente != null)
               "
             >
               <q-img
@@ -142,6 +142,15 @@
                   (item.selection == 'sup' && item.sexo_Suplente == 'Hombre')
                 "
                 src="../../../assets/avatarHombre.jpg"
+              />
+              <q-img
+                v-if="
+                  (item.selection == 'prop' &&
+                    item.sexo_Propietario == 'No binario') ||
+                  (item.selection == 'sup' &&
+                    item.sexo_Suplente == 'No binario')
+                "
+                src="../../../assets/noBinario.png"
               />
             </q-avatar>
           </div>
@@ -260,6 +269,11 @@
           </div>
           <div class="col-2">
             <q-btn
+              v-if="
+                item.selection == 'prop'
+                  ? item.validado_Propietario
+                  : item.validado_Suplente
+              "
               :disable="activar_pdf == true"
               @click="pdf(item.id, item.selection == 'prop' ? 0 : 1)"
               flat
@@ -296,7 +310,7 @@
       <q-table
         flat
         bordered
-        :rows="listCardsFiltro"
+        :rows="listFiltroCards"
         :columns="columns"
         row-key="name"
         :visible-columns="visisble_columns"
@@ -317,22 +331,36 @@
                   />
                 </q-avatar>
               </div>
+
               <div v-else-if="col.name === 'no_Distrito'">
-                Distrito {{ col.value }}
+                {{
+                  props.row.tipo_Candidato == "MR"
+                    ? `Distrito ${col.value}`
+                    : "No aplica"
+                }}
               </div>
-              <div v-else-if="col.name === 'id'">
+              <div v-else-if="col.name === 'nombre_Completo_Propietario'">
                 <q-btn
+                  :label="col.value"
                   flat
-                  round
                   color="pink-4"
-                  icon="search"
                   :to="{ name: 'diputacionesDetalle' }"
                   class="pink"
-                  @click="
-                    verMas(col.value, props.row.selection == 'prop' ? 0 : 1)
-                  "
+                  @click="verMas(props.row.id, 0)"
                 >
-                  <q-tooltip>Consultar</q-tooltip>
+                  <q-tooltip>¡Consulta!</q-tooltip>
+                </q-btn>
+              </div>
+              <div v-else-if="col.name === 'nombre_Completo_Suplente'">
+                <q-btn
+                  :label="col.value"
+                  flat
+                  color="pink-4"
+                  :to="{ name: 'diputacionesDetalle' }"
+                  class="pink"
+                  @click="verMas(props.row.id, 1)"
+                >
+                  <q-tooltip>¡Consulta!</q-tooltip>
                 </q-btn>
               </div>
               <label v-else>{{ col.value }}</label>
@@ -361,6 +389,7 @@ const router = useRouter();
 const { listFiltroCards, cargo } = storeToRefs(cardsStore);
 const filtro = ref("");
 const listCardsFiltro = ref([...listFiltroCards.value]);
+const listTabla = ref([]);
 const shape = ref("prop");
 const pageActual = ref("");
 const paginas = ref("");
@@ -405,6 +434,13 @@ const columns = [
     sortable: true,
   },
   {
+    name: "tipo_Candidato",
+    align: "center",
+    label: "Cargo",
+    field: "tipo_Candidato",
+    sortable: true,
+  },
+  {
     name: "no_Distrito",
     align: "center",
     label: "Distrito",
@@ -430,13 +466,6 @@ const columns = [
     align: "center",
     label: "Candidatura suplente",
     field: "nombre_Completo_Suplente",
-    sortable: true,
-  },
-  {
-    name: "id",
-    align: "center",
-    label: "¡Consulta!",
-    field: "id",
     sortable: true,
   },
 ];
@@ -519,22 +548,32 @@ const mostrarElementosPage = (pagina) => {
   const fin = inicio + elementosPorPage.value;
   const elementos = listFiltroCards.value.slice(inicio, fin);
   listCardsFiltro.value = elementos;
+
   if (cargo.value == "MR") {
     visisble_columns.value = [
-      "no_Distrito",
       "numero_formula",
+      "tipo_Candidato",
+      "no_Distrito",
       "url_Logo_Partido_Propietario",
       "nombre_Completo_Propietario",
       "nombre_Completo_Suplente",
-      "id",
+    ];
+  } else if (cargo.value == "RP") {
+    visisble_columns.value = [
+      "numero_formula",
+      "tipo_Candidato",
+      "url_Logo_Partido_Propietario",
+      "nombre_Completo_Propietario",
+      "nombre_Completo_Suplente",
     ];
   } else {
     visisble_columns.value = [
       "numero_formula",
+      "tipo_Candidato",
+      "no_Distrito",
       "url_Logo_Partido_Propietario",
       "nombre_Completo_Propietario",
       "nombre_Completo_Suplente",
-      "id",
     ];
   }
 };

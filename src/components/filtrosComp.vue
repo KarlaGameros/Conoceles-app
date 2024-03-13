@@ -286,6 +286,7 @@ const list_Grado_Academico = ref([
   { value: 7, label: "Maestría" },
   { value: 8, label: "Doctorado" },
   { value: 9, label: "Postdoctorado" },
+  { value: 10, label: "Sin estudios" },
 ]);
 const cargo_Id = ref({
   value: 0,

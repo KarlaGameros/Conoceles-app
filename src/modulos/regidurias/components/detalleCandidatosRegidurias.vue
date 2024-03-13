@@ -6,10 +6,10 @@
     </template>
     <template v-slot:contenido>
       <span id="speak">
-        La información es proporcionada por las personas candidatas a las
-        Diputaciones del Estado de Nayarit, por lo que su contenido es
-        responsabilidad de los actores políticos. El Instituto Estatal Electoral
-        de Nayarit únicamente apoya para su difusión.
+        La información es proporcionada por las personas candidatas a Regidurías
+        del Estado de Nayarit, por lo que su contenido es responsabilidad de los
+        actores políticos. El Instituto Estatal Electoral de Nayarit únicamente
+        apoya para su difusión.
       </span>
     </template>
   </banner>
@@ -26,7 +26,7 @@
         :to="{ name: 'REGcards', params: { eleccion_Id: props.eleccion_Id } }"
         icon="reply"
       />
-      <span id="speak">
+      <span id="speak" class="q-pl-sm">
         {{
           candidato.tipo_Candidato != "RP"
             ? `Municipio de ${candidato.municipio} - ${candidato.demarcacion}`
@@ -35,7 +35,8 @@
       </span>
     </div>
     <q-btn
-      :disable="activar_pdf"
+      v-if="candidato.validado == true"
+      :disable="activar_pdf == true"
       @click="pdf(props.id, candidato.selection == 'prop' ? 0 : 1)"
       flat
       icon="picture_as_pdf"
@@ -49,7 +50,7 @@
       <div class="shadow-7" style="border-radius: 20px">
         <div class="row">
           <div class="col-12 q-pa-md" align="center">
-            <q-avatar size="600%" v-if="candidato.validado == true">
+            <q-avatar size="600%" v-if="candidato.url_Foto != null">
               <q-img :src="candidato.url_Foto" />
             </q-avatar>
             <q-avatar size="600%" v-else>
@@ -60,6 +61,10 @@
               <q-img
                 v-else-if="candidato.sexo == 'Hombre'"
                 src="../../../assets/avatarHombre.jpg"
+              />
+              <q-img
+                v-if="candidato.sexo == 'No binario'"
+                src="../../../assets/noBinario.png"
               />
             </q-avatar>
           </div>
@@ -128,6 +133,7 @@
               :name="tab"
               :label="tab"
               @click="open_tab = !open_tab"
+              :disable="candidato.validado == false"
             />
           </q-tabs>
         </q-expansion-item>
@@ -151,6 +157,7 @@
                 :name="tab"
                 :label="tab"
                 @click="open_tab = !open_tab"
+                :disable="candidato.validado == false"
               />
             </q-tabs>
 
@@ -163,7 +170,7 @@
                     class="col-lg-3 col-md-12 col-sm-12 col-xs-12 q-pb-md"
                     align="center"
                   >
-                    <q-avatar size="180px" v-if="candidato.validado == true">
+                    <q-avatar size="180px" v-if="candidato.url_Foto != null">
                       <q-img :src="candidato.url_Foto" />
                     </q-avatar>
                     <q-avatar size="180px" v-else>
@@ -174,6 +181,10 @@
                       <q-img
                         v-else-if="candidato.sexo == 'Hombre'"
                         src="../../../assets/avatarHombre.jpg"
+                      />
+                      <q-img
+                        v-if="candidato.sexo == 'No binario'"
+                        src="../../../assets/noBinario.png"
                       />
                     </q-avatar>
                     <br /><br />
@@ -238,7 +249,11 @@
                     <div id="speak">
                       <div class="text-h6 text-grey-9">Cargo:</div>
                       <div class="text-subtitle1">
-                        {{ candidato.tipo_Candidato }}
+                        {{
+                          candidato.selection == "prop"
+                            ? "Persona propietaria"
+                            : "Persona suplente"
+                        }}
                       </div>
                     </div>
                     <div id="speak">
@@ -250,22 +265,58 @@
                       <div class="text-subtitle1">{{ candidato.id }}</div>
                     </div>
                     <br />
-                    <div>
-                      <q-icon name="location_on" /><span id="speak">
-                        {{ datos_Generales.domicilio }}
-                      </span>
+                    <div class="text-grey-9">
+                      <q-icon name="location_on" /><span
+                        id="speak"
+                        v-if="datos_Generales.domicilio == null"
+                        >{{ datos_Generales.domicilio }}</span
+                      >
+                      <span id="speak"
+                        >La candidatura no proporcionó información</span
+                      >
                       <br />
-                      <q-icon name="call" /><span id="speak">
+                      <q-icon name="call" /><span
+                        id="speak"
+                        v-if="datos_Generales.telefono == null"
+                      >
                         {{ datos_Generales.telefono }}
                       </span>
+                      <span id="speak"
+                        >La candidatura no proporcionó información</span
+                      >
                       <br />
-                      <q-icon name="email" /><span id="speak">
+                      <q-icon name="email" /><span
+                        id="speak"
+                        v-if="datos_Generales.email == null"
+                      >
                         {{ datos_Generales.email }}
                       </span>
+                      <span id="speak"
+                        >La candidatura no proporcionó información</span
+                      >
                     </div>
                     <br />
-                    <div class="text-grey-9">
-                      <q-btn flat round dense>
+                    <div id="speak">
+                      <div class="text-h6 text-grey-9">Redes sociales:</div>
+                      <span
+                        id="speak"
+                        v-if="
+                          datos_Generales.facebook == null &&
+                          datos_Generales.instagram == null &&
+                          datos_Generales.twitter == null &&
+                          datos_Generales.youtube == null &&
+                          datos_Generales.tik_Tok == null
+                        "
+                        >La candidatura no proporcionó información</span
+                      >
+                      <q-btn
+                        :href="`https://www.facebook.com/${datos_Generales.facebook}/`"
+                        target="blank"
+                        flat
+                        round
+                        dense
+                        v-if="datos_Generales.facebook != null"
+                      >
                         <i
                           class="fa-brands fa-facebook fa-2xl"
                           style="color: #673e84"
@@ -273,7 +324,14 @@
                           <q-tooltip>{{ datos_Generales.facebook }}</q-tooltip>
                         </i>
                       </q-btn>
-                      <q-btn flat round dense>
+                      <q-btn
+                        :href="`https://www.instagram.com/${datos_Generales.instagram}/`"
+                        v-if="datos_Generales.instagram != null"
+                        flat
+                        target="blank"
+                        round
+                        dense
+                      >
                         <i
                           class="fa-brands fa-instagram fa-2xl"
                           style="color: #673e84"
@@ -283,7 +341,14 @@
                           }}</q-tooltip></i
                         >
                       </q-btn>
-                      <q-btn flat round dense>
+                      <q-btn
+                        :href="`https://twitter.com/${datos_Generales.twitter}/`"
+                        v-if="datos_Generales.twitter != null"
+                        flat
+                        round
+                        target="blank"
+                        dense
+                      >
                         <i
                           class="fa-brands fa-twitter fa-2xl"
                           style="color: #673e84"
@@ -291,7 +356,14 @@
                           <q-tooltip>{{ datos_Generales.twitter }}</q-tooltip>
                         </i>
                       </q-btn>
-                      <q-btn flat round dense>
+                      <q-btn
+                        :href="`https://www.tiktok.com/en/${datos_Generales.tik_Tok}/`"
+                        v-if="datos_Generales.tik_Tok != null"
+                        flat
+                        round
+                        target="blank"
+                        dense
+                      >
                         <i
                           class="fa-brands fa-tiktok fa-2xl"
                           style="color: #673e84"
@@ -300,6 +372,7 @@
                         </i>
                       </q-btn>
                     </div>
+                    <br />
                   </div>
                 </div>
                 <div v-if="candidato.consentimiento_URL != null">
@@ -371,10 +444,7 @@
                 </div>
               </q-tab-panel>
               <q-tab-panel name="HISTORIA PROFESIONAL Y/O LABORAL">
-                <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por la candidatura.
-                </div>
-                <div v-else>
+                <div>
                   <hr color="purple" />
                   <div class="text-subtitle2 text-purple-3" align="center">
                     <q-icon name="school" /><span id="speak"> ESTUDIOS </span>
@@ -383,15 +453,27 @@
                   <div class="row q-pa-sm" id="speak">
                     <div class="col">
                       <div class="text-h6">Grado maximo de estudios:</div>
-                      <div class="text-subtitle1">
+                      <div
+                        class="text-subtitle1"
+                        v-if="datos_Generales.grado_Maximo_Estudios != null"
+                      >
                         {{ datos_Generales.grado_Maximo_Estudios }}
                       </div>
+                      <span id="speak" v-else class="text-subtitle1">
+                        La candidatura no proporcionó información.
+                      </span>
                     </div>
                     <div class="col">
                       <div class="text-h6">Estatus:</div>
-                      <div class="text-subtitle1">
+                      <div
+                        v-if="datos_Generales.estatus_Grado_Estudios != null"
+                        class="text-subtitle1"
+                      >
                         {{ datos_Generales.estatus_Grado_Estudios }}
                       </div>
+                      <span id="speak" v-else class="text-subtitle1">
+                        La candidatura no proporcionó información.
+                      </span>
                     </div>
                   </div>
                   <br />
@@ -402,103 +484,98 @@
                   </div>
                   <hr color="purple" />
                   <div class="q-pa-sm text-subtitle1 text-justify">
-                    <span id="speak">
-                      {{
-                        formacion.formacion == null
-                          ? "En este apartado se mostrará la información academica que el candidato registro en el cuestionario curricular"
-                          : formacion.formacion
-                      }}
+                    <span id="speak" v-if="formacion.formacion != null">
+                      {{ formacion.formacion }}
+                    </span>
+                    <span id="speak" v-else>
+                      La candidatura no proporcionó información.
                     </span>
                   </div>
                 </div>
               </q-tab-panel>
               <q-tab-panel name="TRAYECTORIA POLÍTICA Y/O PARTICIPACIÓN SOCIAL">
-                <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
-                </div>
-                <div v-else class="text-subtitle1 text-justify">
-                  <span id="speak">
-                    {{
-                      datos_Generales.trayectoria == null
-                        ? "En este apartado se mostrará los motivos de ocupar un cargo público que el candidato registro en el cuestionario curricular"
-                        : datos_Generales.trayectoria
-                    }}
+                <div class="text-subtitle1 text-justify">
+                  <span id="speak" v-if="datos_Generales.trayectoria != null">
+                    {{ datos_Generales.trayectoria }}
+                  </span>
+                  <span id="speak" v-else>
+                    La candidatura no proporcionó información.
                   </span>
                 </div>
               </q-tab-panel>
               <q-tab-panel name="¿POR QUÉ QUIERO OCUPAR UN CARGO PÚBLICO?">
-                <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
-                </div>
-                <div v-else class="text-subtitle1 text-justify">
-                  <span id="speak">
-                    {{
-                      datos_Generales.motivo_Cargo_Publico == null
-                        ? "En este apartado se mostrará los motivos de ocupar un cargo público que el candidato registro en el cuestionario curricular"
-                        : datos_Generales.motivo_Cargo_Publico
-                    }}
+                <div class="text-subtitle1 text-justify">
+                  <span
+                    id="speak"
+                    v-if="datos_Generales.motivo_Cargo_Publico != null"
+                  >
+                    {{ datos_Generales.motivo_Cargo_Publico }}
+                  </span>
+                  <span id="speak" v-else>
+                    La candidatura no proporcionó información.
                   </span>
                 </div>
               </q-tab-panel>
               <q-tab-panel name="PROPUESTAS">
-                <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                <div class="text-subtitle1 text-center text-bold q-pb-md">
+                  <span id="speak"> PRINCIPALES PROPUESTAS </span>
                 </div>
-                <div v-else>
-                  <div class="text-subtitle1 text-center text-bold q-pb-md">
-                    <span id="speak">PRINCIPALES PROPUESTAS</span>
-                  </div>
-                  <hr color="purple" />
-                  <div class="text-subtitle2 text-purple-3" align="center">
-                    <q-icon name="import_contacts" />
-                    <span id="speak">PROPUESTA 1</span>
-                  </div>
-                  <hr color="purple" />
-                  <div class="q-pa-sm text-subtitle1 text-justify">
-                    {{
-                      list_Propuestas.length != 0
-                        ? list_Propuestas[0].propuesta
-                        : "En este apartado se mostrará la propuesta 1 registrada por el candidato en el cuestionario curricular"
-                    }}
-                  </div>
-                  <hr color="purple" />
-                  <div class="text-subtitle2 text-purple-3" align="center">
-                    <q-icon name="import_contacts" />
-                    <span id="speak"> PROPUESTA 2 </span>
-                  </div>
-                  <hr color="purple" />
-                  <div class="q-pa-sm text-subtitle1 text-justify">
-                    {{
-                      list_Propuestas.length != 0
-                        ? list_Propuestas[1].propuesta
-                        : "En este apartado se mostrará la propuesta 2 registrada por el candidato en el cuestionario curricular"
-                    }}
-                  </div>
+                <hr color="purple" />
+                <div class="text-subtitle2 text-purple-3" align="center">
+                  <q-icon name="import_contacts" />
+                  <span id="speak"> PROPUESTA 1 </span>
                 </div>
+                <hr color="purple" />
+
+                <div
+                  v-if="list_Propuestas.length != 0"
+                  class="q-pa-sm text-subtitle1 text-justify"
+                >
+                  {{ list_Propuestas[0].propuesta }}
+                </div>
+                <span id="speak" v-else class="text-subtitle1">
+                  La candidatura no proporcionó información.
+                </span>
+                <hr color="purple" />
+                <div class="text-subtitle2 text-purple-3" align="center">
+                  <q-icon name="import_contacts" />
+                  <span id="speak"> PROPUESTA 2 </span>
+                </div>
+                <hr color="purple" />
+                <div
+                  v-if="list_Propuestas.length != 0"
+                  class="q-pa-sm text-subtitle1 text-justify"
+                >
+                  {{ list_Propuestas[1].propuesta }}
+                </div>
+                <span id="speak" v-else class="text-subtitle1">
+                  La candidatura no proporcionó información.
+                </span>
               </q-tab-panel>
               <q-tab-panel name="PROPUESTA EN MATERIA DE GÉNERO">
-                <div v-if="candidato.validado == false">
-                  Aquí se mostrará la información capturada por el candidato
+                <hr color="purple" />
+                <div class="text-subtitle2 text-purple-3" align="center">
+                  <q-icon name="import_contacts" />
+                  <span id="speak">
+                    PROPUESTA EN MATERIA DE GÉNERO O, EN SU CASO, DEL GRUPO EN
+                    SITUACIÓN DE DISCRIMINACIÓN QUE REPRESENTO
+                  </span>
                 </div>
-                <div v-else>
-                  <hr color="purple" />
-                  <div class="text-subtitle2 text-purple-3" align="center">
-                    <q-icon name="import_contacts" />
-                    <span id="speak">
-                      PROPUESTA EN MATERIA DE GÉNERO O, EN SU CASO, DEL GRUPO EN
-                      SITUACIÓN DE DISCRIMINACIÓN QUE REPRESENTO
-                    </span>
-                  </div>
-                  <hr color="purple" />
-                  <div class="q-pa-sm text-subtitle1 text-justify">
-                    <span id="speak">
-                      {{
-                        datos_Generales.propuesta_Genero == null
-                          ? "En este apartado se mostrará la propuesta en materia de género que el candidato registro en el cuestionario curricular"
-                          : datos_Generales.propuesta_Genero
-                      }}
-                    </span>
-                  </div>
+                <hr color="purple" />
+                <div class="q-pa-sm text-subtitle1 text-justify">
+                  <span
+                    id="speak"
+                    v-if="datos_Generales.propuesta_Genero != null"
+                  >
+                    {{
+                      datos_Generales.propuesta_Genero == null
+                        ? "En este apartado se mostrará la propuesta en materia de género que el candidato registro en el  cuestionario curricular"
+                        : datos_Generales.propuesta_Genero
+                    }}
+                  </span>
+                  <span id="speak" v-else>
+                    La candidatura no proporcionó información.
+                  </span>
                 </div>
               </q-tab-panel>
             </q-tab-panels>

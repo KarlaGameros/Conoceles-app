@@ -8,10 +8,10 @@
       <span id="speak">
         En este espacio tendrás la oportunidad de conocer a las personas
         candidatas, así como su trayectoria y sus principales propuestas de
-        campaña, entre otras cosas, en la Elección de Diputaciones 2024 en el
-        Estado de Nayarit, lo que puede darte más información para ejercer tu
-        voto, para lo cual bastará que des un click en la opción que desees
-        consultar
+        campaña, entre otras cosas, en la Elección de Presidencias y
+        Sindicaturas 2024 en el Estado de Nayarit, lo que puede darte más
+        información para ejercer tu voto, para lo cual bastará que des un click
+        en la opción que desees consultar
       </span>
     </template>
   </banner>
@@ -110,11 +110,11 @@
               size="100px"
               v-if="
                 (item.selection == 'prop' &&
-                  item.validado_Propietario == true) ||
-                (item.selection == 'sup' && item.validado_Suplente == true) ||
+                  item.url_Foto_Propietario != null) ||
+                (item.selection == 'sup' && item.url_Foto_Suplente != null) ||
                 (item.selection == 'propSin' &&
-                  item.validado_Propietario_2 == true) ||
-                (item.selection == 'supSin' && item.validado_Suplente_2 == true)
+                  item.url_Foto_Propietario_2 != null) ||
+                (item.selection == 'supSin' && item.url_Foto_Suplente_2 != null)
               "
             >
               <q-img
@@ -153,6 +153,19 @@
                     item.sexo_Suplente_2 == 'Hombre')
                 "
                 src="../../../assets/avatarHombre.jpg"
+              />
+              <q-img
+                v-if="
+                  (item.selection == 'prop' &&
+                    item.sexo_Propietario == 'No binario') ||
+                  (item.selection == 'sup' &&
+                    item.sexo_Suplente == 'No binario') ||
+                  (item.selection == 'propSin' &&
+                    item.sexo_Propietario_2 == 'No binario') ||
+                  (item.selection == 'supSin' &&
+                    item.sexo_Suplente_2 == 'No binario')
+                "
+                src="../../../assets/noBinario.png"
               />
             </q-avatar>
           </div>
@@ -304,6 +317,15 @@
           </div>
           <div class="col-2">
             <q-btn
+              v-if="
+                item.selection == 'prop'
+                  ? item.validado_Propietario
+                  : item.selection == 'sup'
+                  ? item.validado_Suplente
+                  : item.selection == 'propSin'
+                  ? item.validado_Propietario_2
+                  : item.validado_Suplente_2
+              "
               :disable="activar_pdf == true"
               @click="
                 pdf(
@@ -350,7 +372,7 @@
       <q-table
         flat
         bordered
-        :rows="listCardsFiltro"
+        :rows="listFiltroCards"
         :columns="columns"
         row-key="name"
       >
@@ -372,21 +394,55 @@
               <div v-else-if="col.name === 'no_Distrito'">
                 Distrito {{ col.value }}
               </div>
-              <div v-else-if="col.name === 'id'">
+              <div v-else-if="col.name === 'nombre_Completo_Propietario'">
                 <q-btn
+                  :label="col.value"
                   flat
-                  round
                   color="pink-4"
-                  icon="search"
                   :to="{ name: 'diputacionesDetalle' }"
                   class="pink"
-                  @click="
-                    verMas(col.value, props.row.selection == 'prop' ? 0 : 1)
-                  "
+                  @click="verMas(props.row.id, 0)"
                 >
-                  <q-tooltip>Consultar</q-tooltip>
+                  <q-tooltip>¡Consulta!</q-tooltip>
                 </q-btn>
               </div>
+              <div v-else-if="col.name === 'nombre_Completo_Suplente'">
+                <q-btn
+                  :label="col.value"
+                  flat
+                  color="pink-4"
+                  :to="{ name: 'diputacionesDetalle' }"
+                  class="pink"
+                  @click="verMas(props.row.id, 1)"
+                >
+                  <q-tooltip>¡Consulta!</q-tooltip>
+                </q-btn>
+              </div>
+              <div v-else-if="col.name === 'nombre_Completo_Propietario_2'">
+                <q-btn
+                  :label="col.value"
+                  flat
+                  color="pink-4"
+                  :to="{ name: 'diputacionesDetalle' }"
+                  class="pink"
+                  @click="verMas(props.row.id, 2)"
+                >
+                  <q-tooltip>¡Consulta!</q-tooltip>
+                </q-btn>
+              </div>
+              <div v-else-if="col.name === 'nombre_Completo_Suplente_2'">
+                <q-btn
+                  :label="col.value"
+                  flat
+                  color="pink-4"
+                  :to="{ name: 'diputacionesDetalle' }"
+                  class="pink"
+                  @click="verMas(props.row.id, 3)"
+                >
+                  <q-tooltip>¡Consulta!</q-tooltip>
+                </q-btn>
+              </div>
+
               <label v-else>{{ col.value }}</label>
             </q-td>
           </q-tr>
@@ -490,13 +546,6 @@ const columns = [
     align: "center",
     label: "Candidatura sindicatura suplente",
     field: "nombre_Completo_Suplente_2",
-    sortable: true,
-  },
-  {
-    name: "id",
-    align: "center",
-    label: "¡Consulta!",
-    field: "id",
     sortable: true,
   },
 ];

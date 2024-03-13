@@ -191,7 +191,7 @@
                   >Distrito</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0 || cargo_Id.cargo == 'RP'"
+                  :disable="cargo_Id.cargo == 'RP'"
                   dense
                   color="purple"
                   rounded
@@ -214,7 +214,6 @@
                   >Municipio</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0"
                   dense
                   color="purple"
                   outlined
@@ -237,7 +236,7 @@
                   >Demarcación</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0 || cargo_Id.cargo == 'RP'"
+                  :disable="cargo_Id.cargo == 'RP'"
                   dense
                   color="purple"
                   outlined
@@ -256,7 +255,6 @@
                   >Partido político o Coalición</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0"
                   dense
                   color="purple"
                   rounded
@@ -286,7 +284,6 @@
                   >Grado académico</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0"
                   dense
                   color="purple"
                   rounded
@@ -305,7 +302,6 @@
                   >Rango de edad</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0"
                   dense
                   color="purple"
                   rounded
@@ -324,7 +320,6 @@
                   >Género</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0"
                   dense
                   color="purple"
                   rounded
@@ -570,16 +565,16 @@ const tab_Id = ref(null);
 const grado_Academica_Id = ref(null);
 const list_Grado_Academico = ref([
   { value: 0, label: "Todos" },
-  { value: 1, label: "Sin estudios" },
-  { value: 2, label: "Primaria" },
-  { value: 3, label: "Secundaria" },
-  { value: 4, label: "Técnica" },
-  { value: 5, label: "Preparatoria" },
-  { value: 6, label: "Licenciatura" },
-  { value: 7, label: "Especialidad" },
-  { value: 8, label: "Maestría" },
-  { value: 9, label: "Doctorado" },
-  { value: 10, label: "Postdoctorado" },
+  { value: 1, label: "Primaria" },
+  { value: 2, label: "Secundaria" },
+  { value: 3, label: "Técnica" },
+  { value: 4, label: "Preparatoria" },
+  { value: 5, label: "Licenciatura" },
+  { value: 6, label: "Especialidad" },
+  { value: 7, label: "Maestría" },
+  { value: 8, label: "Doctorado" },
+  { value: 9, label: "Postdoctorado" },
+  { value: 10, label: "Sin estudios" },
 ]);
 const cargo_Id = ref(null);
 const list_Cargos = ref([]);
