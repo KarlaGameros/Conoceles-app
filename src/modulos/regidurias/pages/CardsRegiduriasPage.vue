@@ -14,14 +14,14 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <CardsRegidurias :eleccion_Id="props.eleccion_Id" />
+    <cardsComp :eleccion_Id="props.eleccion_Id" :eleccion="'REG'" />
   </q-page>
 </template>
 
 <script setup>
 import { defineProps } from "vue";
-import CardsRegidurias from "../components/cardsRegidurias.vue";
 import filtros from "../../../components/filtrosComp.vue";
+import cardsComp from "src/components/cardsComp.vue";
 
 //---------------------------------------------------------------------------------
 

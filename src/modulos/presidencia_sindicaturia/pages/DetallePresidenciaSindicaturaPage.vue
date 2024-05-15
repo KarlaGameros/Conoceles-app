@@ -16,18 +16,19 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <DetalleCantidato
+    <detalleComp
       :id="props.id"
       :puesto="props.puesto"
       :eleccion_Id="props.eleccion_Id"
+      :eleccion="'PYS'"
     />
   </q-page>
 </template>
 
 <script setup>
-import { ref, watch, defineProps, onMounted } from "vue";
+import { defineProps, onMounted } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
-import DetalleCantidato from "../components/detalleCantidato.vue";
+import detalleComp from "src/components/detalleComp.vue";
 import filtros from "../../../components/filtrosComp.vue";
 
 //---------------------------------------------------------------------------------

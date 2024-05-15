@@ -36,7 +36,7 @@ const preguntas = [
   {
     num: 1,
     pregunta:
-      "¿Qué objetivo tiene el sistema Candidatas y Candidatos, Conóceles?",
+      "¿Qué objetivo tiene el sistema 'Candidatas y Candidatos, Conóceles'?",
     respuesta:
       "Que la ciudadanía conozca información general de la vida política, laboral y pública de las personas candidatas del estado de Nayarit que participarán en la Jornada Electoral del 02 de junio de 2024,con la finalidad de que cuenten con la información suficiente al momento de emitir su voto.",
   },
@@ -50,30 +50,23 @@ const preguntas = [
   {
     num: 3,
     pregunta:
-      "¿Puedo compartir la información de las personas candidatas en redes sociales?",
+      "¿A qué cargos se están postulando las personas candidatas a nivel estatal?",
     respuesta:
-      "Sí. Busca el nombre de la personas candidata, elige la red social que deseas usar, y comparte. La información que se encuentra en el sistema es pública y puede ser compartida.",
+      "Diputaciones, Presidencias y Sindicaturas, y Regidurías por el principio de mayoría relativa y representación proporcional",
   },
   {
     num: 4,
     pregunta:
-      "¿Es una obligación de la Unidad Técnica de Transparencia y Protección de Datos Personales (UTTyPDP), del IEEN, publicar el Cuestionario curricular de una personas candidata?",
+      "¿Quién podrá consultar el sistema “Candidatas y Candidatos, Conóceles”?",
     respuesta:
-      "No. Esta obligación corresponde a las personas candidatas y el Instituto Nacional Electoral, a través de la Unidad Técnica de Transparencia y Protección de Datos Personales le corresponde la supervisión y verificación de la captura de contenidos del cuestionario curricular.",
+      "Cualquier persona que esté interesada en conocer más acerca de las personas candidatas a un cargo de elección popular en el Estado de Nayarit.",
   },
   {
     num: 5,
     pregunta:
-      "¿Cuál es el Aviso de Privacidad de la Información que proporcionan las personas candidatas?",
+      "¿En la plataforma Conóceles puedo encontrar las propuestas de las personas candidatas?",
     respuesta:
-      "Puedes consultar el Aviso de Privacidad Integral y Simplificado del sistema Candidatas y Candidatos, Conóceles 2023",
-  },
-  {
-    num: 6,
-    pregunta:
-      "¿A qué cargos se están postulando las personas candidatas a nivel estatal?",
-    respuesta:
-      "Diputaciones, Presidencias y Sindicaturas, y Regidurias por el principio de mayoria relativa y representación propporcional",
+      "Sí. En el sistema encontrarás las dos principales propuestas; así como la propuesta en materia de género o, en su caso, del grupo en situación de discriminación que representa.",
   },
 ];
 </script>

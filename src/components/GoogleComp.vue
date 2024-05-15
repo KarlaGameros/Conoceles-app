@@ -42,7 +42,6 @@ export default {
         // Mostrar la respuesta en el componente
         apiResponse.value = JSON.stringify(response.data, null, 2);
       } catch (error) {
-        console.error("Error:", error);
         apiResponse.value = "Error al realizar la solicitud";
       }
     });

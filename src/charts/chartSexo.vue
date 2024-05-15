@@ -49,7 +49,6 @@ const chartOptions = {
     type: "pie",
   },
   colors: colors,
-
   style: {
     fontSize: "18px",
     fontWeight: "bold",
@@ -79,18 +78,18 @@ const chartOptions = {
   ],
 };
 
-onMounted(() => {
-  setTimeout(() => {
-    let spans = document.querySelectorAll(".apexcharts-legend-text");
-    for (let span of spans) {
-      span.style.fontSize = "18px";
-    }
-  }, 1000);
-});
+// onMounted(() => {
+//   setTimeout(() => {
+//     let spans = document.querySelectorAll(".apexcharts-legend-text");
+//     for (let span of spans) {
+//       span.style.fontSize = "18px";
+//     }
+//   }, 1000);
+// });
 </script>
 
 <style scoped>
-.apexcharts-legend-text {
+/* .apexcharts-legend-text {
   font-size: 20px !important;
-}
+} */
 </style>

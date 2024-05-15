@@ -16,10 +16,11 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <DetalleCandidatosRegidurias
+    <detalleComp
       :id="props.id"
       :puesto="props.puesto"
       :eleccion_Id="props.eleccion_Id"
+      :eleccion="'REG'"
     />
   </q-page>
 </template>
@@ -27,7 +28,7 @@
 <script setup>
 import { useCardsStore } from "src/stores/cards-store";
 import { onMounted, ref, watch } from "vue";
-import DetalleCandidatosRegidurias from "../components/detalleCandidatosRegidurias.vue";
+import detalleComp from "src/components/detalleComp.vue";
 import filtros from "../../../components/filtrosComp.vue";
 
 //---------------------------------------------------------------------------------
@@ -44,6 +45,8 @@ const props = defineProps({
 onMounted(() => {
   cargarData();
 });
+
+//---------------------------------------------------------------------------------
 
 const cargarData = async () => {
   cardsStore.actualizarMenu(true);

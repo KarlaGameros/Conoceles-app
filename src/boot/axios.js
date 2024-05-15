@@ -8,9 +8,11 @@ import axios from "axios";
 // "export default () => {}" function below (which runs individually
 // for each client)
 const api = axios.create({
-  baseURL: "http://sistema.ieenayarit.org:9378/api",
+  //baseURL: "http://sistema.ieenayarit.org:9378/api",
   //prueba
-  //baseURL: "https://universo.ieenayarit.org:9383/api",
+  baseURL: "https://cf35-177-226-124-12.ngrok-free.app/api",
+  //baseURL: "http://sistema.ieenayarit.org:9678/api",
+  //baseURL: "https://apiconoceles.sistemas-ieenayarit.org/api",
 });
 
 export default boot(({ app }) => {

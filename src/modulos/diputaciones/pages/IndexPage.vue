@@ -11,14 +11,15 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <DiputacionesComp />
+    <numeraliaComp />
   </q-page>
 </template>
 
 <script setup>
 import { onMounted } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
-import DiputacionesComp from "../components/diputacionesComp.vue";
+// import DiputacionesComp from "../components/diputacionesComp.vue";
+import numeraliaComp from "src/components/numeraliaComp.vue";
 import filtros from "../../../components/filtrosComp.vue";
 
 //---------------------------------------------------------------------------------

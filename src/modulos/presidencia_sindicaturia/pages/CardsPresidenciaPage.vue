@@ -14,15 +14,15 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <CardsPresidenciaSindicauria :eleccion_Id="props.eleccion_Id" />
+    <cardsComp :eleccion_Id="props.eleccion_Id" :eleccion="'PYS'" />
   </q-page>
 </template>
 
 <script setup>
 import { useQuasar } from "quasar";
 import { defineProps } from "vue";
-import CardsPresidenciaSindicauria from "../components/cardsPresidenciaSindicaturia.vue";
 import filtros from "../../../components/filtrosComp.vue";
+import cardsComp from "src/components/cardsComp.vue";
 
 //---------------------------------------------------------------------------------
 

@@ -5,13 +5,16 @@ const verificacionVacanteStore = useVerificacionVacante();
 
 const ReporteConoceles01 = async (id, puesto) => {
   let candidato = await verificacionVacanteStore.loadCandidato(id, puesto);
-
   let datosGenerales =
     await verificacionVacanteStore.loadCandidatoDatosGenerales(id, puesto);
   let formacionAcademica =
     await verificacionVacanteStore.loadCandidatoFormacionAcademica(id, puesto);
   let propuestasCandidato =
     await verificacionVacanteStore.loadCandidatoPropuestas(id, puesto);
+  let informacion_Pausada = "";
+  if (candidato.informacion_Pausada != null) {
+    informacion_Pausada = candidato.informacion_Pausada.split("|");
+  }
 
   await new Promise((resolveOuter) => {
     resolveOuter(
@@ -97,18 +100,35 @@ const ReporteConoceles01 = async (id, puesto) => {
         usuario.src = require("../assets/noBinario.png");
       }
     } else {
-      usuario.src =
-        `${candidato.foto}` + "?r=" + Math.floor(Math.random() * 100000);
+      if (candidato.foto.startsWith("http")) {
+        let url = candidato.foto.replace("http", "https");
+        usuario.src = `${url}` + "?r=" + Math.floor(Math.random() * 100000);
+      }
     }
 
     let partido = new Image();
-    partido.src =
-      `${candidato.logo_Partido}` + "?r=" + Math.floor(Math.random() * 100000);
+    if (candidato.logo_Partido.startsWith("http")) {
+      let urlpartido = candidato.logo_Partido.replace("http", "https");
+      partido.src =
+        `${urlpartido}` + "?r=" + Math.floor(Math.random() * 100000);
+    }
     let coalicion = new Image();
-    coalicion.src =
-      `${candidato.logo_Coalicion}` +
-      "?r=" +
-      Math.floor(Math.random() * 100000);
+
+    if (
+      candidato.logo_Coalicion != null &&
+      candidato.logo_Coalicion.startsWith("http")
+    ) {
+      let url3 = candidato.logo_Coalicion.replace("http", "https");
+      coalicion.src = `${url3}` + "?r=" + Math.floor(Math.random() * 100000);
+    }
+    let comun = new Image();
+    if (
+      candidato.logo_Comun != null &&
+      candidato.logo_Comun.startsWith("http")
+    ) {
+      let urlcomun = candidato.logo_Comun.replace("http", "https");
+      comun.src = `${urlcomun}` + "?r=" + Math.floor(Math.random() * 100000);
+    }
     let pc = new Image();
     pc.src = require("../assets/pc.png");
 
@@ -158,14 +178,16 @@ const ReporteConoceles01 = async (id, puesto) => {
     doc.text("Información académica", 76, puntoY + 3);
     textoRespuesta();
     var linesinformacion = doc.splitTextToSize(
-      formacionAcademica.formacion == ""
+      formacionAcademica.formacion == "" ||
+        informacion_Pausada.includes("Formacion")
         ? "La candidatura no proporcionó información"
         : formacionAcademica.formacion,
       136
     );
     puntoY = puntoY + 7;
     doc.text(
-      formacionAcademica.formacion == ""
+      formacionAcademica.formacion == "" ||
+        informacion_Pausada.includes("Formacion")
         ? "La candidatura no proporcionó información"
         : formacionAcademica.formacion,
       65,
@@ -188,7 +210,8 @@ const ReporteConoceles01 = async (id, puesto) => {
     doc.text("Historia profesional y/o laboral", 76, puntoY + 3);
     textoRespuesta();
     var linesHistoria = doc.splitTextToSize(
-      datosGenerales.historia_Laboral == null
+      datosGenerales.historia_Laboral == null ||
+        informacion_Pausada.includes("Historia_Profesional")
         ? "La candidatura no proporcionó información"
         : datosGenerales.historia_Laboral,
       135
@@ -242,7 +265,8 @@ const ReporteConoceles01 = async (id, puesto) => {
     doc.text("Trayectoria política y/o participación social", 76, puntoY + 3);
     textoRespuesta();
     var linesTrayectoria = doc.splitTextToSize(
-      datosGenerales.trayectoria == null
+      datosGenerales.trayectoria == null ||
+        informacion_Pausada.includes("Trayectoria")
         ? "La candidatura no proporcionó información"
         : datosGenerales.trayectoria,
       135
@@ -298,7 +322,8 @@ const ReporteConoceles01 = async (id, puesto) => {
     doc.text("¿Por qué quiere ocupar un cargo público?", 76, puntoY + 3);
     textoRespuesta();
     var linesCargo = doc.splitTextToSize(
-      datosGenerales.motivo_Cargo_Publico == null
+      datosGenerales.motivo_Cargo_Publico == null ||
+        informacion_Pausada.includes("Motivo_Cargo_Publico")
         ? "La candidatura no proporcionó información"
         : datosGenerales.motivo_Cargo_Publico,
       135
@@ -340,7 +365,7 @@ const ReporteConoceles01 = async (id, puesto) => {
     }
 
     //-----------------------------------------------------------------------------------------------//
-    console.log(propuestasCandidato);
+
     puntoY = puntoY + 2;
     if (puntoY >= 275) {
       doc.addPage();
@@ -348,11 +373,12 @@ const ReporteConoceles01 = async (id, puesto) => {
     }
     figuraPregunta(puntoY);
     textoPregunta();
-    doc.text("¿Cuáles son mis dos principales propuestas? ", 76, puntoY + 3);
+    doc.text("Dos principales propuestas ", 76, puntoY + 3);
     doc.text("Propuesta 1 ", 65, puntoY + 8);
     textoRespuesta();
     var linesPropuesta = doc.splitTextToSize(
-      propuestasCandidato.length == 0
+      propuestasCandidato.length == 0 ||
+        informacion_Pausada.includes("Propuesta_1")
         ? "La candidatura no proporcionó información"
         : propuestasCandidato[0].propuesta,
       135
@@ -405,7 +431,9 @@ const ReporteConoceles01 = async (id, puesto) => {
     doc.text("Propuesta 2 ", 65, puntoY + 3);
     textoRespuesta();
     var linesPropuesta2 = doc.splitTextToSize(
-      propuestasCandidato.length == 0 || propuestasCandidato.length == 1
+      propuestasCandidato.length == 0 ||
+        propuestasCandidato.length == 1 ||
+        informacion_Pausada.includes("Propuesta_2")
         ? "La candidatura no proporcionó información"
         : propuestasCandidato[1].propuesta,
       135
@@ -428,6 +456,7 @@ const ReporteConoceles01 = async (id, puesto) => {
         puntoY = 20;
       }
     }
+
     arregloTextoPropuesta2.push([textoCadenaPropuesta2]);
     doc.setPage(paginaActualPropuesta2);
     if (arregloTextoPropuesta2.length > 1) {
@@ -458,13 +487,14 @@ const ReporteConoceles01 = async (id, puesto) => {
     figuraPregunta(puntoY);
     textoPregunta();
     doc.text(
-      "Propuestas en materia de género, o en su caso,\n del grupo en situación de discriminación que representa",
+      "Propuesta en materia de género, o en su caso,\n del grupo en situación de discriminación que representa",
       76,
       puntoY + 3
     );
     textoRespuesta();
     var linesGenero = doc.splitTextToSize(
-      datosGenerales.propuesta_Genero == null
+      datosGenerales.propuesta_Genero == null ||
+        informacion_Pausada.includes("Genero")
         ? "La candidatura no proporcionó información"
         : datosGenerales.propuesta_Genero,
       135
@@ -493,6 +523,7 @@ const ReporteConoceles01 = async (id, puesto) => {
           align: "justify",
           lineHeightFactor: 1,
           maxWidth: 135,
+          style: "white-space: pre-line",
         });
         puntoInicialGenero = 20;
         paginaActualGenero = paginaActualGenero + 1;
@@ -503,6 +534,7 @@ const ReporteConoceles01 = async (id, puesto) => {
         align: "justify",
         lineHeightFactor: 1,
         maxWidth: 135,
+        style: "white-space: pre-line",
       });
     }
 
@@ -534,13 +566,25 @@ const ReporteConoceles01 = async (id, puesto) => {
 
     doc.addImage(usuario, "jpg", 10, 35, 40, 40);
     textoLateral();
+
     let puntoLateralY = 80;
+
     var linesCandidato = doc.splitTextToSize(candidato.nombre, 50);
     doc.text(candidato.nombre, 30, puntoLateralY, {
       align: "center",
       lineHeightFactor: 1,
-      maxWidth: 50,
+      maxWidth: 60,
     });
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "bold");
+    if (candidato.mote != null && candidato.mote != "") {
+      doc.text('"' + candidato.mote + '"', 30, 90, {
+        align: "center",
+        lineHeightFactor: 1,
+        maxWidth: 50,
+      });
+    }
+
     puntoLateralY = puntoLateralY + 4 + 4 * linesCandidato.length;
 
     if (candidato.is_Coalicion == true) {
@@ -554,8 +598,19 @@ const ReporteConoceles01 = async (id, puesto) => {
         maxWidth: 50,
       });
       puntoLateralY = puntoLateralY + 4 * linesCoalicion.length;
+    } else if (candidato.is_Comun == true) {
+      doc.addImage(comun, "jpg", 5, puntoLateralY, 50, 11);
+      textoLateral();
+      puntoLateralY = puntoLateralY + 35;
+      var linesCoalicion = doc.splitTextToSize(candidato.comun, 50);
+      doc.text(candidato.comun, 30, puntoLateralY, {
+        align: "center",
+        lineHeightFactor: 1,
+        maxWidth: 45,
+      });
+      puntoLateralY = puntoLateralY + 4 * linesCoalicion.length;
     } else {
-      doc.addImage(partido, "jpg", 25, puntoLateralY, 10, 10);
+      doc.addImage(partido, "jpg", 20, puntoLateralY - 3, 20, 20);
       textoLateral();
       puntoLateralY = puntoLateralY + 24;
       var linesCoalicion = doc.splitTextToSize(candidato.partido, 50);
@@ -572,26 +627,34 @@ const ReporteConoceles01 = async (id, puesto) => {
 
     textoLateralAlternativo();
     var linesEleccion = doc.splitTextToSize(
-      "Candidatura: " + candidato.candidatura,
+      "Candidatura: " + candidato.puesto,
       50
     );
-    doc.text("Candidatura: " + candidato.candidatura, 5, puntoLateralY, {
+    doc.text("Candidatura: " + candidato.puesto, 5, puntoLateralY, {
       align: "justify",
       lineHeightFactor: 1,
       maxWidth: 50,
     });
     puntoLateralY = puntoLateralY + 4 + 4 * linesEleccion.length;
 
-    var linesCargo = doc.splitTextToSize("Cargo: " + candidato.cargo, 50);
-    doc.text("Cargo: " + candidato.cargo, 5, puntoLateralY, {
-      align: "justify",
-      lineHeightFactor: 1,
-      maxWidth: 50,
-    });
+    var linesCargo = doc.splitTextToSize(
+      "Cargo: " + `${candidato.candidatura} - ${candidato.tipo_Candidato}`,
+      50
+    );
+    doc.text(
+      "Cargo: " + `${candidato.candidatura} - ${candidato.tipo_Candidato}`,
+      5,
+      puntoLateralY,
+      {
+        align: "justify",
+        lineHeightFactor: 1,
+        maxWidth: 50,
+      }
+    );
     puntoLateralY = puntoLateralY + 4 + 4 * linesCargo.length;
 
-    var linesGenero = doc.splitTextToSize("Genero: " + candidato.sexo, 50);
-    doc.text("Genero: " + candidato.sexo, 5, puntoLateralY, {
+    var linesGenero = doc.splitTextToSize("Género: " + candidato.sexo, 50);
+    doc.text("Género: " + candidato.sexo, 5, puntoLateralY, {
       align: "justify",
       lineHeightFactor: 1,
       maxWidth: 50,
@@ -602,6 +665,7 @@ const ReporteConoceles01 = async (id, puesto) => {
       "Edad: " + candidato.edad + " años",
       50
     );
+
     doc.text("Edad: " + candidato.edad + " años", 5, puntoLateralY, {
       align: "justify",
       lineHeightFactor: 1,
@@ -635,6 +699,7 @@ const ReporteConoceles01 = async (id, puesto) => {
       });
       puntoLateralY = puntoLateralY + 4 + 4 * linesEmail.length;
     }
+
     if (datosGenerales.telefono != null) {
       doc.addImage(telefono, "jpg", 2, puntoLateralY - 3, 4, 4);
       var linesTel = doc.splitTextToSize(
@@ -697,6 +762,7 @@ const ReporteConoceles01 = async (id, puesto) => {
       });
       puntoLateralY = puntoLateralY + 4 + 4 * linesTiktok.length;
     }
+
     if (datosGenerales.youtube) {
       doc.addImage(youtube, "jpg", 2, puntoLateralY - 3, 4, 4);
       var linesYoutube = doc.splitTextToSize(datosGenerales.youtube, 50);

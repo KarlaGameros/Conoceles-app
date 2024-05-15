@@ -11,7 +11,7 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <ChartsRegidurias />
+    <numeraliaComp />
   </q-page>
 </template>
 
@@ -19,7 +19,8 @@
 import { onMounted } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
 import filtros from "../../../components/filtrosComp.vue";
-import ChartsRegidurias from "../components/chartsRegidurias.vue";
+import numeraliaComp from "src/components/numeraliaComp.vue";
+
 //---------------------------------------------------------------------------------
 
 const cardsStore = useCardsStore();
@@ -29,8 +30,6 @@ const cardsStore = useCardsStore();
 onMounted(() => {
   cardsStore.actualizarMenu(true);
 });
-
-//---------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------
 </script>

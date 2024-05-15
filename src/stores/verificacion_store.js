@@ -25,12 +25,23 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
           domicilio: data.domicilio,
           grado_Maximo_Estudios: data.grado_Maximo_Estudios,
           estatus_Grado_Estudios: data.estatus_Grado_Estudios,
-          historia_Laboral: data.historia_Laboral,
-          trayectoria: data.trayectoria,
-          motivo_Cargo_Publico: data.motivo_Cargo_Publico,
-          propuesta_Genero: data.propuesta_Genero,
+          historia_Laboral:
+            data.historia_Laboral != null
+              ? data.historia_Laboral.replaceAll("\t", " ")
+              : data.historia_Laboral,
+          trayectoria:
+            data.trayectoria != null
+              ? data.trayectoria.replaceAll("\t", " ")
+              : data.trayectoria,
+          motivo_Cargo_Publico:
+            data.motivo_Cargo_Publico != null
+              ? data.motivo_Cargo_Publico.replaceAll("\t", " ")
+              : data.motivo_Cargo_Publico,
+          propuesta_Genero:
+            data.propuesta_Genero != null
+              ? data.propuesta_Genero.replaceAll("\t", " ")
+              : data.propuesta_Genero,
         };
-
         return datosGenerales;
       } catch (error) {
         return {
@@ -52,7 +63,7 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
             id: data.id,
             candidato_Id: data.candidato_Id,
             puesto_Candidato: data.puesto_Candidato,
-            formacion: data.formacion,
+            formacion: data.formacion.replaceAll("\t", " "),
           };
         } else {
           formacionAcademica = {
@@ -83,7 +94,7 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
             id: propuesta.id,
             candidato_Id: propuesta.candidato_Id,
             puesto_Candidato: propuesta.puesto_Candidato,
-            propuesta: propuesta.propuesta,
+            propuesta: propuesta.propuesta.replaceAll("\t", " "),
           };
         });
         return propuestas;
@@ -101,8 +112,18 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
         let { data } = resp.data;
         let datosCandidato = null;
         datosCandidato = {
+          tipo_Candidato: data.tipo_Candidato,
+          puesto:
+            data.puesto == 0
+              ? "Propietaria"
+              : data.puesto == 1
+              ? "Suplente"
+              : data.puesto == 2
+              ? "Propietaria síndico"
+              : "Suplente síndico",
           id: data.id,
           foto: data.url_Foto,
+          mote: data.mote,
           nombre:
             data.nombres +
             " " +
@@ -118,9 +139,13 @@ export const useVerificacionVacante = defineStore("useVerificacionVacante", {
           correo: data.correo,
           edad: data.edad,
           is_Coalicion: data.is_Coalicion,
+          is_Comun: data.is_Comun,
+          comun: data.comun,
+          logo_Comun: data.logo_Comun,
           coalicion_Id: data.coalicion_Id,
           coalicion: data.coalicion,
           logo_Coalicion: data.logo_Coalicion,
+          informacion_Pausada: data.informacion_Pausada,
         };
         return datosCandidato;
       } catch (error) {

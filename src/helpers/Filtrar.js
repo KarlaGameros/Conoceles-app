@@ -6,6 +6,7 @@ const { list_Graficas_Genero_Edad_Filtrado } = storeToRefs(graficasStore);
 
 const Filtrar = async (list_Grafica, filtro) => {
   try {
+    list_Graficas_Genero_Edad_Filtrado.value = [];
     let resp = await graficasStore.limpiarLista();
     if (resp.success == true) {
       list_Graficas_Genero_Edad_Filtrado.value = list_Grafica.filter((item) => {

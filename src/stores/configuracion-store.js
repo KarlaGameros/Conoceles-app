@@ -131,40 +131,109 @@ export const useConfiguracionStore = defineStore("configuracion", {
 
     //----------------------------------------------------------------------
     //PARTIDOS POLITICOS
+    // async loadPartidosPoliticos(
+    //   tipo,
+    //   municipio_Id,
+    //   distrito_Id,
+    //   demarcacion_Id
+    // ) {
+    //   try {
+    //     let resp = null;
+    //     if (tipo == "Municipios") {
+    //       resp = await api.get(
+    //         `/Tipos_Elecciones/Coaliciones_Partidos_Municipios/${municipio_Id}`
+    //       );
+    //     } else if (tipo == "GeneralMunicipios") {
+    //       resp = await api.get(
+    //         "/Tipos_Elecciones/Todos_Coaliciones_Partidos_Municipios"
+    //       );
+    //     } else if (tipo == "Distritos") {
+    //       resp = await api.get(
+    //         `/Tipos_Elecciones/Coaliciones_Partidos_Distritos/${distrito_Id}`
+    //       );
+    //     } else if (tipo == "GeneralDistritos") {
+    //       resp = await api.get(
+    //         "/Tipos_Elecciones/Todos_Coaliciones_Partidos_Distritos"
+    //       );
+    //     } else if (tipo == "MunicipioDemarcacion") {
+    //       resp = await api.get(
+    //         `/Tipos_Elecciones/Coaliciones_Partidos_Demarcacion?DemarcacionId=${demarcacion_Id}&MunicipioId=${municipio_Id}`
+    //       );
+    //     } else if (tipo == "GeneralDemarcacion") {
+    //       resp = await api.get(
+    //         "/Tipos_Elecciones/Todos_Coaliciones_Partidos_Demarcacion"
+    //       );
+    //     }
+
+    //     let { data } = resp.data;
+    //     let listPartidosPoliticos = data.map((item) => {
+    //       return {
+    //         partido_Id: item.partido_Id,
+    //         partido: item.partido,
+    //         logo_URL_Partido: item.logo_URL_Partido,
+    //         is_Coalicion: item.is_Coalicion,
+    //         is_Comun: item.is_Comun,
+    //         coalicion_Id: item.coalicion_Id,
+    //         coalicion: item.coalicion,
+    //         coalicion_Id: item.coalicion_Id,
+    //         logo_URL_Coalicion: item.logo_URL_Coalicion,
+    //         logo:
+    //           item.is_Coalicion == true
+    //             ? item.logo_URL_Coalicion
+    //             : item.logo_URL_Partido,
+    //         label: item.partido == null ? item.coalicion : item.partido,
+    //         value:
+    //           item.partido_Id == null ? item.coalicion_Id : item.partido_Id,
+    //       };
+    //     });
+    //     listPartidosPoliticos.splice(0, 0, {
+    //       value: 0,
+    //       label: "Todos",
+    //     });
+    //     this.list_Partidos_Politicos = listPartidosPoliticos;
+    //   } catch (error) {
+    //     return {
+    //       success: false,
+    //       data: "Ocurrió un error, inténtelo de nuevo. Si el error persiste, contacte a soporte",
+    //     };
+    //   }
+    // },
+
     async loadPartidosPoliticos(
       tipo,
+      tipo_Candidato,
+      eleccion_Id,
       municipio_Id,
       distrito_Id,
       demarcacion_Id
     ) {
       try {
         let resp = null;
-        if (tipo == "Municipios") {
+        if (tipo == "Eleccion") {
           resp = await api.get(
-            `/Tipos_Elecciones/Coaliciones_Partidos_Municipios/${municipio_Id}`
+            `/Tipos_Elecciones/Partidos_Disponibles?TipoEleccionId=${eleccion_Id}`
           );
-        } else if (tipo == "GeneralMunicipios") {
+        } else if (tipo == "EleccionCargo") {
           resp = await api.get(
-            "/Tipos_Elecciones/Todos_Coaliciones_Partidos_Municipios"
+            `/Tipos_Elecciones/Partidos_Disponibles?TipoEleccionId=${eleccion_Id}&TipoCandidato=${tipo_Candidato}`
           );
-        } else if (tipo == "Distritos") {
+        } else if (tipo == "EleccionDistritoTipo") {
           resp = await api.get(
-            `/Tipos_Elecciones/Coaliciones_Partidos_Distritos/${distrito_Id}`
+            `/Tipos_Elecciones/Partidos_Disponibles?TipoEleccionId=${eleccion_Id}&DistritoId=${distrito_Id}&TipoCandidato=${tipo_Candidato}`
           );
-        } else if (tipo == "GeneralDistritos") {
+        } else if (tipo == "EleccionMunicipioTipo") {
           resp = await api.get(
-            "/Tipos_Elecciones/Todos_Coaliciones_Partidos_Distritos"
+            `/Tipos_Elecciones/Partidos_Disponibles?TipoEleccionId=${eleccion_Id}&MunicipioId=${municipio_Id}&TipoCandidato=${tipo_Candidato}`
           );
-        } else if (tipo == "MunicipioDemarcacion") {
+        } else if (tipo == "EleccionMunicipio") {
           resp = await api.get(
-            `/Tipos_Elecciones/Coaliciones_Partidos_Demarcacion?DemarcacionId=${demarcacion_Id}&MunicipioId=${municipio_Id}`
+            `/Tipos_Elecciones/Partidos_Disponibles?TipoEleccionId=${eleccion_Id}&MunicipioId=${municipio_Id}&TipoCandidato=${tipo_Candidato}`
           );
-        } else if (tipo == "GeneralDemarcacion") {
+        } else if (tipo == "EleccionMunicipioDemarcacion") {
           resp = await api.get(
-            "/Tipos_Elecciones/Todos_Coaliciones_Partidos_Demarcacion"
+            `/Tipos_Elecciones/Partidos_Disponibles?TipoEleccionId=${eleccion_Id}&MunicipioId=${municipio_Id}&DemarcacionId=${demarcacion_Id}&TipoCandidato=${tipo_Candidato}`
           );
         }
-
         let { data } = resp.data;
         let listPartidosPoliticos = data.map((item) => {
           return {
@@ -172,11 +241,13 @@ export const useConfiguracionStore = defineStore("configuracion", {
             partido: item.partido,
             logo_URL_Partido: item.logo_URL_Partido,
             is_Coalicion: item.is_Coalicion,
+            is_Comun: item.is_Comun,
             coalicion_Id: item.coalicion_Id,
             coalicion: item.coalicion,
+            coalicion_Id: item.coalicion_Id,
             logo_URL_Coalicion: item.logo_URL_Coalicion,
             logo:
-              item.is_Coalicion == true
+              item.is_Coalicion == true && tipo_Candidato != "RP"
                 ? item.logo_URL_Coalicion
                 : item.logo_URL_Partido,
             label: item.partido == null ? item.coalicion : item.partido,

@@ -1,52 +1,93 @@
 <template>
-  <q-page class="row flex flex-center">
-    <div class="absolute-top-right text-center">
-      <div class="text-subtitle1 q-pr-md text-purple-ieen">
-        Consultas al sistema desde el 01 de marzo de 2024 a la fecha:
-        <strong class="text-h5 text-bold"> 190 </strong>
+  <template v-if="!fechaInicio">
+    <q-page class="row flex flex-center">
+      <!-- <div class="text-h2 text-bold text-grey-6 text-center">
+        Próximamente, "Candidatos y Candidatas Conóceles" Nayarit 2024.
       </div>
-    </div>
-    <br /><br /><br />
-    <div class="col-2"></div>
-    <div class="text-center col-lg-4 col-md-4 col-sm-12 col-xs-12">
-      <div class="text-h4 text-bold text-purple-ieen-1" id="speak">
-        Candidatas y Candidatos,
+      <div class="imgHome col-lg-6 col-md-5 col-sm-12 col-xs-12">
+        <img
+          alt="PREP logo"
+          src="../assets/ConocelesN.png"
+          :style="
+            $q.screen.xs
+              ? 'width: 400px; height: 350px'
+              : 'width: 650px; height: 550px'
+          "
+        />
+      </div> -->
+      <div class="col-12 text-center">
+        <img
+          alt="PREP logo"
+          src="../assets/Conoceles.gif"
+          :style="
+            $q.screen.xs
+              ? 'width: 100%; height: auto'
+              : 'width: 60%; height: auto'
+          "
+        />
       </div>
-      <div class="text-h2 text-bold text-purple-ieen-1" id="speak">
-        Conóceles
+    </q-page>
+  </template>
+  <template v-else>
+    <q-page class="row flex flex-center">
+      <div v-if="!$q.screen.xs" class="absolute-top-right text-center">
+        <div class="text-subtitle1 q-pr-md text-purple-ieen">
+          <strong class="text-h6 text-bold"> {{ consultas }} </strong>
+        </div>
       </div>
-      <div class="text-subtitle2 center text-justify q-pa-md" id="speak">
-        Consulta la trayectoria política y profesional, las propuestas de
-        campaña y la autoidentificación a determinados grupos en situación de
-        discriminación de las y los candidatos que participan en el Proceso
-        Local Ordinario 2024 en Nayarit.
+      <div v-else class="q-pa-sm text-center">
+        <q-card>
+          <div class="text-h6 text-purple-ieen">{{ consultas }}</div>
+        </q-card>
       </div>
-    </div>
-    <div class="imgHome col-lg-6 col-md-5 col-sm-12 col-xs-12">
-      <img
-        alt="PREP logo"
-        src="../assets/ConocelesN.png"
-        :style="
-          $q.screen.xs
-            ? 'width: 400px; height: 350px'
-            : 'width: 650px; height: 550px'
-        "
-      />
-    </div>
-  </q-page>
+      <br /><br /><br />
+      <div class="col-1"></div>
+      <div class="text-center col-lg-4 col-md-4 col-sm-12 col-xs-12">
+        <div class="text-h4 text-bold text-purple-ieen-1" id="speak">
+          Candidatas y Candidatos,
+        </div>
+        <div class="text-h2 text-bold text-purple-ieen-1" id="speak">
+          Conóceles
+        </div>
+        <div class="text-subtitle2 center text-justify q-pa-md" id="speak">
+          Consulta la trayectoria política y profesional, las propuestas de
+          campaña y la autoidentificación a determinados grupos en situación de
+          discriminación de las candidatas y los candidatos que participan en el
+          Proceso Electoral Local Ordinario 2024 en Nayarit.
+        </div>
+      </div>
+      <div class="imgHome col-lg-6 col-md-5 col-sm-12 col-xs-12">
+        <img
+          alt="PREP logo"
+          src="../assets/ConocelesN.png"
+          :style="
+            $q.screen.xs
+              ? 'width: 400px; height: 350px'
+              : 'width: 650px; height: 550px'
+          "
+        />
+      </div>
+    </q-page>
+  </template>
 </template>
 
 <script setup>
 import { storeToRefs } from "pinia";
+import { useQuasar, date } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
 import { useConfiguracionStore } from "src/stores/configuracion-store";
 import { onMounted, ref } from "vue";
 
 //---------------------------------------------------------------------------------
 
+const $q = useQuasar();
 const cardsStore = useCardsStore();
 const configuracionStore = useConfiguracionStore();
 const { consultas } = storeToRefs(configuracionStore);
+const { loading } = storeToRefs(cardsStore);
+const timeStamp = Date.now();
+const dateActual = ref(date.formatDate(timeStamp, "YYYY-MM-DD"));
+const fechaInicio = ref(dateActual.value < "2024-04-29" ? false : true);
 
 //---------------------------------------------------------------------------------
 

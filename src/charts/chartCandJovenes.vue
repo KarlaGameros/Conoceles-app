@@ -1,10 +1,16 @@
 <template>
-  <apexchart
-    width="500"
-    type="donut"
-    :options="chartOptions"
-    :series="series"
-  ></apexchart>
+  <div class="flex-center">
+    <apexchart
+      width="500"
+      type="donut"
+      :options="chartOptions"
+      :series="series"
+    />
+    <div class="text-subtitle1 text-bold">
+      De las {{ total }} (100%) candidaturas que respondieron el cuestionario de
+      identidad, {{ totalJoven }} se autoidentificaron como población joven.
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -13,14 +19,16 @@ import { useGraficasStore } from "src/stores/graficas-store";
 import { onMounted, ref, watch } from "vue";
 
 const graficasStore = useGraficasStore();
-const { list_Graficas_Filtrado } = storeToRefs(graficasStore);
+const { list_Graficas_By_Eleccion } = storeToRefs(graficasStore);
 const series = ref([]);
+const total = ref(null);
+const totalJoven = ref(null);
 
 onMounted(() => {
   rellenarGrafica();
 });
 
-watch(list_Graficas_Filtrado, (val) => {
+watch(list_Graficas_By_Eleccion, (val) => {
   series.value = [];
   if (val != null) {
     rellenarGrafica();
@@ -28,13 +36,31 @@ watch(list_Graficas_Filtrado, (val) => {
 });
 
 const rellenarGrafica = () => {
-  let si = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.poblacion_Joven == "Sí"
+  let totalCandidaturas = list_Graficas_By_Eleccion.value.filter(
+    (candidato) => candidato.poblacion_Joven != null
   );
-  let no = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.poblacion_Joven == "No"
+  let totalJovenCandidaturas = totalCandidaturas.filter(
+    (candidato) =>
+      candidato.poblacion_Joven == "Sí" ||
+      candidato.poblacion_Joven == "SÍ" ||
+      candidato.poblacion_Joven == "SI" ||
+      candidato.poblacion_Joven == "Si"
   );
-  let prefiero_No_Contestar = list_Graficas_Filtrado.value.filter(
+  total.value = totalCandidaturas.length;
+  totalJoven.value = totalJovenCandidaturas.length;
+
+  let si = list_Graficas_By_Eleccion.value.filter(
+    (candidato) =>
+      candidato.poblacion_Joven == "Sí" ||
+      candidato.poblacion_Joven == "SÍ" ||
+      candidato.poblacion_Joven == "SI" ||
+      candidato.poblacion_Joven == "Si"
+  );
+  let no = list_Graficas_By_Eleccion.value.filter(
+    (candidato) =>
+      candidato.poblacion_Joven == "No" || candidato.poblacion_Joven == "NO"
+  );
+  let prefiero_No_Contestar = list_Graficas_By_Eleccion.value.filter(
     (candidato) => candidato.poblacion_Joven == "Prefiero no contestar"
   );
 
@@ -72,9 +98,9 @@ const chartOptions = {
   },
   labels: ["Sí", "No", "Prefiero no contestar"],
   dataLabels: {
-    dropShadow: {
-      blur: 3,
-      opacity: 0.8,
+    formatter(val, opts) {
+      const name = opts.w.globals.labels[opts.seriesIndex];
+      return [name, val.toFixed(1) + "%"];
     },
   },
   fill: {

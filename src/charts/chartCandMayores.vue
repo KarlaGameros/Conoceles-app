@@ -1,10 +1,16 @@
 <template>
-  <apexchart
-    width="500"
-    type="pie"
-    :options="chartOptions"
-    :series="series"
-  ></apexchart>
+  <div class="flex-center">
+    <apexchart
+      width="500"
+      type="pie"
+      :options="chartOptions"
+      :series="series"
+    />
+    <div class="text-subtitle1 text-bold">
+      De las {{ total }} (100%) candidaturas que respondieron el cuestionario de
+      identidad, {{ totalMayor }} se autoidentificaron como población mayor.
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -13,14 +19,16 @@ import { useGraficasStore } from "src/stores/graficas-store";
 import { onMounted, ref, watch } from "vue";
 
 const graficasStore = useGraficasStore();
-const { list_Graficas_Filtrado } = storeToRefs(graficasStore);
+const { list_Graficas_By_Eleccion } = storeToRefs(graficasStore);
 const series = ref([]);
+const total = ref(null);
+const totalMayor = ref(null);
 
 onMounted(() => {
   rellenarGrafica();
 });
 
-watch(list_Graficas_Filtrado, (val) => {
+watch(list_Graficas_By_Eleccion, (val) => {
   series.value = [];
   if (val != null) {
     rellenarGrafica();
@@ -28,14 +36,32 @@ watch(list_Graficas_Filtrado, (val) => {
 });
 
 const rellenarGrafica = () => {
-  let si = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.indigena == "Sí"
+  let totalCandidaturas = list_Graficas_By_Eleccion.value.filter(
+    (candidato) => candidato.poblacion_Mayor != null
   );
-  let no = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.indigena == "No"
+  let totalMayorCandidaturas = totalCandidaturas.filter(
+    (candidato) =>
+      candidato.poblacion_Mayor == "Sí" ||
+      candidato.poblacion_Mayor == "SÍ" ||
+      candidato.poblacion_Mayor == "Si" ||
+      candidato.poblacion_Mayor == "SI"
   );
-  let prefiero_No_Contestar = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.indigena == "Prefiero no contestar"
+  total.value = totalCandidaturas.length;
+  totalMayor.value = totalMayorCandidaturas.length;
+
+  let si = list_Graficas_By_Eleccion.value.filter(
+    (candidato) =>
+      candidato.poblacion_Mayor == "Sí" ||
+      candidato.poblacion_Mayor == "SÍ" ||
+      candidato.poblacion_Mayor == "Si" ||
+      candidato.poblacion_Mayor == "SI"
+  );
+  let no = list_Graficas_By_Eleccion.value.filter(
+    (candidato) =>
+      candidato.poblacion_Mayor == "No" || candidato.poblacion_Mayor == "NO"
+  );
+  let prefiero_No_Contestar = list_Graficas_By_Eleccion.value.filter(
+    (candidato) => candidato.poblacion_Mayor == "Prefiero no contestar"
   );
 
   series.value.push(si.length, no.length, prefiero_No_Contestar.length);
@@ -46,11 +72,10 @@ const chartOptions = {
     width: "100%",
     type: "pie",
   },
-
   dataLabels: {
-    dropShadow: {
-      blur: 3,
-      opacity: 0.8,
+    formatter(val, opts) {
+      const name = opts.w.globals.labels[opts.seriesIndex];
+      return [name, val.toFixed(1) + "%"];
     },
   },
   plotOptions: {

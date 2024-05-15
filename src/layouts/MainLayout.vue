@@ -3,15 +3,18 @@
     <q-layout :view="$q.screen.xs ? 'hHh lpR lff' : 'hHh LpR fFf'">
       <q-header elevated class="bg-pink-ieen" height-hint="98">
         <div class="row bg-grey-3">
-          <div class="col-lg-1 col-md-2 col-sm-3 col-xs-3 q-pl-xl q-pt-md">
+          <div style="width: 150px">
             <a href="https://ieenayarit.org/" target="_black">
-              <q-img v-if="!$q.screen.xs" src="../assets/IEEN300.png"></q-img>
+              <q-img
+                v-if="!$q.screen.xs && !$q.screen.sm"
+                src="../assets/IEEN300.png"
+              ></q-img>
             </a>
           </div>
           <div
             :class="
-              !$q.screen.xs
-                ? 'col-lg-9 col-md-8 col-sm-6 col-xs-6 q-pr-xl q-pt-md'
+              !$q.screen.xs && !$q.screen.sm
+                ? 'col-lg-10 col-md-8 col-sm-5 col-xs-1'
                 : 'col-12'
             "
           >
@@ -25,8 +28,9 @@
             </div>
           </div>
           <div
-            v-if="!$q.screen.xs"
-            class="col-lg-2 col-md-2 col-sm-3 col-xs-3 q-pr-xl"
+            class="absolute-right"
+            v-if="!$q.screen.xs && !$q.screen.sm"
+            style="width: 250px"
           >
             <q-img src="../assets/Conoceles2@300x.png"></q-img>
           </div>
@@ -34,7 +38,7 @@
         <q-toolbar>
           <div class="row">
             <q-btn
-              v-if="isHomePage || $q.screen.xs"
+              v-if="(isHomePage || $q.screen.xs) && fechaInicio"
               dense
               class="absolute-left"
               flat
@@ -44,7 +48,7 @@
             />
             <!---------------------------HEADER TABS--------------------------->
             <div
-              v-if="!$q.screen.xs"
+              v-if="!$q.screen.xs && fechaInicio"
               class="absolute-center col-lg-8 col-md-8 col-sm-8 col-xs-9"
             >
               <q-tabs v-model="tab">
@@ -53,8 +57,8 @@
                   name="inicio"
                   icon="home"
                 />
-
                 <q-tab
+                  :to="{ name: 'inicio', params: { eleccion_Id: eleccion.id } }"
                   id="speak"
                   v-model="tab"
                   v-for="eleccion in list_Tipos_Elecciones"
@@ -73,12 +77,12 @@
                   : tab == "PYS"
                   ? "PRESIDENCIA Y SINDICATURA"
                   : tab == "REG"
-                  ? "REGIDURIAS"
+                  ? "REGIDURÍAS"
                   : "INICIO"
               }}</strong>
             </div>
             <div
-              v-if="$q.screen.xs || $q.screen.sm"
+              v-if="($q.screen.xs || $q.screen.sm) && fechaInicio"
               class="absolute-right q-pa-xs"
             >
               <q-btn flat @click="exportarBD()">
@@ -90,7 +94,7 @@
               </q-btn>
             </div>
             <div
-              v-if="!$q.screen.xs && !$q.screen.sm"
+              v-if="!$q.screen.xs && !$q.screen.sm && fechaInicio"
               class="absolute-right q-pa-xs"
             >
               Exportar base de datos
@@ -252,7 +256,7 @@
                 <q-item-label
                   class="text-purple-ieen label-title text-bold"
                   id="speak"
-                  >Partido político o Coalición</q-item-label
+                  >Partido político, Coalición o Común</q-item-label
                 >
                 <q-select
                   dense
@@ -337,33 +341,30 @@
             <div class="text-center q-pa-md">
               <q-img src="../assets/Conoceles2@300x.png"></q-img>
             </div>
-            <q-item clickable v-ripple>
-              <q-btn
-                @click="isTabSelected('INICIO')"
-                rounded
-                name="inicio"
-                icon="home"
-                to="/inicio"
-                label="Inicio"
-                class="bg-pink-ieen-3"
-              />
-            </q-item>
-            <q-item
-              v-for="eleccion in list_Tipos_Elecciones"
-              :key="eleccion"
-              clickable
-              v-ripple
-            >
-              <q-btn
-                v-model="tab"
-                @click="isTabSelected(eleccion.siglas, eleccion.id)"
-                rounded
-                :to="{
-                  name: eleccion.siglas,
-                }"
-                :label="eleccion.label"
-                class="bg-pink-ieen-3"
-              />
+            <q-item>
+              <q-item-section>
+                <q-btn
+                  @click="isTabSelected('INICIO')"
+                  rounded
+                  name="inicio"
+                  icon="home"
+                  to="/inicio"
+                  label="Inicio"
+                  class="bg-pink-ieen-3 q-ma-xs"
+                />
+                <q-btn
+                  v-for="eleccion in list_Tipos_Elecciones"
+                  :key="eleccion"
+                  @click="isTabSelected(eleccion.siglas, eleccion.id)"
+                  rounded
+                  :label="eleccion.label"
+                  :class="
+                    tab == eleccion.siglas
+                      ? 'bg-pink-ieen-1 q-ma-xs text-white'
+                      : 'bg-pink-ieen-3 q-ma-xs '
+                  "
+                />
+              </q-item-section>
             </q-item>
           </q-list>
         </q-scroll-area>
@@ -383,9 +384,8 @@
               </q-btn>
             </div>
             <div>
-              <q-btn dense @click="botonConsultar" push class="bg-pink-ieen">
+              <q-btn @click="botonConsultar" dense push class="bg-pink-ieen">
                 <div class="row items-center no-wrap">
-                  <q-icon name="search" size="xs"></q-icon>
                   <div class="text-center">Consultar</div>
                 </div>
               </q-btn>
@@ -403,7 +403,15 @@
         <q-toolbar>
           <q-toolbar-title>
             <!--Accesibilidad Inicia-->
-            <div>
+            <div
+              style="
+                display: flex;
+                justify-content: flex-end;
+                margin: 0px 60px 0px 0px;
+                position: static;
+                transition: all 0s ease 0s;
+              "
+            >
               <div class="container-voice">
                 <input type="checkbox" id="btn-mas" />
                 <q-tooltip
@@ -472,6 +480,7 @@
                 <span id="speak">(311) - 210 - 3235 /36 /47</span>
               </div>
               <div
+                v-if="fechaInicio"
                 class="text-caption col-lg-3 col-md-3 col-sm-6 col-xs-12 text-center"
               >
                 <q-btn flat round dense :to="{ name: 'preguntasFrecuentes' }">
@@ -515,13 +524,13 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { useQuasar, QSpinnerCube } from "quasar";
+import { useQuasar, QSpinnerCube, date } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
 import { onBeforeMount, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useConfiguracionStore } from "src/stores/configuracion-store";
 import { useGraficasStore } from "src/stores/graficas-store";
-import { getCurrentLocation, getDataDevice } from "../helpers/CurrentLocation";
+import { getDataDevice } from "../helpers/CurrentLocation";
 import Filtrar from "src/helpers/Filtrar";
 import FiltrarCandidatos from "src/helpers/FiltrarCandidatos";
 
@@ -536,8 +545,14 @@ const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 };
 const cardsStore = useCardsStore();
-const { isHomePage, buttons, list_Candidatos_By_Eleccion, cargo } =
-  storeToRefs(cardsStore);
+const {
+  isHomePage,
+  buttons,
+  list_Candidatos_By_Eleccion,
+  cargo,
+  listFiltroCards,
+  loading,
+} = storeToRefs(cardsStore);
 const {
   list_Tipos_Elecciones,
   list_Distritos,
@@ -553,6 +568,7 @@ const {
   list_Graficas_Filtrado,
   list_Graficas_Genero_Edad,
   cargoGrafica,
+  list_Graficas_Genero_Edad_Filtrado,
 } = storeToRefs(graficasStore);
 const distrito_Id = ref(null);
 const actor_politico_Id = ref(null);
@@ -565,19 +581,22 @@ const tab_Id = ref(null);
 const grado_Academica_Id = ref(null);
 const list_Grado_Academico = ref([
   { value: 0, label: "Todos" },
-  { value: 1, label: "Primaria" },
-  { value: 2, label: "Secundaria" },
-  { value: 3, label: "Técnica" },
-  { value: 4, label: "Preparatoria" },
-  { value: 5, label: "Licenciatura" },
-  { value: 6, label: "Especialidad" },
-  { value: 7, label: "Maestría" },
-  { value: 8, label: "Doctorado" },
-  { value: 9, label: "Postdoctorado" },
-  { value: 10, label: "Sin estudios" },
+  { value: 1, label: "Sin estudios" },
+  { value: 2, label: "Primaria" },
+  { value: 3, label: "Secundaria" },
+  { value: 4, label: "Técnica" },
+  { value: 5, label: "Preparatoria" },
+  { value: 6, label: "Licenciatura" },
+  { value: 7, label: "Especialidad" },
+  { value: 8, label: "Maestría" },
+  { value: 9, label: "Doctorado" },
+  { value: 10, label: "Postdoctorado" },
 ]);
-const cargo_Id = ref(null);
+const cargo_Id = ref({ value: 0, label: "Todos" });
 const list_Cargos = ref([]);
+const timeStamp = Date.now();
+const dateActual = ref(date.formatDate(timeStamp, "YYYY-MM-DD"));
+const fechaInicio = ref(dateActual.value < "2024-04-29" ? false : true);
 
 //---------------------------------------------------------------------------------
 
@@ -589,7 +608,6 @@ onBeforeMount(() => {
     });
   } else {
     const savedTab = localStorage.getItem("selectedTab");
-
     if (savedTab) {
       tab.value = savedTab;
     }
@@ -602,66 +620,44 @@ onBeforeMount(() => {
 
 watch(cargo_Id, (val) => {
   if (val != null) {
-    cargoGrafica.value = val.cargo;
     cargo.value = val.cargo;
     distrito_Id.value = { value: 0, label: "Todos" };
-    if (tab.value == "DIP") {
+    actor_politico_Id.value = { value: 0, label: "Todos" };
+    demarcacion_Id.value = { value: 0, label: "Todos" };
+    if (tab.value == "DIP" && val.label != "Todos") {
       list_Partidos_Politicos.value = [];
-      if (val.cargo == "RP") {
-        configuracionStore.loadPartidosPoliticosDistritosRP();
-      } else if (val.cargo == "MR") {
-        configuracionStore.loadPartidosPoliticos("GeneralDistritos", 0, 0, 0);
-      }
     }
+    cargarPartidos();
   }
 });
 
 watch(distrito_Id, (val) => {
-  if (tab.value == "DIP") {
+  if (val != null && tab.value == "DIP") {
     list_Partidos_Politicos.value = [];
-    if (cargo_Id.value.cargo != "RP" && val.value == 0) {
-      configuracionStore.loadPartidosPoliticos("GeneralDistritos", 0, 0, 0);
-    } else if (val.value != 0 && cargo_Id.value.cargo != "RP") {
-      configuracionStore.loadPartidosPoliticos("Distritos", 0, val.value, 0);
-    }
+    cargarPartidos();
   }
 });
 
 watch(municipio_Id, (val) => {
   if (tab.value == "PYS" || tab.value == "REG") {
     demarcacion_Id.value = { value: 0, label: "Todos" };
-    if (val.value == 0 && tab.value == "PYS") {
-      configuracionStore.loadPartidosPoliticos("GeneralMunicipios", 0, 0, 0);
-    } else if (val.value != 0) {
-      configuracionStore.loadPartidosPoliticos("Municipios", val.value, 0, 0);
+    if (val.value != 0) {
+      cargarPartidos();
       configuracionStore.loadDemarcaciones(val.value);
     }
   }
 });
 
 watch(demarcacion_Id, (val) => {
-  if (tab.value == "REG") {
-    if (val.value == 0) {
-      configuracionStore.loadPartidosPoliticos("GeneralDemarcacion", 0, 0, 0);
-    } else if (val.value != 0 && cargo_Id.value.cargo != "RP") {
-      configuracionStore.loadPartidosPoliticos(
-        "MunicipioDemarcacion",
-        municipio_Id.value.value,
-        0,
-        val.value
-      );
-    } else if (cargo_Id.value.cargo == "RP") {
-      configuracionStore.loadPartidosPoliticosDemarcacionesRP(
-        municipio_Id.value.value
-      );
-    }
+  if (tab.value == "REG" && val.value != 0) {
+    cargarPartidos();
   }
 });
 
 watch(list_Graficas_By_Eleccion, (val) => {
   if (val[0] != undefined) {
     if (val[0].tipo_Eleccion_Id == tab_Id.value) {
-      consultar();
+      // consultar();
     }
   }
 });
@@ -669,7 +665,7 @@ watch(list_Graficas_By_Eleccion, (val) => {
 watch(list_Graficas_Genero_Edad, (val) => {
   if (val[0] != undefined) {
     if (val[0].tipo_Eleccion_Id == tab_Id.value) {
-      consultar();
+      // consultar();
     }
   }
 });
@@ -682,7 +678,92 @@ watch(list_Candidatos_By_Eleccion, (val) => {
 
 //---------------------------------------------------------------------------------
 
+const cargarPartidos = async () => {
+  if (
+    (tab.value == "DIP" &&
+      distrito_Id.value.value == 0 &&
+      cargo_Id.value.value == 0) ||
+    (tab.value == "PYS" && municipio_Id.value.value == 0) ||
+    (tab.value == "REG" &&
+      municipio_Id.value.value == 0 &&
+      demarcacion_Id.value.value == 0 &&
+      cargo_Id.value.value == 0)
+  ) {
+    await configuracionStore.loadPartidosPoliticos(
+      "Eleccion",
+      0,
+      tab_Id.value,
+      0,
+      0,
+      0
+    );
+  } else if (
+    (tab.value == "DIP" &&
+      distrito_Id.value.value == 0 &&
+      cargo_Id.value.value != 0) ||
+    (tab.value == "REG" &&
+      municipio_Id.value.value == 0 &&
+      demarcacion_Id.value.value == 0 &&
+      cargo_Id.value.value != 0)
+  ) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionCargo",
+      cargo_Id.value.cargo,
+      tab_Id.value,
+      0,
+      0,
+      0
+    );
+  } else if (tab.value == "DIP" && distrito_Id.value.value != 0) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionDistritoTipo",
+      "MR",
+      tab_Id.value,
+      0,
+      distrito_Id.value.value,
+      0
+    );
+  } else if (tab.value == "PYS" && municipio_Id.value.value != 0) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionMunicipioTipo",
+      "MR",
+      tab_Id.value,
+      municipio_Id.value.value,
+      0,
+      0
+    );
+  } else if (
+    tab.value == "REG" &&
+    municipio_Id.value.value != 0 &&
+    demarcacion_Id.value.value == 0
+  ) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionMunicipio",
+      cargo_Id.value.cargo,
+      tab_Id.value,
+      municipio_Id.value.value,
+      0,
+      0
+    );
+  } else if (
+    tab.value == "REG" &&
+    municipio_Id.value.value != 0 &&
+    cargo_Id.value.value != 0 &&
+    demarcacion_Id.value.value != 0
+  ) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionMunicipioDemarcacion",
+      cargo_Id.value.cargo,
+      tab_Id.value,
+      municipio_Id.value.value,
+      0,
+      demarcacion_Id.value.value
+    );
+  }
+};
+
 const cargarData = async () => {
+  limpiarFiltros();
   $q.loading.show({
     spinner: QSpinnerCube,
     spinnerColor: "pink",
@@ -693,24 +774,44 @@ const cargarData = async () => {
   });
   await configuracionStore.loadTipoElecciones();
   await configuracionStore.loadDistritos();
-  await configuracionStore.loadPartidosPoliticos("GeneralDistritos", 0, 0, 0);
+  //await configuracionStore.loadPartidosPoliticos("GeneralDistritos", 0, 0, 0);
   await configuracionStore.loadEdades();
   await configuracionStore.loadGenero();
   await configuracionStore.loadMunicipios();
-
   $q.loading.hide();
 };
 
-const cargar = async (val, tab) => {
-  graficasStore.loadGraficasGeneroEdad(val);
+const cargar = async (val, tab, nombre) => {
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
+  list_Graficas_Genero_Edad_Filtrado.value = [];
+  list_Candidatos_By_Eleccion.value = [];
   list_Graficas_By_Eleccion.value = [];
   list_Partidos_Politicos.value = [];
+  list_Graficas_Filtrado.value = [];
   if (tab != "inicio") {
-    graficasStore.loadGraficasByEleccion(val);
+    await graficasStore.loadGraficasGeneroEdad(val);
+    await graficasStore.loadGraficasByEleccion(val);
+    router.push({
+      name: nombre,
+      params: { eleccion_Id: val },
+    });
   }
+  $q.loading.hide();
 };
 
 const isTabSelected = async (nombre, id) => {
+  $q.loading.show();
+  tab.value = nombre;
+  tab_Id.value = id;
+  list_Candidatos_By_Eleccion.value = [];
+  await cargar(id, tab.value, nombre);
   list_Cargos.value = [
     {
       value: 0,
@@ -734,30 +835,26 @@ const isTabSelected = async (nombre, id) => {
   ];
   limpiarFiltros();
   localStorage.setItem("selectedTab", nombre);
-  tab.value = nombre;
-  tab_Id.value = id;
+  localStorage.setItem("eleccion_Id", id);
 
-  if (nombre == "PYS") {
-    cargo_Id.value = {
-      value: 1,
-      cargo: "MR",
-    };
-  }
-  await cargar(id, tab.value);
-  router.push({
-    name: nombre,
-    params: { eleccion_Id: id },
-  });
+  // if (nombre == "PYS") {
+  //   cargo_Id.value = {
+  //     value: 1,
+  //     cargo: "MR",
+  //   };
+  // }
+  $q.loading.hide();
 };
 
 const activaNumeralia = (tab) => {
   limpiarFiltros();
-  if (tab == "PYS") {
-    cargo_Id.value = {
-      value: 1,
-      cargo: "MR",
-    };
-  }
+
+  // if (tab == "PYS") {
+  //   cargo_Id.value = {
+  //     value: 1,
+  //     cargo: "MR",
+  //   };
+  // }
   cardsStore.actualizarButtonColor(false);
   router.push({
     name: tab,
@@ -802,7 +899,7 @@ const obtenerNombre = () => {
   var horas = fechaHora.getHours();
   var minutos = fechaHora.getMinutes();
   var segundos = fechaHora.getSeconds();
-  return `Conoceles${anio}${mes}${dia}${horas}${minutos}${segundos}`;
+  return `Conoceles${anio}${mes}${dia}${horas}${minutos}${segundos}.zip`;
 };
 
 const exportarBD = async () => {
@@ -823,20 +920,48 @@ const exportarBD = async () => {
   $q.loading.hide();
 };
 
+const getCurrentLocation = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        resolve({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      (error) => {
+        $q.dialog({
+          title:
+            "Para mejorar la experiencia es necesario permitir la ubicación",
+          ok: "Cerrar",
+        }).onOk(() => {
+          //reject(error);
+        });
+      }
+    );
+  });
+};
+
 const botonConsultar = async () => {
-  // let { latitude, longitude } = await getCurrentLocation();
-  // let { brand, model, os } = getDataDevice();
-  // info.value.latitud = latitude;
-  // info.value.longitud = longitude;
-  // info.value.marca = brand;
-  // info.value.modelo = model;
-  // info.value.sistema_Operativo = os;
-  // await configuracionStore.infoDeviceConoceles(info.value);
-  // await configuracionStore.loadVisitas();
+  let { latitude, longitude } = await getCurrentLocation();
+  let { brand, model, os } = getDataDevice();
+  info.value.latitud = latitude;
+  info.value.longitud = longitude;
+  info.value.marca = brand;
+  info.value.modelo = model;
+  info.value.sistema_Operativo = os;
+  await configuracionStore.infoDeviceConoceles(info.value);
+  await configuracionStore.loadVisitas();
   consultar();
 };
 
 const consultar = async () => {
+  loading.value = true;
+  cargoGrafica.value = cargo_Id.value.label;
+
+  if (tab.value == "PYS") {
+    cargo_Id.value = { value: 0, label: "Todos" };
+  }
   const filtro = {};
   if (grado_Academica_Id.value != null)
     filtro.academico = grado_Academica_Id.value.label;
@@ -844,9 +969,22 @@ const consultar = async () => {
   if (distrito_Id.value != null) filtro.distrito = distrito_Id.value.value;
   if (actor_politico_Id.value != null) {
     filtro.actor_politico = actor_politico_Id.value.value;
-    if (actor_politico_Id.value.is_Coalicion == true) {
+    if (
+      actor_politico_Id.value.is_Coalicion == true &&
+      cargo_Id.value != null &&
+      cargo_Id.value.cargo != "RP"
+    ) {
+      filtro.comun = false;
       filtro.coalicion = true;
+    } else if (
+      actor_politico_Id.value.is_Comun == true &&
+      cargo_Id.value != null &&
+      cargo_Id.value.cargo != "RP"
+    ) {
+      filtro.comun = true;
+      filtro.coalicion = false;
     } else {
+      filtro.comun = false;
       filtro.coalicion = false;
     }
   }
@@ -865,13 +1003,34 @@ const consultar = async () => {
   if (list_Candidatos_By_Eleccion.value.length > 0) {
     filtrarCards(list_Candidatos_By_Eleccion.value, filtro);
   }
+  setTimeout(() => {
+    loading.value = false;
+  }, 500);
 };
 
 const filtrarGeneroEdad = async (list_Grafica, filtro) => {
-  Filtrar(list_Grafica, filtro);
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
+  list_Graficas_Genero_Edad_Filtrado.value = [];
+  await Filtrar(list_Grafica, filtro);
+  $q.loading.hide();
 };
 
 const filtarGraficasIdentidad = async (list_Graficas_By_Eleccion, filtro) => {
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
   let resp = await graficasStore.limpiarGraficasFiltrado();
   if (resp.success == true) {
     list_Graficas_Filtrado.value = list_Graficas_By_Eleccion.filter((item) => {
@@ -971,19 +1130,11 @@ const filtarGraficasIdentidad = async (list_Graficas_By_Eleccion, filtro) => {
       return cumple;
     });
   }
+  $q.loading.hide();
 };
 
 const filtrarCards = async (list_Candidatos_By_Eleccion, filtro) => {
-  $q.loading.show({
-    spinner: QSpinnerCube,
-    spinnerColor: "pink",
-    spinnerSize: 140,
-    backgroundColor: "purple-2",
-    message: "Espere un momento por favor...",
-    messageColor: "black",
-  });
   await FiltrarCandidatos(list_Candidatos_By_Eleccion, filtro);
-  $q.loading.hide();
 };
 
 //------------------------------ACCESIBILIDAD------------------------------
@@ -996,7 +1147,8 @@ setTimeout(() => {
   var idTextoMemoria;
   var idBotonMemoria;
   /*Variable de Voz */
-  var synth = speechSynthesis;
+  var synth = window.speechSynthesis;
+
   /*Activar el boton de lectura por parrafos*/
   function onClickActivarVoz(event) {
     if (event.target.id == "activar-voz") {
@@ -1013,7 +1165,6 @@ setTimeout(() => {
           let idTexto = document.getElementById("speak");
 
           if (idBotonMemoria != botones.length) {
-            console.log("entre");
             idTexto.id = `${botones.length + i}`;
 
             /*Crear Boton PLAY*/
@@ -1115,9 +1266,10 @@ setTimeout(() => {
 
         /*Lectura de Texto*/
         let utterance = new SpeechSynthesisUtterance(idTexto.textContent);
-        utterance.voice = speechSynthesis.getVoices()[0];
-        synth.speak(utterance);
+        utterance.lang = "es-ES";
+        //utterance.voice = speechSynthesis.getVoices()[0];
 
+        synth.speak(utterance);
         /*Quitar Pause*/
         if (synth.paused) {
           synth.resume();
@@ -1223,7 +1375,8 @@ setTimeout(() => {
 .bg-purple-ieen {
   background-color: #673e84 !important;
 }
-
+//#34344e
+//#5E3686
 .bg-pink-ieen {
   color: white;
   background: #d1308a !important;
@@ -1324,10 +1477,10 @@ setTimeout(() => {
 .btn2 {
   width: 30px;
   height: 30px;
-  color: #c80096;
+  color: #673e84;
   background-color: #fff;
   cursor: pointer;
-  border: 2px solid #c80096;
+  border: 2px solid #673e84;
   border-radius: 30%;
   display: inline;
   z-index: 10;
@@ -1336,7 +1489,7 @@ setTimeout(() => {
 
 .btn2:hover {
   color: #fff;
-  background-color: #c80096;
+  background-color: #673e84;
 }
 
 .btn2 i {
@@ -1350,10 +1503,10 @@ setTimeout(() => {
 }
 
 #btnVoz {
-  color: #c80096;
+  color: #673e84;
   background-color: #fff;
   cursor: pointer;
-  border: 2px solid #c80096;
+  border: 2px solid #673e84;
   position: absolute;
   transition: color 0.2s, background-color 0.2s ease-in-out;
 }
@@ -1389,7 +1542,7 @@ setTimeout(() => {
 
 .Acces-voz button:hover {
   background: #fff;
-  color: #c80096;
+  color: #673e84;
 }
 
 .Acces-voz button {
@@ -1406,7 +1559,7 @@ setTimeout(() => {
 
 .btn-mas label {
   cursor: pointer;
-  background: #c80096;
+  background: #673e84;
   color: #fff;
   font-size: 20px;
 }
@@ -1422,7 +1575,7 @@ setTimeout(() => {
 }
 
 .desactivado {
-  background: #c80096;
+  background: #673e84;
   color: #fff;
 }
 
@@ -1443,7 +1596,7 @@ setTimeout(() => {
   background: #fff;
   border: 2px solid #c80096;
   font-family: Century Gothic, sans-serif;
-  color: #c80096;
+  color: #673e84;
   font-weight: bold;
   margin: 3px;
 }
@@ -1454,7 +1607,7 @@ setTimeout(() => {
   width: 40px;
   height: 40px;
   font-size: 24px;
-  color: #c80096;
+  color: #673e84;
   background-color: #fff;
   cursor: pointer;
   border: 2px solid #c80096;

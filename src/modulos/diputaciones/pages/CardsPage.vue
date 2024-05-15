@@ -14,13 +14,13 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <CardsDiputaciones :eleccion_Id="props.eleccion_Id" />
+    <cardsComp :eleccion_Id="props.eleccion_Id" :eleccion="'DIP'" />
   </q-page>
 </template>
 
 <script setup>
 import { defineProps } from "vue";
-import CardsDiputaciones from "../components/cardsDiputaciones.vue";
+import cardsComp from "src/components/cardsComp.vue";
 import filtros from "../../../components/filtrosComp.vue";
 
 //---------------------------------------------------------------------------------

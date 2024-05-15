@@ -9,55 +9,177 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
+import { useQuasar } from "quasar";
 import { useGraficasStore } from "src/stores/graficas-store";
 import { onMounted, ref, watch } from "vue";
 
+const $q = useQuasar();
 const graficasStore = useGraficasStore();
-const { list_Graficas_Filtrado } = storeToRefs(graficasStore);
+const { list_Graficas_By_Eleccion, cargoGrafica } = storeToRefs(graficasStore);
 const series = ref([]);
 
 onMounted(() => {
   rellenarGrafica();
 });
 
-watch(list_Graficas_Filtrado, (val) => {
-  series.value = [];
+watch(list_Graficas_By_Eleccion, (val) => {
+  if (val != null) {
+    rellenarGrafica();
+  }
+});
+
+watch(cargoGrafica, (val) => {
   if (val != null) {
     rellenarGrafica();
   }
 });
 
 const rellenarGrafica = () => {
-  let sinEstudios = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.grado_Maximo_Studio == "Sin estudios"
-  );
-  let primaria = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.grado_Maximo_Studio == "Primaria"
-  );
-  let secundaria = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.grado_Maximo_Studio == "Secundaria"
-  );
-  let preparatoria = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.grado_Maximo_Studio == "Preparatoria"
-  );
-  let tecnica = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.grado_Maximo_Studio == "Técnica"
-  );
-  let licenciatura = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.grado_Maximo_Studio == "Licenciatura"
-  );
-  let maestria = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.grado_Maximo_Studio == "Maestría"
-  );
-  let doctorado = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.grado_Maximo_Studio == "Doctorado"
-  );
-  let especialidad = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.grado_Maximo_Studio == "Especialidad"
-  );
-  let postdoctorado = list_Graficas_Filtrado.value.filter(
-    (candidato) => candidato.grado_Maximo_Studio == "Postdoctorado"
-  );
+  series.value = [];
+  let sinEstudios = null;
+  let primaria = null;
+  let secundaria = null;
+  let preparatoria = null;
+  let tecnica = null;
+  let licenciatura = null;
+  let maestria = null;
+  let doctorado = null;
+  let especialidad = null;
+  let postdoctorado = null;
+  if (cargoGrafica.value == "RP") {
+    sinEstudios = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Sin estudios" &&
+        candidato.tipo_Candidato == "RP"
+    );
+    primaria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Primaria" &&
+        candidato.tipo_Candidato == "RP"
+    );
+    secundaria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Secundaria" &&
+        candidato.tipo_Candidato == "RP"
+    );
+    preparatoria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Preparatoria" &&
+        candidato.tipo_Candidato == "RP"
+    );
+    tecnica = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Técnica" &&
+        candidato.tipo_Candidato == "RP"
+    );
+    licenciatura = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Licenciatura" &&
+        candidato.tipo_Candidato == "RP"
+    );
+    maestria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Maestría" &&
+        candidato.tipo_Candidato == "RP"
+    );
+    doctorado = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Doctorado" &&
+        candidato.tipo_Candidato == "RP"
+    );
+    especialidad = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Especialidad" &&
+        candidato.tipo_Candidato == "RP"
+    );
+    postdoctorado = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Postdoctorado" &&
+        candidato.tipo_Candidato == "RP"
+    );
+  } else if (cargoGrafica.value == "MR") {
+    sinEstudios = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Sin estudios" &&
+        candidato.tipo_Candidato == "MR"
+    );
+    primaria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Primaria" &&
+        candidato.tipo_Candidato == "MR"
+    );
+    secundaria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Secundaria" &&
+        candidato.tipo_Candidato == "MR"
+    );
+    preparatoria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Preparatoria" &&
+        candidato.tipo_Candidato == "MR"
+    );
+    tecnica = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Técnica" &&
+        candidato.tipo_Candidato == "MR"
+    );
+    licenciatura = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Licenciatura" &&
+        candidato.tipo_Candidato == "MR"
+    );
+    maestria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Maestría" &&
+        candidato.tipo_Candidato == "MR"
+    );
+    doctorado = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Doctorado" &&
+        candidato.tipo_Candidato == "MR"
+    );
+    especialidad = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Especialidad" &&
+        candidato.tipo_Candidato == "MR"
+    );
+    postdoctorado = list_Graficas_By_Eleccion.value.filter(
+      (candidato) =>
+        candidato.grado_Maximo_Studio == "Postdoctorado" &&
+        candidato.tipo_Candidato == "MR"
+    );
+  } else {
+    sinEstudios = list_Graficas_By_Eleccion.value.filter(
+      (candidato) => candidato.grado_Maximo_Studio == "Sin estudios"
+    );
+    primaria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) => candidato.grado_Maximo_Studio == "Primaria"
+    );
+    secundaria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) => candidato.grado_Maximo_Studio == "Secundaria"
+    );
+    preparatoria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) => candidato.grado_Maximo_Studio == "Preparatoria"
+    );
+    tecnica = list_Graficas_By_Eleccion.value.filter(
+      (candidato) => candidato.grado_Maximo_Studio == "Técnica"
+    );
+    licenciatura = list_Graficas_By_Eleccion.value.filter(
+      (candidato) => candidato.grado_Maximo_Studio == "Licenciatura"
+    );
+    maestria = list_Graficas_By_Eleccion.value.filter(
+      (candidato) => candidato.grado_Maximo_Studio == "Maestría"
+    );
+    doctorado = list_Graficas_By_Eleccion.value.filter(
+      (candidato) => candidato.grado_Maximo_Studio == "Doctorado"
+    );
+    especialidad = list_Graficas_By_Eleccion.value.filter(
+      (candidato) => candidato.grado_Maximo_Studio == "Especialidad"
+    );
+    postdoctorado = list_Graficas_By_Eleccion.value.filter(
+      (candidato) => candidato.grado_Maximo_Studio == "Postdoctorado"
+    );
+  }
 
   series.value.push(
     sinEstudios.length,
@@ -83,12 +205,46 @@ const colors = [
   "#e8a9d4",
   "#e8ccf7",
   "#fbc9fb",
+  "#af7ead",
 ];
 
 const chartOptions = {
   chart: {
     width: 380,
     type: "pie",
+    toolbar: {
+      show: true,
+      offsetX: 0,
+      offsetY: 0,
+      tools: {
+        download: true,
+        selection: true,
+        zoom: true,
+        zoomin: true,
+        zoomout: true,
+        pan: true,
+        reset: true | '<img src="/static/icons/reset.png" width="20">',
+        customIcons: [],
+      },
+      export: {
+        csv: {
+          filename: undefined,
+          columnDelimiter: ",",
+          headerCategory: "category",
+          headerValue: "value",
+          dateFormatter(timestamp) {
+            return new Date(timestamp).toDateString();
+          },
+        },
+        svg: {
+          filename: undefined,
+        },
+        png: {
+          filename: undefined,
+        },
+      },
+      autoSelected: "zoom",
+    },
   },
   colors: colors,
   labels: [
@@ -103,21 +259,21 @@ const chartOptions = {
     "Especialidad",
     "Postdoctorado",
   ],
+  legend: {
+    show: true,
+  },
   plotOptions: {
     bar: {
       columnWidth: "45%",
       distributed: true,
     },
   },
-  legend: {
-    show: true,
-  },
   responsive: [
     {
-      breakpoint: 480,
+      breakpoint: 768,
       options: {
         chart: {
-          width: 400,
+          width: "100%",
         },
         legend: {
           position: "bottom",
@@ -127,5 +283,3 @@ const chartOptions = {
   ],
 };
 </script>
-
-<style></style>

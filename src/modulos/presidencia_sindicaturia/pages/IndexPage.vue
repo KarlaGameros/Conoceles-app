@@ -11,17 +11,15 @@
       </div>
     </div>
     <filtros v-if="$q.screen.xs" class="q-mb-md" />
-    <PresidenciaSindicatura />
+    <numeraliaComp />
   </q-page>
 </template>
 
 <script setup>
-import { useQuasar } from "quasar";
-import PresidenciaSindicatura from "../components/presidenciaSindicaturiaCharts.vue";
-import { onBeforeMount, onMounted, ref, watch } from "vue";
-import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 import { useCardsStore } from "src/stores/cards-store";
 import filtros from "../../../components/filtrosComp.vue";
+import numeraliaComp from "src/components/numeraliaComp.vue";
 
 //---------------------------------------------------------------------------------
 

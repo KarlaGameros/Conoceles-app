@@ -2,10 +2,11 @@ import { storeToRefs } from "pinia";
 import { useCardsStore } from "src/stores/cards-store";
 
 const cardsStore = useCardsStore();
-const { listFiltroCards } = storeToRefs(cardsStore);
+const { listFiltroCards, loading } = storeToRefs(cardsStore);
 
 const FiltrarCandidatos = async (list_Candidatos_By_Eleccion, filtro) => {
   try {
+    listFiltroCards.value = [];
     listFiltroCards.value = list_Candidatos_By_Eleccion.filter((item) => {
       let cumple = true;
 
@@ -42,7 +43,7 @@ const FiltrarCandidatos = async (list_Candidatos_By_Eleccion, filtro) => {
       }
 
       if (filtro.demarcacion !== undefined) {
-        if (filtro.demarcacion == "") {
+        if (filtro.demarcacion == 0) {
           cumple = cumple && item.demarcacion_Id === item.demarcacion_Id;
         } else {
           if (item.demarcacion_Id === filtro.demarcacion) {
@@ -52,28 +53,50 @@ const FiltrarCandidatos = async (list_Candidatos_By_Eleccion, filtro) => {
           }
         }
       }
-
       if (filtro.actor_politico !== undefined) {
         if (filtro.actor_politico == 0) {
           cumple = cumple && item.partido_Id === item.partido_Id;
         } else {
-          if (filtro.coalicion == true) {
+          if (filtro.coalicion == true && item.is_Coalicion == true) {
             if (item.coalicion_Id === filtro.actor_politico) {
               item.selection = "prop";
             } else {
               cumple = false;
             }
+          } else if (filtro.comun == true) {
+            if (
+              item.comun_Id === filtro.actor_politico &&
+              item.is_Comun == true
+            ) {
+              item.selection = "prop";
+            } else {
+              cumple = false;
+            }
           } else {
-            if (item.is_Coalicion == false) {
-              if (item.partido_Id === filtro.actor_politico) {
+            if (filtro.coalicion == false && filtro.comun == false) {
+              if (
+                item.partido_Id === filtro.actor_politico &&
+                item.is_Coalicion == false &&
+                item.is_Comun == false
+              ) {
                 item.selection = "prop";
-              } else if (item.partido_Suplente_Id === filtro.actor_politico) {
+              } else if (
+                item.partido_Suplente_Id === filtro.actor_politico &&
+                item.is_Coalicion == false &&
+                item.is_Comun == false
+              ) {
                 item.selection = "sup";
               } else if (
-                item.partido_Propietario_2_Id === filtro.actor_politico
+                item.partido_Propietario_2_Id === filtro.actor_politico &&
+                item.is_Coalicion == false &&
+                item.is_Comun == false
               ) {
                 item.selection = "propSin";
-              } else if (item.partido_Suplente_2_Id === filtro.actor_politico) {
+              } else if (
+                item.partido_Suplente_2_Id === filtro.actor_politico &&
+                item.is_Coalicion == false &&
+                item.is_Comun == false
+              ) {
                 item.selection = "supSin";
               } else {
                 cumple = false;
@@ -84,7 +107,6 @@ const FiltrarCandidatos = async (list_Candidatos_By_Eleccion, filtro) => {
           }
         }
       }
-
       if (filtro.sexo !== undefined) {
         if (filtro.sexo == "Todos") {
           cumple = cumple && item.sexo_Propietario === item.sexo_Propietario;
@@ -102,10 +124,11 @@ const FiltrarCandidatos = async (list_Candidatos_By_Eleccion, filtro) => {
           }
         }
       }
-
       if (filtro.edad !== undefined) {
         if (filtro.edad == "Todos") {
-          cumple = cumple && item.edad_Propietario > 0;
+          cumple =
+            cumple &&
+            (item.edad_Propietario > 0 || item.edad_Propietario == null);
         } else {
           const rango = filtro.edad.split("-").map(Number);
           if (rango.length === 2) {
@@ -177,7 +200,6 @@ const FiltrarCandidatos = async (list_Candidatos_By_Eleccion, filtro) => {
           }
         }
       }
-
       if (filtro.academico != undefined) {
         if (filtro.academico == "Todos") {
           cumple =
@@ -185,20 +207,31 @@ const FiltrarCandidatos = async (list_Candidatos_By_Eleccion, filtro) => {
             item.grado_Academico_Propietario ===
               item.grado_Academico_Propietario;
         } else {
-          if (item.grado_Academico_Propietario == filtro.academico) {
+          if (
+            item.grado_Academico_Propietario == filtro.academico &&
+            item.validado_Propietario == true
+          ) {
             item.selection = "prop";
-          } else if (item.grado_Academico_Suplente == filtro.academico) {
+          } else if (
+            item.grado_Academico_Suplente == filtro.academico &&
+            item.validado_Suplente == true
+          ) {
             item.selection = "sup";
-          } else if (item.grado_Academico_Propietario_2 == filtro.academico) {
+          } else if (
+            item.grado_Academico_Propietario_2 == filtro.academico &&
+            item.validado_Propietario_2 == true
+          ) {
             item.selection = "propSin";
-          } else if (item.grado_Academico_Suplente_2 == filtro.academico) {
+          } else if (
+            item.grado_Academico_Suplente_2 == filtro.academico &&
+            item.validado_Suplente_2 == true
+          ) {
             item.selection = "supSin";
           } else {
             cumple = false;
           }
         }
       }
-
       return cumple;
     });
   } catch (error) {

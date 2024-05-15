@@ -1,8 +1,8 @@
 {
   "name": "conoceles-app",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Conoceles",
+  "description": "Conóceles",
+  "productName": "Conóceles",
   "author": "Karla Gameros",
   "private": true,
   "scripts": {
@@ -45,6 +45,7 @@
     "vue": "^3.0.0",
     "vue-analytics": "^5.22.1",
     "vue-ga": "^1.1.0",
+    "vue-gapi": "^2.1.2",
     "vue-gtag": "^2.0.1",
     "vue-router": "^4.0.0",
     "vue3-apexcharts": "^1.4.4",

@@ -1,10 +1,13 @@
 <template>
-  <apexchart
-    type="donut"
-    width="500"
-    :options="chartOptions"
-    :series="series"
-  ></apexchart>
+  <div class="flex-center">
+    <apexchart
+      style="margin: 20px"
+      type="donut"
+      width="500"
+      :options="chartOptions"
+      :series="series"
+    ></apexchart>
+  </div>
 </template>
 
 <script setup>
@@ -13,14 +16,14 @@ import { useGraficasStore } from "src/stores/graficas-store";
 import { onMounted, ref, watch } from "vue";
 
 const graficasStore = useGraficasStore();
-const { list_Graficas_Filtrado } = storeToRefs(graficasStore);
+const { list_Graficas_By_Eleccion } = storeToRefs(graficasStore);
 const series = ref([]);
 
 onMounted(() => {
   rellenarGrafica();
 });
 
-watch(list_Graficas_Filtrado, (val) => {
+watch(list_Graficas_By_Eleccion, (val) => {
   series.value = [];
   if (val != null) {
     rellenarGrafica();
@@ -28,28 +31,28 @@ watch(list_Graficas_Filtrado, (val) => {
 });
 
 const rellenarGrafica = () => {
-  let ingreso_1 = list_Graficas_Filtrado.value.filter(
+  let ingreso_1 = list_Graficas_By_Eleccion.value.filter(
     (candidato) => candidato.ingresos == "Menos de $11,000"
   );
-  let ingreso_2 = list_Graficas_Filtrado.value.filter(
+  let ingreso_2 = list_Graficas_By_Eleccion.value.filter(
     (candidato) => candidato.ingresos == "De $11,001 a $25,000"
   );
-  let ingreso_3 = list_Graficas_Filtrado.value.filter(
+  let ingreso_3 = list_Graficas_By_Eleccion.value.filter(
     (candidato) => candidato.ingresos == "De $25,001 a $50,000"
   );
-  let ingreso_4 = list_Graficas_Filtrado.value.filter(
+  let ingreso_4 = list_Graficas_By_Eleccion.value.filter(
     (candidato) => candidato.ingresos == "De $50,001 a $75,000"
   );
-  let ingreso_5 = list_Graficas_Filtrado.value.filter(
+  let ingreso_5 = list_Graficas_By_Eleccion.value.filter(
     (candidato) => candidato.ingresos == "De $75,001 a $112,000"
   );
-  let ingreso_6 = list_Graficas_Filtrado.value.filter(
+  let ingreso_6 = list_Graficas_By_Eleccion.value.filter(
     (candidato) => candidato.ingresos == "Más de $112,000"
   );
-  let ingreso_7 = list_Graficas_Filtrado.value.filter(
+  let ingreso_7 = list_Graficas_By_Eleccion.value.filter(
     (candidato) => candidato.ingresos == "No recibe ingresos"
   );
-  let ingreso_8 = list_Graficas_Filtrado.value.filter(
+  let ingreso_8 = list_Graficas_By_Eleccion.value.filter(
     (candidato) => candidato.ingresos == "Prefiero no contestar"
   );
 
@@ -67,7 +70,7 @@ const rellenarGrafica = () => {
 
 const chartOptions = {
   chart: {
-    width: 500,
+    width: "100%",
     type: "donut",
   },
   labels: [
@@ -117,5 +120,3 @@ const chartOptions = {
   ],
 };
 </script>
-
-<style></style>

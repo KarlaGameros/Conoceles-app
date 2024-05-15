@@ -3,6 +3,8 @@ import { api } from "src/boot/axios";
 
 export const useGraficasStore = defineStore("useGraficasStore", {
   state: () => ({
+    loading: false,
+    loadingIdentidad: false,
     list_Graficas_By_Eleccion: [],
     list_Graficas_Genero_Edad: [],
     list_Graficas_Genero_Edad_Filtrado: [],
@@ -35,6 +37,8 @@ export const useGraficasStore = defineStore("useGraficasStore", {
     //GRAFICAS
     async loadGraficasGeneroEdad(id) {
       try {
+        this.list_Graficas_Genero_Edad = [];
+        this.loading = true;
         let resp = await api.get(
           `/Tipos_Elecciones/DataGraficasGralGeneroByTipoEleccion/${id}`
         );
@@ -54,8 +58,15 @@ export const useGraficasStore = defineStore("useGraficasStore", {
             is_Coalicion: item.is_Coalicion,
             coalicion_Id: item.coalicion_Id,
             grado_Maximo_Studio: item.grado_Maximo_Studio,
+            coalicion: item.coalicion_Siglas,
+            is_Comun: item.is_Comun,
+            comun_Id: item.comun_Id,
+            comun: item.comun_Siglas,
+            partido: item.partido_Siglas,
+            avance_Curricular: item.avance_Curricular,
           };
         });
+        this.loading = false;
       } catch (error) {
         return {
           success: false,
@@ -66,6 +77,8 @@ export const useGraficasStore = defineStore("useGraficasStore", {
 
     async loadGraficasByEleccion(id) {
       try {
+        this.loadingIdentidad = true;
+        this.list_Graficas_By_Eleccion = [];
         let resp = await api.get(
           `/Tipos_Elecciones/DataGraficasByTipoEleccion/${id}`
         );
@@ -93,9 +106,14 @@ export const useGraficasStore = defineStore("useGraficasStore", {
             tipo_Candidato: item.tipo_Candidato,
             is_Coalicion: item.is_Coalicion,
             coalicion_Id: item.coalicion_Id,
+            coalicion: item.coalicion,
             avance_Curricular: item.avance_Curricular,
+            is_Comun: item.is_Comun,
+            comun_Id: item.comun_Id,
+            comun: item.comun,
           };
         });
+        this.loadingIdentidad = false;
       } catch (error) {
         return {
           success: false,

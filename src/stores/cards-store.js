@@ -3,6 +3,7 @@ import { api } from "src/boot/axios";
 
 export const useCardsStore = defineStore("cards", {
   state: () => ({
+    loading: false,
     isHomePage: false,
     limpiar: false,
     buttons: false,
@@ -22,107 +23,74 @@ export const useCardsStore = defineStore("cards", {
     demarcacion_Id_movil: null,
     cargo: "MR",
     candidato: {
+      uno_Aviso_Privacidad: false,
+      dos_Publicacion: false,
+      tres_Informe_Estadistico: false,
       selection: null,
+      label: null,
+      informacion_Pausada: null,
       id: null,
-      tipo_Eleccion_Id: null,
-      tipo_Eleccion: null,
+      no_Formula: null,
+      puesto: null,
+      estatus: null,
       municipio_Id: null,
       municipio: null,
       distrito_Id: null,
-      distrito: null,
       no_Distrito: null,
+      distrito: null,
       demarcacion_Id: null,
       demarcacion: null,
-      coalicion_Id: null,
-      coalicion: null,
-      url_Logo_Coalicion: null,
-      estatus: null,
-      is_Coalicion: false,
-      activo: false,
       tipo_Candidato: null,
       orden: null,
-      validado: true,
-      fecha_Registro: null,
-      nombre_Completo_Propietario: null,
-      nombres_Propietario: null,
-      apellido_Paterno_Propietario: null,
-      apellido_Materno_Propietario: null,
-      mote_Propietario: null,
-      sexo_Propietario: null,
-      url_Foto_Propietario: null,
-      clave_Elector_Propietario: null,
-      rfC_Propietario: null,
-      curP_Propietario: null,
-      fecha_Nacimiento_Propietario: null,
-      ocupacion_Propietario: null,
-      telefono_Propietario: null,
-      correo_Propietario: null,
+      aprobado: null,
+      validado: null,
+      validado_IEEN: null,
+      nombres: null,
+      apellido_Paterno: null,
+      apellido_Materno: null,
+      mote: null,
+      sexo: null,
+      url_Foto: null,
+      clave_Elector: null,
+      rfc: null,
+      curp: null,
+      fecha_Nacimiento: null,
+      ocupacion: null,
+      telefono: null,
+      correo: null,
       pertenece_Grupo_Vulnerable_Propietario: false,
       grupo_Vulnerable_Propietario: null,
-      edad_Propietario: null,
+      consentimiento_URL: null,
+      avance_Curricular: null,
+      faltante_Curricular: null,
+      is_Coalicion: false,
+      coalicion_Id: null,
+      coalicion: null,
+      logo_Coalicion: null,
+      is_Comun: false,
+      comun_Id: null,
+      comun: null,
+      logo_Comun: null,
+      logo_Partido: null,
       partido_Id: null,
       partido: null,
-      url_Logo_Partido_Propietario: null,
-      nombre_Completo_Propietario_2: null,
-      nombres_Propietario_2: null,
-      apellido_Paterno_Propietario_2: null,
-      apellido_Materno_Propietario_2: null,
-      mote_Propietario_2: null,
-      sexo_Propietario_2: null,
-      url_Foto_Propietario_2: null,
-      clave_Elector_Propietario_2: null,
-      rfC_Propietario_2: null,
-      curP_Propietario_2: null,
-      fecha_Nacimiento_Propietario_2: null,
-      ocupacion_Propietario_2: null,
-      telefono_Propietario_2: null,
-      correo_Propietario_2: null,
-      pertenece_Grupo_Vulnerable_Propietario_2: false,
-      grupo_Vulnerable_Propietario_2: null,
-      partido_Propietario_2_Id: null,
-      partido_Propietario_2: null,
-      edad_Propietario_2: null,
-      url_Logo_Partido_Propietario_2: null,
-      nombre_Completo_Suplente: null,
-      nombres_Suplente: null,
-      apellido_Paterno_Suplente: null,
-      apellido_Materno_Suplente: null,
-      mote_Suplente: null,
-      sexo_Suplente: null,
-      url_Foto_Suplente: null,
-      clave_Elector_Suplente: null,
-      rfC_Suplente: null,
-      curP_Suplente: null,
-      edad_Suplente: null,
-      fecha_Nacimiento_Suplente: null,
-      ocupacion_Suplente: null,
-      telefono_Suplente: null,
-      correo_Suplente: null,
-      pertenece_Grupo_Vulnerable_Suplente: false,
-      grupo_Vulnerable_Suplente: null,
-      partido_Suplente_Id: null,
-      partido_Suplente: null,
-      url_Logo_Partido_Suplente: null,
-      nombre_Completo_Suplente_2: null,
-      nombres_Suplente_2: null,
-      apellido_Paterno_Suplente_2: null,
-      apellido_Materno_Suplente_2: null,
-      mote_Suplente_2: null,
-      sexo_Suplente_2: null,
-      url_Foto_Suplente_2: null,
-      clave_Elector_Suplente_2: null,
-      rfC_Suplente_2: null,
-      curP_Suplente_2: null,
-      fecha_Nacimiento_Suplente_2: null,
-      ocupacion_Suplente_2: null,
-      telefono_Suplente_2: null,
-      correo_Suplente_2: null,
-      pertenece_Grupo_Vulnerable_Suplente_2: false,
-      grupo_Vulnerable_Suplente_2: null,
-      partido_Suplente_2_Id: null,
-      partido_Suplente_2: null,
-      url_Logo_Partido_Suplente_2: null,
-      edad_Suplente_2: null,
+      orden_Publicacion: null,
+      edad: null,
+      tipo_Eleccion_Id: null,
+      tipo_Eleccion: null,
+      indigena: null,
+      afromexicano: null,
+      discapacidad: null,
+      lgbttiq: null,
+      migrante: null,
+      poblacion_Mayor: null,
+      poblacion_Joven: null,
+      informacion_Pausada: null,
+      consecutivo: false,
+      grupo1: false,
+      grupo2: false,
+      grupo3: false,
+      grupo4: false,
     },
     info: {
       latitud: null,
@@ -192,6 +160,71 @@ export const useCardsStore = defineStore("cards", {
       this.datos_Generales.propuesta_Genero = null;
     },
 
+    initCandidato() {
+      this.candidato.informacion_Pausada = null;
+      this.candidato.id = null;
+      this.candidato.no_Formula = null;
+      this.candidato.puesto = null;
+      this.candidato.estatus = null;
+      this.candidato.municipio_Id = null;
+      this.candidato.municipio = null;
+      this.candidato.distrito_Id = null;
+      this.candidato.no_Distrito = null;
+      this.candidato.distrito = null;
+      this.candidato.demarcacion_Id = null;
+      this.candidato.demarcacion = null;
+      this.candidato.tipo_Candidato = null;
+      this.candidato.orden = null;
+      this.candidato.aprobado = null;
+      this.candidato.validado = null;
+      this.candidato.validado_IEEN = null;
+      this.candidato.nombres = null;
+      this.candidato.apellido_Paterno = null;
+      this.candidato.apellido_Materno = null;
+      this.candidato.mote = null;
+      this.candidato.sexo = null;
+      this.candidato.url_Foto = null;
+      this.candidato.clave_Elector = null;
+      this.candidato.rfc = null;
+      this.candidato.curp = null;
+      this.candidato.fecha_Nacimiento = null;
+      this.candidato.ocupacion = null;
+      this.candidato.telefono = null;
+      this.candidato.correo = null;
+      this.candidato.pertenece_Grupo_Vulnerable_Propietario = false;
+      this.candidato.grupo_Vulnerable_Propietario = null;
+      this.candidato.consentimiento_URL = null;
+      this.candidato.avance_Curricular = null;
+      this.candidato.faltante_Curricular = null;
+      this.candidato.is_Coalicion = false;
+      this.candidato.coalicion_Id = null;
+      this.candidato.coalicion = null;
+      this.candidato.logo_Coalicion = null;
+      this.candidato.is_Comun = false;
+      this.candidato.comun_Id = null;
+      this.candidato.comun = null;
+      this.candidato.logo_Comun = null;
+      this.candidato.logo_Partido = null;
+      this.candidato.partido_Id = null;
+      this.candidato.partido = null;
+      this.candidato.orden_Publicacion = null;
+      this.candidato.edad = null;
+      this.candidato.tipo_Eleccion_Id = null;
+      this.candidato.tipo_Eleccion = null;
+      this.candidato.indigena = null;
+      this.candidato.afromexicano = null;
+      this.candidato.discapacidad = null;
+      this.candidato.lgbttiq = null;
+      this.candidato.poblacion_Mayor = null;
+      this.candidato.poblacion_Joven = null;
+      this.candidato.informacion_Pausada = null;
+      this.candidato.consecutivo = false;
+      this.candidato.grupo1 = false;
+      this.candidato.grupo2 = false;
+      this.candidato.grupo3 = false;
+      this.candidato.grupo4 = false;
+    },
+
     //---------------------------------------------------------------------------------
 
     async loadExcel() {
@@ -224,18 +257,15 @@ export const useCardsStore = defineStore("cards", {
 
     async loadCandidatosByEleccion(id) {
       try {
+        this.list_Candidatos_By_Eleccion = [];
+        this.loading = true;
         let resp = await api.get(`/Candidatos/ByTipoEleccion/${id}`);
         let { data } = resp.data;
         let listCandidatos = data.map((candidato) => {
           return {
             selection: "prop",
-            grado_Academico_Propietario: candidato.grado_Academico_Propietario,
-            grado_Academico_Propietario_2:
-              candidato.grado_Academico_Propietario_2,
-            grado_Academico_Suplente: candidato.grado_Academico_Suplente,
-            grado_Academico_Suplente_2: candidato.grado_Academico_Suplente_2,
             id: candidato.id,
-            numero_formula: candidato.id,
+            no_Formula: candidato.no_Formula,
             tipo_Eleccion_Id: candidato.tipo_Eleccion_Id,
             tipo_Eleccion: candidato.tipo_Eleccion,
             municipio_Id: candidato.municipio_Id,
@@ -256,12 +286,31 @@ export const useCardsStore = defineStore("cards", {
             orden: candidato.orden,
             validado: candidato.validado,
             fecha_Registro: candidato.fecha_Registro,
+            is_Comun: candidato.is_Comun,
+            comun: candidato.comun,
+            comun_Id: candidato.comun_Id,
+            url_Logo_Comun: candidato.url_Logo_Comun,
+            //-----------PROPIETARIO---------------------
+            consecutivo_Propietario: candidato.consecutivo_Propietario,
+            grado_Academico_Propietario: candidato.grado_Academico_Propietario,
             nombres_Propietario: candidato.nombres_Propietario,
             apellido_Paterno_Propietario:
-              candidato.apellido_Paterno_Propietario,
+              candidato.apellido_Paterno_Propietario == null
+                ? ""
+                : candidato.apellido_Paterno_Propietario,
             apellido_Materno_Propietario:
-              candidato.apellido_Materno_Propietario,
-            nombre_Completo_Propietario: `${candidato.nombres_Propietario} ${candidato.apellido_Paterno_Propietario} ${candidato.apellido_Materno_Propietario}`,
+              candidato.apellido_Materno_Propietario == null
+                ? ""
+                : candidato.apellido_Materno_Propietario,
+            nombre_Completo_Propietario: `${candidato.nombres_Propietario} ${
+              candidato.apellido_Paterno_Propietario == null
+                ? ""
+                : candidato.apellido_Paterno_Propietario
+            } ${
+              candidato.apellido_Materno_Propietario == null
+                ? ""
+                : candidato.apellido_Materno_Propietario
+            }`,
             mote_Propietario: candidato.mote_Propietario,
             sexo_Propietario: candidato.sexo_Propietario,
             url_Foto_Propietario: candidato.url_Foto_Propietario,
@@ -282,12 +331,26 @@ export const useCardsStore = defineStore("cards", {
             partido: candidato.partido,
             url_Logo_Partido_Propietario:
               candidato.url_Logo_Partido_Propietario,
-            nombre_Completo_Propietario_2: `${candidato.nombres_Propietario_2} ${candidato.apellido_Paterno_Propietario_2} ${candidato.apellido_Materno_Propietario_2}`,
+            //-----------PROPIETARIO 2---------------------
+            consecutivo_Propietario_2: candidato.consecutivo_Propietario_2,
+            grado_Academico_Propietario_2:
+              candidato.grado_Academico_Propietario_2,
+            nombre_Completo_Propietario_2: `${
+              candidato.nombres_Propietario_2
+            } ${
+              candidato.apellido_Paterno_Propietario_2 == null
+                ? ""
+                : candidato.apellido_Paterno_Propietario_2
+            } ${candidato.apellido_Materno_Propietario_2}`,
             nombres_Propietario_2: candidato.nombres_Propietario_2,
             apellido_Paterno_Propietario_2:
-              candidato.apellido_Paterno_Propietario_2,
+              candidato.apellido_Paterno_Propietario_2 == null
+                ? ""
+                : candidato.apellido_Paterno_Propietario_2,
             apellido_Materno_Propietario_2:
-              candidato.apellido_Materno_Propietario_2,
+              candidato.apellido_Materno_Propietario_2 == null
+                ? ""
+                : candidato.apellido_Materno_Propietario_2,
             mote_Propietario_2: candidato.mote_Propietario_2,
             sexo_Propietario_2: candidato.sexo_Propietario_2,
             url_Foto_Propietario_2: candidato.url_Foto_Propietario_2,
@@ -308,10 +371,26 @@ export const useCardsStore = defineStore("cards", {
             partido_Propietario_2: candidato.partido_Propietario_2,
             url_Logo_Partido_Propietario_2:
               candidato.url_Logo_Partido_Propietario_2,
-            nombre_Completo_Suplente: `${candidato.nombres_Suplente} ${candidato.apellido_Paterno_Suplente} ${candidato.apellido_Materno_Suplente}`,
+            //-----------SUPLENTE---------------------
+            grado_Academico_Suplente: candidato.grado_Academico_Suplente,
+            nombre_Completo_Suplente: `${candidato.nombres_Suplente} ${
+              candidato.apellido_Paterno_Suplente == null
+                ? ""
+                : candidato.apellido_Paterno_Suplente
+            } ${
+              candidato.apellido_Materno_Suplente == null
+                ? ""
+                : candidato.apellido_Materno_Suplente
+            }`,
             nombres_Suplente: candidato.nombres_Suplente,
-            apellido_Paterno_Suplente: candidato.apellido_Materno_Suplente,
-            apellido_Materno_Suplente: candidato.apellido_Materno_Suplente,
+            apellido_Paterno_Suplente:
+              candidato.apellido_Paterno_Suplente == null
+                ? ""
+                : candidato.apellido_Paterno_Suplente,
+            apellido_Materno_Suplente:
+              candidato.apellido_Materno_Suplente == null
+                ? ""
+                : candidato.apellido_Materno_Suplente,
             mote_Suplente: candidato.mote_Suplente,
             sexo_Suplente: candidato.sexo_Suplente,
             url_Foto_Suplente: candidato.url_Foto_Suplente,
@@ -329,10 +408,26 @@ export const useCardsStore = defineStore("cards", {
             partido_Suplente_Id: candidato.partido_Suplente_Id,
             partido_Suplente: candidato.partido_Suplente,
             url_Logo_Partido_Suplente: candidato.url_Logo_Partido_Suplente,
-            nombre_Completo_Suplente_2: `${candidato.nombres_Suplente_2} ${candidato.apellido_Paterno_Suplente_2} ${candidato.apellido_Materno_Suplente_2}`,
+            //-----------SUPLENTE 2---------------------
+            grado_Academico_Suplente_2: candidato.grado_Academico_Suplente_2,
+            nombre_Completo_Suplente_2: `${candidato.nombres_Suplente_2} ${
+              candidato.apellido_Paterno_Suplente_2 == null
+                ? ""
+                : candidato.apellido_Paterno_Suplente_2
+            } ${
+              candidato.apellido_Materno_Suplente_2 == null
+                ? ""
+                : candidato.apellido_Materno_Suplente_2
+            }`,
             nombres_Suplente_2: candidato.nombres_Suplente_2,
-            apellido_Paterno_Suplente_2: candidato.apellido_Paterno_Suplente_2,
-            apellido_Materno_Suplente_2: candidato.apellido_Materno_Suplente_2,
+            apellido_Paterno_Suplente_2:
+              candidato.apellido_Paterno_Suplente_2 == null
+                ? ""
+                : candidato.apellido_Paterno_Suplente_2,
+            apellido_Materno_Suplente_2:
+              candidato.apellido_Materno_Suplente_2 == null
+                ? ""
+                : candidato.apellido_Materno_Suplente_2,
             mote_Suplente_2: candidato.mote_Suplente_2,
             sexo_Suplente_2: candidato.sexo_Suplente_2,
             url_Foto_Suplente_2: candidato.url_Foto_Suplente_2,
@@ -354,9 +449,34 @@ export const useCardsStore = defineStore("cards", {
             validado_Propietario_2: candidato.validado_Propietario_2,
             validado_Suplente: candidato.validado_Suplente,
             validado_Suplente_2: candidato.validado_Suplente_2,
+            identidadPropietario:
+              candidato.informacion_Pausada_Propietario != null
+                ? candidato.informacion_Pausada_Propietario.split("|")
+                : "",
+            informacion_Pausada_Propietario:
+              candidato.informacion_Pausada_Propietario,
+            informacion_Pausada_Propietario_2:
+              candidato.informacion_Pausada_Propietario_2,
+            identidadPropietario2:
+              candidato.informacion_Pausada_Propietario_2 != null
+                ? candidato.informacion_Pausada_Propietario_2.split("|")
+                : "",
+            informacion_Pausada_Suplente:
+              candidato.informacion_Pausada_Suplente,
+            identidadSuplente:
+              candidato.informacion_Pausada_Suplente != null
+                ? candidato.informacion_Pausada_Suplente.split("|")
+                : "",
+            informacion_Pausada_Suplente_2:
+              candidato.informacion_Pausada_Suplente_2,
+            identidadSuplente2:
+              candidato.informacion_Pausada_Suplente_2 != null
+                ? candidato.informacion_Pausada_Suplente_2.split("|")
+                : "",
           };
         });
         this.list_Candidatos_By_Eleccion = listCandidatos;
+        this.loading = false;
       } catch (error) {
         return {
           success: false,
@@ -465,6 +585,7 @@ export const useCardsStore = defineStore("cards", {
         if (resp.status == 200) {
           const { success, data } = resp.data;
           if (success == true) {
+            this.candidato.label = "";
             this.candidato.selection =
               puesto == 0
                 ? "prop"
@@ -473,7 +594,12 @@ export const useCardsStore = defineStore("cards", {
                 : puesto == 2
                 ? "propSin"
                 : "supSin";
+            this.candidato.uno_Aviso_Privacidad = data.uno_Aviso_Privacidad;
+            this.candidato.dos_Publicacion = data.dos_Publicacion;
+            this.candidato.tres_Informe_Estadistico =
+              data.tres_Informe_Estadistico;
             this.candidato.puesto = data.puesto;
+            this.candidato.no_Formula = data.no_Formula;
             this.candidato.activo = data.activo;
             this.candidato.id = data.id;
             this.candidato.estatus = data.estatus;
@@ -492,7 +618,7 @@ export const useCardsStore = defineStore("cards", {
             this.candidato.tipo_Candidato = data.tipo_Candidato;
             this.candidato.orden = data.orden;
             this.candidato.partido_Id = data.partido_Id;
-            this.candidato.url_Logo_Coalicion = data.logo_Coalicion;
+            this.candidato.logo_Coalicion = data.logo_Coalicion;
             this.candidato.validado = data.validado;
             this.candidato.fecha_Registro = data.fecha_Registro;
             this.candidato.aprobado = data.aprobado;
@@ -533,119 +659,34 @@ export const useCardsStore = defineStore("cards", {
             this.candidato.lgbttiq = data.lgbttiq;
             this.candidato.poblacion_Mayor = data.poblacion_Mayor;
             this.candidato.poblacion_Joven = data.poblacion_Joven;
-
-            // this.candidato.nombre_Completo_Propietario = `${data.nombres_Propietario} ${data.apellido_Paterno_Propietario} ${data.apellido_Materno_Propietario}`;
-            // this.candidato.nombres_Propietario = data.nombres_Propietario;
-            // this.candidato.apellido_Paterno_Propietario =
-            //   data.apellido_Paterno_Propietario;
-            // this.candidato.apellido_Materno_Propietario =
-            //   data.apellido_Materno_Propietario;
-            // this.candidato.mote_Propietario = data.mote_Propietario;
-            // this.candidato.sexo_Propietario = data.sexo_Propietario;
-            // this.candidato.url_Foto_Propietario = data.url_Foto_Propietario;
-            // this.candidato.clave_Elector_Propietario =
-            //   data.clave_Elector_Propietario;
-            // this.candidato.rfC_Propietario = data.rfC_Propietario;
-            // this.candidato.curP_Propietario = data.curP_Propietario;
-            // this.candidato.fecha_Nacimiento_Propietario =
-            //   data.fecha_Nacimiento_Propietario;
-            // this.candidato.ocupacion_Propietario = data.ocupacion_Propietario;
-            // this.candidato.telefono_Propietario = data.telefono_Propietario;
-            // this.candidato.correo_Propietario = data.correo_Propietario;
-            // this.candidato.pertenece_Grupo_Vulnerable_Propietario =
-            //   data.pertenece_Grupo_Vulnerable_Propietario;
-            // this.candidato.grupo_Vulnerable_Propietario =
-            //   data.grupo_Vulnerable_Propietario;
-            // this.candidato.partido_Id = data.partido_Id;
-            // this.candidato.partido = data.partido;
-            // this.candidato.url_Logo_Partido_Propietario =
-            //   data.url_Logo_Partido_Propietario;
-            // this.candidato.edad_Propietario = data.edad_Propietario;
-
-            // this.candidato.nombre_Completo_Propietario_2 = `${data.nombres_Propietario_2} ${data.apellido_Paterno_Propietario_2} ${data.apellido_Materno_Propietario_2}`;
-            // this.candidato.nombres_Propietario_2 = data.nombres_Propietario_2;
-            // this.candidato.apellido_Paterno_Propietario_2 =
-            //   data.apellido_Paterno_Propietario_2;
-            // this.candidato.apellido_Materno_Propietario_2 =
-            //   data.apellido_Materno_Propietario_2;
-            // this.candidato.mote_Propietario_2 = data.mote_Propietario_2;
-            // this.candidato.sexo_Propietario_2 = data.sexo_Propietario_2;
-            // this.candidato.url_Foto_Propietario_2 = data.url_Foto_Propietario_2;
-            // this.candidato.clave_Elector_Propietario_2 =
-            //   data.clave_Elector_Propietario_2;
-            // this.candidato.rfC_Propietario_2 = data.rfC_Propietario_2;
-            // this.candidato.curP_Propietario_2 = data.curP_Propietario_2;
-            // this.candidato.fecha_Nacimiento_Propietario_2 =
-            //   data.fecha_Nacimiento_Propietario_2;
-            // this.candidato.ocupacion_Propietario_2 =
-            //   data.ocupacion_Propietario_2;
-            // this.candidato.telefono_Propietario_2 = data.telefono_Propietario_;
-            // this.candidato.correo_Propietario_2 = data.correo_Propietario_2;
-            // this.candidato.pertenece_Grupo_Vulnerable_Propietario_2 =
-            //   data.pertenece_Grupo_Vulnerable_Propietario_2;
-            // this.candidato.grupo_Vulnerable_Propietario_2 =
-            //   data.grupo_Vulnerable_Propietario_2;
-            // this.candidato.partido_Propietario_2_Id =
-            //   data.partido_Propietario_2_Id;
-            // this.candidato.partido_Propietario_2 = data.partido_Propietario_2;
-            // this.candidato.url_Logo_Partido_Propietario_2 =
-            //   data.url_Logo_Partido_Propietario_2;
-            // this.candidato.edad_Propietario_2 = data.edad_Propietario_2;
-
-            // this.candidato.nombre_Completo_Suplente = `${data.nombres_Suplente} ${data.apellido_Paterno_Suplente} ${data.apellido_Materno_Suplente}`;
-            // this.candidato.nombres_Suplente = data.nombres_Suplente;
-            // this.candidato.apellido_Paterno_Suplente =
-            //   data.apellido_Paterno_Suplente;
-            // this.candidato.apellido_Materno_Suplente =
-            //   data.apellido_Materno_Suplente;
-            // this.candidato.mote_Suplente = data.mote_Suplente;
-            // this.candidato.sexo_Suplente = data.sexo_Suplente;
-            // this.candidato.url_Foto_Suplente = data.url_Foto_Suplente;
-            // this.candidato.clave_Elector_Suplente = data.clave_Elector_Suplente;
-            // this.candidato.rfC_Suplente = data.rfC_Suplente;
-            // this.candidato.curP_Suplente = data.curP_Suplente;
-            // this.candidato.fecha_Nacimiento_Suplente =
-            //   data.fecha_Nacimiento_Suplente;
-            // this.candidato.ocupacion_Suplente = data.ocupacion_Suplente;
-            // this.candidato.telefono_Suplente = data.telefono_Suplente;
-            // this.candidato.correo_Suplente = data.correo_Suplente;
-            // this.candidato.pertenece_Grupo_Vulnerable_Suplente =
-            //   data.pertenece_Grupo_Vulnerable_Suplente;
-            // this.candidato.grupo_Vulnerable_Suplente =
-            //   data.grupo_Vulnerable_Suplente;
-            // this.candidato.partido_Suplente_Id = data.partido_Suplente_Id;
-            // this.candidato.partido_Suplente = data.partido_Suplente;
-            // this.candidato.url_Logo_Partido_Suplente =
-            //   data.url_Logo_Partido_Suplente;
-            // this.candidato.edad_Suplente = data.edad_Suplente;
-
-            // this.candidato.nombre_Completo_Suplente_2 = `${data.nombres_Suplente_2} ${data.apellido_Paterno_Suplente_2} ${data.apellido_Materno_Suplente_2}`;
-            // this.candidato.nombres_Suplente_2 = data.nombres_Suplente_2;
-            // this.candidato.apellido_Paterno_Suplente_2 =
-            //   data.apellido_Paterno_Suplente_2;
-            // this.candidato.apellido_Materno_Suplente_2 =
-            //   data.apellido_Materno_Suplente_2;
-            // this.candidato.mote_Suplente_2 = data.mote_Suplente_2;
-            // this.candidato.sexo_Suplente_2 = data.sexo_Suplente_2;
-            // this.candidato.url_Foto_Suplente_2 = data.url_Foto_Suplente_2;
-            // this.candidato.clave_Elector_Suplente_2 =
-            //   data.clave_Elector_Suplente_2;
-            // this.candidato.rfC_Suplente_2 = data.rfC_Suplente_2;
-            // this.candidato.curP_Suplente_2 = data.curP_Suplente_2;
-            // this.candidato.fecha_Nacimiento_Suplente_2 =
-            //   data.fecha_Nacimiento_Suplente_2;
-            // this.candidato.ocupacion_Suplente_2 = data.ocupacion_Suplente_2;
-            // this.candidato.telefono_Suplente_2 = data.telefono_Suplente_2;
-            // this.candidato.correo_Suplente_2 = data.correo_Suplente_2;
-            // this.candidato.pertenece_Grupo_Vulnerable_Suplente_2 =
-            //   data.pertenece_Grupo_Vulnerable_Suplente_2;
-            // this.candidato.grupo_Vulnerable_Suplente_2 =
-            //   data.grupo_Vulnerable_Suplente_2;
-            // this.candidato.partido_Suplente_2_Id = data.partido_Suplente_2_Id;
-            // this.candidato.partido_Suplente_2 = data.partido_Suplente_2;
-            // this.candidato.url_Logo_Partido_Suplente_2 =
-            //   data.url_Logo_Partido_Suplente_2;
-            // this.candidato.edad_Suplente_2 = data.edad_Suplente_2;
+            this.candidato.informacion_Pausada = data.informacion_Pausada;
+            this.candidato.is_Comun = data.is_Comun;
+            this.candidato.comun_Id = data.comun_Id;
+            this.candidato.comun = data.comun;
+            this.candidato.logo_Comun = data.logo_Comun;
+            this.candidato.orden_Publicacion = data.orden_Publicacion;
+            this.candidato.consecutivo = data.consecutivo;
+            this.candidato.migrante = data.migrante;
+            if (this.candidato.pertenece_Grupo_Vulnerable_Propietario == true) {
+              let elementosGrupos =
+                this.candidato.grupo_Vulnerable_Propietario.split("||");
+              if (elementosGrupos[0].split("|") != undefined) {
+                this.candidato.grupo1 =
+                  elementosGrupos[0].split("|")[0] == "true" ? true : false;
+              }
+              if (elementosGrupos[1].split("|") != undefined) {
+                this.candidato.grupo2 =
+                  elementosGrupos[1].split("|")[0] == "true" ? true : false;
+              }
+              if (elementosGrupos[2].split("|") != undefined) {
+                this.candidato.grupo3 =
+                  elementosGrupos[2].split("|")[0] == "true" ? true : false;
+              }
+              if (elementosGrupos[3].split("|") != undefined) {
+                this.candidato.grupo4 =
+                  elementosGrupos[3].split("|")[0] == "true" ? true : false;
+              }
+            }
           }
         }
       } catch (error) {

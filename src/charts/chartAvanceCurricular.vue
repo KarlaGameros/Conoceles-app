@@ -17,7 +17,7 @@ drilldown(Highcharts);
 accessibility(Highcharts);
 exporting(Highcharts);
 const graficasStore = useGraficasStore();
-const { list_Graficas_Filtrado, cargoGrafica } = storeToRefs(graficasStore);
+const { list_Graficas_Genero_Edad, cargoGrafica } = storeToRefs(graficasStore);
 
 export default {
   data() {
@@ -47,6 +47,8 @@ export default {
     const fxmnSeries = ref([]);
     const rspnPorcentaje = ref(null);
     const rspnSeries = ref([]);
+    const comunPorcentaje = ref(null);
+    const comunSeries = ref([]);
     const totalShhn = ref(null);
     const shhn = ref(null);
     const totalFycn = ref(null);
@@ -73,6 +75,8 @@ export default {
     const pan = ref(null);
     const totalPrd = ref(null);
     const prd = ref(null);
+    const totalComun = ref(null);
+    const comun = ref(null);
     const data = ref([]);
     const series = ref([]);
 
@@ -103,6 +107,8 @@ export default {
       panSeries.value = [];
       prdPorcentaje.value = null;
       prdSeries.value = [];
+      comunPorcentaje.value = null;
+      comunSeries.value = [];
       totalShhn.value = null;
       shhn.value = null;
       totalFycn.value = null;
@@ -129,18 +135,51 @@ export default {
       fxmn.value = null;
       totalRspn.value = null;
       rspn.value = null;
+      totalComun.value = null;
+      comun.value = null;
 
       //-----------------------------------------------------
-      totalPan.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 8 && candidato.is_Coalicion == false
-      );
-      pan.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.is_Coalicion == false &&
-          candidato.partido_Id == 8 &&
-          candidato.avance_Curricular == 100
-      );
+      if (cargoGrafica.value == "RP") {
+        totalPan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PAN" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+        pan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == false &&
+            candidato.partido == "PAN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalPan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PAN" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+        pan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == false &&
+            candidato.partido == "PAN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalPan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PAN" && candidato.is_Coalicion == false
+        );
+        pan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == false &&
+            candidato.partido == "PAN" &&
+            candidato.avance_Curricular == 100
+        );
+      }
+
       panPorcentaje.value = parseInt(
         (pan.value.length * 100) / totalPan.value.length
       );
@@ -171,16 +210,47 @@ export default {
       }
 
       //-----------------------------------------------------
-      totalPri.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 9 && candidato.is_Coalicion == false
-      );
-      pri.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.is_Coalicion == false &&
-          candidato.partido_Id == 9 &&
-          candidato.avance_Curricular == 100
-      );
+      if (cargoGrafica.value == "RP") {
+        totalPri.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PRI" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+        pri.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == false &&
+            candidato.partido == "PRI" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalPri.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PRI" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+        pri.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == false &&
+            candidato.partido == "PRI" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalPri.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PRI" && candidato.is_Coalicion == false
+        );
+        pri.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == false &&
+            candidato.partido == "PRI" &&
+            candidato.avance_Curricular == 100
+        );
+      }
+
       priPorcentaje.value = parseInt(
         (pri.value.length * 100) / totalPri.value.length
       );
@@ -210,16 +280,47 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalPrd.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 10 && candidato.is_Coalicion == false
-      );
-      prd.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.is_Coalicion == false &&
-          candidato.partido_Id == 10 &&
-          candidato.avance_Curricular == 100
-      );
+      if (cargoGrafica.value == "RP") {
+        totalPrd.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PRD" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+        prd.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == false &&
+            candidato.partido == "PRD" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalPrd.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PRD" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+        prd.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == false &&
+            candidato.partido == "PRD" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalPrd.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PRD" && candidato.is_Coalicion == false
+        );
+        prd.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == false &&
+            candidato.partido == "PRD" &&
+            candidato.avance_Curricular == 100
+        );
+      }
+
       prdPorcentaje.value = parseInt(
         (prd.value.length * 100) / totalPrd.value.length
       );
@@ -249,16 +350,47 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalShhn.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.is_Coalicion == true && candidato.coalicion_Id == 1007
-      );
-      shhn.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.is_Coalicion == true &&
-          candidato.coalicion_Id == 1007 &&
-          candidato.avance_Curricular == 100
-      );
+      if (cargoGrafica.value == "RP") {
+        totalShhn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true &&
+            candidato.coalicion == "SHHN" &&
+            candidato.tipo_Candidato == "RP"
+        );
+        shhn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true &&
+            candidato.coalicion == "SHHN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalShhn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true &&
+            candidato.coalicion == "SHHN" &&
+            candidato.tipo_Candidato == "MR"
+        );
+        shhn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true &&
+            candidato.coalicion == "SHHN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalShhn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true && candidato.coalicion == "SHHN"
+        );
+        shhn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true &&
+            candidato.coalicion == "SHHN" &&
+            candidato.avance_Curricular == 100
+        );
+      }
+
       shhnPorcentaje.value = parseInt(
         (shhn.value.length * 100) / totalShhn.value.length
       );
@@ -288,16 +420,47 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalFycn.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.is_Coalicion == true && candidato.coalicion_Id == 1008
-      );
-      fycn.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.is_Coalicion == true &&
-          candidato.coalicion_Id == 1008 &&
-          candidato.avance_Curricular == 100
-      );
+      if (cargoGrafica.value == "RP") {
+        totalFycn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true &&
+            candidato.coalicion == "FCN" &&
+            candidato.tipo_Candidato == "RP"
+        );
+        fycn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true &&
+            candidato.coalicion == "FCN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalFycn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true &&
+            candidato.coalicion == "FCN" &&
+            candidato.tipo_Candidato == "MR"
+        );
+        fycn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true &&
+            candidato.coalicion == "FCN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalFycn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true && candidato.coalicion == "FCN"
+        );
+        fycn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.is_Coalicion == true &&
+            candidato.coalicion == "FCN" &&
+            candidato.avance_Curricular == 100
+        );
+      }
+
       fycnPorcentaje.value = parseInt(
         (fycn.value.length * 100) / totalFycn.value.length
       );
@@ -327,16 +490,47 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalPt.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 11 && candidato.is_Coalicion == false
-      );
-      pt.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 11 &&
-          candidato.avance_Curricular == 100 &&
-          candidato.is_Coalicion == false
-      );
+      if (cargoGrafica.value == "RP") {
+        totalPt.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PT" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+        pt.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PT" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalPt.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PT" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+        pt.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PT" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalPt.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PT" && candidato.is_Coalicion == false
+        );
+        pt.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PT" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false
+        );
+      }
+
       ptPorcentaje.value = parseInt(
         (pt.value.length * 100) / totalPt.value.length
       );
@@ -366,16 +560,47 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalPvem.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 12 && candidato.is_Coalicion == false
-      );
-      pvem.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 12 &&
-          candidato.avance_Curricular == 100 &&
-          candidato.is_Coalicion == false
-      );
+      if (cargoGrafica.value == "RP") {
+        totalPvem.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PVEM" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+        pvem.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PVEM" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalPvem.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PVEM" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+        pvem.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PVEM" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalPvem.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PVEM" && candidato.is_Coalicion == false
+        );
+        pvem.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "PVEM" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false
+        );
+      }
+
       pvemPorcentaje.value = parseInt(
         (pvem.value.length * 100) / totalPvem.value.length
       );
@@ -406,16 +631,47 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalMc.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 13 && candidato.is_Coalicion == false
-      );
-      mc.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 13 &&
-          candidato.avance_Curricular == 100 &&
-          candidato.is_Coalicion == false
-      );
+      if (cargoGrafica.value == "RP") {
+        totalMc.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MC" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+        mc.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MC" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalMc.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MC" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+        mc.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MC" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalMc.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MC" && candidato.is_Coalicion == false
+        );
+        mc.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MC" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false
+        );
+      }
+
       mcPorcentaje.value = parseInt(
         (mc.value.length * 100) / totalMc.value.length
       );
@@ -445,16 +701,47 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalMorena.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 14 && candidato.is_Coalicion == false
-      );
-      morena.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 14 &&
-          candidato.avance_Curricular == 100 &&
-          candidato.is_Coalicion == false
-      );
+      if (cargoGrafica.value == "RP") {
+        totalMorena.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MORENA" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+        morena.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MORENA" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalMorena.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MORENA" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+        morena.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MORENA" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalMorena.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MORENA" && candidato.is_Coalicion == false
+        );
+        morena.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MORENA" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false
+        );
+      }
+
       morenaPorcentaje.value = parseInt(
         (morena.value.length * 100) / totalMorena.value.length
       );
@@ -484,16 +771,54 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalNan.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 15 && candidato.is_Coalicion == false
-      );
-      nan.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 15 &&
-          candidato.avance_Curricular == 100 &&
-          candidato.is_Coalicion == false
-      );
+      if (cargoGrafica.value == "RP") {
+        totalNan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "NAN" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP" &&
+            candidato.is_Comun == false
+        );
+        nan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "NAN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP" &&
+            candidato.is_Comun == false
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalNan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "NAN" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR" &&
+            candidato.is_Comun == false
+        );
+        nan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "NAN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR" &&
+            candidato.is_Comun == false
+        );
+      } else {
+        totalNan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "NAN" &&
+            candidato.is_Coalicion == false &&
+            candidato.is_Comun == false
+        );
+        nan.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "NAN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.is_Comun == false
+        );
+      }
+
       nanPorcentaje.value = parseInt(
         (nan.value.length * 100) / totalNan.value.length
       );
@@ -523,16 +848,54 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalMln.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 16 && candidato.is_Coalicion == false
-      );
-      mln.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 16 &&
-          candidato.avance_Curricular == 100 &&
-          candidato.is_Coalicion == false
-      );
+      if (cargoGrafica.value == "RP") {
+        totalMln.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MLN" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP" &&
+            candidato.is_Comun == false
+        );
+        mln.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MLN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.is_Comun == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalMln.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MLN" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR" &&
+            candidato.is_Comun == false
+        );
+        mln.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MLN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.is_Comun == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalMln.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MLN" &&
+            candidato.is_Coalicion == false &&
+            candidato.is_Comun == false
+        );
+        mln.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "MLN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.is_Comun == false
+        );
+      }
+
       mlnPorcentaje.value = parseInt(
         (mln.value.length * 100) / totalMln.value.length
       );
@@ -563,16 +926,47 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalFxmn.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 17 && candidato.is_Coalicion == false
-      );
-      fxmn.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 17 &&
-          candidato.avance_Curricular == 100 &&
-          candidato.is_Coalicion == false
-      );
+      if (cargoGrafica.value == "RP") {
+        totalFxmn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "FXMN" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+        fxmn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "FXMN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalFxmn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "FXMN" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+        fxmn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "FXMN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalFxmn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "FXMN" && candidato.is_Coalicion == false
+        );
+        fxmn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "FXMN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false
+        );
+      }
+
       fxmnPorcentaje.value = parseInt(
         (fxmn.value.length * 100) / totalFxmn.value.length
       );
@@ -602,16 +996,47 @@ export default {
         );
       }
       //-----------------------------------------------------
-      totalRspn.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 18 && candidato.is_Coalicion == false
-      );
-      rspn.value = list_Graficas_Filtrado.value.filter(
-        (candidato) =>
-          candidato.partido_Id == 18 &&
-          candidato.avance_Curricular == 100 &&
-          candidato.is_Coalicion == false
-      );
+      if (cargoGrafica.value == "RP") {
+        totalRspn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "RSPN" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+        rspn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "RSPN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "RP"
+        );
+      } else if (cargoGrafica.value == "MR") {
+        totalRspn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "RSPN" &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+        rspn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "RSPN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false &&
+            candidato.tipo_Candidato == "MR"
+        );
+      } else {
+        totalRspn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "RSPN" && candidato.is_Coalicion == false
+        );
+        rspn.value = list_Graficas_Genero_Edad.value.filter(
+          (candidato) =>
+            candidato.partido == "RSPN" &&
+            candidato.avance_Curricular == 100 &&
+            candidato.is_Coalicion == false
+        );
+      }
+
       rspnPorcentaje.value = parseInt(
         (rspn.value.length * 100) / totalRspn.value.length
       );
@@ -641,335 +1066,518 @@ export default {
           ]
         );
       }
+      //-----------------------------------------------------
+      totalComun.value = list_Graficas_Genero_Edad.value.filter(
+        (candidato) =>
+          candidato.comun == "NAN-MLN" && candidato.is_Comun == true
+      );
+      comun.value = list_Graficas_Genero_Edad.value.filter(
+        (candidato) =>
+          candidato.comun == "NAN-MLN" &&
+          candidato.avance_Curricular == 100 &&
+          candidato.is_Comun == true
+      );
+      comunPorcentaje.value = parseInt(
+        (comun.value.length * 100) / totalComun.value.length
+      );
+      if (comun.value.length > 0) {
+        let mujeres = comun.value.filter(
+          (candidato) => candidato.sexo === "Mujer"
+        );
+        let hombres = comun.value.filter(
+          (candidato) => candidato.sexo === "Hombre"
+        );
+        let noBinario = comun.value.filter(
+          (candidato) => candidato.sexo === "No binario"
+        );
 
-      data.value =
-        cargoGrafica.value == "RP"
-          ? [
-              {
-                name: `PAN: ${pan.value.length}/${totalPan.value.length}`,
-                y: panPorcentaje.value,
-                drilldown: "PAN",
-              },
-              {
-                name: `PRI: ${pri.value.length}/${totalPri.value.length}`,
-                y: priPorcentaje.value,
-                drilldown: "PRI",
-              },
-              {
-                name: `PRD: ${prd.value.length}/${totalPrd.value.length}`,
-                y: prdPorcentaje.value,
-                drilldown: "PRD",
-              },
-              {
-                name: `PT: ${pt.value.length}/${totalPt.value.length}`,
-                y: ptPorcentaje.value,
-                drilldown: "PT",
-              },
-              {
-                name: `PVEM: ${pvem.value.length}/${totalPvem.value.length}`,
-                y: pvemPorcentaje.value,
-                drilldown: "PVEM",
-              },
-              {
-                name: `MC: ${mc.value.length}/${totalMc.value.length}`,
-                y: mcPorcentaje.value,
-                drilldown: "MC",
-              },
-              {
-                name: `MORENA: ${morena.value.length}/${totalMorena.value.length}`,
-                y: morenaPorcentaje.value,
-                drilldown: "MORENA",
-              },
-              {
-                name: `NAN: ${nan.value.length}/${totalNan.value.length}`,
-                y: nanPorcentaje.value,
-                drilldown: "NAN",
-              },
-              {
-                name: `MLN: ${mln.value.length}/${totalMln.value.length}`,
-                y: mlnPorcentaje.value,
-                drilldown: "MLN",
-              },
-              {
-                name: `FXMN: ${fxmn.value.length}/${totalFxmn.value.length}`,
-                y: fxmnPorcentaje.value,
-                drilldown: "FXMN",
-              },
-              {
-                name: `RSPN: ${rspn.value.length}/${totalRspn.value.length}`,
-                y: rspnPorcentaje.value,
-                drilldown: "RSPN",
-              },
-            ]
-          : cargoGrafica.value == "MR"
-          ? [
-              {
-                name: `SHHN: ${shhn.value.length}/${totalShhn.value.length}`,
-                y: shhnPorcentaje.value,
-                drilldown: "SHHN",
-              },
-              {
-                name: `FYCN: ${fycn.value.length}/${totalFycn.value.length}`,
-                y: fycnPorcentaje.value,
-                drilldown: "FYCN",
-              },
-              {
-                name: `PT: ${pt.value.length}/${totalPt.value.length}`,
-                y: ptPorcentaje.value,
-                drilldown: "PT",
-              },
-              {
-                name: `PVEM: ${pvem.value.length}/${totalPvem.value.length}`,
-                y: pvemPorcentaje.value,
-                drilldown: "PVEM",
-              },
-              {
-                name: `MC: ${mc.value.length}/${totalMc.value.length}`,
-                y: mcPorcentaje.value,
-                drilldown: "MC",
-              },
-              {
-                name: `MORENA: ${morena.value.length}/${totalMorena.value.length}`,
-                y: morenaPorcentaje.value,
-                drilldown: "MORENA",
-              },
-              {
-                name: `NAN: ${nan.value.length}/${totalNan.value.length}`,
-                y: nanPorcentaje.value,
-                drilldown: "NAN",
-              },
-              {
-                name: `MLN: ${mln.value.length}/${totalMln.value.length}`,
-                y: mlnPorcentaje.value,
-                drilldown: "MLN",
-              },
-              {
-                name: `FXMN: ${fxmn.value.length}/${totalFxmn.value.length}`,
-                y: fxmnPorcentaje.value,
-                drilldown: "FXMN",
-              },
-              {
-                name: `RSPN: ${rspn.value.length}/${totalRspn.value.length}`,
-                y: rspnPorcentaje.value,
-                drilldown: "RSPN",
-              },
-            ]
-          : [
-              {
-                name: `SHHN: ${shhn.value.length}/${totalShhn.value.length}`,
-                y: shhnPorcentaje.value,
-                drilldown: "SHHN",
-              },
-              {
-                name: `FYCN: ${fycn.value.length}/${totalFycn.value.length}`,
-                y: fycnPorcentaje.value,
-                drilldown: "FYCN",
-              },
-              {
-                name: `PAN: ${pan.value.length}/${totalPan.value.length}`,
-                y: panPorcentaje.value,
-                drilldown: "PAN",
-              },
-              {
-                name: `PRI: ${pri.value.length}/${totalPri.value.length}`,
-                y: priPorcentaje.value,
-                drilldown: "PRI",
-              },
-              {
-                name: `PRD: ${prd.value.length}/${totalPrd.value.length}`,
-                y: prdPorcentaje.value,
-                drilldown: "PRD",
-              },
-              {
-                name: `PT: ${pt.value.length}/${totalPt.value.length}`,
-                y: ptPorcentaje.value,
-                drilldown: "PT",
-              },
-              {
-                name: `PVEM: ${pvem.value.length}/${totalPvem.value.length}`,
-                y: pvemPorcentaje.value,
-                drilldown: "PVEM",
-              },
-              {
-                name: `MC: ${mc.value.length}/${totalMc.value.length}`,
-                y: mcPorcentaje.value,
-                drilldown: "MC",
-              },
-              {
-                name: `MORENA: ${morena.value.length}/${totalMorena.value.length}`,
-                y: morenaPorcentaje.value,
-                drilldown: "MORENA",
-              },
-              {
-                name: `NAN: ${nan.value.length}/${totalNan.value.length}`,
-                y: nanPorcentaje.value,
-                drilldown: "NAN",
-              },
-              {
-                name: `MLN: ${mln.value.length}/${totalMln.value.length}`,
-                y: mlnPorcentaje.value,
-                drilldown: "MLN",
-              },
-              {
-                name: `FXMN: ${fxmn.value.length}/${totalFxmn.value.length}`,
-                y: fxmnPorcentaje.value,
-                drilldown: "FXMN",
-              },
-              {
-                name: `RSPN: ${rspn.value.length}/${totalRspn.value.length}`,
-                y: rspnPorcentaje.value,
-                drilldown: "RSPN",
-              },
-            ];
+        comunSeries.value.push(
+          [
+            `Mujer: ${mujeres.length}`,
+            parseInt((mujeres.length * 100) / comun.value.length),
+          ],
+          [
+            `Hombre: ${hombres.length}`,
+            parseInt((hombres.length * 100) / comun.value.length),
+          ],
+          [
+            `No binario: ${noBinario.length}`,
+            parseInt((noBinario.length * 100) / comun.value.length),
+          ]
+        );
+      }
 
-      series.value =
-        cargoGrafica.value == "RP"
-          ? [
-              {
-                id: "PAN",
-                data: panSeries.value,
-              },
-              {
-                id: "PRI",
-                data: priSeries.value,
-              },
-              {
-                id: "PRD",
-                data: prdSeries.value,
-              },
-              {
-                id: "PT",
-                data: ptSeries.value,
-              },
-              {
-                id: "PVEM",
-                data: pvemSeries.value,
-              },
-              {
-                id: "MC",
-                data: mcSeries.value,
-              },
-              {
-                id: "MORENA",
-                data: morenaSeries.value,
-              },
-              {
-                id: "NAN",
-                data: nanSeries.value,
-              },
-              {
-                id: "MLN",
-                data: mlnSeries.value,
-              },
-              {
-                id: "FXMN",
-                data: fxmnSeries.value,
-              },
-              {
-                id: "RSPN",
-                data: rspnSeries.value,
-              },
-            ]
-          : cargoGrafica.value == "MR"
-          ? [
-              {
-                id: "SHHN",
-                data: shhnSeries.value,
-              },
-              {
-                id: "FYCN",
-                data: fycnSeries.value,
-              },
-              {
-                id: "PT",
-                data: ptSeries.value,
-              },
-              {
-                id: "PVEM",
-                data: pvemSeries.value,
-              },
-              {
-                id: "MC",
-                data: mcSeries.value,
-              },
-              {
-                id: "MORENA",
-                data: morenaSeries.value,
-              },
-              {
-                id: "NAN",
-                data: nanSeries.value,
-              },
-              {
-                id: "MLN",
-                data: mlnSeries.value,
-              },
-              {
-                id: "FXMN",
-                data: fxmnSeries.value,
-              },
-              {
-                id: "RSPN",
-                data: rspnSeries.value,
-              },
-            ]
-          : [
-              {
-                id: "SHHN",
-                data: shhnSeries.value,
-              },
-              {
-                id: "FYCN",
-                data: fycnSeries.value,
-              },
-              {
-                id: "PAN",
-                data: panSeries.value,
-              },
-              {
-                id: "PRI",
-                data: priSeries.value,
-              },
-              {
-                id: "PRD",
-                data: prdSeries.value,
-              },
-              {
-                id: "PT",
-                data: ptSeries.value,
-              },
-              {
-                id: "PVEM",
-                data: pvemSeries.value,
-              },
-              {
-                id: "MC",
-                data: mcSeries.value,
-              },
-              {
-                id: "MORENA",
-                data: morenaSeries.value,
-              },
-              {
-                id: "NAN",
-                data: nanSeries.value,
-              },
-              {
-                id: "MLN",
-                data: mlnSeries.value,
-              },
-              {
-                id: "FXMN",
-                data: fxmnSeries.value,
-              },
-              {
-                id: "RSPN",
-                data: rspnSeries.value,
-              },
-            ];
+      if (list_Graficas_Genero_Edad.value.length > 0) {
+        data.value =
+          cargoGrafica.value == "RP"
+            ? [
+                {
+                  name: `PAN: ${pan.value.length}/${totalPan.value.length}`,
+                  y: panPorcentaje.value,
+                  drilldown: "PAN",
+                },
+                {
+                  name: `PRI: ${pri.value.length}/${totalPri.value.length}`,
+                  y: priPorcentaje.value,
+                  drilldown: "PRI",
+                },
+                {
+                  name: `PRD: ${prd.value.length}/${totalPrd.value.length}`,
+                  y: prdPorcentaje.value,
+                  drilldown: "PRD",
+                },
+                {
+                  name: `PT: ${pt.value.length}/${totalPt.value.length}`,
+                  y: ptPorcentaje.value,
+                  drilldown: "PT",
+                },
+                {
+                  name: `PVEM: ${pvem.value.length}/${totalPvem.value.length}`,
+                  y: pvemPorcentaje.value,
+                  drilldown: "PVEM",
+                },
+                {
+                  name: `MC: ${mc.value.length}/${totalMc.value.length}`,
+                  y: mcPorcentaje.value,
+                  drilldown: "MC",
+                },
+                {
+                  name: `MORENA: ${morena.value.length}/${totalMorena.value.length}`,
+                  y: morenaPorcentaje.value,
+                  drilldown: "MORENA",
+                },
+                {
+                  name: `NAN: ${nan.value.length}/${totalNan.value.length}`,
+                  y: nanPorcentaje.value,
+                  drilldown: "NAN",
+                },
+                {
+                  name: `MLN: ${mln.value.length}/${totalMln.value.length}`,
+                  y: mlnPorcentaje.value,
+                  drilldown: "MLN",
+                },
+                {
+                  name: `FXMN: ${fxmn.value.length}/${totalFxmn.value.length}`,
+                  y: fxmnPorcentaje.value,
+                  drilldown: "FXMN",
+                },
+                {
+                  name: `RSPN: ${rspn.value.length}/${totalRspn.value.length}`,
+                  y: rspnPorcentaje.value,
+                  drilldown: "RSPN",
+                },
+              ]
+            : cargoGrafica.value == "MR" &&
+              list_Graficas_Genero_Edad.value[0].tipo_Eleccion_Id != 3
+            ? [
+                {
+                  name: `PT: ${pt.value.length}/${totalPt.value.length}`,
+                  y: ptPorcentaje.value,
+                  drilldown: "PT",
+                },
+                {
+                  name: `PVEM: ${pvem.value.length}/${totalPvem.value.length}`,
+                  y: pvemPorcentaje.value,
+                  drilldown: "PVEM",
+                },
+                {
+                  name: `MC: ${mc.value.length}/${totalMc.value.length}`,
+                  y: mcPorcentaje.value,
+                  drilldown: "MC",
+                },
+                {
+                  name: `MORENA: ${morena.value.length}/${totalMorena.value.length}`,
+                  y: morenaPorcentaje.value,
+                  drilldown: "MORENA",
+                },
+                {
+                  name: `NAN-MLN: ${comun.value.length}/${totalComun.value.length}`,
+                  y: comunPorcentaje.value,
+                  drilldown: "NAN-MLN",
+                },
+                {
+                  name: `NAN: ${nan.value.length}/${totalNan.value.length}`,
+                  y: nanPorcentaje.value,
+                  drilldown: "NAN",
+                },
+                {
+                  name: `MLN: ${mln.value.length}/${totalMln.value.length}`,
+                  y: mlnPorcentaje.value,
+                  drilldown: "MLN",
+                },
+                {
+                  name: `FXMN: ${fxmn.value.length}/${totalFxmn.value.length}`,
+                  y: fxmnPorcentaje.value,
+                  drilldown: "FXMN",
+                },
+                {
+                  name: `RSPN: ${rspn.value.length}/${totalRspn.value.length}`,
+                  y: rspnPorcentaje.value,
+                  drilldown: "RSPN",
+                },
+                {
+                  name: `FYCN: ${fycn.value.length}/${totalFycn.value.length}`,
+                  y: fycnPorcentaje.value,
+                  drilldown: "FYCN",
+                },
+                {
+                  name: `SHHN: ${shhn.value.length}/${totalShhn.value.length}`,
+                  y: shhnPorcentaje.value,
+                  drilldown: "SHHN",
+                },
+              ]
+            : list_Graficas_Genero_Edad.value[0].tipo_Eleccion_Id == 3
+            ? [
+                {
+                  name: `PT: ${pt.value.length}/${totalPt.value.length}`,
+                  y: ptPorcentaje.value,
+                  drilldown: "PT",
+                },
+                {
+                  name: `PVEM: ${pvem.value.length}/${totalPvem.value.length}`,
+                  y: pvemPorcentaje.value,
+                  drilldown: "PVEM",
+                },
+                {
+                  name: `MC: ${mc.value.length}/${totalMc.value.length}`,
+                  y: mcPorcentaje.value,
+                  drilldown: "MC",
+                },
+                {
+                  name: `MORENA: ${morena.value.length}/${totalMorena.value.length}`,
+                  y: morenaPorcentaje.value,
+                  drilldown: "MORENA",
+                },
+                {
+                  name: `NAN-MLN: ${comun.value.length}/${totalComun.value.length}`,
+                  y: comunPorcentaje.value,
+                  drilldown: "NAN-MLN",
+                },
+                {
+                  name: `NAN: ${nan.value.length}/${totalNan.value.length}`,
+                  y: nanPorcentaje.value,
+                  drilldown: "NAN",
+                },
+                {
+                  name: `MLN: ${mln.value.length}/${totalMln.value.length}`,
+                  y: mlnPorcentaje.value,
+                  drilldown: "MLN",
+                },
+                {
+                  name: `FXMN: ${fxmn.value.length}/${totalFxmn.value.length}`,
+                  y: fxmnPorcentaje.value,
+                  drilldown: "FXMN",
+                },
+                {
+                  name: `RSPN: ${rspn.value.length}/${totalRspn.value.length}`,
+                  y: rspnPorcentaje.value,
+                  drilldown: "RSPN",
+                },
+                {
+                  name: `FYCN: ${fycn.value.length}/${totalFycn.value.length}`,
+                  y: fycnPorcentaje.value,
+                  drilldown: "FYCN",
+                },
+                {
+                  name: `SHHN: ${shhn.value.length}/${totalShhn.value.length}`,
+                  y: shhnPorcentaje.value,
+                  drilldown: "SHHN",
+                },
+              ]
+            : [
+                {
+                  name: `PAN: ${pan.value.length}/${totalPan.value.length}`,
+                  y: panPorcentaje.value,
+                  drilldown: "PAN",
+                },
+                {
+                  name: `PRI: ${pri.value.length}/${totalPri.value.length}`,
+                  y: priPorcentaje.value,
+                  drilldown: "PRI",
+                },
+                {
+                  name: `PRD: ${prd.value.length}/${totalPrd.value.length}`,
+                  y: prdPorcentaje.value,
+                  drilldown: "PRD",
+                },
+                {
+                  name: `PT: ${pt.value.length}/${totalPt.value.length}`,
+                  y: ptPorcentaje.value,
+                  drilldown: "PT",
+                },
+                {
+                  name: `PVEM: ${pvem.value.length}/${totalPvem.value.length}`,
+                  y: pvemPorcentaje.value,
+                  drilldown: "PVEM",
+                },
+                {
+                  name: `MC: ${mc.value.length}/${totalMc.value.length}`,
+                  y: mcPorcentaje.value,
+                  drilldown: "MC",
+                },
+                {
+                  name: `MORENA: ${morena.value.length}/${totalMorena.value.length}`,
+                  y: morenaPorcentaje.value,
+                  drilldown: "MORENA",
+                },
+                {
+                  name: `NAN-MLN: ${comun.value.length}/${totalComun.value.length}`,
+                  y: comunPorcentaje.value,
+                  drilldown: "NAN-MLN",
+                },
+                {
+                  name: `NAN: ${nan.value.length}/${totalNan.value.length}`,
+                  y: nanPorcentaje.value,
+                  drilldown: "NAN",
+                },
+                {
+                  name: `MLN: ${mln.value.length}/${totalMln.value.length}`,
+                  y: mlnPorcentaje.value,
+                  drilldown: "MLN",
+                },
+                {
+                  name: `FXMN: ${fxmn.value.length}/${totalFxmn.value.length}`,
+                  y: fxmnPorcentaje.value,
+                  drilldown: "FXMN",
+                },
+                {
+                  name: `RSPN: ${rspn.value.length}/${totalRspn.value.length}`,
+                  y: rspnPorcentaje.value,
+                  drilldown: "RSPN",
+                },
+                {
+                  name: `FYCN: ${fycn.value.length}/${totalFycn.value.length}`,
+                  y: fycnPorcentaje.value,
+                  drilldown: "FYCN",
+                },
+                {
+                  name: `SHHN: ${shhn.value.length}/${totalShhn.value.length}`,
+                  y: shhnPorcentaje.value,
+                  drilldown: "SHHN",
+                },
+              ];
+        series.value =
+          cargoGrafica.value == "RP"
+            ? [
+                {
+                  id: "PAN",
+                  data: panSeries.value,
+                },
+                {
+                  id: "PRI",
+                  data: priSeries.value,
+                },
+                {
+                  id: "PRD",
+                  data: prdSeries.value,
+                },
+                {
+                  id: "PT",
+                  data: ptSeries.value,
+                },
+                {
+                  id: "PVEM",
+                  data: pvemSeries.value,
+                },
+                {
+                  id: "MC",
+                  data: mcSeries.value,
+                },
+                {
+                  id: "MORENA",
+                  data: morenaSeries.value,
+                },
+                {
+                  id: "NAN",
+                  data: nanSeries.value,
+                },
+                {
+                  id: "MLN",
+                  data: mlnSeries.value,
+                },
+                {
+                  id: "FXMN",
+                  data: fxmnSeries.value,
+                },
+                {
+                  id: "RSPN",
+                  data: rspnSeries.value,
+                },
+              ]
+            : cargoGrafica.value == "MR" &&
+              list_Graficas_Genero_Edad.value[0].tipo_Eleccion_Id != 3
+            ? [
+                {
+                  id: "PT",
+                  data: ptSeries.value,
+                },
+                {
+                  id: "PVEM",
+                  data: pvemSeries.value,
+                },
+                {
+                  id: "MC",
+                  data: mcSeries.value,
+                },
+                {
+                  id: "MORENA",
+                  data: morenaSeries.value,
+                },
+                {
+                  id: "NAN-MLN",
+                  data: comunSeries.value,
+                },
+                {
+                  id: "NAN",
+                  data: nanSeries.value,
+                },
+                {
+                  id: "MLN",
+                  data: mlnSeries.value,
+                },
+                {
+                  id: "FXMN",
+                  data: fxmnSeries.value,
+                },
+                {
+                  id: "RSPN",
+                  data: rspnSeries.value,
+                },
+                {
+                  id: "FYCN",
+                  data: fycnSeries.value,
+                },
+                {
+                  id: "SHHN",
+                  data: shhnSeries.value,
+                },
+              ]
+            : list_Graficas_Genero_Edad.value[0].tipo_Eleccion_Id == 3
+            ? [
+                {
+                  name: `PT: ${pt.value.length}/${totalPt.value.length}`,
+                  y: ptPorcentaje.value,
+                  drilldown: "PT",
+                },
+                {
+                  name: `PVEM: ${pvem.value.length}/${totalPvem.value.length}`,
+                  y: pvemPorcentaje.value,
+                  drilldown: "PVEM",
+                },
+                {
+                  name: `MC: ${mc.value.length}/${totalMc.value.length}`,
+                  y: mcPorcentaje.value,
+                  drilldown: "MC",
+                },
+                {
+                  name: `MORENA: ${morena.value.length}/${totalMorena.value.length}`,
+                  y: morenaPorcentaje.value,
+                  drilldown: "MORENA",
+                },
+                {
+                  name: `NAN-MLN: ${comun.value.length}/${totalComun.value.length}`,
+                  y: comunPorcentaje.value,
+                  drilldown: "NAN-MLN",
+                },
+                {
+                  name: `NAN: ${nan.value.length}/${totalNan.value.length}`,
+                  y: nanPorcentaje.value,
+                  drilldown: "NAN",
+                },
+                {
+                  name: `MLN: ${mln.value.length}/${totalMln.value.length}`,
+                  y: mlnPorcentaje.value,
+                  drilldown: "MLN",
+                },
+                {
+                  name: `FXMN: ${fxmn.value.length}/${totalFxmn.value.length}`,
+                  y: fxmnPorcentaje.value,
+                  drilldown: "FXMN",
+                },
+                {
+                  name: `RSPN: ${rspn.value.length}/${totalRspn.value.length}`,
+                  y: rspnPorcentaje.value,
+                  drilldown: "RSPN",
+                },
+                {
+                  name: `FYCN: ${fycn.value.length}/${totalFycn.value.length}`,
+                  y: fycnPorcentaje.value,
+                  drilldown: "FYCN",
+                },
+                {
+                  name: `SHHN: ${shhn.value.length}/${totalShhn.value.length}`,
+                  y: shhnPorcentaje.value,
+                  drilldown: "SHHN",
+                },
+              ]
+            : [
+                {
+                  id: "PAN",
+                  data: panSeries.value,
+                },
+                {
+                  id: "PRI",
+                  data: priSeries.value,
+                },
+                {
+                  id: "PRD",
+                  data: prdSeries.value,
+                },
+                {
+                  id: "PT",
+                  data: ptSeries.value,
+                },
+                {
+                  id: "PVEM",
+                  data: pvemSeries.value,
+                },
+                {
+                  id: "MC",
+                  data: mcSeries.value,
+                },
+                {
+                  id: "MORENA",
+                  data: morenaSeries.value,
+                },
+                {
+                  id: "NAN-MLN",
+                  data: comunSeries.value,
+                },
+                {
+                  id: "NAN",
+                  data: nanSeries.value,
+                },
+                {
+                  id: "MLN",
+                  data: mlnSeries.value,
+                },
+                {
+                  id: "FXMN",
+                  data: fxmnSeries.value,
+                },
+                {
+                  id: "RSPN",
+                  data: rspnSeries.value,
+                },
+                {
+                  id: "FYCN",
+                  data: fycnSeries.value,
+                },
+                {
+                  id: "SHHN",
+                  data: shhnSeries.value,
+                },
+              ];
+      }
     };
 
-    watch(list_Graficas_Filtrado, (val) => {
+    watch(list_Graficas_Genero_Edad, (val) => {
+      if (val != null) {
+        actualizarGrafica();
+      }
+    });
+
+    watch(cargoGrafica, (val) => {
       if (val != null) {
         actualizarGrafica();
       }
@@ -977,7 +1585,6 @@ export default {
 
     const actualizarGrafica = () => {
       rellenarGrafica();
-
       this.chartOptions.series[0].data =
         cargoGrafica.value == "RP"
           ? [
@@ -1040,16 +1647,6 @@ export default {
           : cargoGrafica.value == "MR"
           ? [
               {
-                name: `SHHN: ${shhn.value.length}/${totalShhn.value.length}`,
-                y: shhnPorcentaje.value,
-                drilldown: "SHHN",
-              },
-              {
-                name: `FYCN: ${fycn.value.length}/${totalFycn.value.length}`,
-                y: fycnPorcentaje.value,
-                drilldown: "FYCN",
-              },
-              {
                 name: `PT: ${pt.value.length}/${totalPt.value.length}`,
                 y: ptPorcentaje.value,
                 drilldown: "PT",
@@ -1068,6 +1665,11 @@ export default {
                 name: `MORENA: ${morena.value.length}/${totalMorena.value.length}`,
                 y: morenaPorcentaje.value,
                 drilldown: "MORENA",
+              },
+              {
+                name: `NAN-MLN: ${comun.value.length}/${totalComun.value.length}`,
+                y: comunPorcentaje.value,
+                drilldown: "NAN-MLN",
               },
               {
                 name: `NAN: ${nan.value.length}/${totalNan.value.length}`,
@@ -1089,8 +1691,6 @@ export default {
                 y: rspnPorcentaje.value,
                 drilldown: "RSPN",
               },
-            ]
-          : [
               {
                 name: `SHHN: ${shhn.value.length}/${totalShhn.value.length}`,
                 y: shhnPorcentaje.value,
@@ -1101,6 +1701,8 @@ export default {
                 y: fycnPorcentaje.value,
                 drilldown: "FYCN",
               },
+            ]
+          : [
               {
                 name: `PAN: ${pan.value.length}/${totalPan.value.length}`,
                 y: panPorcentaje.value,
@@ -1137,6 +1739,11 @@ export default {
                 drilldown: "MORENA",
               },
               {
+                name: `NAN-MLN: ${comun.value.length}/${totalComun.value.length}`,
+                y: comunPorcentaje.value,
+                drilldown: "NAN-MLN",
+              },
+              {
                 name: `NAN: ${nan.value.length}/${totalNan.value.length}`,
                 y: nanPorcentaje.value,
                 drilldown: "NAN",
@@ -1155,6 +1762,16 @@ export default {
                 name: `RSPN: ${rspn.value.length}/${totalRspn.value.length}`,
                 y: rspnPorcentaje.value,
                 drilldown: "RSPN",
+              },
+              {
+                name: `SHHN: ${shhn.value.length}/${totalShhn.value.length}`,
+                y: shhnPorcentaje.value,
+                drilldown: "SHHN",
+              },
+              {
+                name: `FYCN: ${fycn.value.length}/${totalFycn.value.length}`,
+                y: fycnPorcentaje.value,
+                drilldown: "FYCN",
               },
             ];
 
@@ -1181,6 +1798,7 @@ export default {
               { id: "PVEM", data: pvemSeries.value },
               { id: "MC", data: mcSeries.value },
               { id: "MORENA", data: morenaSeries.value },
+              { id: "NAN-MLN", data: comunSeries.value },
               { id: "NAN", data: nanSeries.value },
               { id: "MLN", data: mlnSeries.value },
               { id: "FXMN", data: fxmnSeries.value },
@@ -1196,6 +1814,7 @@ export default {
               { id: "PVEM", data: pvemSeries.value },
               { id: "MC", data: mcSeries.value },
               { id: "MORENA", data: morenaSeries.value },
+              { id: "NAN-MLN", data: comunSeries.value },
               { id: "NAN", data: nanSeries.value },
               { id: "MLN", data: mlnSeries.value },
               { id: "FXMN", data: fxmnSeries.value },
@@ -1223,6 +1842,8 @@ export default {
           },
         },
         yAxis: {
+          min: 0,
+          max: 100,
           title: "",
         },
         legend: {

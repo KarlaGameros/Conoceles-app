@@ -61,7 +61,7 @@
                   >Distrito</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0 || cargo_Id.cargo == 'RP'"
+                  :disable="cargo_Id.cargo == 'RP'"
                   dense
                   color="purple"
                   rounded
@@ -83,7 +83,6 @@
                   >Municipio</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0 && selectedTab != 'PYS'"
                   dense
                   color="purple"
                   outlined
@@ -105,7 +104,7 @@
                   >Demarcación</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0 || cargo_Id.cargo == 'RP'"
+                  :disable="cargo_Id.cargo == 'RP'"
                   dense
                   color="purple"
                   outlined
@@ -123,7 +122,6 @@
                   >Partido político o Coalición</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0 && selectedTab != 'PYS'"
                   dense
                   color="purple"
                   rounded
@@ -152,7 +150,6 @@
                   >Grado académico</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0 && selectedTab != 'PYS'"
                   dense
                   color="purple"
                   rounded
@@ -170,7 +167,6 @@
                   >Rango de edad</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0 && selectedTab != 'PYS'"
                   dense
                   color="purple"
                   rounded
@@ -188,7 +184,6 @@
                   >Género</q-item-label
                 >
                 <q-select
-                  :disable="cargo_Id.value == 0 && selectedTab != 'PYS'"
                   dense
                   color="purple"
                   rounded
@@ -231,7 +226,7 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
-import { useQuasar } from "quasar";
+import { useQuasar, QSpinnerCube } from "quasar";
 import { useCardsStore } from "src/stores/cards-store";
 import { useConfiguracionStore } from "src/stores/configuracion-store";
 import { useGraficasStore } from "src/stores/graficas-store";
@@ -266,6 +261,7 @@ const {
   list_Demarcaciones,
   list_Edades,
   list_Sexo,
+  info,
 } = storeToRefs(configuracionStore);
 const distrito_Id = ref(null);
 const actor_politico_Id = ref(null);
@@ -274,6 +270,7 @@ const sexo_Id = ref(null);
 const municipio_Id = ref(null);
 const demarcacion_Id = ref(null);
 const selectedTab = ref(null);
+const tab_Id = ref(null);
 const grado_Academica_Id = ref(null);
 const list_Grado_Academico = ref([
   { value: 0, label: "Todos" },
@@ -292,27 +289,7 @@ const cargo_Id = ref({
   value: 0,
   label: "Todos",
 });
-const list_Cargos = ref([
-  {
-    value: 0,
-    cargo: "Todos",
-    label: "Todos",
-  },
-  {
-    value: 1,
-    cargo: "MR",
-    label: `${
-      selectedTab.value == "DIP" ? "Diputación" : "Regiduría"
-    } mayoría relativa`,
-  },
-  {
-    value: 2,
-    cargo: "RP",
-    label: `${
-      selectedTab.value == "DIP" ? "Diputación" : "Regiduría"
-    } representación proporcional`,
-  },
-]);
+const list_Cargos = ref([]);
 
 //---------------------------------------------------------------------------------
 
@@ -321,8 +298,30 @@ onMounted(() => {
     selectedTab.value = "inicio";
   } else {
     const savedTab = localStorage.getItem("selectedTab");
+    tab_Id.value = localStorage.getItem("eleccion_Id");
     if (savedTab) {
       selectedTab.value = savedTab;
+      list_Cargos.value = [
+        {
+          value: 0,
+          cargo: "Todos",
+          label: "Todos",
+        },
+        {
+          value: 1,
+          cargo: "MR",
+          label: `${
+            selectedTab.value == "DIP" ? "Diputaciones" : "Regidurías"
+          } mayoría relativa`,
+        },
+        {
+          value: 2,
+          cargo: "RP",
+          label: `${
+            selectedTab.value == "DIP" ? "Diputaciones" : "Regidurías"
+          } representación proporcional`,
+        },
+      ];
     }
   }
 
@@ -331,63 +330,183 @@ onMounted(() => {
 });
 
 //---------------------------------------------------------------------------------
+// watch(cargo_Id, (val) => {
+//   if (val != null) {
+//     cargoGrafica.value = val.cargo;
+//     cargo.value = val.cargo;
+//     distrito_Id.value = { value: 0, label: "Todos" };
+//     if (selectedTab.value == "DIP") {
+//       list_Partidos_Politicos.value = [];
+//       if (val.cargo == "RP") {
+//         configuracionStore.loadPartidosPoliticosDistritosRP();
+//       } else if (val.cargo == "MR") {
+//         configuracionStore.loadPartidosPoliticos("GeneralDistritos", 0, 0, 0);
+//       }
+//     }
+//   }
+// });
+
+// watch(distrito_Id, (val) => {
+//   if (selectedTab.value == "DIP") {
+//     list_Partidos_Politicos.value = [];
+//     if (cargo_Id.value.cargo != "RP" && val.value == 0) {
+//       configuracionStore.loadPartidosPoliticos("GeneralDistritos", 0, 0, 0);
+//     } else if (val.value != 0 && cargo_Id.value.cargo != "RP") {
+//       configuracionStore.loadPartidosPoliticos("Distritos", 0, val.value, 0);
+//     }
+//   }
+// });
+
+// watch(municipio_Id, (val) => {
+//   if (selectedTab.value == "PYS" || selectedTab.value == "REG") {
+//     demarcacion_Id.value = { value: 0, label: "Todos" };
+//     if (val.value == 0 && selectedTab.value == "PYS") {
+//       configuracionStore.loadPartidosPoliticos("GeneralMunicipios", 0, 0, 0);
+//     } else if (val.value != 0) {
+//       configuracionStore.loadPartidosPoliticos("Municipios", val.value, 0, 0);
+//       configuracionStore.loadDemarcaciones(val.value);
+//     }
+//   }
+// });
+
+// watch(demarcacion_Id, (val) => {
+//   if (selectedTab.value == "REG") {
+//     if (val.value == 0) {
+//       configuracionStore.loadPartidosPoliticos("GeneralDemarcacion", 0, 0, 0);
+//     } else if (val.value != 0 && cargo_Id.value.cargo != "RP") {
+//       configuracionStore.loadPartidosPoliticos(
+//         "MunicipioDemarcacion",
+//         municipio_Id.value.value,
+//         0,
+//         val.value
+//       );
+//     } else if (cargo_Id.value.cargo == "RP") {
+//       configuracionStore.loadPartidosPoliticosDemarcacionesRP(
+//         municipio_Id.value.value
+//       );
+//     }
+//   }
+// });
+
 watch(cargo_Id, (val) => {
   if (val != null) {
-    cargoGrafica.value = val.cargo;
     cargo.value = val.cargo;
     distrito_Id.value = { value: 0, label: "Todos" };
-    if (selectedTab.value == "DIP") {
+    actor_politico_Id.value = { value: 0, label: "Todos" };
+    demarcacion_Id.value = { value: 0, label: "Todos" };
+    if (selectedTab.value == "DIP" && val.label != "Todos") {
       list_Partidos_Politicos.value = [];
-      if (val.cargo == "RP") {
-        configuracionStore.loadPartidosPoliticosDistritosRP();
-      } else if (val.cargo == "MR") {
-        configuracionStore.loadPartidosPoliticos("GeneralDistritos", 0, 0, 0);
-      }
     }
+    cargarPartidos();
   }
 });
 
 watch(distrito_Id, (val) => {
-  if (selectedTab.value == "DIP") {
+  if (val != null && selectedTab.value == "DIP") {
     list_Partidos_Politicos.value = [];
-    if (cargo_Id.value.cargo != "RP" && val.value == 0) {
-      configuracionStore.loadPartidosPoliticos("GeneralDistritos", 0, 0, 0);
-    } else if (val.value != 0 && cargo_Id.value.cargo != "RP") {
-      configuracionStore.loadPartidosPoliticos("Distritos", 0, val.value, 0);
-    }
+    cargarPartidos();
   }
 });
 
 watch(municipio_Id, (val) => {
   if (selectedTab.value == "PYS" || selectedTab.value == "REG") {
     demarcacion_Id.value = { value: 0, label: "Todos" };
-    if (val.value == 0 && selectedTab.value == "PYS") {
-      configuracionStore.loadPartidosPoliticos("GeneralMunicipios", 0, 0, 0);
-    } else if (val.value != 0) {
-      configuracionStore.loadPartidosPoliticos("Municipios", val.value, 0, 0);
+    if (val.value != 0) {
+      cargarPartidos();
       configuracionStore.loadDemarcaciones(val.value);
     }
   }
 });
 
 watch(demarcacion_Id, (val) => {
-  if (selectedTab.value == "REG") {
-    if (val.value == 0) {
-      configuracionStore.loadPartidosPoliticos("GeneralDemarcacion", 0, 0, 0);
-    } else if (val.value != 0 && cargo_Id.value.cargo != "RP") {
-      configuracionStore.loadPartidosPoliticos(
-        "MunicipioDemarcacion",
-        municipio_Id.value.value,
-        0,
-        val.value
-      );
-    } else if (cargo_Id.value.cargo == "RP") {
-      configuracionStore.loadPartidosPoliticosDemarcacionesRP(
-        municipio_Id.value.value
-      );
-    }
+  if (selectedTab.value == "REG" && val.value != 0) {
+    cargarPartidos();
   }
 });
+
+const cargarPartidos = async () => {
+  if (
+    (selectedTab.value == "DIP" &&
+      distrito_Id.value.value == 0 &&
+      cargo_Id.value.value == 0) ||
+    (selectedTab.value == "PYS" && municipio_Id.value.value == 0) ||
+    (selectedTab.value == "REG" &&
+      municipio_Id.value.value == 0 &&
+      demarcacion_Id.value.value == 0 &&
+      cargo_Id.value.value == 0)
+  ) {
+    await configuracionStore.loadPartidosPoliticos(
+      "Eleccion",
+      0,
+      tab_Id.value,
+      0,
+      0,
+      0
+    );
+  } else if (
+    (selectedTab.value == "DIP" &&
+      distrito_Id.value.value == 0 &&
+      cargo_Id.value.value != 0) ||
+    (selectedTab.value == "REG" &&
+      municipio_Id.value.value == 0 &&
+      demarcacion_Id.value.value == 0 &&
+      cargo_Id.value.value != 0)
+  ) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionCargo",
+      cargo_Id.value.cargo,
+      tab_Id.value,
+      0,
+      0,
+      0
+    );
+  } else if (selectedTab.value == "DIP" && distrito_Id.value.value != 0) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionDistritoTipo",
+      "MR",
+      tab_Id.value,
+      0,
+      distrito_Id.value.value,
+      0
+    );
+  } else if (selectedTab.value == "PYS" && municipio_Id.value.value != 0) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionMunicipioTipo",
+      "MR",
+      tab_Id.value,
+      municipio_Id.value.value,
+      0,
+      0
+    );
+  } else if (
+    selectedTab.value == "REG" &&
+    municipio_Id.value.value != 0 &&
+    demarcacion_Id.value.value == 0
+  ) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionMunicipio",
+      cargo_Id.value.cargo,
+      tab_Id.value,
+      municipio_Id.value.value,
+      0,
+      0
+    );
+  } else if (
+    selectedTab.value == "REG" &&
+    municipio_Id.value.value != 0 &&
+    cargo_Id.value.value != 0 &&
+    demarcacion_Id.value.value != 0
+  ) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionMunicipioDemarcacion",
+      cargo_Id.value.cargo,
+      tab_Id.value,
+      municipio_Id.value.value,
+      0,
+      demarcacion_Id.value.value
+    );
+  }
+};
 
 //---------------------------------------------------------------------------------
 
@@ -414,19 +533,37 @@ const limpiarFiltros = () => {
 };
 
 const botonConsultar = async () => {
-  // let { latitude, longitude } = await getCurrentLocation();
-  // let { brand, model, os } = getDataDevice();
-  // info.value.latitud = latitude;
-  // info.value.longitud = longitude;
-  // info.value.marca = brand;
-  // info.value.modelo = model;
-  // info.value.sistema_Operativo = os;
-  // await configuracionStore.infoDeviceConoceles(info.value);
-  // await configuracionStore.loadVisitas();
-  consultar();
+  const userAgent = navigator.userAgent.toLowerCase();
+  if (/iphone|ipad|ipod/.test(userAgent)) {
+    let { brand, model, os } = getDataDevice();
+    info.value.latitud = "";
+    info.value.longitud = "";
+    info.value.marca = brand;
+    info.value.modelo = model;
+    info.value.sistema_Operativo = os;
+    await configuracionStore.infoDeviceConoceles(info.value);
+    await configuracionStore.loadVisitas();
+    consultar();
+  } else {
+    let { latitude, longitude } = await getCurrentLocation();
+    let { brand, model, os } = getDataDevice();
+    info.value.latitud = latitude;
+    info.value.longitud = longitude;
+    info.value.marca = brand;
+    info.value.modelo = model;
+    info.value.sistema_Operativo = os;
+    await configuracionStore.infoDeviceConoceles(info.value);
+    await configuracionStore.loadVisitas();
+    consultar();
+  }
 };
 
-const consultar = () => {
+const consultar = async () => {
+  cargoGrafica.value = cargo_Id.value.cargo;
+
+  if (selectedTab.value == "PYS") {
+    cargo_Id.value = { value: 0, label: "Todos" };
+  }
   const filtro = {};
   if (grado_Academica_Id.value != null)
     filtro.academico = grado_Academica_Id.value.label;
@@ -434,9 +571,22 @@ const consultar = () => {
   if (distrito_Id.value != null) filtro.distrito = distrito_Id.value.value;
   if (actor_politico_Id.value != null) {
     filtro.actor_politico = actor_politico_Id.value.value;
-    if (actor_politico_Id.value.is_Coalicion == true) {
+    if (
+      actor_politico_Id.value.is_Coalicion == true &&
+      cargo_Id.value != null &&
+      cargo_Id.value.cargo != "RP"
+    ) {
+      filtro.comun = false;
       filtro.coalicion = true;
+    } else if (
+      actor_politico_Id.value.is_Comun == true &&
+      cargo_Id.value != null &&
+      cargo_Id.value.cargo != "RP"
+    ) {
+      filtro.comun = true;
+      filtro.coalicion = false;
     } else {
+      filtro.comun = false;
       filtro.coalicion = false;
     }
   }
@@ -450,120 +600,150 @@ const consultar = () => {
     filtrarGeneroEdad(list_Graficas_Genero_Edad.value, filtro);
   }
   if (list_Graficas_By_Eleccion.value.length > 0) {
-    filtrar(
-      list_Candidatos_By_Eleccion.value,
-      list_Graficas_By_Eleccion.value,
-      filtro
-    );
+    filtarGraficasIdentidad(list_Graficas_By_Eleccion.value, filtro);
+  }
+  filtarGraficasIdentidad(list_Graficas_By_Eleccion.value, filtro);
+  if (list_Candidatos_By_Eleccion.value.length > 0) {
+    filtrarCards(list_Candidatos_By_Eleccion.value, filtro);
   }
 };
 
 const filtrarGeneroEdad = async (list_Grafica, filtro) => {
-  Filtrar(list_Grafica, filtro);
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
+  list_Graficas_Genero_Edad_Filtrado.value = [];
+  await Filtrar(list_Grafica, filtro);
+  $q.loading.hide();
 };
 
-const filtrar = (
-  list_Candidatos_By_Eleccion,
-  list_Graficas_By_Eleccion,
-  filtro
-) => {
-  list_Graficas_Filtrado.value = list_Graficas_By_Eleccion.filter((item) => {
-    let cumple = true;
-
-    if (filtro.cargo.value !== undefined) {
-      if (filtro.cargo.value == 0) {
-        cumple = cumple && item.tipo_Candidato === item.tipo_Candidato;
-      } else {
-        cumple = cumple && item.tipo_Candidato === filtro.cargo.cargo;
-      }
-    }
-
-    if (filtro.distrito !== undefined) {
-      if (filtro.distrito == 0) {
-        cumple = cumple && item.distrito_Id === item.distrito_Id;
-      } else if (filtro.distrito == 99) {
-        if (item.tipo_Candidato === "RP") {
-          cumple = true;
-        } else {
-          cumple = false;
-        }
-      } else {
-        cumple = cumple && item.distrito_Id === filtro.distrito;
-      }
-    }
-
-    if (filtro.municipio !== undefined) {
-      if (filtro.municipio == 0) {
-        cumple = cumple && item.municipio_Id === item.municipio_Id;
-      } else {
-        cumple = cumple && item.municipio_Id === filtro.municipio;
-      }
-    }
-
-    if (filtro.demarcacion !== undefined) {
-      if (filtro.demarcacion == 0) {
-        cumple = cumple && item.demarcacion_Id === item.demarcacion_Id;
-      } else if (filtro.demarcacion == 99) {
-        if (item.tipo_Candidato === "RP") {
-          cumple = true;
-        } else {
-          cumple = false;
-        }
-      } else {
-        if (item.demarcacion_Id === filtro.demarcacion) {
-          cumple = true;
-        } else {
-          cumple = false;
-        }
-      }
-    }
-    if (filtro.sexo != undefined) {
-      if (filtro.sexo == "Todos") {
-        cumple = cumple && item.sexo === item.sexo;
-      } else {
-        cumple = cumple && item.sexo === filtro.sexo;
-      }
-    }
-
-    if (filtro.edad != undefined) {
-      if (filtro.edad == "Todos") {
-        cumple = cumple && item.edad > 0;
-      } else {
-        const rango = filtro.edad.split("-").map(Number);
-
-        if (rango.length === 2) {
-          cumple = cumple && item.edad >= rango[0] && item.edad <= rango[1];
-        } else if (filtro.edad == "60 o más") {
-          cumple = cumple && item.edad >= 60;
-        }
-      }
-    }
-
-    if (filtro.actor_politico !== undefined) {
-      if (filtro.actor_politico == 0) {
-        cumple = cumple && item.partido_Id === item.partido_Id;
-      } else {
-        if (filtro.coalicion == true) {
-          cumple = cumple && item.coalicion_Id === filtro.actor_politico;
-        } else {
-          cumple = cumple && item.partido_Id === filtro.actor_politico;
-        }
-      }
-    }
-
-    if (filtro.academico != undefined) {
-      if (filtro.academico == "Todos") {
-        cumple =
-          cumple && item.grado_Maximo_Studio === item.grado_Maximo_Studio;
-      } else {
-        cumple = cumple && item.grado_Maximo_Studio === filtro.academico;
-      }
-    }
-
-    return cumple;
+const filtarGraficasIdentidad = async (list_Graficas_By_Eleccion, filtro) => {
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
   });
+  let resp = await graficasStore.limpiarGraficasFiltrado();
+  if (resp.success == true) {
+    list_Graficas_Filtrado.value = list_Graficas_By_Eleccion.filter((item) => {
+      let cumple = true;
 
-  FiltrarCandidatos(list_Candidatos_By_Eleccion, filtro);
+      if (filtro.cargo.value !== undefined) {
+        if (filtro.cargo.value == 0) {
+          cumple = cumple && item.tipo_Candidato === item.tipo_Candidato;
+        } else {
+          cumple = cumple && item.tipo_Candidato === filtro.cargo.cargo;
+        }
+      }
+
+      if (filtro.distrito !== undefined) {
+        if (filtro.distrito == 0) {
+          cumple = cumple && item.distrito_Id === item.distrito_Id;
+        } else if (filtro.cargo.cargo == "RP") {
+          if (item.tipo_Candidato === "RP") {
+            cumple = true;
+          } else {
+            cumple = false;
+          }
+        } else {
+          cumple = cumple && item.distrito_Id === filtro.distrito;
+        }
+      }
+
+      if (filtro.municipio !== undefined) {
+        if (filtro.municipio == 0) {
+          cumple = cumple && item.municipio_Id === item.municipio_Id;
+        } else {
+          cumple = cumple && item.municipio_Id === filtro.municipio;
+        }
+      }
+
+      if (filtro.demarcacion !== undefined) {
+        if (filtro.demarcacion == 0) {
+          cumple = cumple && item.demarcacion_Id === item.demarcacion_Id;
+        } else if (filtro.cargo == "RP") {
+          if (item.tipo_Candidato === "RP") {
+            cumple = true;
+          } else {
+            cumple = false;
+          }
+        } else {
+          if (item.demarcacion_Id === filtro.demarcacion) {
+            cumple = true;
+          } else {
+            cumple = false;
+          }
+        }
+      }
+
+      if (filtro.sexo != undefined) {
+        if (filtro.sexo == "Todos") {
+          cumple = cumple && item.sexo === item.sexo;
+        } else {
+          cumple = cumple && item.sexo === filtro.sexo;
+        }
+      }
+
+      if (filtro.edad != undefined) {
+        if (filtro.edad == "Todos") {
+          cumple = cumple && item.edad > 0;
+        } else {
+          const rango = filtro.edad.split("-").map(Number);
+
+          if (rango.length === 2) {
+            cumple = cumple && item.edad >= rango[0] && item.edad <= rango[1];
+          } else if (filtro.edad == "60 o más") {
+            cumple = cumple && item.edad >= 60;
+          }
+        }
+      }
+
+      if (filtro.actor_politico !== undefined) {
+        if (filtro.actor_politico == 0) {
+          cumple = cumple && item.partido_Id === item.partido_Id;
+        } else {
+          if (filtro.coalicion == true) {
+            cumple = cumple && item.coalicion_Id === filtro.actor_politico;
+          } else {
+            cumple = cumple && item.partido_Id === filtro.actor_politico;
+          }
+        }
+      }
+
+      if (filtro.academico != undefined) {
+        if (filtro.academico == "Todos") {
+          cumple =
+            cumple && item.grado_Maximo_Studio === item.grado_Maximo_Studio;
+        } else {
+          cumple = cumple && item.grado_Maximo_Studio === filtro.academico;
+        }
+      }
+
+      return cumple;
+    });
+  }
+  $q.loading.hide();
+};
+
+const filtrarCards = async (list_Candidatos_By_Eleccion, filtro) => {
+  $q.loading.show({
+    spinner: QSpinnerCube,
+    spinnerColor: "pink",
+    spinnerSize: 140,
+    backgroundColor: "purple-2",
+    message: "Espere un momento por favor...",
+    messageColor: "black",
+  });
+  await FiltrarCandidatos(list_Candidatos_By_Eleccion, filtro);
+  $q.loading.hide();
 };
 </script>
 

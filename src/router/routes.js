@@ -16,6 +16,12 @@ const routes = [
         component: () => import("../modulos/diputaciones/pages/IndexPage"),
       },
       {
+        path: "/diputaciones/:eleccion_Id",
+        name: "DIP",
+        props: true,
+        component: () => import("../modulos/diputaciones/pages/IndexPage"),
+      },
+      {
         path: "/diputacionesCards/:eleccion_Id",
         name: "DIPcards",
         props: true,

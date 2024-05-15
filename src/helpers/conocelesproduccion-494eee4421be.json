@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "conocelesproduccion",
+  "private_key_id": "494eee4421be5ca8b2d565f4c5ff95f0eb035a85",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDWLPUNfzr5YGjC\n5wiH51F/ULF4GwTjUIyqSKMYDownT2oSiCJk14Wlapjkon163k3tI96+dHZuu3wb\nbbJhfwBZ3t4yzSsZVzJCDZnL5szlJt7+Um65+gAogXs7EE8zpb0Ej+Hy1ahC81V9\nE9pnVPoBWaOj7iVp4ffxrmeXZxeuSw8st3We0tMf5gGcq4EWQuKdBkagvza/42N8\nY3WTeT9Z4gTEkxmN1YV+Jf6Htyg6FJWdMS8Hew4MSOEpQXnFwwkwST9yuYl1M8ux\nQRvay8lG17u+nJ6vWg0ci53RHXuftXserCtUrIE62NsDaVKE7wbKifoZMfCugzon\nscDzsi07AgMBAAECggEAaPrdXPHFuvGmOA6dkFvyhwjLDHeV9EQJxvfWtZZ/3U7g\nS9gdn7dCg3vWGI+LGPw5TykbZ9hXKtzMLvecjYx+ZA7JdDY7z259rIHVJmxpd1MP\nz7IhIxinFjOtbxyF7edp2IAcPPa8RKDYgPgHwEmXR60j+FjlTtqbuYOGtGAsa9nq\nN6kBVFpyfY5w7aU1rEItLX5l2tdJ+eICTNzLj56DwZkHOCYDmyD1TZyauz9a2m45\nFrqd2eTTeBgRcj9iVbVucE3LmsTAw8H2rkAYAY0PLh1lnf/mequmDKP+tRnRXqL2\nKXYL2XHZrqUywSaqh1u6QHfMCCFy3ZHX7wdZYiDeTQKBgQDqwvP+jw6REwvYEpJJ\n5JDtX+zUdF2g5mPwNDlAI2EIKict0hVQP4cSieFmOhFSGdeuUoSDLm39tD2QD6xM\nKwunUxBG8mMVoxeDAUufTTSJ4TIH8D68A0r6Td2M68y0RmHJ4dm2XlPPcG2uUEUl\nBo2P5HImbRxPhlX06N8EMItC1wKBgQDpjTyiLy3fJNYP7PSztLHc4yVdfcQVKjTc\nWG7un7TL2ASg2cDCAkeDKb4IEbPUYeNPIZ6KilJLM4+Ky3QgAxdlAZKHoOCUPlfL\ndPnzhVJ7seiI2kvrQBxH3kV7m263JNKp9lgsoShbJSdHBwGcFCUJanAbLD77YW4h\n074AiG7APQKBgQCQRDHRE3SuLngu1mrTwgRV+4b8oG4RPMPZjx5HjfZJIC5neBzk\n7cVB3T2IptKSE5N5avhH7TZmnGbgquEFBcbpkqAEGVxOpaUDOr6QLM/Gk389ZaQH\nwjZHT6aAvT9U4ZOijopOCfWTGtIsNuPm9vnznT2Q46hsLm+QS7MRTgumjQKBgQCA\n041ckNWmvrTtN/GKpuNtSkY0GcltO0jJOmaGbcXWoyN6bmKrIYK80Ounm8wsHIq7\n/XlsRfw6ywgksTEu70WaS5G+CnmWjAT1j2LIdwQWgv4XbwJtk4GGCw8crZIWp9Mk\nOWRNyd9u10GhJjY3F82OMg4Ajxl2pDmRozCtLpSYqQKBgFwdRygFAG0291+qCjky\nbitQdVt7V2tJJ1145uTv2CNkb/RUcqYs+pkFCGuPxaTVwOdGSSSb158yDmVx9Heq\nlMmalOwTZv9XoERiDEqYyRKX9C8lKVDdrzSnPWs0AgRka6pHdtgT0uKBL8A4XrUY\nb6/Tgge0beVfxv04Mrd7NWvk\n-----END PRIVATE KEY-----\n",
+  "client_email": "conoceles2024-ieenayarit-org@conocelesproduccion.iam.gserviceaccount.com",
+  "client_id": "103379536292695848684",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/conoceles2024-ieenayarit-org%40conocelesproduccion.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
