@@ -38,7 +38,7 @@ const rellenar_grafica = () => {
     (candidato) => candidato.sexo === "No binario"
   );
 
-  series.value.push(mujeres.length, hombres.length, noBinario.length);
+  series.value.push(mujeres.length - 1, hombres.length - 1, noBinario.length);
 };
 
 const colors = ["#dcbadb", "#af7ead", "#a46aba"];
@@ -47,6 +47,39 @@ const chartOptions = {
   chart: {
     width: 380,
     type: "pie",
+    toolbar: {
+      show: true,
+      offsetX: 0,
+      offsetY: 0,
+      tools: {
+        download: true,
+        selection: true,
+        zoom: true,
+        zoomin: true,
+        zoomout: true,
+        pan: true,
+        reset: true | '<img src="/static/icons/reset.png" width="20">',
+        customIcons: [],
+      },
+      export: {
+        csv: {
+          filename: "Género",
+          columnDelimiter: ",",
+          headerCategory: "Género",
+          headerValue: "Cantidad",
+          dateFormatter(timestamp) {
+            return new Date(timestamp).toDateString();
+          },
+        },
+        svg: {
+          filename: undefined,
+        },
+        png: {
+          filename: undefined,
+        },
+      },
+      autoSelected: "zoom",
+    },
   },
   colors: colors,
   style: {

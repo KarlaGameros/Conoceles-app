@@ -330,21 +330,18 @@ onMounted(() => {
 });
 
 //---------------------------------------------------------------------------------
-// watch(cargo_Id, (val) => {
-//   if (val != null) {
-//     cargoGrafica.value = val.cargo;
-//     cargo.value = val.cargo;
-//     distrito_Id.value = { value: 0, label: "Todos" };
-//     if (selectedTab.value == "DIP") {
-//       list_Partidos_Politicos.value = [];
-//       if (val.cargo == "RP") {
-//         configuracionStore.loadPartidosPoliticosDistritosRP();
-//       } else if (val.cargo == "MR") {
-//         configuracionStore.loadPartidosPoliticos("GeneralDistritos", 0, 0, 0);
-//       }
-//     }
-//   }
-// });
+watch(cargo_Id, (val) => {
+  if (val != null) {
+    cargo.value = val.cargo;
+    distrito_Id.value = { value: 0, label: "Todos" };
+    actor_politico_Id.value = { value: 0, label: "Todos" };
+    demarcacion_Id.value = { value: 0, label: "Todos" };
+    if (selectedTab.value == "DIP" && val.label != "Todos") {
+      list_Partidos_Politicos.value = [];
+    }
+    cargarPartidos();
+  }
+});
 
 // watch(distrito_Id, (val) => {
 //   if (selectedTab.value == "DIP") {
@@ -403,6 +400,7 @@ watch(cargo_Id, (val) => {
 
 watch(distrito_Id, (val) => {
   if (val != null && selectedTab.value == "DIP") {
+    actor_politico_Id.value = { value: 0, label: "Todos" };
     list_Partidos_Politicos.value = [];
     cargarPartidos();
   }
@@ -481,11 +479,26 @@ const cargarPartidos = async () => {
   } else if (
     selectedTab.value == "REG" &&
     municipio_Id.value.value != 0 &&
-    demarcacion_Id.value.value == 0
+    demarcacion_Id.value.value == 0 &&
+    cargo_Id.value.value != 0
   ) {
     await configuracionStore.loadPartidosPoliticos(
       "EleccionMunicipio",
       cargo_Id.value.cargo,
+      tab_Id.value,
+      municipio_Id.value.value,
+      0,
+      0
+    );
+  } else if (
+    selectedTab.value == "REG" &&
+    municipio_Id.value.value != 0 &&
+    demarcacion_Id.value.value == 0 &&
+    cargo_Id.value.value == 0
+  ) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionMunicipioREG",
+      0,
       tab_Id.value,
       municipio_Id.value.value,
       0,
@@ -545,10 +558,10 @@ const botonConsultar = async () => {
     await configuracionStore.loadVisitas();
     consultar();
   } else {
-    let { latitude, longitude } = await getCurrentLocation();
+    //let { latitude, longitude } = await getCurrentLocation();
     let { brand, model, os } = getDataDevice();
-    info.value.latitud = latitude;
-    info.value.longitud = longitude;
+    info.value.latitud = "";
+    info.value.longitud = "";
     info.value.marca = brand;
     info.value.modelo = model;
     info.value.sistema_Operativo = os;

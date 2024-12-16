@@ -1017,5 +1017,3 @@ const selectOption = async (option) => {
   $q.loading.hide();
 };
 </script>
-
-<style></style>

@@ -229,6 +229,10 @@ export const useConfiguracionStore = defineStore("configuracion", {
           resp = await api.get(
             `/Tipos_Elecciones/Partidos_Disponibles?TipoEleccionId=${eleccion_Id}&MunicipioId=${municipio_Id}&TipoCandidato=${tipo_Candidato}`
           );
+        } else if (tipo == "EleccionMunicipioREG") {
+          resp = await api.get(
+            `/Tipos_Elecciones/Partidos_Disponibles?TipoEleccionId=${eleccion_Id}&MunicipioId=${municipio_Id}`
+          );
         } else if (tipo == "EleccionMunicipioDemarcacion") {
           resp = await api.get(
             `/Tipos_Elecciones/Partidos_Disponibles?TipoEleccionId=${eleccion_Id}&MunicipioId=${municipio_Id}&DemarcacionId=${demarcacion_Id}&TipoCandidato=${tipo_Candidato}`

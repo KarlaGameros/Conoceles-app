@@ -228,10 +228,10 @@ const chartOptions = {
       },
       export: {
         csv: {
-          filename: undefined,
+          filename: "GradoAcadémico",
           columnDelimiter: ",",
-          headerCategory: "category",
-          headerValue: "value",
+          headerCategory: "Grado académico",
+          headerValue: "Cantidad",
           dateFormatter(timestamp) {
             return new Date(timestamp).toDateString();
           },

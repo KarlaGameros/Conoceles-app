@@ -72,6 +72,39 @@ const chartOptions = {
   chart: {
     width: "100%",
     type: "donut",
+    toolbar: {
+      show: true,
+      offsetX: 0,
+      offsetY: 0,
+      tools: {
+        download: true,
+        selection: true,
+        zoom: true,
+        zoomin: true,
+        zoomout: true,
+        pan: true,
+        reset: true | '<img src="/static/icons/reset.png" width="20">',
+        customIcons: [],
+      },
+      export: {
+        csv: {
+          filename: "NivelDeIngresos",
+          columnDelimiter: ",",
+          headerCategory: "NivelIngresos",
+          headerValue: "Cantidad",
+          dateFormatter(timestamp) {
+            return new Date(timestamp).toDateString();
+          },
+        },
+        svg: {
+          filename: undefined,
+        },
+        png: {
+          filename: undefined,
+        },
+      },
+      autoSelected: "zoom",
+    },
   },
   labels: [
     "Menos de $11,000",

@@ -12,8 +12,13 @@ const ReporteConoceles01 = async (id, puesto) => {
   let propuestasCandidato =
     await verificacionVacanteStore.loadCandidatoPropuestas(id, puesto);
   let informacion_Pausada = "";
-  if (candidato.informacion_Pausada != null) {
+  if (
+    candidato.informacion_Pausada != null &&
+    candidato.informacion_Pausada != ""
+  ) {
     informacion_Pausada = candidato.informacion_Pausada.split("|");
+  } else {
+    informacion_Pausada = "";
   }
 
   await new Promise((resolveOuter) => {
@@ -100,34 +105,48 @@ const ReporteConoceles01 = async (id, puesto) => {
         usuario.src = require("../assets/noBinario.png");
       }
     } else {
-      if (candidato.foto.startsWith("http")) {
-        let url = candidato.foto.replace("http", "https");
-        usuario.src = `${url}` + "?r=" + Math.floor(Math.random() * 100000);
-      }
+      // if (candidato.foto.startsWith("http")) {
+      //   let url = candidato.foto.replace("http", "https");
+      //   usuario.src = `${url}` + "?r=" + Math.floor(Math.random() * 100000);
+      // }
+      usuario.src =
+        `${candidato.foto}` + "?r=" + Math.floor(Math.random() * 100000);
     }
 
     let partido = new Image();
-    if (candidato.logo_Partido.startsWith("http")) {
-      let urlpartido = candidato.logo_Partido.replace("http", "https");
-      partido.src =
-        `${urlpartido}` + "?r=" + Math.floor(Math.random() * 100000);
-    }
+    // if (candidato.logo_Partido.startsWith("http")) {
+    //   let urlpartido = candidato.logo_Partido.replace("http", "https");
+    //   partido.src =
+    //     `${urlpartido}` + "?r=" + Math.floor(Math.random() * 100000);
+    // }
+    partido.src =
+      `${candidato.logo_Partido}` + "?r=" + Math.floor(Math.random() * 100000);
     let coalicion = new Image();
 
-    if (
-      candidato.logo_Coalicion != null &&
-      candidato.logo_Coalicion.startsWith("http")
-    ) {
-      let url3 = candidato.logo_Coalicion.replace("http", "https");
-      coalicion.src = `${url3}` + "?r=" + Math.floor(Math.random() * 100000);
+    // if (
+    //   candidato.logo_Coalicion != null &&
+    //   candidato.logo_Coalicion.startsWith("http")
+    // ) {
+    //   let url3 = candidato.logo_Coalicion.replace("http", "https");
+    //   coalicion.src = `${url3}` + "?r=" + Math.floor(Math.random() * 100000);
+    // }
+    if (candidato.logo_Coalicion != null) {
+      coalicion.src =
+        `${candidato.logo_Coalicion}` +
+        "?r=" +
+        Math.floor(Math.random() * 100000);
     }
     let comun = new Image();
-    if (
-      candidato.logo_Comun != null &&
-      candidato.logo_Comun.startsWith("http")
-    ) {
-      let urlcomun = candidato.logo_Comun.replace("http", "https");
-      comun.src = `${urlcomun}` + "?r=" + Math.floor(Math.random() * 100000);
+    // if (
+    //   candidato.logo_Comun != null &&
+    //   candidato.logo_Comun.startsWith("http")
+    // ) {
+    //   let urlcomun = candidato.logo_Comun.replace("http", "https");
+    //   comun.src = `${urlcomun}` + "?r=" + Math.floor(Math.random() * 100000);
+    // }
+    if (candidato.logo_Comun != null) {
+      comun.src =
+        `${candidato.logo_Comun}` + "?r=" + Math.floor(Math.random() * 100000);
     }
     let pc = new Image();
     pc.src = require("../assets/pc.png");
@@ -184,6 +203,7 @@ const ReporteConoceles01 = async (id, puesto) => {
         : formacionAcademica.formacion,
       136
     );
+
     puntoY = puntoY + 7;
     doc.text(
       formacionAcademica.formacion == "" ||
@@ -193,12 +213,10 @@ const ReporteConoceles01 = async (id, puesto) => {
       65,
       puntoY,
       {
-        align: "justify",
         lineHeightFactor: 1,
         maxWidth: 135,
       }
     );
-
     //------------------------------------------------------------------//
     puntoY = puntoY + 5 * linesinformacion.length;
     if (puntoY >= 275) {
@@ -610,7 +628,7 @@ const ReporteConoceles01 = async (id, puesto) => {
       });
       puntoLateralY = puntoLateralY + 4 * linesCoalicion.length;
     } else {
-      doc.addImage(partido, "jpg", 20, puntoLateralY - 3, 20, 20);
+      doc.addImage(partido, "jpg", 20, puntoLateralY, 20, 20);
       textoLateral();
       puntoLateralY = puntoLateralY + 24;
       var linesCoalicion = doc.splitTextToSize(candidato.partido, 50);

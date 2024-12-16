@@ -107,8 +107,8 @@ export default {
           (candidato) => candidato.sexo === "No binario"
         );
         series_Sexo_4.value.push(
-          ["Mujer", mujeres.length],
-          ["Hombre", hombres.length],
+          ["Mujer", mujeres.length - 1],
+          ["Hombre", hombres.length - 1],
           ["No binario", noBinario.length]
         );
       }
@@ -150,7 +150,7 @@ export default {
       edad_18_24.value = edad_1.length;
       edad_25_29.value = edad_2.length;
       edad_30_39.value = edad_3.length;
-      edad_40_49.value = edad_4.length;
+      edad_40_49.value = edad_4.length - 2;
       edad_50_59.value = edad_5.length;
       edad_60.value = edad_6.length;
     };

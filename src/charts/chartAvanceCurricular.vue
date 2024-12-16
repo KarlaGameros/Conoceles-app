@@ -137,7 +137,6 @@ export default {
       rspn.value = null;
       totalComun.value = null;
       comun.value = null;
-
       //-----------------------------------------------------
       if (cargoGrafica.value == "RP") {
         totalPan.value = list_Graficas_Genero_Edad.value.filter(
@@ -453,6 +452,7 @@ export default {
           (candidato) =>
             candidato.is_Coalicion == true && candidato.coalicion == "FCN"
         );
+
         fycn.value = list_Graficas_Genero_Edad.value.filter(
           (candidato) =>
             candidato.is_Coalicion == true &&
@@ -1017,6 +1017,7 @@ export default {
             candidato.is_Coalicion == false &&
             candidato.tipo_Candidato == "MR"
         );
+
         rspn.value = list_Graficas_Genero_Edad.value.filter(
           (candidato) =>
             candidato.partido == "RSPN" &&
@@ -1029,6 +1030,7 @@ export default {
           (candidato) =>
             candidato.partido == "RSPN" && candidato.is_Coalicion == false
         );
+
         rspn.value = list_Graficas_Genero_Edad.value.filter(
           (candidato) =>
             candidato.partido == "RSPN" &&

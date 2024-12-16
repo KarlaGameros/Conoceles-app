@@ -85,6 +85,7 @@ export const useGraficasStore = defineStore("useGraficasStore", {
         let { data } = resp.data;
         this.list_Graficas_By_Eleccion = data.map((item) => {
           return {
+            nombre: item.nombre,
             candidato_Id: item.candidato_Id,
             tipo_Eleccion_Id: id,
             puesto: item.puesto,

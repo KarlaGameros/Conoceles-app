@@ -261,7 +261,8 @@ export const useCardsStore = defineStore("cards", {
         this.loading = true;
         let resp = await api.get(`/Candidatos/ByTipoEleccion/${id}`);
         let { data } = resp.data;
-        let listCandidatos = data.map((candidato) => {
+        let filtro = data.filter((x) => x.id != 776 && x.id != 655);
+        let listCandidatos = filtro.map((candidato) => {
           return {
             selection: "prop",
             id: candidato.id,
@@ -302,14 +303,14 @@ export const useCardsStore = defineStore("cards", {
               candidato.apellido_Materno_Propietario == null
                 ? ""
                 : candidato.apellido_Materno_Propietario,
-            nombre_Completo_Propietario: `${candidato.nombres_Propietario} ${
+            nombre_Completo_Propietario: `${candidato.nombres_Propietario.trim()} ${
               candidato.apellido_Paterno_Propietario == null
                 ? ""
-                : candidato.apellido_Paterno_Propietario
+                : candidato.apellido_Paterno_Propietario.trim()
             } ${
               candidato.apellido_Materno_Propietario == null
                 ? ""
-                : candidato.apellido_Materno_Propietario
+                : candidato.apellido_Materno_Propietario.trim()
             }`,
             mote_Propietario: candidato.mote_Propietario,
             sexo_Propietario: candidato.sexo_Propietario,
@@ -335,13 +336,15 @@ export const useCardsStore = defineStore("cards", {
             consecutivo_Propietario_2: candidato.consecutivo_Propietario_2,
             grado_Academico_Propietario_2:
               candidato.grado_Academico_Propietario_2,
-            nombre_Completo_Propietario_2: `${
-              candidato.nombres_Propietario_2
-            } ${
+            nombre_Completo_Propietario_2: `${candidato.nombres_Propietario_2.trim()} ${
               candidato.apellido_Paterno_Propietario_2 == null
                 ? ""
-                : candidato.apellido_Paterno_Propietario_2
-            } ${candidato.apellido_Materno_Propietario_2}`,
+                : candidato.apellido_Paterno_Propietario_2.trim()
+            } ${
+              candidato.apellido_Materno_Propietario_2 == null
+                ? ""
+                : candidato.apellido_Materno_Propietario_2.trim()
+            }`,
             nombres_Propietario_2: candidato.nombres_Propietario_2,
             apellido_Paterno_Propietario_2:
               candidato.apellido_Paterno_Propietario_2 == null
@@ -373,14 +376,14 @@ export const useCardsStore = defineStore("cards", {
               candidato.url_Logo_Partido_Propietario_2,
             //-----------SUPLENTE---------------------
             grado_Academico_Suplente: candidato.grado_Academico_Suplente,
-            nombre_Completo_Suplente: `${candidato.nombres_Suplente} ${
+            nombre_Completo_Suplente: `${candidato.nombres_Suplente.trim()} ${
               candidato.apellido_Paterno_Suplente == null
                 ? ""
-                : candidato.apellido_Paterno_Suplente
+                : candidato.apellido_Paterno_Suplente.trim()
             } ${
               candidato.apellido_Materno_Suplente == null
                 ? ""
-                : candidato.apellido_Materno_Suplente
+                : candidato.apellido_Materno_Suplente.trim()
             }`,
             nombres_Suplente: candidato.nombres_Suplente,
             apellido_Paterno_Suplente:
@@ -410,14 +413,14 @@ export const useCardsStore = defineStore("cards", {
             url_Logo_Partido_Suplente: candidato.url_Logo_Partido_Suplente,
             //-----------SUPLENTE 2---------------------
             grado_Academico_Suplente_2: candidato.grado_Academico_Suplente_2,
-            nombre_Completo_Suplente_2: `${candidato.nombres_Suplente_2} ${
+            nombre_Completo_Suplente_2: `${candidato.nombres_Suplente_2.trim()} ${
               candidato.apellido_Paterno_Suplente_2 == null
                 ? ""
-                : candidato.apellido_Paterno_Suplente_2
+                : candidato.apellido_Paterno_Suplente_2.trim()
             } ${
               candidato.apellido_Materno_Suplente_2 == null
                 ? ""
-                : candidato.apellido_Materno_Suplente_2
+                : candidato.apellido_Materno_Suplente_2.trim()
             }`,
             nombres_Suplente_2: candidato.nombres_Suplente_2,
             apellido_Paterno_Suplente_2:

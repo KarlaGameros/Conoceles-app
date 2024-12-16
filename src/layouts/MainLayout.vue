@@ -633,6 +633,7 @@ watch(cargo_Id, (val) => {
 
 watch(distrito_Id, (val) => {
   if (val != null && tab.value == "DIP") {
+    actor_politico_Id.value = { value: 0, label: "Todos" };
     list_Partidos_Politicos.value = [];
     cargarPartidos();
   }
@@ -735,11 +736,26 @@ const cargarPartidos = async () => {
   } else if (
     tab.value == "REG" &&
     municipio_Id.value.value != 0 &&
-    demarcacion_Id.value.value == 0
+    demarcacion_Id.value.value == 0 &&
+    cargo_Id.value.value != 0
   ) {
     await configuracionStore.loadPartidosPoliticos(
       "EleccionMunicipio",
       cargo_Id.value.cargo,
+      tab_Id.value,
+      municipio_Id.value.value,
+      0,
+      0
+    );
+  } else if (
+    tab.value == "REG" &&
+    municipio_Id.value.value != 0 &&
+    demarcacion_Id.value.value == 0 &&
+    cargo_Id.value.value == 0
+  ) {
+    await configuracionStore.loadPartidosPoliticos(
+      "EleccionMunicipioREG",
+      0,
       tab_Id.value,
       municipio_Id.value.value,
       0,
@@ -943,10 +959,10 @@ const getCurrentLocation = () => {
 };
 
 const botonConsultar = async () => {
-  let { latitude, longitude } = await getCurrentLocation();
+  //let { latitude, longitude } = await getCurrentLocation();
   let { brand, model, os } = getDataDevice();
-  info.value.latitud = latitude;
-  info.value.longitud = longitude;
+  info.value.latitud = "";
+  info.value.longitud = "";
   info.value.marca = brand;
   info.value.modelo = model;
   info.value.sistema_Operativo = os;
@@ -957,7 +973,7 @@ const botonConsultar = async () => {
 
 const consultar = async () => {
   loading.value = true;
-  cargoGrafica.value = cargo_Id.value.label;
+  cargoGrafica.value = cargo_Id.value.cargo;
 
   if (tab.value == "PYS") {
     cargo_Id.value = { value: 0, label: "Todos" };

@@ -72,6 +72,39 @@ const chartOptions = {
   chart: {
     width: "100%",
     type: "pie",
+    toolbar: {
+      show: true,
+      offsetX: 0,
+      offsetY: 0,
+      tools: {
+        download: true,
+        selection: true,
+        zoom: true,
+        zoomin: true,
+        zoomout: true,
+        pan: true,
+        reset: true | '<img src="/static/icons/reset.png" width="20">',
+        customIcons: [],
+      },
+      export: {
+        csv: {
+          filename: "CandidaturasIndigenas",
+          columnDelimiter: ",",
+          headerCategory: "Candidaturas indígenas",
+          headerValue: "Cantidad",
+          dateFormatter(timestamp) {
+            return new Date(timestamp).toDateString();
+          },
+        },
+        svg: {
+          filename: undefined,
+        },
+        png: {
+          filename: undefined,
+        },
+      },
+      autoSelected: "zoom",
+    },
   },
   labels: ["Si", "No", "Prefiero no contestar"],
   colors: ["#af7ead", "#e4c0ed", "#dcbadb"],

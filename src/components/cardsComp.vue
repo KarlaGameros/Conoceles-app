@@ -144,15 +144,19 @@
               size="85px"
               v-if="
                 (item.selection == 'prop' &&
+                  item.validado_Propietario == true &&
                   item.url_Foto_Propietario != null &&
                   !item.identidadPropietario.includes('Identidad')) ||
                 (item.selection == 'sup' &&
+                  item.validado_Suplente == true &&
                   item.url_Foto_Suplente != null &&
                   !item.identidadSuplente.includes('Identidad')) ||
                 (item.selection == 'propSin' &&
+                  item.validado_Propietario_2 == true &&
                   item.url_Foto_Propietario_2 != null &&
                   !item.identidadPropietario2.includes('Identidad')) ||
                 (item.selection == 'supSin' &&
+                  item.validado_Suplente_2 == true &&
                   item.url_Foto_Suplente_2 != null &&
                   !item.identidadSuplente2.includes('Identidad'))
               "
